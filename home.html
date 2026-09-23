@@ -1,0 +1,2672 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>
+Busanso Nation - Watch Luganda Translated Movies, Agasobanuye, Korean romantic Series, translated in Luganda by Uganda's Best VJ is King VJ
+</title>
+
+<meta name="description" content="
+Busanso Nation brings you Luganda translated movies, Agasobanuye films, Korean translated series, and movies by popular VJs especially King VJ, The best VJ in Uganda King VJ The Busanso Master. Also download the Busanso Nation app from here
+">
+
+<meta name="keywords" content="
+BUSANSO,
+BUSANSO Nation,
+Busanso app,
+King VJ,
+VJ Emmy,
+VJ Junior,
+Luganda movies,
+Luganda translated movies,
+Agasobanuye,
+Korean translated series,
+Muno Watch,
+Munowatch,
+DJ Star,
+DJ Afro,
+VJ Ivan,
+VJ Nelly,
+VJ Mumba,
+VJ Sun,
+VJ Moon,
+VJ Ice P,
+Omutaka,
+Download Luganda movies
+">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+
+
+<style>
+
+
+/* ==============================
+GLOBAL RESET
+============================== */
+
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+
+html{
+scroll-behavior:smooth;
+}
+
+
+body{
+
+font-family:'Poppins',sans-serif;
+
+background:
+radial-gradient(circle at top left,#2563eb33,transparent 35%),
+radial-gradient(circle at bottom right,#22c55e33,transparent 40%),
+linear-gradient(180deg,#020617,#000);
+
+color:white;
+
+overflow-x:hidden;
+
+padding-top:95px;
+
+}
+
+
+
+/* ==============================
+SCROLLBAR
+============================== */
+
+
+::-webkit-scrollbar{
+
+width:5px;
+height:5px;
+
+}
+
+
+::-webkit-scrollbar-thumb{
+
+background:#334155;
+
+border-radius:20px;
+
+}
+
+
+
+/* ==============================
+HEADER
+============================== */
+.sticky-header{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+z-index:9999;
+background:rgba(2,6,23,.92);
+backdrop-filter:blur(20px);
+}
+
+.header{
+
+height:85px;
+
+display:flex;
+
+align-items:center;
+
+gap:10px;
+
+padding:10px 12px;
+
+}
+
+
+.header img{
+
+height:42px;
+
+width:auto;
+
+}
+
+
+.search-box{
+
+flex:1;
+
+height:40px;
+
+border-radius:25px;
+
+border:none;
+
+outline:none;
+
+padding:0 15px;
+
+background:#1e293b;
+
+color:white;
+
+font-size:13px;
+
+}
+
+
+.search-box::placeholder{
+
+color:#94a3b8;
+
+}
+
+
+
+.login-main{
+
+width:80px;
+
+padding:9px 8px;
+
+border-radius:20px;
+
+background:
+linear-gradient(135deg,#2563eb,#38bdf8);
+
+color:white;
+
+text-decoration:none;
+
+font-size:11px;
+
+font-weight:700;
+
+text-align:center;
+
+}
+
+.top-action{
+top:92px;
+}
+
+#welcomeUser{
+margin-top:5px;
+padding-bottom:12px;
+}
+
+
+.pay-btn{
+
+right:12px;
+
+}
+
+
+.agent-btn{
+
+left:12px;
+
+}
+
+/* ==============================
+WELCOME USER
+============================== */
+
+
+#welcomeUser{
+
+text-align:center;
+
+font-size:14px;
+
+color:#cbd5e1;
+
+padding-bottom:8px;
+
+}
+
+
+
+/* ==============================
+HERO SLIDER
+============================== */
+
+
+.hero-slider{
+
+width:100%;
+
+overflow:hidden;
+
+}
+
+
+
+.hero-track{
+
+display:flex;
+
+width:100%;
+
+overflow-x:auto;
+
+scroll-snap-type:x mandatory;
+
+scroll-behavior:smooth;
+
+}
+
+
+
+.hero-track::-webkit-scrollbar{
+
+display:none;
+
+}
+
+
+
+.hero-poster{
+
+flex:0 0 100%;
+
+height:260px;
+
+position:relative;
+
+scroll-snap-align:center;
+
+overflow:hidden;
+
+cursor:pointer;
+
+}
+
+
+
+.hero-poster img{
+
+width:100%;
+
+height:100%;
+
+object-fit:cover;
+
+}
+
+
+
+.hero-overlay{
+
+position:absolute;
+
+inset:0;
+
+display:flex;
+
+align-items:flex-end;
+
+padding:25px;
+
+background:
+linear-gradient(
+to top,
+rgba(0,0,0,.9),
+transparent
+);
+
+}
+
+
+
+.hero-title{
+
+font-size:28px;
+
+font-weight:800;
+
+text-shadow:
+0 3px 15px black;
+
+}
+
+
+
+.hero-description{
+
+margin-top:8px;
+
+color:#e2e8f0;
+
+font-size:14px;
+
+}
+
+
+
+/* HERO DOTS */
+
+
+.hero-dots{
+
+display:flex;
+
+justify-content:center;
+
+gap:8px;
+
+padding:15px;
+
+}
+
+
+
+.hero-dot{
+
+height:8px;
+
+width:8px;
+
+background:#475569;
+
+border-radius:20px;
+
+transition:.3s;
+
+}
+
+
+
+.hero-dot.active{
+
+width:25px;
+
+background:#38bdf8;
+
+}
+
+
+
+/* ==============================
+MAIN CONTENT
+============================== */
+
+
+.main-content{
+
+padding-bottom:100px;
+
+}
+
+
+
+.section{
+
+margin:20px 12px;
+
+padding:18px;
+
+background:
+rgba(255,255,255,.03);
+
+border:
+1px solid rgba(255,255,255,.05);
+
+border-radius:24px;
+
+}
+
+
+
+.section h3{
+
+font-size:20px;
+
+margin-bottom:18px;
+
+font-weight:800;
+
+background:
+linear-gradient(90deg,#22c55e,#38bdf8);
+
+-webkit-background-clip:text;
+
+-webkit-text-fill-color:transparent;
+
+}
+
+
+/* ==============================
+CONTENT GRID
+============================== */
+
+
+.slider{
+
+display:grid;
+
+grid-template-columns:
+repeat(3,1fr);
+
+gap:14px;
+
+}
+
+
+.card{
+
+width:100%;
+
+animation:fadeUp .4s ease;
+
+}
+
+
+
+.card:hover{
+
+transform:translateY(-5px);
+
+}
+
+
+
+.poster{
+
+position:relative;
+
+}
+
+
+
+.poster img{
+
+width:100%;
+
+aspect-ratio:2/3;
+
+object-fit:cover;
+
+border-radius:18px;
+
+box-shadow:
+0 10px 25px rgba(0,0,0,.5);
+
+}
+
+
+
+/* BADGES REMOVED */
+
+
+/* CARD TITLE */
+
+
+.card-title{
+
+font-size:13px;
+
+font-weight:600;
+
+margin-top:10px;
+
+line-height:1.4;
+
+min-height:38px;
+
+}
+/* ==============================
+SKELETON
+============================== */
+
+
+.skeleton-card{
+
+width:100%;
+
+aspect-ratio:2/3;
+
+border-radius:18px;
+
+background:
+linear-gradient(
+90deg,
+#1e293b,
+#334155,
+#1e293b
+);
+
+background-size:200%;
+
+animation:skeleton 1.3s infinite;
+
+}
+
+
+
+.hero-skeleton{
+
+flex:0 0 100%;
+height:260px;
+
+background:
+linear-gradient(
+90deg,
+#1e293b,
+#334155,
+#1e293b
+);
+
+background-size:200%;
+
+animation:skeleton 1.3s infinite;
+
+}
+
+/* ==============================
+WHATSAPP FLOAT BUTTON
+============================== */
+
+
+.whatsapp-float{
+
+position:fixed;
+
+right:18px;
+
+bottom:100px;
+
+width:60px;
+
+height:60px;
+
+border-radius:50%;
+
+background:#25D366;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+z-index:9999;
+
+box-shadow:
+0 10px 30px rgba(0,0,0,.5);
+
+}
+
+
+
+.whatsapp-float img{
+
+width:32px;
+
+height:32px;
+
+}
+
+
+
+
+
+
+
+
+/* ==============================
+NOTIFICATION MODAL
+============================== */
+
+
+.notification-modal{
+
+position:fixed;
+
+inset:0;
+
+display:none;
+
+align-items:center;
+
+justify-content:center;
+
+background:
+rgba(0,0,0,.75);
+
+z-index:999999;
+
+}
+
+
+
+.notification-box{
+
+width:min(92%,420px);
+
+background:#0f172a;
+
+padding:25px;
+
+border-radius:25px;
+
+box-shadow:
+0 20px 60px rgba(0,0,0,.7);
+
+}
+
+
+
+.notification-title{
+
+font-size:22px;
+
+font-weight:800;
+
+margin-bottom:10px;
+
+}
+
+
+
+.notification-message{
+
+color:#cbd5e1;
+
+line-height:1.7;
+
+margin-bottom:20px;
+
+}
+
+
+
+.notification-close{
+
+flex:1;
+
+padding:14px;
+
+border:none;
+
+border-radius:16px;
+
+background:
+linear-gradient(135deg,#2563eb,#38bdf8);
+
+color:white;
+
+font-weight:700;
+
+cursor:pointer;
+
+}
+
+
+
+/* ==============================
+ANIMATIONS
+============================== */
+
+
+@keyframes skeleton{
+
+
+0%{
+
+background-position:200% 0;
+
+}
+
+
+100%{
+
+background-position:-200% 0;
+
+}
+
+
+}
+
+
+
+@keyframes fadeUp{
+
+
+from{
+
+opacity:0;
+
+transform:translateY(20px);
+
+}
+
+
+to{
+
+opacity:1;
+
+transform:none;
+
+}
+
+
+}
+
+
+
+/* ==============================
+RESPONSIVE
+============================== */
+
+
+@media(max-width:700px){
+
+
+.header img{
+
+height:38px;
+
+}
+
+
+.hero-poster{
+
+height:220px;
+
+}
+
+
+
+.hero-title{
+
+font-size:22px;
+
+}
+
+
+
+.section{
+
+margin:15px 8px;
+
+padding:15px;
+
+}
+
+
+
+.slider{
+
+grid-template-columns:
+repeat(3,1fr);
+
+gap:10px;
+
+}
+
+
+
+.card-title{
+
+font-size:12px;
+
+}
+}
+
+
+
+@media(max-width:360px){
+
+
+.slider{
+
+grid-template-columns:
+repeat(2,1fr);
+
+}
+
+
+
+.hero-poster{
+
+height:200px;
+
+}
+
+
+
+}
+
+
+
+
+/* ==============================
+ADAPTIVE PREMIUM LOCK
+============================== */
+
+
+.locked{
+
+opacity:.8;
+
+}
+
+
+
+.locked
+/* ==============================
+END STYLE
+============================== */
+
+
+.poster{cursor:pointer;}\n</style>
+
+</head>
+<body>
+
+
+<!-- ==============================
+STICKY HEADER
+============================== -->
+<div class="sticky-header">
+
+<div class="header">
+
+
+<img src="https://i.ibb.co/hxgrLF35/BUSANSO-New.png">
+
+
+<input 
+id="searchBox"
+class="search-box"
+placeholder="🔍 Search movies & series..."
+>
+
+
+<a href="auth.html"
+id="loginButton"
+class="login-main">
+
+📝 CREATE ACCOUNT
+
+</a>
+
+
+</div>
+
+
+<div id="welcomeUser"></div>
+
+
+</div>
+
+<!-- ==============================
+HERO SLIDER
+============================== -->
+
+
+<div class="hero-slider">
+
+
+<div class="hero-track"
+id="heroSlider">
+
+
+<div class="hero-skeleton"></div>
+
+<div class="hero-skeleton"></div>
+
+<div class="hero-skeleton"></div>
+
+
+</div>
+
+
+
+<div class="hero-dots"
+id="heroDots">
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<!-- ==============================
+MAIN CONTENT
+============================== -->
+
+
+<div class="main-content">
+
+
+
+
+
+<!-- ==============================
+TRENDING
+============================== -->
+
+
+<div class="section">
+
+
+<h3>
+
+🔥 Hottest Right Now
+
+</h3>
+
+
+<div class="slider"
+id="trendingBox">
+
+
+<div class="skeleton-card"></div>
+
+<div class="skeleton-card"></div>
+
+<div class="skeleton-card"></div>
+
+<div class="skeleton-card"></div>
+
+<div class="skeleton-card"></div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- ==============================
+MOVIES
+============================== -->
+
+
+<div class="section">
+
+
+<h3>
+
+🎬 Fresh Movies
+
+</h3>
+
+
+
+<div class="slider"
+id="moviesBox">
+
+
+<div class="skeleton-card"></div>
+
+<div class="skeleton-card"></div>
+
+<div class="skeleton-card"></div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- ==============================
+SERIES
+============================== -->
+
+
+<div class="section">
+
+
+<h3>
+
+📺 Fresh Series
+
+</h3>
+
+
+
+<div class="slider"
+id="seriesBox">
+
+
+<div class="skeleton-card"></div>
+
+<div class="skeleton-card"></div>
+
+<div class="skeleton-card"></div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<!-- ==============================
+ADVERTISEMENT
+============================== -->
+
+
+<div class="ad-banner"
+style="
+text-align:center;
+margin:30px 0;
+">
+
+
+<script>
+
+
+function loadBannerAd(){
+
+
+atOptions={
+
+'key':'1c9ccdb756a82c4d663014a338917bd7',
+
+'format':'iframe',
+
+'height':250,
+
+'width':300,
+
+'params':{}
+
+};
+
+
+
+const s=document.createElement("script");
+
+
+s.src=
+"https://www.highperformanceformat.com/1c9ccdb756a82c4d663014a338917bd7/invoke.js";
+
+
+s.async=true;
+
+
+document.body.appendChild(s);
+
+
+}
+
+
+
+document.addEventListener(
+"DOMContentLoaded",
+()=>{
+
+
+if(
+!/Mobi|Android/i.test(navigator.userAgent)
+)
+
+loadBannerAd();
+
+
+});
+
+
+</script>
+
+
+</div>
+
+<!-- ==============================
+FREE MOVIES
+============================== -->
+
+
+<div class="section">
+
+
+<h3>
+
+🎁 Free Movies
+
+</h3>
+
+
+
+<div class="slider"
+id="freeMoviesBox">
+
+
+<div class="skeleton-card"></div>
+
+<div class="skeleton-card"></div>
+
+<div class="skeleton-card"></div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- ==============================
+FREE SERIES
+============================== -->
+
+
+<div class="section">
+
+
+<h3>
+
+🎁 Free Series
+
+</h3>
+
+
+
+<div class="slider"
+id="freeSeriesBox">
+
+
+<div class="skeleton-card"></div>
+
+<div class="skeleton-card"></div>
+
+<div class="skeleton-card"></div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+</div>
+<!-- END MAIN CONTENT -->
+
+
+
+
+
+<!-- ==============================
+WHATSAPP FLOATING BUTTON
+============================== -->
+
+
+<a href="https://wa.me/256703888884"
+class="whatsapp-float"
+target="_blank">
+
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
+
+
+</a>
+
+
+
+
+
+
+
+<!-- ==============================
+SCRIPTS START HERE
+============================== -->
+<script type="module">
+
+
+import { createClient } 
+from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+
+
+// ==============================
+// SUPABASE CONNECTION
+// ==============================
+
+
+const supabaseUrl =
+"https://dhkfhhybzcxdeoalcfqx.supabase.co";
+
+
+const supabaseKey =
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRoa2ZoaHliemN4ZGVvYWxjZnF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1MzQxNTEsImV4cCI6MjA4ODExMDE1MX0.jZ4NDNPJmO0Ji05TxDqCnzgLIIzKf9uCx3WrSgk2DaY";
+
+
+const supabase =
+createClient(
+supabaseUrl,
+supabaseKey
+);
+
+
+// ==============================
+// MEMBERSHIP / REDIRECT HELPERS
+// ==============================
+
+function getLocalMembership(){
+    return (localStorage.getItem("membership") || "free").trim().toLowerCase();
+}
+
+function getLocalExpiry(){
+    return localStorage.getItem("expires_at") || "";
+}
+
+function membershipIsExpired(membership, expires){
+    if(membership === "free") return false;
+    if(!expires) return true;
+    const date = new Date(expires);
+    return Number.isNaN(date.getTime()) || date <= new Date();
+}
+
+function normalizeLocalMembership(){
+    let membership = getLocalMembership();
+    const expires = getLocalExpiry();
+
+    if(membership !== "free" && membershipIsExpired(membership, expires)){
+        localStorage.setItem("membership","free");
+        localStorage.setItem("package_type","");
+        localStorage.setItem("expires_at","");
+        membership = "free";
+    }
+
+    return membership;
+}
+
+function routeByMembership(){
+    const membership = normalizeLocalMembership();
+
+    if(membership === "kibanda"){
+        location.replace("kibwatch.html");
+        return true;
+    }
+
+    if(membership === "premium"){
+        location.replace("account.html");
+        return true;
+    }
+
+    // FREE stays on home.html
+    return false;
+}
+
+// Refresh membership before an action when possible.
+// A network failure NEVER logs the user out and NEVER sends them to auth.html.
+// The already-stored local membership/expiry remains the fallback.
+async function refreshMembershipForAction(){
+    const localBefore = normalizeLocalMembership();
+
+    if(!currentUser){
+        return localBefore;
+    }
+
+    const logged = localStorage.getItem("loggedIn");
+    const name = localStorage.getItem("name");
+
+    if(!logged || !name){
+        return normalizeLocalMembership();
+    }
+
+    try{
+        const {data,error} = await supabase
+            .from("profiles")
+            .select("membership,package_type,expires_at,name")
+            .eq("name",name)
+            .single();
+
+        if(!error && data){
+            localStorage.setItem("membership", String(data.membership || "free").toLowerCase());
+            localStorage.setItem("package_type", data.package_type || "");
+            localStorage.setItem("expires_at", data.expires_at || "");
+
+            currentUser = {
+                ...currentUser,
+                ...data,
+                membership: String(data.membership || "free").toLowerCase()
+            };
+        }
+    }catch(error){
+        console.warn("Membership refresh failed; using local membership.", error);
+    }
+
+    return normalizeLocalMembership();
+}
+
+// Page-load routing only.
+// FREE stays here. PREMIUM -> account.html. KIBANDA -> kibwatch.html.
+function checkPremiumRedirect(){
+    return routeByMembership();
+}
+
+// ==============================
+// ELEMENTS
+// ==============================
+
+
+const loginButton =
+document.getElementById("loginButton");
+
+
+const welcomeUser =
+document.getElementById("welcomeUser");
+
+// Account/create-account button: always check the latest membership before navigation.
+loginButton.addEventListener("click", async (event)=>{
+    event.preventDefault();
+
+    const membership = await refreshMembershipForAction();
+
+    if(membership === "kibanda"){
+        location.replace("kibwatch.html");
+        return;
+    }
+
+    if(membership === "premium"){
+        location.replace("account.html");
+        return;
+    }
+
+    // FREE/guest follows the original button destination.
+    location.href = loginButton.href || "auth.html";
+});
+
+
+
+
+
+
+
+// ==============================
+// USER DATA
+// ==============================
+
+
+let currentUser = null;
+// ==============================
+// VERIFY ACCOUNT
+// ==============================
+
+
+async function verifyUser(){
+
+
+const name =
+localStorage.getItem("name");
+
+// A stored name is enough to identify the existing local session.
+// Do not require loggedIn just to keep a user on the site.
+if(!name){
+    showGuest();
+    return null;
+}
+
+
+
+
+
+
+
+const {data,error}=
+
+await supabase
+
+.from("profiles")
+
+.select("*")
+
+.eq("name",name)
+
+.single();
+
+
+
+
+
+
+if (error) {
+    console.warn("Unable to verify user:", error);
+
+    // Network failure: keep using the locally stored session/membership.
+    // Never log the user out or send them to auth.html because of a
+    // temporary connection failure.
+    currentUser = {
+        name,
+        membership: normalizeLocalMembership(),
+        package_type: localStorage.getItem("package_type") || "",
+        expires_at: localStorage.getItem("expires_at") || ""
+    };
+
+    showLoggedUser(currentUser);
+    return currentUser;
+}
+
+if (!data) {
+    // Profile genuinely doesn't exist anymore.
+return null;
+}
+
+// Update localStorage with latest membership from Supabase
+localStorage.setItem("membership", data.membership || "free");
+localStorage.setItem("package_type", data.package_type || "");
+localStorage.setItem("expires_at", data.expires_at || "");
+
+
+
+// Save latest data
+
+
+localStorage.setItem(
+"membership",
+data.membership || "free"
+);
+
+
+localStorage.setItem(
+"package_type",
+data.package_type || ""
+);
+
+
+localStorage.setItem(
+"expires_at",
+data.expires_at || ""
+);
+
+
+
+
+currentUser=data;
+
+
+showLoggedUser(data);
+
+
+
+return data;
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ==============================
+// GUEST VIEW
+// ==============================
+
+
+function showGuest(){
+
+
+loginButton.innerHTML =
+"📝 CREATE ACCOUNT";
+
+
+loginButton.href =
+"auth.html";
+
+
+welcomeUser.innerHTML =
+"";
+
+
+}
+
+
+
+
+
+
+// ==============================
+// LOGGED IN VIEW
+// ==============================
+
+
+function showLoggedUser(user){
+
+loginButton.innerHTML =
+"👤 ACCOUNT";
+
+
+loginButton.href =
+"account.html";
+
+
+welcomeUser.innerHTML =
+
+`
+Welcome back 
+<b>${user.name.toUpperCase()}</b>
+`;
+
+}
+
+
+
+
+
+
+
+
+
+// ==============================
+// PREMIUM CHECK
+// ==============================
+
+
+function hasAccess(user){
+    if(!user) return false;
+
+    const membership = String(user.membership || "free").toLowerCase();
+    const expires = user.expires_at || "";
+
+    if(membership === "free") return true;
+
+    if(
+        (membership === "premium" || membership === "kibanda") &&
+        expires &&
+        !membershipIsExpired(membership, expires)
+    ){
+        return true;
+    }
+
+    return false;
+}
+
+// ==============================
+// CONTENT ACCESS CONTROL
+// ==============================
+
+
+async function openContent(item,page){
+
+    // FREE cards are open to ANY visitor/user.
+    // Do not force free-card clicks through auth or membership redirects.
+    const premium =
+        item.type==="premium" ||
+        item.type===true;
+
+    if(!premium){
+        location.href =
+            page==="movie"
+            ? `movie.html?id=${item.id}`
+            : `serie.html?id=${item.id}`;
+        return;
+    }
+
+    // Premium-card click: refresh membership first so a recent upgrade/expiry
+    // is recognized before deciding what to do.
+    const membership = await refreshMembershipForAction();
+
+    // KIBANDA users are routed to their own area.
+    if(membership === "kibanda"){
+        location.replace("kibwatch.html");
+        return;
+    }
+
+    // PREMIUM user clicking premium content goes to ACCOUNT.
+    if(membership === "premium"){
+        location.replace("account.html");
+        return;
+    }
+
+    // Expired premium/kibanda is normalized to FREE above.
+    // FREE users need a package to access premium content.
+    location.href="packages.html";
+}
+
+// ==============================
+// CONTENT ELEMENTS
+// ==============================
+
+
+const heroSlider =
+document.getElementById("heroSlider");
+
+
+const heroDots =
+document.getElementById("heroDots");
+
+
+const trendingBox =
+document.getElementById("trendingBox");
+
+
+const moviesBox =
+document.getElementById("moviesBox");
+
+
+const seriesBox =
+document.getElementById("seriesBox");
+
+
+const freeMoviesBox =
+document.getElementById("freeMoviesBox");
+
+
+const freeSeriesBox =
+document.getElementById("freeSeriesBox");
+
+
+const searchBox =
+document.getElementById("searchBox");
+
+
+let allContent=[];
+
+let currentFilter="all";
+
+
+
+
+// ==============================
+// CREATE CONTENT CARD
+// ==============================
+
+
+function createCard(item,page){
+
+
+
+const card =
+document.createElement("div");
+
+
+card.className =
+"card";
+
+
+
+card.innerHTML = `
+
+<div class="poster">
+
+<img src="${item.poster || ''}"
+loading="lazy">
+
+</div>
+
+
+<div class="card-title">
+
+${item.title}
+
+</div>
+
+`;
+card.querySelector(".poster").onclick=()=>{
+openContent(item,page);
+};
+
+
+
+return card;
+
+
+}
+
+
+
+
+
+
+
+
+
+// ==============================
+// CREATE HERO
+// ==============================
+
+
+function createHero(item,page){
+
+
+const hero =
+document.createElement("div");
+
+
+hero.className="hero-poster";
+
+
+hero.innerHTML=`
+
+<img src="${item.horizontal_poster || item.poster}"
+loading="lazy">
+
+
+<div class="hero-overlay">
+
+<div>
+
+<div class="hero-title">
+
+${item.title}
+
+</div>
+
+
+</div>
+
+</div>
+
+`;
+
+
+
+hero.onclick=()=>{
+
+openContent(
+item,
+page
+);
+
+};
+
+
+return hero;
+
+
+}
+
+
+
+
+// ==============================
+// FETCH CONTENT
+// ==============================
+
+
+async function fetchContent(){
+
+
+
+heroSlider.innerHTML="";
+
+heroDots.innerHTML="";
+
+
+trendingBox.innerHTML="";
+
+moviesBox.innerHTML="";
+
+seriesBox.innerHTML="";
+
+freeMoviesBox.innerHTML="";
+
+freeSeriesBox.innerHTML="";
+
+
+
+
+
+let trendingItems=[];
+
+allContent=[];
+
+
+
+
+
+// ==============================
+// MOVIES
+// ==============================
+
+
+const {
+
+data:movies,
+
+error:movieError
+
+}=
+
+await supabase
+
+.from("movies")
+
+.select("*")
+
+.order(
+"created_at",
+{
+ascending:false
+}
+);
+
+
+
+
+
+if(movieError){
+
+console.log(movieError);
+
+}
+
+
+
+
+
+if(movies){
+
+
+movies.forEach(movie=>{
+
+
+
+moviesBox.appendChild(
+
+createCard(
+movie,
+"movie"
+)
+
+);
+
+
+
+trendingItems.push({
+
+...movie,
+
+kind:"movie"
+
+});
+
+
+allContent.push({
+
+...movie,
+
+kind:"movie"
+
+});
+
+
+if(
+movie.type !== "premium"
+){
+
+
+freeMoviesBox.appendChild(
+
+createCard(
+movie,
+"movie"
+)
+
+);
+
+
+}
+
+
+
+});
+
+
+}
+
+
+
+
+
+
+
+
+
+// ==============================
+// SERIES
+// ==============================
+
+
+const {
+
+data:series,
+
+error:seriesError
+
+}=
+
+await supabase
+
+.from("series")
+
+.select("*")
+
+.order(
+"created_at",
+{
+ascending:false
+}
+);
+
+
+
+
+
+if(seriesError){
+
+console.log(seriesError);
+
+}
+
+
+
+
+
+if(series){
+
+
+series.forEach(show=>{
+
+
+
+seriesBox.appendChild(
+
+createCard(
+show,
+"series"
+)
+
+);
+
+
+
+trendingItems.push({
+
+...show,
+
+kind:"series"
+
+});
+
+
+allContent.push({
+
+...show,
+
+kind:"series"
+
+});
+
+
+if(
+show.type !== "premium"
+){
+
+
+freeSeriesBox.appendChild(
+
+createCard(
+show,
+"series"
+)
+
+);
+
+
+}
+
+
+
+});
+
+
+}
+
+
+
+
+
+
+
+
+
+// ==============================
+// HERO CONTENT
+// ==============================
+
+
+let heroItems =
+
+[...trendingItems]
+
+.sort(
+
+(a,b)=>
+
+new Date(b.created_at)
+
+-
+
+new Date(a.created_at)
+
+)
+
+.slice(0,8);
+
+
+
+
+
+
+
+heroItems.forEach(
+(item,index)=>{
+
+
+heroSlider.appendChild(
+
+createHero(
+item,
+item.kind
+)
+
+);
+
+
+
+
+const dot =
+document.createElement("div");
+
+
+dot.className =
+"hero-dot";
+
+
+
+if(index===0)
+
+dot.classList.add(
+"active"
+);
+
+
+
+heroDots.appendChild(dot);
+
+
+
+}
+
+);
+
+
+
+
+
+
+
+
+
+
+// ==============================
+// TRENDING TOP 10
+// ==============================
+
+
+trendingItems
+
+.sort(
+
+(a,b)=>
+
+(b.views || 0)
+
+-
+
+(a.views || 0)
+
+)
+
+
+.slice(0,10)
+
+.forEach(item=>{
+
+
+trendingBox.appendChild(
+
+createCard(
+item,
+item.kind
+)
+
+);
+
+
+});
+
+
+
+
+
+}
+
+
+
+
+
+function applyFilter(type){
+
+
+currentFilter=type;
+
+
+
+const sections=[
+
+trendingBox,
+
+moviesBox,
+
+seriesBox,
+
+freeMoviesBox,
+
+freeSeriesBox
+
+];
+
+
+sections.forEach(section=>{
+
+section.innerHTML="";
+
+});
+
+
+
+
+allContent.forEach(item=>{
+
+
+if(
+type!=="all" &&
+item.kind!==type
+)
+
+return;
+
+
+
+const card=createCard(
+item,
+item.kind
+);
+
+
+
+if(item.kind==="movie"){
+
+
+moviesBox.appendChild(
+card.cloneNode(true)
+);
+
+
+
+}
+
+
+
+if(item.kind==="series"){
+
+
+seriesBox.appendChild(
+card.cloneNode(true)
+);
+
+
+}
+
+
+
+});
+
+
+
+
+// rebuild trending
+
+allContent
+
+.filter(item=>
+
+type==="all" ||
+
+item.kind===type
+
+)
+
+.sort(
+
+(a,b)=>
+
+(b.views||0)-(a.views||0)
+
+)
+
+.slice(0,10)
+
+.forEach(item=>{
+
+
+trendingBox.appendChild(
+
+createCard(
+item,
+item.kind
+)
+
+);
+
+
+});
+
+
+
+
+}
+
+
+(async()=>{
+
+    // Use local membership immediately, then refresh from Supabase if available.
+    // Network failure does not send the user to auth.html.
+    const redirected = checkPremiumRedirect();
+
+    if(!redirected){
+        await verifyUser();
+
+        // verifyUser may have refreshed membership from Supabase.
+        // Re-check after the refresh so an upgraded/expired account is routed.
+        const redirectedAfterVerify = checkPremiumRedirect();
+
+        if(!redirectedAfterVerify){
+            fetchContent();
+        }
+    }
+
+})();
+
+searchBox.onclick=async()=>{
+    await refreshMembershipForAction();
+
+    if(!currentUser){
+        // Preserve the existing search/auth behavior for guests.
+        location.href="auth.html";
+    }
+};
+
+
+
+searchBox.oninput=async function(){
+
+await refreshMembershipForAction();
+
+if(!currentUser){
+
+this.value="";
+
+location.href="auth.html";
+
+return;
+
+}
+
+
+
+const value =
+this.value.toLowerCase();
+
+
+
+moviesBox.innerHTML="";
+
+seriesBox.innerHTML="";
+
+
+
+allContent
+
+.filter(item=>
+
+item.title
+.toLowerCase()
+.includes(value)
+
+)
+
+.forEach(item=>{
+
+
+if(item.kind==="movie"){
+
+
+moviesBox.appendChild(
+
+createCard(
+item,
+"movie"
+)
+
+);
+
+
+}
+
+
+
+if(item.kind==="series"){
+
+
+seriesBox.appendChild(
+
+createCard(
+item,
+"series"
+)
+
+);
+
+
+}
+
+
+
+});
+
+
+
+};
+
+
+
+
+// ==============================
+// HERO AUTO SLIDER (NO PAGE SCROLL)
+// ==============================
+
+let currentHero = 0;
+
+
+setInterval(()=>{
+
+
+const heroes =
+document.querySelectorAll(".hero-poster");
+
+
+const dots =
+document.querySelectorAll(".hero-dot");
+
+
+if(!heroes.length) return;
+
+
+
+currentHero++;
+
+
+if(currentHero >= heroes.length){
+currentHero = 0;
+}
+
+
+
+// ONLY MOVE HERO CONTAINER
+heroSlider.scrollTo({
+
+left:
+heroSlider.clientWidth * currentHero,
+
+behavior:"smooth"
+
+});
+
+
+
+dots.forEach(dot=>{
+dot.classList.remove("active");
+});
+
+
+if(dots[currentHero]){
+dots[currentHero].classList.add("active");
+}
+
+
+
+},6000);
+
+
+
+
+
+
+
+
+
+// ==============================
+// HERO DOT CLICK
+// ==============================
+
+
+heroDots.onclick=(e)=>{
+
+
+if(
+!e.target.classList.contains(
+"hero-dot"
+)
+
+)
+
+return;
+
+
+
+
+
+const dots =
+[
+...document.querySelectorAll(".hero-dot")
+];
+
+
+
+currentHero =
+dots.indexOf(
+e.target
+);
+
+
+
+document
+.querySelectorAll(".hero-poster")
+[currentHero]
+
+.scrollIntoView({
+
+behavior:"smooth",
+
+inline:"center",
+
+block:"nearest"
+
+});
+
+
+
+
+dots.forEach(dot=>{
+
+dot.classList.remove(
+"active"
+);
+
+});
+
+
+
+e.target.classList.add(
+"active"
+);
+
+
+
+};
+
+
+</script>
+
+
+
+
+
+
+
+<!-- ==============================
+ONESIGNAL
+============================== -->
+
+
+<script>
+
+
+window.OneSignalDeferred =
+window.OneSignalDeferred || [];
+
+
+
+OneSignalDeferred.push(
+async function(OneSignal){
+
+
+await OneSignal.init({
+
+appId:
+"cc8dfd2b-74bf-43a9-8cd0-2915cf1bc629",
+
+
+notifyButton:{
+
+enable:true
+
+}
+
+
+});
+
+
+});
+
+
+// ==============================
+// CUSTOM MESSAGE POPUP
+// ==============================
+
+window.showMessage = function(title,text){
+
+document.getElementById("messageTitle").innerHTML = title;
+
+document.getElementById("messageText").innerHTML = text;
+
+document.getElementById("messageModal").style.display="flex";
+
+};
+
+
+
+window.closeMessage=function(){
+
+document.getElementById("messageModal").style.display="none";
+
+};
+</script>
+
+
+
+<div id="messageModal" class="notification-modal">
+
+<div class="notification-box">
+
+<div id="messageTitle" class="notification-title"></div>
+
+<div id="messageText" class="notification-message"></div>
+
+<button 
+onclick="closeMessage()"
+class="notification-close">
+OK
+</button>
+
+</div>
+
+</div>
+
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1,"spa":2}' crossorigin="anonymous"></script>
+</body>
+
+</html>
+
+
