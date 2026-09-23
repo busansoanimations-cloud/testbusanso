@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+>
 
 <title>My Account - BUSANSO NATION</title>
 
@@ -14,835 +17,450 @@
 <style>
 
 *{
-    box-sizing:border-box;
-}
-
-html,
-body{
-    margin:0;
-    padding:0;
-    min-height:100%;
+box-sizing:border-box;
+margin:0;
+padding:0;
 }
 
 body{
 
-    min-height:100vh;
+min-height:100vh;
 
-    background:
-    radial-gradient(
-        circle at 50% -10%,
-        #5d4a19 0%,
-        #241d0d 22%,
-        #0d0d0d 55%,
-        #050505 100%
-    );
+font-family:
+Arial,
+Helvetica,
+sans-serif;
 
-    color:#fff;
+color:#fff;
 
-    font-family:
-    Arial,
-    Helvetica,
-    sans-serif;
+background:
 
-}
+radial-gradient(
+circle at top,
+rgba(212,175,55,.20),
+transparent 35%
+),
 
+radial-gradient(
+circle at bottom right,
+rgba(255,184,77,.08),
+transparent 40%
+),
 
-/* =========================================================
-   GOLD VARIABLES
-========================================================= */
+linear-gradient(
+180deg,
+#100d05,
+#050505 55%,
+#000
+);
 
-:root{
-
-    --gold:#d4af37;
-    --gold-light:#f4d77b;
-    --gold-dark:#8d6b16;
-
-    --black:#070707;
-
-    --panel:
-    rgba(255,255,255,.045);
+padding:20px;
 
 }
 
 
-/* =========================================================
-   TOP BAR
-========================================================= */
+/* TOP */
 
-.topbar{
+.top{
 
-    position:sticky;
+max-width:500px;
 
-    top:0;
+margin:auto;
 
-    z-index:20;
+display:flex;
 
-    height:64px;
+align-items:center;
 
-    display:flex;
+justify-content:space-between;
 
-    align-items:center;
-
-    justify-content:space-between;
-
-    padding:
-    0 18px;
-
-    background:
-    rgba(5,5,5,.92);
-
-    backdrop-filter:
-    blur(15px);
-
-    border-bottom:
-    1px solid rgba(212,175,55,.22);
+margin-bottom:20px;
 
 }
 
+.back{
+
+color:#d4af37;
+
+text-decoration:none;
+
+font-size:13px;
+
+font-weight:700;
+
+}
 
 .brand{
 
-    display:flex;
+font-size:13px;
 
-    align-items:center;
+font-weight:900;
 
-    gap:10px;
+letter-spacing:2px;
 
-    color:
-    var(--gold-light);
-
-    font-size:16px;
-
-    font-weight:900;
-
-    letter-spacing:
-    1.5px;
+color:#d4af37;
 
 }
 
 
-.brand-mark{
+/* MAIN */
 
-    width:36px;
+.container{
 
-    height:36px;
+width:100%;
 
-    border-radius:10px;
+max-width:500px;
 
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    background:
-    linear-gradient(
-        145deg,
-        #f4d77b,
-        #b58b22,
-        #6d4f0d
-    );
-
-    color:#090909;
-
-    font-size:16px;
-
-    font-weight:900;
-
-    box-shadow:
-    0 0 20px
-    rgba(212,175,55,.22);
+margin:auto;
 
 }
 
 
-.home-button{
+/* CARD */
 
-    color:#aaa;
+.account-card{
 
-    text-decoration:none;
+background:
 
-    font-size:13px;
+linear-gradient(
+145deg,
+rgba(255,255,255,.08),
+rgba(255,255,255,.025)
+);
 
-    font-weight:700;
+border:
 
-}
+1px solid
+rgba(212,175,55,.35);
 
-.home-button:hover{
+border-radius:28px;
 
-    color:
-    var(--gold-light);
+padding:30px 22px;
 
-}
+box-shadow:
 
+0 30px 80px
+rgba(0,0,0,.65),
 
-/* =========================================================
-   MAIN
-========================================================= */
-
-.page{
-
-    width:100%;
-
-    max-width:720px;
-
-    margin:0 auto;
-
-    padding:
-    30px 16px 70px;
+inset 0 1px 0
+rgba(255,255,255,.08);
 
 }
 
 
-/* =========================================================
-   GOLD HERO
-========================================================= */
-
-.hero{
-
-    position:relative;
-
-    overflow:hidden;
-
-    text-align:center;
-
-    padding:
-    38px 22px 32px;
-
-    border:
-    1px solid
-    rgba(212,175,55,.28);
-
-    border-radius:26px;
-
-    background:
-
-    linear-gradient(
-        145deg,
-        rgba(212,175,55,.13),
-        rgba(255,255,255,.035) 45%,
-        rgba(0,0,0,.35)
-    );
-
-    box-shadow:
-
-    0 25px 70px
-    rgba(0,0,0,.55),
-
-    inset 0 1px 0
-    rgba(255,255,255,.08);
-
-}
-
-
-.hero::before{
-
-    content:"";
-
-    position:absolute;
-
-    width:240px;
-
-    height:240px;
-
-    top:-130px;
-
-    left:50%;
-
-    transform:
-    translateX(-50%);
-
-    border-radius:50%;
-
-    background:
-    rgba(212,175,55,.12);
-
-    filter:
-    blur(35px);
-
-}
-
+/* LOGO */
 
 .logo{
 
-    position:relative;
+width:105px;
 
-    width:105px;
+height:105px;
 
-    height:105px;
+object-fit:contain;
 
-    object-fit:contain;
+display:block;
 
-    display:block;
+margin:0 auto 18px;
 
-    margin:
-    0 auto 20px;
+filter:
 
-    border-radius:24px;
-
-    box-shadow:
-    0 12px 40px
-    rgba(0,0,0,.5);
+drop-shadow(
+0 8px 25px
+rgba(212,175,55,.35)
+);
 
 }
 
 
-/*
-    LOGO IMAGE
+/* TITLE */
 
-    This is the current BUSANSO logo image.
-    Replace the URL below later if you want another
-    official logo image.
-*/
+.title{
 
-.hero-title{
+text-align:center;
 
-    position:relative;
+font-size:26px;
 
-    margin:0;
+font-weight:900;
 
-    font-size:27px;
+letter-spacing:.5px;
 
-    font-weight:900;
+background:
 
-    letter-spacing:
-    1.5px;
+linear-gradient(
+90deg,
+#fff4b0,
+#d4af37,
+#fff4b0
+);
 
-    background:
+-webkit-background-clip:text;
 
-    linear-gradient(
-        90deg,
-        #b88718,
-        #f7df86,
-        #c79b2e
-    );
-
-    -webkit-background-clip:text;
-
-    background-clip:text;
-
-    color:transparent;
+-webkit-text-fill-color:transparent;
 
 }
 
 
-.hero-subtitle{
+.subtitle{
 
-    position:relative;
+text-align:center;
 
-    margin:
-    9px 0 0;
+color:#a9a9a9;
 
-    color:#aaa;
+font-size:12px;
 
-    font-size:13px;
-
-}
-
-
-/* =========================================================
-   USER CARD
-========================================================= */
-
-.user-card{
-
-    margin-top:20px;
-
-    padding:22px;
-
-    border-radius:20px;
-
-    background:
-    var(--panel);
-
-    border:
-    1px solid
-    rgba(255,255,255,.08);
+margin-top:7px;
 
 }
 
 
-.user-label{
-
-    color:#777;
-
-    font-size:10px;
-
-    font-weight:800;
-
-    text-transform:uppercase;
-
-    letter-spacing:1.3px;
-
-    margin-bottom:7px;
-
-}
-
-
-.user-name{
-
-    color:#fff;
-
-    font-size:20px;
-
-    font-weight:800;
-
-    word-break:break-word;
-
-}
-
-
-.user-email{
-
-    margin-top:6px;
-
-    color:#999;
-
-    font-size:13px;
-
-    word-break:break-word;
-
-}
-
-
-/* =========================================================
-   MEMBERSHIP
-========================================================= */
-
-.membership-card{
-
-    position:relative;
-
-    overflow:hidden;
-
-    margin-top:18px;
-
-    padding:26px 22px;
-
-    border-radius:22px;
-
-    background:
-
-    linear-gradient(
-        145deg,
-        rgba(212,175,55,.18),
-        rgba(212,175,55,.05),
-        rgba(255,255,255,.025)
-    );
-
-    border:
-    1px solid
-    rgba(212,175,55,.38);
-
-    box-shadow:
-    0 18px 50px
-    rgba(0,0,0,.35);
-
-}
-
-
-.membership-card::after{
-
-    content:"";
-
-    position:absolute;
-
-    width:180px;
-
-    height:180px;
-
-    right:-90px;
-
-    top:-90px;
-
-    border-radius:50%;
-
-    background:
-    rgba(244,215,123,.09);
-
-    filter:blur(20px);
-
-}
-
-
-.membership-heading{
-
-    position:relative;
-
-    color:#999;
-
-    font-size:10px;
-
-    font-weight:800;
-
-    letter-spacing:1.5px;
-
-    text-transform:uppercase;
-
-}
-
-
-.package{
-
-    position:relative;
-
-    margin-top:7px;
-
-    color:
-    var(--gold-light);
-
-    font-size:30px;
-
-    font-weight:900;
-
-    letter-spacing:.5px;
-
-}
-
-
-.package-description{
-
-    position:relative;
-
-    margin-top:7px;
-
-    color:#aaa;
-
-    font-size:13px;
-
-}
-
-
-/* =========================================================
-   DETAILS
-========================================================= */
-
-.details{
-
-    margin-top:18px;
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(2, minmax(0,1fr));
-
-    gap:12px;
-
-}
-
-
-.detail{
-
-    padding:18px;
-
-    border-radius:17px;
-
-    background:
-    rgba(255,255,255,.035);
-
-    border:
-    1px solid
-    rgba(255,255,255,.07);
-
-}
-
-
-.detail-label{
-
-    color:#777;
-
-    font-size:10px;
-
-    text-transform:uppercase;
-
-    letter-spacing:1px;
-
-    margin-bottom:8px;
-
-}
-
-
-.detail-value{
-
-    color:#eee;
-
-    font-size:14px;
-
-    font-weight:700;
-
-    word-break:break-word;
-
-}
-
-
-.detail-value.gold{
-
-    color:
-    var(--gold-light);
-
-}
-
-
-/* =========================================================
-   STATUS
-========================================================= */
+/* STATUS */
 
 .status-box{
 
-    margin-top:18px;
+margin-top:25px;
 
-    padding:15px 17px;
+padding:20px;
 
-    border-radius:14px;
+border-radius:20px;
 
-    background:
-    rgba(212,175,55,.06);
+background:
 
-    border:
-    1px solid
-    rgba(212,175,55,.16);
+rgba(212,175,55,.08);
 
-    color:#aaa;
+border:
 
-    font-size:12px;
+1px solid
+rgba(212,175,55,.25);
 
-    line-height:1.5;
+text-align:center;
+
+}
+
+.status-label{
+
+font-size:10px;
+
+text-transform:uppercase;
+
+letter-spacing:2px;
+
+color:#a99a72;
+
+}
+
+.status-value{
+
+font-size:25px;
+
+font-weight:900;
+
+margin-top:6px;
+
+color:#f5d76e;
+
+}
+
+.status-value.free{
+
+color:#cbd5e1;
 
 }
 
 
-.status-box strong{
+/* DETAILS */
 
-    color:
-    var(--gold-light);
+.details{
+
+margin-top:20px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:10px;
+
+}
+
+.row{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+gap:15px;
+
+padding:14px 15px;
+
+border-radius:15px;
+
+background:
+rgba(255,255,255,.035);
+
+border:
+1px solid
+rgba(255,255,255,.06);
+
+}
+
+.label{
+
+color:#888;
+
+font-size:11px;
+
+}
+
+.value{
+
+color:#fff;
+
+font-size:12px;
+
+font-weight:700;
+
+text-align:right;
+
+word-break:break-word;
 
 }
 
 
-/* =========================================================
-   ACTIONS
-========================================================= */
+/* BUTTONS */
 
 .actions{
 
-    margin-top:22px;
+display:flex;
 
-    display:flex;
+flex-direction:column;
 
-    flex-direction:column;
+gap:11px;
 
-    gap:11px;
-
-}
-
-
-.action{
-
-    width:100%;
-
-    min-height:52px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    border-radius:13px;
-
-    text-decoration:none;
-
-    font-size:14px;
-
-    font-weight:800;
-
-    cursor:pointer;
-
-    transition:
-    transform .15s ease,
-    opacity .15s ease;
+margin-top:25px;
 
 }
 
+.button{
 
-.action:hover{
+display:block;
 
-    transform:
-    translateY(-1px);
+width:100%;
+
+padding:15px;
+
+border-radius:16px;
+
+text-align:center;
+
+text-decoration:none;
+
+font-size:13px;
+
+font-weight:800;
+
+cursor:pointer;
+
+border:none;
 
 }
-
 
 .primary{
 
-    color:#090909;
+background:
 
-    background:
+linear-gradient(
+135deg,
+#8f6b18,
+#d4af37,
+#f5df7a
+);
 
-    linear-gradient(
-        135deg,
-        #f4d77b,
-        #d4af37,
-        #a77d17
-    );
+color:#160f00;
 
-    box-shadow:
-    0 8px 25px
-    rgba(212,175,55,.18);
+box-shadow:
+
+0 10px 25px
+rgba(212,175,55,.20);
 
 }
-
 
 .secondary{
 
-    color:#ddd;
+background:
+rgba(255,255,255,.06);
 
-    background:
-    rgba(255,255,255,.05);
+border:
+1px solid
+rgba(255,255,255,.1);
 
-    border:
-    1px solid
-    rgba(255,255,255,.09);
-
-}
-
-
-/* =========================================================
-   LOADING
-========================================================= */
-
-.loading{
-
-    text-align:center;
-
-    padding:
-    70px 20px;
-
-    color:#999;
+color:#fff;
 
 }
 
 
-.spinner{
+/* MESSAGE */
 
-    width:34px;
+.message{
 
-    height:34px;
+text-align:center;
 
-    margin:
-    0 auto 18px;
+padding:25px 10px;
 
-    border-radius:50%;
+color:#aaa;
 
-    border:
-    3px solid
-    rgba(255,255,255,.12);
-
-    border-top-color:
-    var(--gold);
-
-    animation:
-    spin .8s linear infinite;
+font-size:13px;
 
 }
 
 
-@keyframes spin{
+/* ERROR */
 
-    to{
-        transform:rotate(360deg);
-    }
+.error{
 
-}
+color:#ff8a8a;
 
+text-align:center;
 
-/* =========================================================
-   ERROR
-========================================================= */
-
-.error-box{
-
-    margin-top:30px;
-
-    padding:22px;
-
-    text-align:center;
-
-    border-radius:18px;
-
-    background:
-    rgba(255,255,255,.04);
-
-    border:
-    1px solid
-    rgba(255,255,255,.08);
+line-height:1.7;
 
 }
 
 
-.error-box h2{
+/* GOLD LINE */
 
-    margin:0 0 10px;
+.gold-line{
 
-    color:#eee;
+height:1px;
 
-    font-size:19px;
+margin:25px 0;
 
-}
+background:
 
-
-.error-box p{
-
-    margin:0;
-
-    color:#999;
-
-    font-size:13px;
-
-    line-height:1.6;
+linear-gradient(
+90deg,
+transparent,
+#d4af37,
+transparent
+);
 
 }
 
 
-.retry{
+/* MOBILE */
 
-    margin-top:18px;
+@media(max-width:400px){
+
+.account-card{
+
+padding:25px 16px;
 
 }
 
+.title{
 
-/* =========================================================
-   MOBILE
-========================================================= */
+font-size:23px;
 
-@media(max-width:520px){
-
-    .page{
-
-        padding:
-        20px 12px 60px;
-
-    }
-
-    .hero{
-
-        padding:
-        32px 17px 27px;
-
-    }
-
-    .hero-title{
-
-        font-size:23px;
-
-    }
-
-    .details{
-
-        grid-template-columns:
-        1fr;
-
-    }
+}
 
 }
 
@@ -850,311 +468,224 @@ body{
 
 </head>
 
-
 <body>
 
 
-<header class="topbar">
+<div class="top">
 
-    <div class="brand">
+<a
+href="home.html"
+class="back"
+>
+← HOME
+</a>
 
-        <div class="brand-mark">
-            B
-        </div>
+<div class="brand">
+BUSANSO NATION
+</div>
 
-        BUSANSO NATION
+</div>
 
-    </div>
 
+<div class="container">
 
-    <a
-        href="home.html"
-        class="home-button"
-    >
-        Home
-    </a>
+<div class="account-card">
 
-</header>
 
+<img
+class="logo"
+src="https://i.ibb.co/hxgrLF35/BUSANSO-New.png"
+alt="BUSANSO"
+>
 
 
-<main class="page">
+<h1 class="title">
+MY ACCOUNT
+</h1>
 
+<div class="subtitle">
+Your BUSANSO membership
+</div>
 
-    <!-- LOADING -->
 
-    <div
-        id="loading"
-        class="loading"
-    >
+<div
+id="loading"
+class="message"
+>
+Checking your account...
+</div>
 
-        <div class="spinner"></div>
 
-        <div>
-            Loading your account...
-        </div>
+<div
+id="accountContent"
+style="display:none;"
+>
 
-    </div>
 
+<div class="status-box">
 
+<div class="status-label">
+Membership
+</div>
 
-    <!-- ACCOUNT -->
+<div
+id="membershipStatus"
+class="status-value"
+>
+FREE
+</div>
 
-    <div
-        id="account"
-        style="display:none;"
-    >
+</div>
 
 
-        <section class="hero">
+<div class="details">
 
-            <img
-                id="logo"
-                class="logo"
-                src="https://i.ibb.co/hxgrLF35/BUSANSO-New.png"
-                alt="BUSANSO NATION"
-            >
 
-            <h1
-                id="heroTitle"
-                class="hero-title"
-            >
-                My Account
-            </h1>
+<div class="row">
 
-            <p class="hero-subtitle">
-                Your BUSANSO membership
-            </p>
+<div class="label">
+Name
+</div>
 
-        </section>
+<div
+id="profileName"
+class="value"
+>
+-
+</div>
 
+</div>
 
 
-        <section class="user-card">
+<div
+id="emailRow"
+class="row"
+style="display:none;"
+>
 
-            <div class="user-label">
-                Account
-            </div>
+<div class="label">
+Google Email
+</div>
 
-            <div
-                id="userName"
-                class="user-name"
-            >
-                —
-            </div>
+<div
+id="profileEmail"
+class="value"
+>
+-
+</div>
 
-            <div
-                id="userEmail"
-                class="user-email"
-            >
-                —
-            </div>
+</div>
 
-        </section>
 
+<div class="row">
 
+<div class="label">
+Package
+</div>
 
-        <section class="membership-card">
+<div
+id="packageType"
+class="value"
+>
+FREE
+</div>
 
-            <div class="membership-heading">
-                Current membership
-            </div>
+</div>
 
-            <div
-                id="package"
-                class="package"
-            >
-                —
-            </div>
 
-            <div
-                id="packageDescription"
-                class="package-description"
-            >
-                —
-            </div>
+<div class="row">
 
-        </section>
+<div class="label">
+Expiry
+</div>
 
+<div
+id="expiry"
+class="value"
+>
+No expiry
+</div>
 
+</div>
 
-        <section class="details">
 
+<div class="row">
 
-            <div class="detail">
+<div class="label">
+Account ID
+</div>
 
-                <div class="detail-label">
-                    Status
-                </div>
+<div
+id="accountId"
+class="value"
+>
+-
+</div>
 
-                <div
-                    id="statusValue"
-                    class="detail-value gold"
-                >
-                    —
-                </div>
+</div>
 
-            </div>
 
+<div class="row">
 
+<div class="label">
+Sign-in method
+</div>
 
-            <div class="detail">
+<div
+id="loginMethod"
+class="value"
+>
+-
+</div>
 
-                <div class="detail-label">
-                    Expiry
-                </div>
+</div>
 
-                <div
-                    id="expiryValue"
-                    class="detail-value"
-                >
-                    —
-                </div>
 
-            </div>
+</div>
 
 
+<div class="gold-line"></div>
 
-            <div class="detail">
 
-                <div class="detail-label">
-                    Account ID
-                </div>
+<div class="actions">
 
-                <div
-                    id="accountId"
-                    class="detail-value"
-                >
-                    —
-                </div>
 
-            </div>
+<a
+href="home.html"
+class="button primary"
+>
+🏠 CONTINUE WATCHING
+</a>
 
 
+<a
+href="edit-profile.html"
+class="button secondary"
+>
+✏️ EDIT PROFILE
+</a>
 
-            <div class="detail">
 
-                <div class="detail-label">
-                    Sign-in
-                </div>
+</div>
 
-                <div
-                    id="signinValue"
-                    class="detail-value"
-                >
-                    —
-                </div>
 
-            </div>
+</div>
 
 
-        </section>
+<div
+id="errorBox"
+style="display:none;"
+class="error"
+>
+</div>
 
 
+</div>
 
-        <div
-            id="statusBox"
-            class="status-box"
-        >
-        </div>
-
-
-
-        <div class="actions">
-
-
-            <a
-                href="home.html"
-                class="action primary"
-            >
-                Continue Watching
-            </a>
-
-
-            <a
-                href="edit-profile.html"
-                class="action secondary"
-            >
-                Edit Profile
-            </a>
-
-
-        </div>
-
-
-    </div>
-
-
-
-    <!-- ERROR -->
-
-    <div
-        id="error"
-        class="error-box"
-        style="display:none;"
-    >
-
-        <h2>
-            Account could not be loaded
-        </h2>
-
-        <p id="errorMessage">
-            Please try again.
-        </p>
-
-        <a
-            href="account.html"
-            class="action primary retry"
-        >
-            Try Again
-        </a>
-
-    </div>
-
-
-</main>
-
+</div>
 
 
 <script>
-
-/*
-==============================================================
-BUSANSO ACCOUNT
-==============================================================
-
-THIS PAGE SUPPORTS TWO TYPES OF USERS.
-
-1. NEW GOOGLE USERS
-
-   Supabase Auth session
-          ↓
-   auth.uid()
-          ↓
-   profiles.auth_user_id
-
-
-2. LEGACY BUSANSO USERS
-
-   localStorage.user_id
-          ↓
-   profiles.id
-
-
-IMPORTANT:
-
-A Google user does NOT need:
-
-    device_id
-    loggedIn
-    isLoggedIn
-
-We do not sign anyone out simply because a legacy value
-doesn't exist.
-
-==============================================================
-*/
-
 
 (function(){
 
@@ -1162,971 +693,793 @@ doesn't exist.
 
 
 /* =========================================================
-   SUPABASE
+SUPABASE
 ========================================================= */
-
 
 const SUPABASE_URL =
 "https://dhkfhhybzcxdeoalcfqx.supabase.co";
 
-
-const SUPABASE_ANON_KEY =
+const SUPABASE_KEY =
 "sb_publishable_Rjm3T44VKTeuOF2yJS5rMw_xDfwPjuG";
-
 
 const supabase =
 window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
+SUPABASE_URL,
+SUPABASE_KEY
 );
-
 
 
 /* =========================================================
-   ELEMENTS
+ELEMENTS
 ========================================================= */
 
-
 const loading =
-document.getElementById("loading");
+document.getElementById(
+"loading"
+);
 
-
-const account =
-document.getElementById("account");
-
+const content =
+document.getElementById(
+"accountContent"
+);
 
 const errorBox =
-document.getElementById("error");
-
-
-const errorMessage =
-document.getElementById("errorMessage");
-
-
-const userName =
-document.getElementById("userName");
-
-
-const userEmail =
-document.getElementById("userEmail");
-
-
-const packageBox =
-document.getElementById("package");
-
-
-const packageDescription =
 document.getElementById(
-    "packageDescription"
+"errorBox"
 );
 
-
-const statusValue =
+const membershipStatus =
 document.getElementById(
-    "statusValue"
+"membershipStatus"
 );
 
-
-const expiryValue =
+const profileName =
 document.getElementById(
-    "expiryValue"
+"profileName"
 );
 
+const emailRow =
+document.getElementById(
+"emailRow"
+);
+
+const profileEmail =
+document.getElementById(
+"profileEmail"
+);
+
+const packageType =
+document.getElementById(
+"packageType"
+);
+
+const expiry =
+document.getElementById(
+"expiry"
+);
 
 const accountId =
 document.getElementById(
-    "accountId"
+"accountId"
 );
 
-
-const signinValue =
+const loginMethod =
 document.getElementById(
-    "signinValue"
+"loginMethod"
 );
-
-
-const statusBox =
-document.getElementById(
-    "statusBox"
-);
-
 
 
 /* =========================================================
-   HELPERS
+ACCESS
 ========================================================= */
-
-
-function clean(value){
-
-    return String(
-        value == null
-        ? ""
-        : value
-    )
-    .trim();
-
-}
-
-
-
-function normalize(value){
-
-    return clean(value)
-    .toLowerCase();
-
-}
-
-
-
-function formatDate(value){
-
-    if(!value){
-
-        return "No expiry set";
-
-    }
-
-
-    const date =
-    new Date(value);
-
-
-    if(
-        isNaN(
-            date.getTime()
-        )
-    ){
-
-        return clean(value);
-
-    }
-
-
-    return date.toLocaleDateString(
-        undefined,
-        {
-            year:"numeric",
-            month:"long",
-            day:"numeric"
-        }
-    );
-
-}
-
-
-
-function isExpired(profile){
-
-    if(
-        !profile ||
-        !profile.expires_at
-    ){
-
-        return false;
-
-    }
-
-
-    const expiry =
-    new Date(
-        profile.expires_at
-    );
-
-
-    if(
-        isNaN(
-            expiry.getTime()
-        )
-    ){
-
-        return false;
-
-    }
-
-
-    return (
-        expiry.getTime()
-        <= Date.now()
-    );
-
-}
-
-
-
-/* =========================================================
-   ACCESS TYPE
-========================================================= */
-
 
 function getAccess(profile){
 
-    if(!profile){
-
-        return "free";
-
-    }
-
-
-    const membership =
-    normalize(
-        profile.membership
-    );
-
-
-    const packageType =
-    normalize(
-        profile.package_type
-    );
-
-
-    const paid =
-    profile.paid_status === true ||
-    normalize(
-        profile.paid_status
-    ) === "true";
-
-
-    /*
-    KIBANDA
-    */
-
-    if(
-        membership === "kibanda" ||
-        packageType === "kibanda"
-    ){
-
-        return "kibanda";
-
-    }
-
-
-    /*
-    PREMIUM
-    */
-
-    if(
-        membership === "premium" ||
-        packageType === "premium" ||
-        paid
-    ){
-
-        return "premium";
-
-    }
-
-
-    /*
-    FREE
-    */
-
-    return "free";
-
+if(!profile){
+return "free";
 }
 
+const membership =
+String(
+profile.membership || ""
+)
+.toLowerCase()
+.trim();
+
+const packageTypeValue =
+String(
+profile.package_type || ""
+)
+.toLowerCase()
+.trim();
+
+const paid =
+profile.paid_status === true ||
+profile.paid_status === "true";
 
 
-/* =========================================================
-   FIND GOOGLE PROFILE
-========================================================= */
-
-
-async function findGoogleProfile(
-    user
+if(
+membership === "kibanda" ||
+packageTypeValue === "kibanda"
 ){
 
-    if(
-        !user ||
-        !user.id
-    ){
-
-        return null;
-
-    }
-
-
-    console.log(
-        "BUSANSO: Looking for Google profile:",
-        user.id
-    );
-
-
-    const result =
-    await supabase
-
-    .from("profiles")
-
-    .select("*")
-
-    .eq(
-        "auth_user_id",
-        user.id
-    )
-
-    .maybeSingle();
-
-
-    if(result.error){
-
-        console.error(
-            "Google profile lookup failed:",
-            result.error
-        );
-
-        /*
-        IMPORTANT:
-
-        Do NOT sign out the user.
-        */
-
-        throw result.error;
-
-    }
-
-
-    return result.data || null;
+return "kibanda";
 
 }
 
 
+if(
+membership === "premium" ||
+packageTypeValue === "premium" ||
+paid
+){
 
-/* =========================================================
-   FIND LEGACY PROFILE
-========================================================= */
-
-
-async function findLegacyProfile(){
-
-    const storedId =
-    localStorage.getItem(
-        "user_id"
-    );
-
-
-    if(!storedId){
-
-        return null;
-
-    }
-
-
-    console.log(
-        "BUSANSO: Looking for legacy profile:",
-        storedId
-    );
-
-
-    const numericId =
-    Number(storedId);
-
-
-    if(
-        !Number.isFinite(
-            numericId
-        )
-    ){
-
-        return null;
-
-    }
-
-
-    const result =
-    await supabase
-
-    .from("profiles")
-
-    .select("*")
-
-    .eq(
-        "id",
-        numericId
-    )
-
-    .maybeSingle();
-
-
-    if(result.error){
-
-        console.error(
-            "Legacy profile lookup failed:",
-            result.error
-        );
-
-        throw result.error;
-
-    }
-
-
-    return result.data || null;
+return "premium";
 
 }
 
 
+return "free";
+
+}
+
 
 /* =========================================================
-   SAVE COMPATIBILITY DATA
+EXPIRY
 ========================================================= */
 
+function isExpired(profile){
+
+if(
+!profile ||
+!profile.expires_at
+){
+
+return false;
+
+}
+
+const date =
+new Date(
+profile.expires_at
+);
+
+if(
+Number.isNaN(
+date.getTime()
+)
+){
+
+return false;
+
+}
+
+return date.getTime() <= Date.now();
+
+}
+
+
+/* =========================================================
+GOOGLE PROFILE
+========================================================= */
+
+async function getGoogleProfile(
+user
+){
+
+if(
+!user ||
+!user.id
+){
+
+return null;
+
+}
+
+
+const result =
+await supabase
+
+.from("profiles")
+
+.select("*")
+
+.eq(
+"auth_user_id",
+user.id
+)
+
+.maybeSingle();
+
+
+if(result.error){
+
+console.error(
+"Google profile error:",
+result.error
+);
+
+throw result.error;
+
+}
+
+
+return result.data || null;
+
+}
+
+
+/* =========================================================
+LEGACY PROFILE
+========================================================= */
+
+async function getLegacyProfile(){
+
+/*
+First use user_id.
+*/
+
+const storedId =
+localStorage.getItem(
+"user_id"
+);
+
+if(storedId){
+
+const id =
+Number(
+storedId
+);
+
+if(
+Number.isFinite(id)
+){
+
+const result =
+await supabase
+
+.from("profiles")
+
+.select("*")
+
+.eq(
+"id",
+id
+)
+
+.maybeSingle();
+
+
+if(
+!result.error &&
+result.data
+){
+
+return result.data;
+
+}
+
+}
+
+}
+
+
+/*
+Old fallback:
+name.
+*/
+
+const name =
+localStorage.getItem(
+"name"
+);
+
+if(name){
+
+const result =
+await supabase
+
+.from("profiles")
+
+.select("*")
+
+.eq(
+"name",
+name
+)
+
+.limit(1);
+
+
+if(
+!result.error &&
+result.data &&
+result.data.length
+){
+
+return result.data[0];
+
+}
+
+}
+
+
+return null;
+
+}
+
+
+/* =========================================================
+SAVE COMPATIBILITY
+========================================================= */
 
 function saveCompatibility(
-    profile,
-    user
+profile,
+user
 ){
 
-    try{
+try{
 
+if(user && user.id){
 
-        if(user && user.id){
+localStorage.setItem(
+"auth_user_id",
+user.id
+);
 
-            localStorage.setItem(
-                "auth_user_id",
-                user.id
-            );
-
-            localStorage.setItem(
-                "supabase_auth_user_id",
-                user.id
-            );
-
-        }
-
-
-        if(profile){
-
-            if(
-                profile.id != null
-            ){
-
-                localStorage.setItem(
-                    "user_id",
-                    String(profile.id)
-                );
-
-            }
-
-
-            if(profile.name){
-
-                localStorage.setItem(
-                    "name",
-                    profile.name
-                );
-
-            }
-
-
-            localStorage.setItem(
-                "membership",
-                profile.membership || ""
-            );
-
-
-            localStorage.setItem(
-                "package_type",
-                profile.package_type || ""
-            );
-
-
-            localStorage.setItem(
-                "paid_status",
-                String(
-                    profile.paid_status === true
-                )
-            );
-
-
-            localStorage.setItem(
-                "expires_at",
-                profile.expires_at || ""
-            );
-
-
-            if(
-                profile.activated_at
-            ){
-
-                localStorage.setItem(
-                    "activated_at",
-                    profile.activated_at
-                );
-
-            }
-
-        }
-
-
-    }catch(error){
-
-        console.warn(
-            "BUSANSO localStorage warning:",
-            error
-        );
-
-    }
+localStorage.setItem(
+"supabase_auth_user_id",
+user.id
+);
 
 }
 
-
-
-/* =========================================================
-   DISPLAY ACCOUNT
-========================================================= */
-
-
-function displayAccount(
-    profile,
-    user,
-    signInType
+if(
+profile &&
+profile.id != null
 ){
 
-    const access =
-    getAccess(profile);
-
-
-    const expired =
-    isExpired(profile);
-
-
-    let displayAccess =
-    access;
-
-
-    /*
-    Expired premium/kibanda
-    */
-
-    if(
-        expired &&
-        (
-            access === "premium" ||
-            access === "kibanda"
-        )
-    ){
-
-        displayAccess =
-        "expired";
-
-    }
-
-
-    /*
-    NAME
-    */
-
-    const metadata =
-    user &&
-    user.user_metadata
-    ?
-    user.user_metadata
-    :
-    {};
-
-
-    const fallbackName =
-    metadata.full_name ||
-    metadata.name ||
-    (
-        user &&
-        user.email
-        ?
-        user.email.split("@")[0]
-        :
-        "BUSANSO User"
-    );
-
-
-    userName.textContent =
-    profile.name ||
-    fallbackName;
-
-
-    /*
-    EMAIL
-    */
-
-    userEmail.textContent =
-    user &&
-    user.email
-    ?
-    user.email
-    :
-    "Legacy BUSANSO account";
-
-
-    /*
-    PACKAGE
-    */
-
-    if(displayAccess === "premium"){
-
-        packageBox.textContent =
-        "PREMIUM";
-
-        packageDescription.textContent =
-        "Premium BUSANSO membership";
-
-    }
-    else if(displayAccess === "kibanda"){
-
-        packageBox.textContent =
-        "KIBANDA";
-
-        packageDescription.textContent =
-        "Kibanda membership access";
-
-    }
-    else if(displayAccess === "expired"){
-
-        packageBox.textContent =
-        "EXPIRED";
-
-        packageDescription.textContent =
-        "Your previous paid membership has expired.";
-
-    }
-    else{
-
-        packageBox.textContent =
-        "FREE";
-
-        packageDescription.textContent =
-        "Free BUSANSO membership";
-
-    }
-
-
-    /*
-    STATUS
-    */
-
-    if(displayAccess === "premium"){
-
-        statusValue.textContent =
-        "ACTIVE";
-
-    }
-    else if(displayAccess === "kibanda"){
-
-        statusValue.textContent =
-        "ACTIVE";
-
-    }
-    else if(displayAccess === "expired"){
-
-        statusValue.textContent =
-        "EXPIRED";
-
-    }
-    else{
-
-        statusValue.textContent =
-        "FREE";
-
-    }
-
-
-    /*
-    EXPIRY
-    */
-
-    expiryValue.textContent =
-    formatDate(
-        profile.expires_at
-    );
-
-
-    /*
-    ACCOUNT ID
-    */
-
-    accountId.textContent =
-    profile.id != null
-    ?
-    String(profile.id)
-    :
-    "—";
-
-
-    /*
-    SIGN-IN
-    */
-
-    if(
-        signInType === "google"
-    ){
-
-        signinValue.textContent =
-        "Google";
-
-    }
-    else{
-
-        signinValue.textContent =
-        "Legacy";
-
-    }
-
-
-    /*
-    STATUS MESSAGE
-    */
-
-    if(displayAccess === "premium"){
-
-        statusBox.innerHTML =
-        "<strong>Premium active.</strong> " +
-        "Your account has premium access.";
-
-    }
-    else if(displayAccess === "kibanda"){
-
-        statusBox.innerHTML =
-        "<strong>Kibanda active.</strong> " +
-        "Your account has Kibanda access.";
-
-    }
-    else if(displayAccess === "expired"){
-
-        statusBox.innerHTML =
-        "<strong>Membership expired.</strong> " +
-        "Your profile is still preserved. " +
-        "You can renew your access.";
-
-    }
-    else{
-
-        statusBox.innerHTML =
-        "<strong>Free account.</strong> " +
-        "Your BUSANSO profile is active.";
-
-    }
-
-
-    /*
-    SHOW PAGE
-    */
-
-    loading.style.display =
-    "none";
-
-    errorBox.style.display =
-    "none";
-
-    account.style.display =
-    "block";
+localStorage.setItem(
+"user_id",
+String(profile.id)
+);
+
+}
+
+if(profile){
+
+localStorage.setItem(
+"name",
+profile.name || ""
+);
+
+localStorage.setItem(
+"membership",
+String(
+profile.membership || "free"
+).toLowerCase()
+);
+
+localStorage.setItem(
+"package_type",
+profile.package_type || ""
+);
+
+localStorage.setItem(
+"paid_status",
+String(
+profile.paid_status === true ||
+profile.paid_status === "true"
+)
+);
+
+localStorage.setItem(
+"expires_at",
+profile.expires_at || ""
+);
+
+localStorage.setItem(
+"activated_at",
+profile.activated_at || ""
+);
+
+}
+
+}catch(error){
+
+console.warn(
+"Compatibility storage error:",
+error
+);
+
+}
 
 }
 
 
-
 /* =========================================================
-   LOAD ACCOUNT
+DISPLAY
 ========================================================= */
 
+function displayProfile(
+profile,
+authUser,
+method
+){
 
-async function loadAccount(){
-
-    try{
-
-        console.log(
-            "BUSANSO ACCOUNT: Starting..."
-        );
-
-
-        /*
-        ======================================================
-        FIRST: CHECK GOOGLE / SUPABASE SESSION
-        ======================================================
-        */
-
-        const sessionResult =
-        await supabase.auth.getSession();
+const access =
+getAccess(profile);
 
 
-        if(sessionResult.error){
+/*
+Expired premium/kibanda
+*/
 
-            throw sessionResult.error;
+let displayedAccess =
+access;
 
-        }
+if(
+isExpired(profile) &&
+(
+access === "premium" ||
+access === "kibanda"
+)
+){
 
-
-        const session =
-        sessionResult.data.session;
-
-
-        if(
-            session &&
-            session.user
-        ){
-
-            console.log(
-                "BUSANSO ACCOUNT: Google/Supabase user found:",
-                session.user.id
-            );
-
-
-            const profile =
-            await findGoogleProfile(
-                session.user
-            );
-
-
-            if(profile){
-
-                saveCompatibility(
-                    profile,
-                    session.user
-                );
-
-
-                displayAccount(
-                    profile,
-                    session.user,
-                    "google"
-                );
-
-
-                return;
-
-            }
-
-
-            /*
-            The Google session exists but the profile
-            cannot currently be found.
-
-            DO NOT silently convert this person into a
-            legacy/guest user.
-            */
-
-            throw new Error(
-                "Google account is authenticated, but its BUSANSO profile could not be found."
-            );
-
-        }
-
-
-
-        /*
-        ======================================================
-        SECOND: LEGACY USER
-        ======================================================
-        */
-
-        console.log(
-            "BUSANSO ACCOUNT: No Google session. Checking legacy identity..."
-        );
-
-
-        const legacyProfile =
-        await findLegacyProfile();
-
-
-        if(legacyProfile){
-
-            saveCompatibility(
-                legacyProfile,
-                null
-            );
-
-
-            displayAccount(
-                legacyProfile,
-                null,
-                "legacy"
-            );
-
-
-            return;
-
-        }
-
-
-
-        /*
-        ======================================================
-        NO USER
-        ======================================================
-        */
-
-        throw new Error(
-            "No active BUSANSO account was found on this device."
-        );
-
-
-    }
-    catch(error){
-
-        console.error(
-            "BUSANSO ACCOUNT ERROR:",
-            error
-        );
-
-
-        loading.style.display =
-        "none";
-
-        account.style.display =
-        "none";
-
-        errorBox.style.display =
-        "block";
-
-
-        errorMessage.textContent =
-        error.message ||
-        "Unable to load your account.";
-
-    }
+displayedAccess =
+"expired";
 
 }
 
 
+/* MEMBERSHIP */
 
-/* =========================================================
-   AUTH STATE LISTENER
-========================================================= */
+if(
+displayedAccess === "premium"
+){
+
+membershipStatus.textContent =
+"PREMIUM";
+
+membershipStatus.className =
+"status-value";
+
+}
+else if(
+displayedAccess === "kibanda"
+){
+
+membershipStatus.textContent =
+"KIBANDA";
+
+membershipStatus.className =
+"status-value";
+
+}
+else if(
+displayedAccess === "expired"
+){
+
+membershipStatus.textContent =
+"EXPIRED";
+
+membershipStatus.className =
+"status-value";
+
+}
+else{
+
+membershipStatus.textContent =
+"FREE";
+
+membershipStatus.className =
+"status-value free";
+
+}
 
 
-supabase.auth.onAuthStateChange(
-    function(
-        event,
-        session
-    ){
+/* NAME */
 
-        console.log(
-            "BUSANSO ACCOUNT AUTH EVENT:",
-            event
-        );
+profileName.textContent =
+profile.name ||
+"BUSANSO USER";
 
 
-        /*
-        If a Google session appears while this page
-        is open, reload the account data.
+/* GOOGLE EMAIL */
 
-        We never sign the user out here.
-        */
+if(
+authUser &&
+authUser.email
+){
 
-        if(
-            session &&
-            session.user
-        ){
+emailRow.style.display =
+"flex";
 
-            loadAccount();
+profileEmail.textContent =
+authUser.email;
 
-        }
+}
 
-    }
+
+/* PACKAGE */
+
+packageType.textContent =
+profile.package_type ||
+(
+displayedAccess === "premium"
+?
+"Premium"
+:
+displayedAccess === "kibanda"
+?
+"Kibanda"
+:
+"Free"
 );
 
 
+/* EXPIRY */
+
+if(
+profile.expires_at
+){
+
+const date =
+new Date(
+profile.expires_at
+);
+
+if(
+!Number.isNaN(
+date.getTime()
+)
+){
+
+expiry.textContent =
+date.toLocaleString();
+
+}else{
+
+expiry.textContent =
+profile.expires_at;
+
+}
+
+}else{
+
+expiry.textContent =
+"No expiry";
+
+}
+
+
+/* ID */
+
+accountId.textContent =
+profile.id != null
+?
+String(profile.id)
+:
+"-";
+
+
+/* METHOD */
+
+loginMethod.textContent =
+method === "google"
+?
+"Google"
+:
+"Legacy account";
+
+
+/* SHOW */
+
+loading.style.display =
+"none";
+
+content.style.display =
+"block";
+
+}
+
 
 /* =========================================================
-   START
+MAIN ACCOUNT CHECK
+========================================================= */
+
+async function loadAccount(){
+
+try{
+
+
+/*
+=========================================================
+1. GOOGLE / SUPABASE AUTH
+=========================================================
+*/
+
+const sessionResult =
+await supabase.auth.getSession();
+
+
+if(
+!sessionResult.error &&
+sessionResult.data &&
+sessionResult.data.session &&
+sessionResult.data.session.user
+){
+
+const user =
+sessionResult.data.session.user;
+
+const profile =
+await getGoogleProfile(
+user
+);
+
+
+if(profile){
+
+saveCompatibility(
+profile,
+user
+);
+
+displayProfile(
+profile,
+user,
+"google"
+);
+
+return;
+
+}
+
+}
+
+
+/*
+=========================================================
+2. LEGACY ACCOUNT
+=========================================================
+*/
+
+const legacy =
+await getLegacyProfile();
+
+
+if(legacy){
+
+saveCompatibility(
+legacy,
+null
+);
+
+displayProfile(
+legacy,
+null,
+"legacy"
+);
+
+return;
+
+}
+
+
+/*
+=========================================================
+NO ACCOUNT
+=========================================================
+*/
+
+loading.style.display =
+"none";
+
+errorBox.style.display =
+"block";
+
+errorBox.innerHTML =
+
+`
+No BUSANSO account could be identified.
+
+<br><br>
+
+Please return to the sign-in page and
+continue with Google.
+<br><br>
+
+<a
+href="auth.html"
+style="
+color:#d4af37;
+font-weight:800;
+text-decoration:none;
+"
+>
+GO TO SIGN IN
+</a>
+`;
+
+}catch(error){
+
+console.error(
+"ACCOUNT PAGE ERROR:",
+error
+);
+
+loading.style.display =
+"none";
+
+errorBox.style.display =
+"block";
+
+errorBox.textContent =
+"Unable to load your account. Please try again.";
+
+}
+
+}
+
+
+/* =========================================================
+START
 ========================================================= */
 
 loadAccount();
+
+
+/* =========================================================
+AUTH STATE CHANGE
+========================================================= */
+
+supabase.auth.onAuthStateChange(
+async function(
+event,
+session
+){
+
+if(
+event === "SIGNED_IN" &&
+session &&
+session.user
+){
+
+try{
+
+const profile =
+await getGoogleProfile(
+session.user
+);
+
+if(profile){
+
+saveCompatibility(
+profile,
+session.user
+);
+
+displayProfile(
+profile,
+session.user,
+"google"
+);
+
+}
+
+}catch(error){
+
+console.error(
+"Auth state profile error:",
+error
+);
+
+}
+
+}
+
+});
 
 
 })();
@@ -2134,4 +1487,5 @@ loadAccount();
 </script>
 
 </body>
+
 </html>
