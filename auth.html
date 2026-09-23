@@ -1,475 +1,634 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>BUSANSO NATION</title>
+<title>BUSANSO NATION — Sign In</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-    body {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background:
-        radial-gradient(circle at top, #242424 0%, #0d0d0d 48%, #050505 100%);
-      color: #fff;
-      font-family: Arial, Helvetica, sans-serif;
-      padding: 20px;
-    }
+html,
+body {
+    min-height: 100%;
+}
 
-    .card {
-      width: 100%;
-      max-width: 430px;
-      background: rgba(20, 20, 20, 0.96);
-      border: 1px solid rgba(255,255,255,.10);
-      border-radius: 24px;
-      padding: 38px 28px 32px;
-      text-align: center;
-      box-shadow: 0 25px 80px rgba(0,0,0,.55);
-    }
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
 
-    .logo {
-      width: 145px;
-      max-width: 70%;
-      height: auto;
-      margin-bottom: 24px;
-    }
+    background:
+        radial-gradient(
+            circle at top,
+            #262626 0%,
+            #111 45%,
+            #050505 100%
+        );
 
-    h1 {
-      font-size: 25px;
-      margin-bottom: 10px;
-    }
+    color: #fff;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+}
 
-    .description {
-      color: #aaa;
-      font-size: 14px;
-      line-height: 1.6;
-      margin-bottom: 28px;
-    }
+.card {
+    width: 100%;
+    max-width: 430px;
 
-    .google-btn {
-      width: 100%;
-      height: 54px;
-      border: none;
-      border-radius: 12px;
-      background: #fff;
-      color: #111;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      transition: transform .15s ease, opacity .15s ease;
-    }
+    padding: 38px 28px 32px;
 
-    .google-btn:hover {
-      transform: translateY(-1px);
-    }
+    text-align: center;
 
-    .google-btn:disabled {
-      opacity: .6;
-      cursor: wait;
-      transform: none;
-    }
+    background: rgba(20,20,20,.97);
 
-    .google-icon {
-      width: 21px;
-      height: 21px;
-    }
+    border: 1px solid rgba(255,255,255,.10);
+    border-radius: 24px;
 
-    .status {
-      min-height: 24px;
-      margin-top: 20px;
-      font-size: 13px;
-      color: #aaa;
-      line-height: 1.5;
-    }
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.60);
+}
 
-    .status.error {
-      color: #ff7777;
-    }
+.logo {
+    display: block;
 
-    .status.success {
-      color: #75e6a5;
-    }
+    width: 150px;
+    max-width: 70%;
 
-    .loading {
-      display: none;
-      margin: 22px auto 0;
-      width: 26px;
-      height: 26px;
-      border: 3px solid rgba(255,255,255,.15);
-      border-top-color: #fff;
-      border-radius: 50%;
-      animation: spin .8s linear infinite;
-    }
+    height: auto;
 
-    @keyframes spin {
-      to {
+    margin: 0 auto 25px;
+}
+
+h1 {
+    font-size: 25px;
+    font-weight: 700;
+
+    margin-bottom: 10px;
+}
+
+.description {
+    color: #aaa;
+
+    font-size: 14px;
+    line-height: 1.6;
+
+    margin-bottom: 28px;
+}
+
+.google-button {
+    width: 100%;
+    height: 54px;
+
+    border: 0;
+    border-radius: 12px;
+
+    background: #fff;
+    color: #111;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+
+    transition:
+        transform .15s ease,
+        opacity .15s ease;
+}
+
+.google-button:hover {
+    transform: translateY(-1px);
+}
+
+.google-button:active {
+    transform: translateY(0);
+}
+
+.google-button:disabled {
+    opacity: .55;
+    cursor: wait;
+    transform: none;
+}
+
+.google-icon {
+    width: 21px;
+    height: 21px;
+}
+
+.status {
+    min-height: 24px;
+
+    margin-top: 20px;
+
+    color: #999;
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.status.error {
+    color: #ff7474;
+}
+
+.status.success {
+    color: #73e6a2;
+}
+
+.loader {
+    display: none;
+
+    width: 28px;
+    height: 28px;
+
+    margin: 22px auto 0;
+
+    border-radius: 50%;
+
+    border:
+        3px solid rgba(255,255,255,.12);
+
+    border-top-color: #fff;
+
+    animation: spin .8s linear infinite;
+}
+
+.footer {
+    margin-top: 25px;
+
+    color: #555;
+
+    font-size: 11px;
+}
+
+@keyframes spin {
+    to {
         transform: rotate(360deg);
-      }
     }
-
-    .small {
-      margin-top: 25px;
-      color: #666;
-      font-size: 11px;
-      line-height: 1.5;
-    }
-  </style>
+}
+</style>
 </head>
 
 <body>
 
-  <div class="card">
+<div class="card">
 
     <img
-      class="logo"
-      src="https://i.ibb.co/hxgrLF35/BUSANSO-New.png"
-      alt="BUSANSO NATION"
+        class="logo"
+        src="https://i.ibb.co/hxgrLF35/BUSANSO-New.png"
+        alt="BUSANSO NATION"
     >
 
     <h1>Welcome to BUSANSO NATION</h1>
 
     <div class="description">
-      Sign in with Google to continue.
-      Your account will remain connected while you move through the BUSANSO website.
+        Sign in with Google to continue to BUSANSO.
     </div>
 
-    <button id="googleBtn" class="google-btn">
-      <svg class="google-icon" viewBox="0 0 24 24">
-        <path fill="#4285F4"
-          d="M21.35 12.23c0-.79-.07-1.55-.2-2.27H12v4.3h5.24a4.48 4.48 0 0 1-1.94 2.94v2.45h3.14c1.84-1.69 2.91-4.18 2.91-7.42z"/>
-        <path fill="#34A853"
-          d="M12 21.75c2.63 0 4.84-.87 6.45-2.35l-3.14-2.45c-.87.58-1.98.92-3.31.92-2.54 0-4.69-1.72-5.46-4.03H3.3v2.53A9.75 9.75 0 0 0 12 21.75z"/>
-        <path fill="#FBBC05"
-          d="M6.54 13.84A5.86 5.86 0 0 1 6.23 12c0-.64.11-1.27.31-1.84V7.63H3.3A9.75 9.75 0 0 0 2.25 12c0 1.57.38 3.05 1.05 4.37l3.24-2.53z"/>
-        <path fill="#EA4335"
-          d="M12 6.13c1.43 0 2.72.49 3.73 1.45l2.8-2.8C16.84 3.09 14.63 2.25 12 2.25A9.75 9.75 0 0 0 3.3 7.63l3.24 2.53C7.31 7.85 9.46 6.13 12 6.13z"/>
-      </svg>
+    <button
+        id="googleButton"
+        class="google-button"
+        type="button"
+    >
 
-      Continue with Google
+        <svg
+            class="google-icon"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+        >
+            <path
+                fill="#4285F4"
+                d="M21.35 12.23c0-.79-.07-1.55-.2-2.27H12v4.3h5.24a4.48 4.48 0 0 1-1.94 2.94v2.45h3.14c1.84-1.69 2.91-4.18 2.91-7.42z"
+            />
+
+            <path
+                fill="#34A853"
+                d="M12 21.75c2.63 0 4.84-.87 6.45-2.35l-3.14-2.45c-.87.58-1.98.92-3.31.92-2.54 0-4.69-1.72-5.46-4.03H3.3v2.53A9.75 9.75 0 0 0 12 21.75z"
+            />
+
+            <path
+                fill="#FBBC05"
+                d="M6.54 13.84A5.86 5.86 0 0 1 6.23 12c0-.64.11-1.27.31-1.84V7.63H3.3A9.75 9.75 0 0 0 2.25 12c0 1.57.38 3.05 1.05 4.37l3.24-2.53z"
+            />
+
+            <path
+                fill="#EA4335"
+                d="M12 6.13c1.43 0 2.72.49 3.73 1.45l2.8-2.8C16.84 3.09 14.63 2.25 12 2.25A9.75 9.75 0 0 0 3.3 7.63l3.24 2.53C7.31 7.85 9.46 6.13 12 6.13z"
+            />
+        </svg>
+
+        Continue with Google
+
     </button>
 
-    <div id="loading" class="loading"></div>
+    <div
+        id="loader"
+        class="loader"
+    ></div>
 
-    <div id="status" class="status"></div>
+    <div
+        id="status"
+        class="status"
+    ></div>
 
-    <div class="small">
-      BUSANSO NATION
+    <div class="footer">
+        BUSANSO NATION
     </div>
 
-  </div>
+</div>
 
 
-  <!-- Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- =========================================================
+     SUPABASE
+========================================================= -->
 
-  <script>
-
-    /*
-      ============================================================
-      BUSANSO TEST AUTH
-      ============================================================
-
-      This page is intentionally self-contained.
-
-      It does NOT depend on:
-        - old auth.js
-        - old supabase.js
-        - old config.js
-        - old localStorage authentication
-        - device_id
-        - PINs
-        - legacy login logic
-
-      The purpose is simply:
-
-        Google
-          ↓
-        Supabase Auth
-          ↓
-        authenticated session
-          ↓
-        home.html
-
-      Once the Google session exists, the other Busanso pages
-      should be able to see the same Supabase session.
-    */
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
-    const SUPABASE_URL =
-      "https://dhkfhhybzcxdeoalcfqx.supabase.co";
+<script>
 
-    const SUPABASE_ANON_KEY =
-      "sb_publishable_Rjm3T44VKTeuOF2yJS5rMw_xDfwPjuG";
+/*
+==============================================================
+BUSANSO TEST AUTHENTICATION
+==============================================================
+
+THIS FILE IS SELF-CONTAINED.
+
+It does NOT use:
+
+    auth.js
+    supabase.js
+    config.js
+    device_id
+    old login logic
+    old localStorage authentication
+
+The purpose of this test is simply:
+
+    Google
+       ↓
+    Supabase Auth
+       ↓
+    authenticated session
+       ↓
+    testbusanso GitHub Pages
+       ↓
+    home.html
 
 
-    const supabaseClient =
-      window.supabase.createClient(
+IMPORTANT:
+
+The redirect URL is intentionally HARD-CODED.
+
+We do NOT use:
+
+    window.location.origin
+
+because GitHub Pages is hosting this repository inside:
+
+    /testbusanso/
+
+==============================================================
+*/
+
+
+/*
+==============================================================
+SUPABASE CONFIGURATION
+==============================================================
+*/
+
+const SUPABASE_URL =
+    "https://dhkfhhybzcxdeoalcfqx.supabase.co";
+
+const SUPABASE_ANON_KEY =
+    "sb_publishable_Rjm3T44VKTeuOF2yJS5rMw_xDfwPjuG";
+
+
+/*
+==============================================================
+EXACT TEST REDIRECT URL
+==============================================================
+
+This is the URL Supabase must return to after Google login.
+*/
+
+const TEST_REDIRECT_URL =
+    "https://busansoanimations-cloud.github.io/testbusanso/auth.html";
+
+
+/*
+==============================================================
+CREATE SUPABASE CLIENT
+==============================================================
+*/
+
+const supabaseClient =
+    window.supabase.createClient(
         SUPABASE_URL,
         SUPABASE_ANON_KEY
-      );
+    );
 
 
-    const googleBtn =
-      document.getElementById("googleBtn");
+/*
+==============================================================
+PAGE ELEMENTS
+==============================================================
+*/
 
-    const statusBox =
-      document.getElementById("status");
+const googleButton =
+    document.getElementById("googleButton");
 
-    const loading =
-      document.getElementById("loading");
+const statusBox =
+    document.getElementById("status");
 
-
-    function status(message, type = "") {
-
-      statusBox.textContent = message;
-
-      statusBox.className =
-        "status " + type;
-    }
+const loader =
+    document.getElementById("loader");
 
 
-    function setLoading(value) {
+/*
+==============================================================
+STATUS
+==============================================================
+*/
 
-      googleBtn.disabled = value;
+function showStatus(message, type) {
 
-      loading.style.display =
-        value ? "block" : "none";
-    }
+    statusBox.textContent = message;
+
+    statusBox.className =
+        "status" +
+        (type ? " " + type : "");
+}
 
 
-    /*
-      ------------------------------------------------------------
-      WHERE SHOULD A SUCCESSFUL USER GO?
-      ------------------------------------------------------------
+/*
+==============================================================
+LOADING
+==============================================================
+*/
 
-      The test repository will contain the real Busanso pages.
+function setLoading(isLoading) {
 
-      Therefore after authentication we go directly to home.html.
+    googleButton.disabled = isLoading;
 
-      The Supabase session is stored by the Supabase client in
-      the browser. Moving between Busanso pages should NOT destroy
-      that session.
-    */
+    loader.style.display =
+        isLoading ? "block" : "none";
+}
 
-    function goToHome() {
 
-      status(
-        "Signed in successfully. Opening BUSANSO...",
+/*
+==============================================================
+GO TO HOME
+==============================================================
+
+For this test, once Supabase confirms that the user has a
+valid session, we simply open the real Busanso home page
+inside the test repository.
+
+If home.html is later copied into this repository, it will
+continue from here.
+
+==============================================================
+*/
+
+function goToHome() {
+
+    showStatus(
+        "Google sign-in successful. Opening BUSANSO...",
         "success"
-      );
+    );
 
-      setTimeout(function () {
+    setTimeout(function () {
 
-        window.location.replace("home.html");
+        window.location.replace(
+            "home.html"
+        );
 
-      }, 400);
+    }, 500);
+}
 
-    }
 
+/*
+==============================================================
+CHECK EXISTING SESSION
+==============================================================
 
-    /*
-      ------------------------------------------------------------
-      CHECK EXISTING SESSION
-      ------------------------------------------------------------
+If the browser already has a valid Supabase session,
+don't ask the user to sign in again.
 
-      IMPORTANT:
+IMPORTANT:
 
-      We do NOT sign the user out if something goes wrong here.
+We do NOT sign the user out if a check fails.
 
-      We only determine whether a session already exists.
-    */
+==============================================================
+*/
 
-    async function checkExistingSession() {
+async function checkExistingSession() {
 
-      try {
+    try {
 
         const result =
-          await supabaseClient.auth.getSession();
+            await supabaseClient.auth.getSession();
+
 
         if (result.error) {
 
-          console.error(
-            "Session check error:",
-            result.error
-          );
+            console.error(
+                "Supabase session check error:",
+                result.error
+            );
 
-          return;
+            return;
         }
 
 
         const session =
-          result.data.session;
+            result.data.session;
 
 
-        if (session && session.user) {
+        if (
+            session &&
+            session.user
+        ) {
 
-          console.log(
-            "Existing BUSANSO Supabase session:",
-            session.user.email
-          );
+            console.log(
+                "Existing Supabase session:",
+                session.user.email
+            );
 
-          goToHome();
-
+            goToHome();
         }
 
-      } catch (error) {
+
+    } catch (error) {
 
         console.error(
-          "Unexpected session error:",
-          error
+            "Unexpected session error:",
+            error
         );
 
-      }
-
     }
+}
 
 
-    /*
-      ------------------------------------------------------------
-      GOOGLE SIGN-IN
-      ------------------------------------------------------------
-    */
+/*
+==============================================================
+GOOGLE SIGN-IN
+==============================================================
+*/
 
-    googleBtn.addEventListener(
-      "click",
-      async function () {
+googleButton.addEventListener(
+    "click",
+    async function () {
 
         setLoading(true);
 
-        status(
-          "Connecting to Google..."
+        showStatus(
+            "Connecting to Google..."
         );
+
 
         try {
 
-          const result =
-            await supabaseClient.auth.signInWithOAuth({
+            const result =
+                await supabaseClient.auth.signInWithOAuth({
 
-              provider: "google",
+                    provider: "google",
 
-              options: {
+                    options: {
 
-                /*
-                  IMPORTANT:
+                        /*
+                        ======================================
+                        CRITICAL
+                        ======================================
 
-                  Google returns to THIS test website.
+                        This is the exact GitHub Pages
+                        authentication return URL.
+                        */
 
-                  Example:
-
-                  https://your-test-site/auth.html
-                */
-
-                redirectTo:
-                  window.location.origin +
-                  "/auth.html",
-
-                queryParams: {
-
-                  access_type: "offline",
-
-                  prompt: "select_account"
-
-                }
-
-              }
-
-            });
+                        redirectTo:
+                            TEST_REDIRECT_URL,
 
 
-          if (result.error) {
+                        /*
+                        Ask Google to show the account
+                        selection screen.
+                        */
 
-            console.error(
-              "Google sign-in error:",
-              result.error
-            );
+                        queryParams: {
 
-            status(
-              result.error.message ||
-              "Google sign-in failed.",
-              "error"
-            );
+                            prompt:
+                                "select_account"
 
-            setLoading(false);
+                        }
 
-          }
+                    }
+
+                });
+
+
+            if (result.error) {
+
+                console.error(
+                    "Google OAuth error:",
+                    result.error
+                );
+
+                showStatus(
+                    result.error.message ||
+                    "Google sign-in failed.",
+                    "error"
+                );
+
+                setLoading(false);
+
+            }
 
         } catch (error) {
 
-          console.error(
-            "Unexpected Google error:",
-            error
-          );
+            console.error(
+                "Unexpected Google OAuth error:",
+                error
+            );
 
-          status(
-            "Unable to start Google sign-in.",
-            "error"
-          );
+            showStatus(
+                "Unable to start Google sign-in.",
+                "error"
+            );
 
-          setLoading(false);
-
+            setLoading(false);
         }
 
-      }
-    );
+    }
+);
 
 
-    /*
-      ------------------------------------------------------------
-      AUTH STATE LISTENER
-      ------------------------------------------------------------
+/*
+==============================================================
+AUTH STATE LISTENER
+==============================================================
 
-      If Supabase reports that Google authentication succeeded,
-      we do NOT create another session and we do NOT sign out.
+Supabase will report SIGNED_IN when authentication succeeds.
 
-      We simply continue to home.html.
-    */
+We do NOT:
 
-    supabaseClient.auth.onAuthStateChange(
-      function (event, session) {
+    signOut()
+    clear localStorage
+    delete anything
+    create a profile
+    modify an existing profile
+
+This test is ONLY checking whether the Google session survives
+the transition to the Busanso pages.
+
+==============================================================
+*/
+
+supabaseClient.auth.onAuthStateChange(
+    function (event, session) {
 
         console.log(
-          "BUSANSO AUTH EVENT:",
-          event
+            "BUSANSO AUTH EVENT:",
+            event
         );
 
 
         if (
-          session &&
-          session.user &&
-          (
-            event === "SIGNED_IN" ||
-            event === "INITIAL_SESSION"
-          )
+            session &&
+            session.user &&
+            event === "SIGNED_IN"
         ) {
 
-          goToHome();
-
+            goToHome();
         }
 
-      }
-    );
+    }
+);
 
 
-    /*
-      Start
-    */
+/*
+==============================================================
+START
+==============================================================
+*/
 
-    checkExistingSession();
+checkExistingSession();
 
-  </script>
+</script>
 
 </body>
 </html>
