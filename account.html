@@ -1,466 +1,437 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
->
-
-<title>My Account - BUSANSO NATION</title>
+<title>BUSANSO Premium</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 
 *{
-box-sizing:border-box;
-margin:0;
-padding:0;
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html,body{
+    min-height:100%;
 }
 
 body{
+    min-height:100vh;
+    font-family:Poppins,Arial,sans-serif;
+    color:#fff;
 
-min-height:100vh;
+    background:
+        radial-gradient(circle at top,#3b2a00 0%,#15110a 35%,#050505 75%,#000 100%);
 
-font-family:
-Arial,
-Helvetica,
-sans-serif;
-
-color:#fff;
-
-background:
-
-radial-gradient(
-circle at top,
-rgba(212,175,55,.20),
-transparent 35%
-),
-
-radial-gradient(
-circle at bottom right,
-rgba(255,184,77,.08),
-transparent 40%
-),
-
-linear-gradient(
-180deg,
-#100d05,
-#050505 55%,
-#000
-);
-
-padding:20px;
-
+    padding:20px;
 }
 
-
-/* TOP */
-
-.top{
-
-max-width:500px;
-
-margin:auto;
-
-display:flex;
-
-align-items:center;
-
-justify-content:space-between;
-
-margin-bottom:20px;
-
+.page{
+    width:100%;
+    max-width:620px;
+    margin:0 auto;
 }
 
-.back{
+/* HEADER */
 
-color:#d4af37;
-
-text-decoration:none;
-
-font-size:13px;
-
-font-weight:700;
-
+.topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:20px;
 }
-
-.brand{
-
-font-size:13px;
-
-font-weight:900;
-
-letter-spacing:2px;
-
-color:#d4af37;
-
-}
-
-
-/* MAIN */
-
-.container{
-
-width:100%;
-
-max-width:500px;
-
-margin:auto;
-
-}
-
-
-/* CARD */
-
-.account-card{
-
-background:
-
-linear-gradient(
-145deg,
-rgba(255,255,255,.08),
-rgba(255,255,255,.025)
-);
-
-border:
-
-1px solid
-rgba(212,175,55,.35);
-
-border-radius:28px;
-
-padding:30px 22px;
-
-box-shadow:
-
-0 30px 80px
-rgba(0,0,0,.65),
-
-inset 0 1px 0
-rgba(255,255,255,.08);
-
-}
-
-
-/* LOGO */
 
 .logo{
-
-width:105px;
-
-height:105px;
-
-object-fit:contain;
-
-display:block;
-
-margin:0 auto 18px;
-
-filter:
-
-drop-shadow(
-0 8px 25px
-rgba(212,175,55,.35)
-);
-
+    width:58px;
+    height:58px;
+    object-fit:contain;
+    border-radius:15px;
 }
 
-
-/* TITLE */
-
-.title{
-
-text-align:center;
-
-font-size:26px;
-
-font-weight:900;
-
-letter-spacing:.5px;
-
-background:
-
-linear-gradient(
-90deg,
-#fff4b0,
-#d4af37,
-#fff4b0
-);
-
--webkit-background-clip:text;
-
--webkit-text-fill-color:transparent;
-
+.top-actions{
+    display:flex;
+    gap:8px;
 }
 
-
-.subtitle{
-
-text-align:center;
-
-color:#a9a9a9;
-
-font-size:12px;
-
-margin-top:7px;
-
+.top-btn{
+    border:1px solid rgba(255,215,0,.25);
+    background:rgba(255,215,0,.08);
+    color:#ffd84d;
+    padding:9px 14px;
+    border-radius:10px;
+    text-decoration:none;
+    font-size:12px;
+    font-weight:700;
 }
 
+/* MAIN CARD */
 
-/* STATUS */
+.account-card{
+    position:relative;
+    overflow:hidden;
 
-.status-box{
+    border-radius:28px;
 
-margin-top:25px;
+    padding:30px 22px 25px;
 
-padding:20px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,215,0,.14),
+            rgba(255,255,255,.045) 35%,
+            rgba(255,255,255,.025)
+        );
 
-border-radius:20px;
+    border:1px solid rgba(255,215,0,.28);
 
-background:
-
-rgba(212,175,55,.08);
-
-border:
-
-1px solid
-rgba(212,175,55,.25);
-
-text-align:center;
-
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.65),
+        inset 0 1px rgba(255,255,255,.08);
 }
 
-.status-label{
-
-font-size:10px;
-
-text-transform:uppercase;
-
-letter-spacing:2px;
-
-color:#a99a72;
-
+.account-card:before{
+    content:"";
+    position:absolute;
+    width:260px;
+    height:260px;
+    border-radius:50%;
+    background:rgba(255,215,0,.08);
+    filter:blur(60px);
+    top:-150px;
+    right:-100px;
 }
 
-.status-value{
+.badge{
+    position:relative;
+    display:inline-block;
 
-font-size:25px;
+    padding:7px 13px;
+    border-radius:30px;
 
-font-weight:900;
+    background:linear-gradient(135deg,#ffe27a,#c99600);
+    color:#211700;
 
-margin-top:6px;
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:1px;
+    text-transform:uppercase;
 
-color:#f5d76e;
-
+    margin-bottom:17px;
 }
 
-.status-value.free{
+h1{
+    position:relative;
+    font-size:30px;
+    line-height:1.1;
+    margin-bottom:8px;
 
-color:#cbd5e1;
-
+    background:linear-gradient(90deg,#fff,#ffe27a,#c99716);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
 }
 
-
-/* DETAILS */
-
-.details{
-
-margin-top:20px;
-
-display:flex;
-
-flex-direction:column;
-
-gap:10px;
-
+.welcome{
+    position:relative;
+    color:#bdb7a5;
+    font-size:14px;
+    margin-bottom:25px;
 }
 
-.row{
+/* PACKAGE */
 
-display:flex;
+.package-box{
+    position:relative;
 
-justify-content:space-between;
+    padding:20px;
 
-align-items:center;
+    border-radius:20px;
 
-gap:15px;
+    background:rgba(0,0,0,.35);
+    border:1px solid rgba(255,215,0,.18);
 
-padding:14px 15px;
-
-border-radius:15px;
-
-background:
-rgba(255,255,255,.035);
-
-border:
-1px solid
-rgba(255,255,255,.06);
-
+    margin-bottom:18px;
 }
 
-.label{
-
-color:#888;
-
-font-size:11px;
-
+.package-title{
+    color:#918b7c;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:1.5px;
+    margin-bottom:6px;
 }
 
-.value{
-
-color:#fff;
-
-font-size:12px;
-
-font-weight:700;
-
-text-align:right;
-
-word-break:break-word;
-
+.package-name{
+    font-size:24px;
+    font-weight:900;
+    color:#ffe06b;
 }
 
-
-/* BUTTONS */
-
-.actions{
-
-display:flex;
-
-flex-direction:column;
-
-gap:11px;
-
-margin-top:25px;
-
+.status{
+    margin-top:7px;
+    font-size:13px;
+    color:#aaa;
 }
 
-.button{
+/* EXPIRY */
 
-display:block;
+.expiry-box{
+    position:relative;
 
-width:100%;
+    padding:20px;
 
-padding:15px;
+    border-radius:20px;
 
-border-radius:16px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,215,0,.12),
+            rgba(255,255,255,.035)
+        );
 
-text-align:center;
+    border:1px solid rgba(255,215,0,.2);
 
-text-decoration:none;
-
-font-size:13px;
-
-font-weight:800;
-
-cursor:pointer;
-
-border:none;
-
+    margin-bottom:25px;
 }
 
-.primary{
-
-background:
-
-linear-gradient(
-135deg,
-#8f6b18,
-#d4af37,
-#f5df7a
-);
-
-color:#160f00;
-
-box-shadow:
-
-0 10px 25px
-rgba(212,175,55,.20);
-
+.expiry-label{
+    color:#9e9888;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:1.4px;
+    margin-bottom:9px;
 }
 
-.secondary{
-
-background:
-rgba(255,255,255,.06);
-
-border:
-1px solid
-rgba(255,255,255,.1);
-
-color:#fff;
-
+.expiry-date{
+    color:#fff;
+    font-size:14px;
+    margin-bottom:14px;
 }
 
-
-/* MESSAGE */
-
-.message{
-
-text-align:center;
-
-padding:25px 10px;
-
-color:#aaa;
-
-font-size:13px;
-
+.countdown{
+    font-size:22px;
+    font-weight:900;
+    color:#ffd84d;
+    line-height:1.2;
 }
 
+.countdown.expired{
+    color:#ff6b6b;
+}
+
+/* BIG BUTTONS */
+
+.big-actions{
+    position:relative;
+
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+
+    margin-bottom:14px;
+}
+
+.big-btn{
+    min-height:82px;
+
+    border-radius:18px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    gap:7px;
+
+    text-decoration:none;
+
+    font-size:14px;
+    font-weight:900;
+
+    color:#1b1400;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff0a3,
+            #ffd43b 45%,
+            #b77d00
+        );
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.35),
+        inset 0 1px rgba(255,255,255,.7);
+
+    transition:transform .15s ease;
+}
+
+.big-btn:hover{
+    transform:translateY(-2px);
+}
+
+.big-btn span{
+    font-size:27px;
+}
+
+/* SMALL BUTTONS */
+
+.small-actions{
+    position:relative;
+
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+
+    margin-bottom:25px;
+}
+
+.small-btn{
+    min-height:52px;
+
+    border-radius:14px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+
+    text-decoration:none;
+
+    color:#ddd5bd;
+
+    background:rgba(255,255,255,.055);
+
+    border:1px solid rgba(255,215,0,.15);
+
+    font-size:12px;
+    font-weight:800;
+
+    transition:background .15s ease;
+}
+
+.small-btn:hover{
+    background:rgba(255,215,0,.11);
+}
+
+/* SETTINGS */
+
+.settings-btn{
+    position:relative;
+
+    width:100%;
+    min-height:48px;
+
+    border-radius:14px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+
+    text-decoration:none;
+
+    color:#ffd84d;
+
+    border:1px solid rgba(255,215,0,.25);
+    background:rgba(255,215,0,.06);
+
+    font-size:13px;
+    font-weight:800;
+
+    margin-bottom:10px;
+}
+
+/* HOME */
+
+.home-btn{
+    position:relative;
+
+    display:block;
+    text-align:center;
+
+    padding:13px;
+
+    color:#777;
+    text-decoration:none;
+
+    font-size:12px;
+}
+
+.home-btn:hover{
+    color:#fff;
+}
+
+/* LOADING */
+
+.loading{
+    min-height:100vh;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:#d0c8b5;
+    font-size:14px;
+}
+
+.hidden{
+    display:none!important;
+}
 
 /* ERROR */
 
 .error{
-
-color:#ff8a8a;
-
-text-align:center;
-
-line-height:1.7;
-
+    text-align:center;
+    padding:40px 20px;
 }
 
-
-/* GOLD LINE */
-
-.gold-line{
-
-height:1px;
-
-margin:25px 0;
-
-background:
-
-linear-gradient(
-90deg,
-transparent,
-#d4af37,
-transparent
-);
-
+.error h2{
+    color:#ffd84d;
+    margin-bottom:10px;
 }
 
+.error p{
+    color:#aaa;
+    font-size:13px;
+    line-height:1.6;
+}
+
+.error a{
+    display:inline-block;
+    margin-top:20px;
+    color:#ffd84d;
+    text-decoration:none;
+}
 
 /* MOBILE */
 
-@media(max-width:400px){
+@media(max-width:480px){
 
-.account-card{
+    body{
+        padding:12px;
+    }
 
-padding:25px 16px;
+    .account-card{
+        padding:25px 16px 20px;
+        border-radius:22px;
+    }
 
-}
+    h1{
+        font-size:27px;
+    }
 
-.title{
+    .big-actions{
+        grid-template-columns:1fr;
+    }
 
-font-size:23px;
-
-}
+    .big-btn{
+        min-height:76px;
+    }
 
 }
 
@@ -470,1022 +441,899 @@ font-size:23px;
 
 <body>
 
-
-<div class="top">
-
-<a
-href="home.html"
-class="back"
->
-← HOME
-</a>
-
-<div class="brand">
-BUSANSO NATION
+<div id="loading" class="loading">
+    Loading your BUSANSO account...
 </div>
 
-</div>
+<div id="page" class="page hidden">
+
+    <div class="topbar">
+
+        <img
+            class="logo"
+            src="https://i.ibb.co/hxgrLF35/BUSANSO-New.png"
+            alt="BUSANSO">
+
+        <div class="top-actions">
+            <a class="top-btn" href="home.html">HOME</a>
+        </div>
+
+    </div>
 
 
-<div class="container">
+    <main class="account-card">
 
-<div class="account-card">
+        <div class="badge">✦ PREMIUM ACCOUNT</div>
 
+        <h1>Welcome, <span id="userName">User</span></h1>
 
-<img
-class="logo"
-src="https://i.ibb.co/hxgrLF35/BUSANSO-New.png"
-alt="BUSANSO"
->
-
-
-<h1 class="title">
-MY ACCOUNT
-</h1>
-
-<div class="subtitle">
-Your BUSANSO membership
-</div>
+        <div class="welcome">
+            Your BUSANSO membership is active.
+        </div>
 
 
-<div
-id="loading"
-class="message"
->
-Checking your account...
-</div>
+        <section class="package-box">
+
+            <div class="package-title">
+                Membership
+            </div>
+
+            <div
+                id="packageName"
+                class="package-name">
+                PREMIUM
+            </div>
+
+            <div
+                id="membershipStatus"
+                class="status">
+                Active
+            </div>
+
+        </section>
 
 
-<div
-id="accountContent"
-style="display:none;"
->
+        <section
+            id="expiryBox"
+            class="expiry-box">
+
+            <div class="expiry-label">
+                Access expires
+            </div>
+
+            <div
+                id="expiryDate"
+                class="expiry-date">
+                Loading...
+            </div>
+
+            <div
+                id="countdown"
+                class="countdown">
+                Loading countdown...
+            </div>
+
+        </section>
 
 
-<div class="status-box">
+        <!-- BIG ACTION BUTTONS -->
 
-<div class="status-label">
-Membership
-</div>
+        <div class="big-actions">
 
-<div
-id="membershipStatus"
-class="status-value"
->
-FREE
-</div>
+            <a
+                href="movies.html"
+                class="big-btn">
 
-</div>
+                <span>🎬</span>
 
+                WATCH MOVIES
 
-<div class="details">
+            </a>
 
 
-<div class="row">
+            <a
+                href="series.html"
+                class="big-btn">
 
-<div class="label">
-Name
-</div>
+                <span>📺</span>
 
-<div
-id="profileName"
-class="value"
->
--
-</div>
+                WATCH SERIES
 
-</div>
+            </a>
+
+        </div>
 
 
-<div
-id="emailRow"
-class="row"
-style="display:none;"
->
+        <!-- SMALL ACTION BUTTONS -->
 
-<div class="label">
-Google Email
-</div>
+        <div class="small-actions">
 
-<div
-id="profileEmail"
-class="value"
->
--
-</div>
+            <a
+                href="happy-birthday.html"
+                class="small-btn">
 
-</div>
+                🎂 HAPPY BIRTHDAY WISHES
+
+            </a>
 
 
-<div class="row">
+            <a
+                href="donate.html"
+                class="small-btn">
 
-<div class="label">
-Package
-</div>
+                ❤️ DONATE
 
-<div
-id="packageType"
-class="value"
->
-FREE
-</div>
+            </a>
 
-</div>
+        </div>
 
 
-<div class="row">
+        <!-- SETTINGS -->
 
-<div class="label">
-Expiry
-</div>
+        <a
+            href="edit-profile.html"
+            class="settings-btn">
 
-<div
-id="expiry"
-class="value"
->
-No expiry
-</div>
+            ⚙️ SETTINGS
 
-</div>
+        </a>
 
 
-<div class="row">
+        <a
+            href="home.html"
+            class="home-btn">
 
-<div class="label">
-Account ID
-</div>
+            ← Back to BUSANSO
 
-<div
-id="accountId"
-class="value"
->
--
-</div>
+        </a>
+
+    </main>
 
 </div>
 
 
-<div class="row">
+<div id="errorPage" class="page hidden">
 
-<div class="label">
-Sign-in method
-</div>
+    <main class="account-card error">
 
-<div
-id="loginMethod"
-class="value"
->
--
-</div>
+        <div class="badge">BUSANSO</div>
 
-</div>
+        <h2>Account Not Found</h2>
 
+        <p id="errorMessage">
+            We could not identify this account.
+        </p>
 
-</div>
+        <a href="auth.html">
+            Sign in with Google
+        </a>
 
-
-<div class="gold-line"></div>
-
-
-<div class="actions">
-
-
-<a
-href="home.html"
-class="button primary"
->
-🏠 CONTINUE WATCHING
-</a>
-
-
-<a
-href="edit-profile.html"
-class="button secondary"
->
-✏️ EDIT PROFILE
-</a>
-
-
-</div>
-
-
-</div>
-
-
-<div
-id="errorBox"
-style="display:none;"
-class="error"
->
-</div>
-
-
-</div>
+    </main>
 
 </div>
 
 
 <script>
 
-(function(){
-
-"use strict";
-
-
-/* =========================================================
-SUPABASE
-========================================================= */
-
 const SUPABASE_URL =
-"https://dhkfhhybzcxdeoalcfqx.supabase.co";
+    "https://dhkfhhybzcxdeoalcfqx.supabase.co";
 
 const SUPABASE_KEY =
-"sb_publishable_Rjm3T44VKTeuOF2yJS5rMw_xDfwPjuG";
+    "sb_publishable_Rjm3T44VKTeuOF2yJS5rMw_xDfwPjuG";
 
-const supabase =
-window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
-);
-
-
-/* =========================================================
-ELEMENTS
-========================================================= */
-
-const loading =
-document.getElementById(
-"loading"
-);
-
-const content =
-document.getElementById(
-"accountContent"
-);
-
-const errorBox =
-document.getElementById(
-"errorBox"
-);
-
-const membershipStatus =
-document.getElementById(
-"membershipStatus"
-);
-
-const profileName =
-document.getElementById(
-"profileName"
-);
-
-const emailRow =
-document.getElementById(
-"emailRow"
-);
-
-const profileEmail =
-document.getElementById(
-"profileEmail"
-);
-
-const packageType =
-document.getElementById(
-"packageType"
-);
-
-const expiry =
-document.getElementById(
-"expiry"
-);
-
-const accountId =
-document.getElementById(
-"accountId"
-);
-
-const loginMethod =
-document.getElementById(
-"loginMethod"
-);
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
 
 
-/* =========================================================
-ACCESS
-========================================================= */
-
-function getAccess(profile){
-
-if(!profile){
-return "free";
-}
-
-const membership =
-String(
-profile.membership || ""
-)
-.toLowerCase()
-.trim();
-
-const packageTypeValue =
-String(
-profile.package_type || ""
-)
-.toLowerCase()
-.trim();
-
-const paid =
-profile.paid_status === true ||
-profile.paid_status === "true";
+let currentProfile = null;
+let countdownTimer = null;
 
 
-if(
-membership === "kibanda" ||
-packageTypeValue === "kibanda"
-){
+/*
+==================================================
+HELPERS
+==================================================
+*/
 
-return "kibanda";
+function clean(value){
+
+    if(value === null ||
+       value === undefined){
+
+        return "";
+    }
+
+    return String(value).trim();
 
 }
 
 
-if(
-membership === "premium" ||
-packageTypeValue === "premium" ||
-paid
-){
+function normalizeMembership(profile){
 
-return "premium";
+    const membership =
+        clean(profile.membership).toLowerCase();
 
+    const packageType =
+        clean(profile.package_type).toLowerCase();
+
+    if(
+        membership === "kibanda" ||
+        packageType === "kibanda"
+    ){
+        return "kibanda";
+    }
+
+    if(
+        membership === "premium" ||
+        packageType === "premium" ||
+        profile.paid_status === true
+    ){
+        return "premium";
+    }
+
+    return "free";
 }
 
-
-return "free";
-
-}
-
-
-/* =========================================================
-EXPIRY
-========================================================= */
 
 function isExpired(profile){
 
-if(
-!profile ||
-!profile.expires_at
-){
+    const access =
+        normalizeMembership(profile);
 
-return false;
+    if(access === "free"){
+        return false;
+    }
 
-}
+    if(!profile.expires_at){
+        return false;
+    }
 
-const date =
-new Date(
-profile.expires_at
-);
-
-if(
-Number.isNaN(
-date.getTime()
-)
-){
-
-return false;
-
-}
-
-return date.getTime() <= Date.now();
-
-}
-
-
-/* =========================================================
-GOOGLE PROFILE
-========================================================= */
-
-async function getGoogleProfile(
-user
-){
-
-if(
-!user ||
-!user.id
-){
-
-return null;
-
-}
-
-
-const result =
-await supabase
-
-.from("profiles")
-
-.select("*")
-
-.eq(
-"auth_user_id",
-user.id
-)
-
-.maybeSingle();
-
-
-if(result.error){
-
-console.error(
-"Google profile error:",
-result.error
-);
-
-throw result.error;
-
-}
-
-
-return result.data || null;
-
-}
-
-
-/* =========================================================
-LEGACY PROFILE
-========================================================= */
-
-async function getLegacyProfile(){
-
-/*
-First use user_id.
-*/
-
-const storedId =
-localStorage.getItem(
-"user_id"
-);
-
-if(storedId){
-
-const id =
-Number(
-storedId
-);
-
-if(
-Number.isFinite(id)
-){
-
-const result =
-await supabase
-
-.from("profiles")
-
-.select("*")
-
-.eq(
-"id",
-id
-)
-
-.maybeSingle();
-
-
-if(
-!result.error &&
-result.data
-){
-
-return result.data;
-
-}
-
-}
+    return new Date(profile.expires_at) <= new Date();
 
 }
 
 
 /*
-Old fallback:
-name.
+==================================================
+SAVE COMPATIBILITY DATA
+==================================================
 */
 
-const name =
-localStorage.getItem(
-"name"
-);
+function saveCompatibilityData(profile,user){
 
-if(name){
+    if(profile.id !== null &&
+       profile.id !== undefined){
 
-const result =
-await supabase
+        localStorage.setItem(
+            "user_id",
+            String(profile.id)
+        );
 
-.from("profiles")
+    }
 
-.select("*")
+    if(profile.name){
 
-.eq(
-"name",
-name
-)
+        localStorage.setItem(
+            "name",
+            profile.name
+        );
 
-.limit(1);
+    }
 
+    localStorage.setItem(
+        "membership",
+        profile.membership || "free"
+    );
 
-if(
-!result.error &&
-result.data &&
-result.data.length
-){
+    localStorage.setItem(
+        "package_type",
+        profile.package_type || ""
+    );
 
-return result.data[0];
+    localStorage.setItem(
+        "paid_status",
+        profile.paid_status ? "true" : "false"
+    );
 
-}
+    localStorage.setItem(
+        "expires_at",
+        profile.expires_at || ""
+    );
 
-}
+    if(user && user.id){
 
+        localStorage.setItem(
+            "auth_user_id",
+            user.id
+        );
 
-return null;
+        localStorage.setItem(
+            "supabase_auth_user_id",
+            user.id
+        );
 
-}
-
-
-/* =========================================================
-SAVE COMPATIBILITY
-========================================================= */
-
-function saveCompatibility(
-profile,
-user
-){
-
-try{
-
-if(user && user.id){
-
-localStorage.setItem(
-"auth_user_id",
-user.id
-);
-
-localStorage.setItem(
-"supabase_auth_user_id",
-user.id
-);
-
-}
-
-if(
-profile &&
-profile.id != null
-){
-
-localStorage.setItem(
-"user_id",
-String(profile.id)
-);
-
-}
-
-if(profile){
-
-localStorage.setItem(
-"name",
-profile.name || ""
-);
-
-localStorage.setItem(
-"membership",
-String(
-profile.membership || "free"
-).toLowerCase()
-);
-
-localStorage.setItem(
-"package_type",
-profile.package_type || ""
-);
-
-localStorage.setItem(
-"paid_status",
-String(
-profile.paid_status === true ||
-profile.paid_status === "true"
-)
-);
-
-localStorage.setItem(
-"expires_at",
-profile.expires_at || ""
-);
-
-localStorage.setItem(
-"activated_at",
-profile.activated_at || ""
-);
-
-}
-
-}catch(error){
-
-console.warn(
-"Compatibility storage error:",
-error
-);
-
-}
-
-}
-
-
-/* =========================================================
-DISPLAY
-========================================================= */
-
-function displayProfile(
-profile,
-authUser,
-method
-){
-
-const access =
-getAccess(profile);
-
-
-/*
-Expired premium/kibanda
-*/
-
-let displayedAccess =
-access;
-
-if(
-isExpired(profile) &&
-(
-access === "premium" ||
-access === "kibanda"
-)
-){
-
-displayedAccess =
-"expired";
-
-}
-
-
-/* MEMBERSHIP */
-
-if(
-displayedAccess === "premium"
-){
-
-membershipStatus.textContent =
-"PREMIUM";
-
-membershipStatus.className =
-"status-value";
-
-}
-else if(
-displayedAccess === "kibanda"
-){
-
-membershipStatus.textContent =
-"KIBANDA";
-
-membershipStatus.className =
-"status-value";
-
-}
-else if(
-displayedAccess === "expired"
-){
-
-membershipStatus.textContent =
-"EXPIRED";
-
-membershipStatus.className =
-"status-value";
-
-}
-else{
-
-membershipStatus.textContent =
-"FREE";
-
-membershipStatus.className =
-"status-value free";
-
-}
-
-
-/* NAME */
-
-profileName.textContent =
-profile.name ||
-"BUSANSO USER";
-
-
-/* GOOGLE EMAIL */
-
-if(
-authUser &&
-authUser.email
-){
-
-emailRow.style.display =
-"flex";
-
-profileEmail.textContent =
-authUser.email;
-
-}
-
-
-/* PACKAGE */
-
-packageType.textContent =
-profile.package_type ||
-(
-displayedAccess === "premium"
-?
-"Premium"
-:
-displayedAccess === "kibanda"
-?
-"Kibanda"
-:
-"Free"
-);
-
-
-/* EXPIRY */
-
-if(
-profile.expires_at
-){
-
-const date =
-new Date(
-profile.expires_at
-);
-
-if(
-!Number.isNaN(
-date.getTime()
-)
-){
-
-expiry.textContent =
-date.toLocaleString();
-
-}else{
-
-expiry.textContent =
-profile.expires_at;
-
-}
-
-}else{
-
-expiry.textContent =
-"No expiry";
-
-}
-
-
-/* ID */
-
-accountId.textContent =
-profile.id != null
-?
-String(profile.id)
-:
-"-";
-
-
-/* METHOD */
-
-loginMethod.textContent =
-method === "google"
-?
-"Google"
-:
-"Legacy account";
-
-
-/* SHOW */
-
-loading.style.display =
-"none";
-
-content.style.display =
-"block";
-
-}
-
-
-/* =========================================================
-MAIN ACCOUNT CHECK
-========================================================= */
-
-async function loadAccount(){
-
-try{
-
-
-/*
-=========================================================
-1. GOOGLE / SUPABASE AUTH
-=========================================================
-*/
-
-const sessionResult =
-await supabase.auth.getSession();
-
-
-if(
-!sessionResult.error &&
-sessionResult.data &&
-sessionResult.data.session &&
-sessionResult.data.session.user
-){
-
-const user =
-sessionResult.data.session.user;
-
-const profile =
-await getGoogleProfile(
-user
-);
-
-
-if(profile){
-
-saveCompatibility(
-profile,
-user
-);
-
-displayProfile(
-profile,
-user,
-"google"
-);
-
-return;
-
-}
+    }
 
 }
 
 
 /*
-=========================================================
-2. LEGACY ACCOUNT
-=========================================================
+==================================================
+FIND GOOGLE USER PROFILE
+==================================================
 */
 
-const legacy =
-await getLegacyProfile();
+async function findGoogleProfile(){
 
+    const {
+        data,
+        error
+    } =
+    await supabaseClient.auth.getSession();
 
-if(legacy){
+    if(error){
 
-saveCompatibility(
-legacy,
-null
-);
+        console.error(
+            "Supabase session error:",
+            error
+        );
 
-displayProfile(
-legacy,
-null,
-"legacy"
-);
+        return {
+            user:null,
+            profile:null
+        };
 
-return;
+    }
+
+    const session =
+        data.session;
+
+    if(!session){
+
+        return {
+            user:null,
+            profile:null
+        };
+
+    }
+
+    const user =
+        session.user;
+
+    const result =
+        await supabaseClient
+            .from("profiles")
+            .select("*")
+            .eq("auth_user_id",user.id)
+            .maybeSingle();
+
+    if(result.error){
+
+        console.error(
+            "Google profile lookup error:",
+            result.error
+        );
+
+        return {
+            user,
+            profile:null
+        };
+
+    }
+
+    return {
+        user,
+        profile:result.data
+    };
 
 }
 
 
 /*
-=========================================================
-NO ACCOUNT
-=========================================================
+==================================================
+FIND LEGACY USER
+==================================================
 */
 
-loading.style.display =
-"none";
+async function findLegacyProfile(){
 
-errorBox.style.display =
-"block";
+    const userId =
+        clean(
+            localStorage.getItem("user_id")
+        );
 
-errorBox.innerHTML =
+    const name =
+        clean(
+            localStorage.getItem("name")
+        );
 
-`
-No BUSANSO account could be identified.
+    const deviceId =
+        clean(
+            localStorage.getItem("device_id")
+        );
 
-<br><br>
 
-Please return to the sign-in page and
-continue with Google.
-<br><br>
+    /*
+    FIRST:
+    legacy numeric profile ID
+    */
 
-<a
-href="auth.html"
-style="
-color:#d4af37;
-font-weight:800;
-text-decoration:none;
-"
->
-GO TO SIGN IN
-</a>
-`;
+    if(userId){
 
-}catch(error){
+        const numericId =
+            Number(userId);
 
-console.error(
-"ACCOUNT PAGE ERROR:",
-error
-);
+        if(Number.isInteger(numericId)){
 
-loading.style.display =
-"none";
+            const result =
+                await supabaseClient
+                    .from("profiles")
+                    .select("*")
+                    .eq("id",numericId)
+                    .maybeSingle();
 
-errorBox.style.display =
-"block";
+            if(
+                !result.error &&
+                result.data
+            ){
 
-errorBox.textContent =
-"Unable to load your account. Please try again.";
+                return result.data;
+
+            }
+
+        }
+
+    }
+
+
+    /*
+    SECOND:
+    old name + device_id
+    */
+
+    if(name && deviceId){
+
+        const result =
+            await supabaseClient
+                .from("profiles")
+                .select("*")
+                .eq("name",name)
+                .eq("device_id",deviceId)
+                .maybeSingle();
+
+        if(
+            !result.error &&
+            result.data
+        ){
+
+            return result.data;
+
+        }
+
+    }
+
+
+    /*
+    THIRD:
+    old name-only fallback.
+    This preserves the old system where
+    the profile was already identified by name.
+    */
+
+    if(name){
+
+        const result =
+            await supabaseClient
+                .from("profiles")
+                .select("*")
+                .eq("name",name)
+                .maybeSingle();
+
+        if(
+            !result.error &&
+            result.data
+        ){
+
+            return result.data;
+
+        }
+
+    }
+
+
+    return null;
 
 }
 
+
+/*
+==================================================
+UNIFIED USER RESOLVER
+==================================================
+*/
+
+async function resolveCurrentUser(){
+
+    /*
+    NEW SYSTEM FIRST
+    */
+
+    const google =
+        await findGoogleProfile();
+
+    if(
+        google.user &&
+        google.profile
+    ){
+
+        return {
+            type:"google",
+            user:google.user,
+            profile:google.profile
+        };
+
+    }
+
+
+    /*
+    OLD SYSTEM SECOND
+    */
+
+    const legacy =
+        await findLegacyProfile();
+
+    if(legacy){
+
+        return {
+            type:"legacy",
+            user:null,
+            profile:legacy
+        };
+
+    }
+
+
+    return null;
+
 }
 
 
-/* =========================================================
+/*
+==================================================
+EXPIRY COUNTDOWN
+==================================================
+*/
+
+function startCountdown(expiresAt){
+
+    const countdown =
+        document.getElementById("countdown");
+
+    const expiryDate =
+        document.getElementById("expiryDate");
+
+    if(countdownTimer){
+
+        clearInterval(countdownTimer);
+
+    }
+
+
+    if(!expiresAt){
+
+        expiryDate.textContent =
+            "No expiry date set";
+
+        countdown.textContent =
+            "Active";
+
+        return;
+
+    }
+
+
+    const expiry =
+        new Date(expiresAt);
+
+
+    if(isNaN(expiry.getTime())){
+
+        expiryDate.textContent =
+            "Expiry date unavailable";
+
+        countdown.textContent =
+            "Please contact BUSANSO";
+
+        return;
+
+    }
+
+
+    expiryDate.textContent =
+        expiry.toLocaleString(
+            undefined,
+            {
+                dateStyle:"medium",
+                timeStyle:"short"
+            }
+        );
+
+
+    function update(){
+
+        const now =
+            new Date();
+
+        let difference =
+            expiry.getTime() -
+            now.getTime();
+
+
+        if(difference <= 0){
+
+            countdown.textContent =
+                "ACCESS EXPIRED";
+
+            countdown.classList.add(
+                "expired"
+            );
+
+            document.getElementById(
+                "membershipStatus"
+            ).textContent =
+                "Expired";
+
+            clearInterval(
+                countdownTimer
+            );
+
+            return;
+
+        }
+
+
+        const totalSeconds =
+            Math.floor(
+                difference / 1000
+            );
+
+
+        const days =
+            Math.floor(
+                totalSeconds / 86400
+            );
+
+        const hours =
+            Math.floor(
+                (totalSeconds % 86400) / 3600
+            );
+
+        const minutes =
+            Math.floor(
+                (totalSeconds % 3600) / 60
+            );
+
+        const seconds =
+            totalSeconds % 60;
+
+
+        countdown.textContent =
+            days + " DAYS " +
+            String(hours).padStart(2,"0") +
+            " HOURS " +
+            String(minutes).padStart(2,"0") +
+            " MINUTES " +
+            String(seconds).padStart(2,"0") +
+            " SECONDS";
+
+    }
+
+
+    update();
+
+    countdownTimer =
+        setInterval(
+            update,
+            1000
+        );
+
+}
+
+
+/*
+==================================================
+DISPLAY ACCOUNT
+==================================================
+*/
+
+function displayAccount(result){
+
+    const profile =
+        result.profile;
+
+    currentProfile =
+        profile;
+
+
+    saveCompatibilityData(
+        profile,
+        result.user
+    );
+
+
+    const access =
+        normalizeMembership(profile);
+
+
+    /*
+    Name
+    */
+
+    document.getElementById(
+        "userName"
+    ).textContent =
+        profile.name ||
+        (
+            result.user &&
+            result.user.email
+                ? result.user.email.split("@")[0]
+                : "BUSANSO User"
+        );
+
+
+    /*
+    Package
+    */
+
+    let packageLabel =
+        "FREE";
+
+
+    if(access === "premium"){
+
+        packageLabel =
+            "PREMIUM";
+
+    }
+
+    if(access === "kibanda"){
+
+        packageLabel =
+            "KIBANDA";
+
+    }
+
+
+    document.getElementById(
+        "packageName"
+    ).textContent =
+        packageLabel;
+
+
+    /*
+    Status
+    */
+
+    if(
+        access === "premium" ||
+        access === "kibanda"
+    ){
+
+        if(isExpired(profile)){
+
+            document.getElementById(
+                "membershipStatus"
+            ).textContent =
+                "Expired";
+
+        }else{
+
+            document.getElementById(
+                "membershipStatus"
+            ).textContent =
+                "Active";
+
+        }
+
+    }else{
+
+        document.getElementById(
+            "membershipStatus"
+        ).textContent =
+            "Free membership";
+
+    }
+
+
+    /*
+    Expiry
+    */
+
+    startCountdown(
+        profile.expires_at
+    );
+
+
+    /*
+    Show page
+    */
+
+    document.getElementById(
+        "loading"
+    ).classList.add("hidden");
+
+    document.getElementById(
+        "page"
+    ).classList.remove("hidden");
+
+}
+
+
+/*
+==================================================
 START
-========================================================= */
+==================================================
+*/
 
-loadAccount();
+async function start(){
+
+    try{
+
+        const result =
+            await resolveCurrentUser();
 
 
-/* =========================================================
-AUTH STATE CHANGE
-========================================================= */
+        if(!result){
 
-supabase.auth.onAuthStateChange(
-async function(
-event,
-session
-){
+            document.getElementById(
+                "loading"
+            ).classList.add("hidden");
 
-if(
-event === "SIGNED_IN" &&
-session &&
-session.user
-){
+            document.getElementById(
+                "errorPage"
+            ).classList.remove("hidden");
 
-try{
+            return;
 
-const profile =
-await getGoogleProfile(
-session.user
-);
+        }
 
-if(profile){
 
-saveCompatibility(
-profile,
-session.user
-);
+        displayAccount(result);
 
-displayProfile(
-profile,
-session.user,
-"google"
-);
+
+    }catch(error){
+
+        console.error(
+            "BUSANSO account error:",
+            error
+        );
+
+
+        document.getElementById(
+            "loading"
+        ).classList.add("hidden");
+
+        document.getElementById(
+            "errorPage"
+        ).classList.remove("hidden");
+
+        document.getElementById(
+            "errorMessage"
+        ).textContent =
+            error.message ||
+            "Unable to load your account.";
+
+    }
 
 }
 
-}catch(error){
 
-console.error(
-"Auth state profile error:",
-error
-);
-
-}
-
-}
-
-});
-
-
-})();
+start();
 
 </script>
 
 </body>
-
 </html>
