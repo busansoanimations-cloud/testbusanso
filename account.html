@@ -1,0 +1,798 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Busanso Nation Premium</title>
+
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',Arial,sans-serif;
+}
+
+
+body{
+
+min-height:100vh;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+padding:20px;
+
+background:
+radial-gradient(circle at top,#14532d,#020617 60%);
+
+color:white;
+
+}
+
+
+
+.container{
+
+width:100%;
+max-width:500px;
+
+text-align:center;
+
+}
+
+
+
+/* LOGO */
+
+.logo{
+
+font-size:34px;
+font-weight:900;
+letter-spacing:2px;
+
+background:
+linear-gradient(90deg,#22c55e,#38bdf8);
+
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
+margin-bottom:10px;
+
+}
+
+
+
+.badge{
+
+display:inline-block;
+
+padding:8px 20px;
+
+border-radius:30px;
+
+background:
+linear-gradient(135deg,#f59e0b,#facc15);
+
+color:#111827;
+
+font-weight:800;
+
+font-size:14px;
+
+margin-bottom:25px;
+
+}
+
+
+
+.card{
+
+background:
+rgba(255,255,255,.08);
+
+backdrop-filter:blur(20px);
+
+border:
+
+1px solid rgba(255,255,255,.12);
+
+border-radius:30px;
+
+padding:30px;
+
+box-shadow:
+0 25px 70px rgba(0,0,0,.5);
+
+}
+
+
+
+h1{
+
+font-size:28px;
+
+margin-bottom:10px;
+
+}
+
+
+
+.message{
+
+color:#cbd5e1;
+
+line-height:1.6;
+
+margin-bottom:30px;
+
+}
+
+
+
+/* WATCH BUTTONS */
+
+
+.action{
+
+display:block;
+
+text-decoration:none;
+
+color:white;
+
+padding:22px;
+
+border-radius:22px;
+
+margin-bottom:18px;
+
+font-size:20px;
+
+font-weight:800;
+
+transition:.25s;
+
+}
+
+
+.action:hover{
+
+transform:translateY(-5px);
+
+}
+
+
+
+.movies{
+
+background:
+linear-gradient(135deg,#ef4444,#b91c1c);
+
+box-shadow:
+0 15px 35px rgba(239,68,68,.35);
+
+}
+
+
+
+.series{
+
+background:
+linear-gradient(135deg,#8b5cf6,#4f46e5);
+
+box-shadow:
+0 15px 35px rgba(139,92,246,.35);
+
+}
+
+
+
+
+.expiry{
+
+margin-top:25px;
+
+padding:18px;
+
+border-radius:22px;
+
+background:linear-gradient(135deg,#0f172a,#1e293b);
+
+border:1px solid rgba(255,255,255,.12);
+
+box-shadow:0 10px 30px rgba(0,0,0,.35);
+
+}
+
+.expiry-title{
+
+font-size:14px;
+
+color:#94a3b8;
+
+margin-bottom:10px;
+
+}
+
+#expiry{
+
+display:block;
+
+font-size:26px;
+
+font-weight:900;
+
+letter-spacing:.5px;
+
+}
+
+.expiry-green{
+
+color:#22c55e;
+
+text-shadow:0 0 18px rgba(34,197,94,.45);
+
+}
+
+.expiry-yellow{
+
+color:#facc15;
+
+text-shadow:0 0 18px rgba(250,204,21,.45);
+
+}
+
+.expiry-red{
+
+color:#ef4444;
+
+text-shadow:0 0 18px rgba(239,68,68,.45);
+
+}
+
+
+.logout{
+
+display:none;
+
+}
+
+/* FREE USER LOCKED BUTTONS */
+
+.locked{
+    background:#374151 !important;
+    color:#9ca3af !important;
+    box-shadow:none !important;
+    cursor:not-allowed;
+    position:relative;
+}
+
+
+.locked::after{
+    content:" 🔒 PREMIUM ONLY";
+    display:block;
+    font-size:12px;
+    margin-top:8px;
+    color:#facc15;
+}
+
+
+/* PAY BUTTON */
+
+.pay-btn{
+
+display:block;
+
+text-decoration:none;
+
+padding:22px;
+
+border-radius:22px;
+
+margin-bottom:18px;
+
+font-size:20px;
+
+font-weight:900;
+
+color:#111827;
+
+background:
+linear-gradient(
+135deg,
+#facc15,
+#f97316
+);
+
+box-shadow:
+0 0 25px rgba(250,204,21,.6);
+
+animation:pulsePay 1.5s infinite;
+
+}
+
+
+@keyframes pulsePay{
+
+0%{
+transform:scale(1);
+}
+
+50%{
+transform:scale(1.05);
+}
+
+100%{
+transform:scale(1);
+}
+
+}
+.admin-btn{
+
+display:none;
+
+margin-top:20px;
+
+background:
+linear-gradient(135deg,#22c55e,#15803d);
+
+color:white;
+
+padding:18px;
+
+border-radius:20px;
+
+font-size:18px;
+
+font-weight:800;
+
+text-decoration:none;
+
+box-shadow:
+0 15px 35px rgba(34,197,94,.35);
+
+}
+</style>
+
+</head>
+
+
+
+<body>
+
+
+<div class="container">
+
+
+<div class="logo">
+
+BUSANSO NATION
+
+</div>
+
+
+
+<div class="badge" id="memberBadge">
+Loading...
+</div>
+
+
+
+
+<div class="card">
+
+
+<h1>
+Welcome Back
+</h1>
+
+
+<p class="message">
+
+Enjoy unlimited access to premium movies and series.
+Choose what you want to watch below.
+
+</p>
+
+
+
+
+<a href="movies.html" id="moviesBtn" class="action movies">
+🎬 WATCH MOVIES
+</a>
+
+
+<a href="series.html" id="seriesBtn" class="action series">
+📺 WATCH SERIES
+</a>
+
+
+<a href="packages.html" id="payBtn" class="pay-btn">
+🔓 PAY TO WATCH
+</a>
+
+
+
+
+
+<div class="expiry">
+
+<div class="expiry-title">
+
+Your Account expires in
+
+</div>
+
+<span id="expiry">
+
+Loading...
+
+</span>
+
+</div>
+
+<a href="adm-page.html" id="adminBtn" class="admin-btn">
+👑 ADMIN PANEL
+</a>
+
+<button class="logout" onclick="logout()">
+
+🚪 Logout
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+
+const SUPABASE_URL =
+"https://dhkfhhybzcxdeoalcfqx.supabase.co";
+
+
+const SUPABASE_KEY =
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRoa2ZoaHliemN4ZGVvYWxjZnF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1MzQxNTEsImV4cCI6MjA4ODExMDE1MX0.jZ4NDNPJmO0Ji05TxDqCnzgLIIzKf9uCx3WrSgk2DaY";
+
+
+const supabaseClient =
+supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+
+
+async function loadPremiumUser(){
+
+
+const userID =
+localStorage.getItem("user_id");
+
+
+if(!userID){
+
+location.href="auth.html";
+return;
+
+}
+
+
+
+const {data,error}=await supabaseClient
+
+.from("profiles")
+
+.select("*")
+
+.eq("id",Number(userID))
+
+.single();
+
+
+if(error || !data){
+
+location.href="auth.html";
+return;
+
+}
+
+if ((data.account_status || "").toLowerCase() !== "active") {
+
+    localStorage.clear();
+
+    location.href = "blocked.html";
+
+    return;
+
+}
+// ==============================
+// PREMIUM / FREE UI CONTROL
+// ==============================
+
+const membership =
+(data.membership || "free").toLowerCase();
+
+// UPDATE BADGE
+const badge = document.getElementById("memberBadge");
+
+if (membership === "premium") {
+    badge.textContent = "👑 " + (data.package_type || "PREMIUM");
+} else {
+    badge.textContent = "🆓 FREE MEMBER";
+}
+
+const moviesBtn =
+document.getElementById("moviesBtn");
+
+const seriesBtn =
+document.getElementById("seriesBtn");
+
+const payBtn =
+document.getElementById("payBtn");
+
+if(
+membership === "premium" &&
+data.expires_at &&
+new Date(data.expires_at) > new Date()
+){
+
+    // PREMIUM USER
+
+payBtn.style.display="none";
+
+moviesBtn.classList.remove("locked");
+seriesBtn.classList.remove("locked");
+
+moviesBtn.href="movies.html";
+seriesBtn.href="series.html";
+
+
+}else{
+
+
+// FREE USER
+
+moviesBtn.classList.add("locked");
+seriesBtn.classList.add("locked");
+
+
+moviesBtn.href="javascript:void(0)";
+seriesBtn.href="javascript:void(0)";
+
+
+moviesBtn.onclick=function(){
+location.href="packages.html";
+};
+
+
+seriesBtn.onclick=function(){
+location.href="packages.html";
+};
+
+
+payBtn.style.display="block";
+
+
+}
+
+
+
+// UPDATE LOCAL STORAGE EVERY VISIT
+
+localStorage.setItem(
+"name",
+data.name || ""
+);
+
+localStorage.setItem(
+"whatsapp_number",
+data.whatsapp_number || ""
+);
+
+localStorage.setItem(
+"membership",
+data.membership || "free"
+);
+
+localStorage.setItem(
+"package_type",
+data.package_type || ""
+);
+
+localStorage.setItem(
+"expires_at",
+data.expires_at || ""
+);
+
+
+
+// DISPLAY USER DATA
+
+document.querySelector("h1").innerHTML =
+"Hello,<br>" +
+(data.name || "Member").toUpperCase();
+
+
+const expiryBox = document.querySelector(".expiry");
+const expiryElement = document.getElementById("expiry");
+
+if (
+    membership === "premium" &&
+    data.expires_at &&
+    new Date(data.expires_at) > new Date()
+) {
+
+    expiryBox.style.display = "block";
+
+   startExpiryCountdown(data.expires_at);
+
+} else {
+
+    expiryBox.style.display = "none";
+
+}
+
+} // CLOSE loadPremiumUser FUNCTION
+
+async function checkAdminAccess(){
+
+
+const userID =
+localStorage.getItem("user_id");
+
+
+if(!userID){
+return;
+}
+
+
+const {data,error}=await supabaseClient
+
+.from("profiles")
+
+.select("role")
+
+.eq("id",Number(userID))
+
+.single();
+
+
+
+console.log("ADMIN CHECK DATA:", data);
+console.log("ADMIN CHECK ERROR:", error);
+
+
+if(error || !data){
+return;
+}
+
+
+// SHOW ADMIN BUTTON ONLY
+
+if(
+    data.role &&
+    data.role.trim().toLowerCase() === "admin"
+){
+
+    document.getElementById("adminBtn")
+    .style.display="block";
+
+}
+
+
+}
+function startExpiryCountdown(expiryDate){
+
+    const expiry=document.getElementById("expiry");
+
+    function update(){
+
+        const diff=new Date(expiryDate)-new Date();
+
+        if(diff<=0){
+
+            expiry.className="expiry-red";
+
+            expiry.innerHTML="❌ Membership Expired";
+
+            return;
+
+        }
+
+        const days=Math.floor(diff/86400000);
+
+        const hours=Math.floor((diff%86400000)/3600000);
+
+        const minutes=Math.floor((diff%3600000)/60000);
+
+        if(days>=7){
+
+            expiry.className="expiry-green";
+
+        }else if(days>=1){
+
+            expiry.className="expiry-yellow";
+
+        }else{
+
+            expiry.className="expiry-red";
+
+        }
+
+        let text="";
+
+        if(days>0){
+
+            text+=days+" Day"+(days>1?"s ":" ");
+
+        }
+
+        text+=hours+" Hour"+(hours!=1?"s ":" ");
+
+        text+=minutes+" Minute"+(minutes!=1?"s":"");
+
+        expiry.innerHTML=text+" Remaining";
+
+    }
+
+    update();
+
+    setInterval(update,60000);
+
+}
+// START PAGE
+loadPremiumUser();
+checkAdminAccess();
+
+const realtimeChannel = supabaseClient
+.channel("profile-" + localStorage.getItem("user_id"))
+.on(
+    "postgres_changes",
+    {
+        event: "*",
+        schema: "public",
+        table: "profiles",
+        filter: `id=eq.${localStorage.getItem("user_id")}`
+    },
+    (payload) => {
+
+        console.log("Realtime profile update:", payload);
+
+        // Reload all user data and update the UI
+        loadPremiumUser();
+        checkAdminAccess();
+
+    }
+)
+.subscribe();
+
+</script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1,"spa":2}' crossorigin="anonymous"></script>
+</body>
+
+</html>
+
+
+
