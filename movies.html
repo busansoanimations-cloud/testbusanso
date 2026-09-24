@@ -1,0 +1,445 @@
+﻿
+<!DOCTYPE html> 
+<html lang="en"> <head> <meta charset="UTF-8"> 
+<title>BUSANSO – Movies</title> 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"> <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  background:radial-gradient(circle at top,#0f172a,#020617);
+  color:#e5e7eb;
+  font-family:'Poppins',sans-serif;
+  overflow-x:hidden;
+}
+
+/* LOGO */
+
+.logo{
+  display:flex;
+  justify-content:center;
+  padding:18px 10px 10px;
+}
+
+.logo img{
+  height:52px;
+  border-radius:14px;
+  box-shadow:0 0 25px rgba(56,189,248,.35);
+}
+
+/* PREMIUM NAVIGATION */
+
+.nav{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  padding:14px;
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:rgba(15,23,42,.78);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.nav button{
+  height:60px;
+  border:none;
+  border-radius:18px;
+  cursor:pointer;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:5px;
+  font-size:13px;
+  font-weight:600;
+  color:#d1d5db;
+  background:rgba(255,255,255,.05);
+  transition:.25s;
+  box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.06),
+      0 10px 25px rgba(0,0,0,.35);
+}
+
+.nav button i{
+  font-size:20px;
+}
+
+.nav button:hover{
+  transform:translateY(-3px);
+  background:rgba(255,255,255,.09);
+}
+
+.nav button.active{
+  background:linear-gradient(135deg,#f59e0b,#fbbf24);
+  color:#111827;
+  box-shadow:
+      0 0 18px rgba(251,191,36,.45),
+      0 12px 30px rgba(0,0,0,.45);
+}
+
+/* SEARCH */
+
+.search{
+  padding:16px;
+}
+
+.search input,
+.search select{
+  width:100%;
+  padding:13px;
+  margin-bottom:10px;
+  border:none;
+  border-radius:14px;
+  background:#0f172a;
+  color:#fff;
+  font-size:14px;
+  box-shadow:0 4px 12px rgba(0,0,0,.4);
+}
+
+/* MOVIES */
+
+.movies{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  padding:12px;
+}
+
+.card{
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.05);
+  border-radius:16px;
+  overflow:hidden;
+  cursor:pointer;
+  transition:.25s;
+}
+
+.card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 16px 35px rgba(0,0,0,.55);
+}
+
+.card img{
+  width:100%;
+  aspect-ratio:2/3;
+  object-fit:cover;
+  display:block;
+  transition:.35s;
+}
+
+.card:hover img{
+  transform:scale(1.05);
+}
+
+.badge{
+  position:absolute;
+  top:8px;
+  left:8px;
+  padding:4px 8px;
+  font-size:10px;
+  font-weight:bold;
+  border-radius:6px;
+  text-transform:uppercase;
+}
+
+.badge.free{
+  background:#22c55e;
+}
+
+.badge.premium{
+  background:#ef4444;
+}
+
+.info{
+  padding:10px;
+}
+
+.title{
+  color:#fbbf24;
+  font-weight:700;
+  font-size:14px;
+  margin-bottom:4px;
+}
+
+.meta{
+  font-size:11px;
+  color:#cbd5e1;
+  line-height:1.45;
+}
+
+.watch{
+  width:100%;
+  padding:10px;
+  margin-top:8px;
+  border:none;
+  border-radius:10px;
+  background:linear-gradient(135deg,#22c55e,#16a34a);
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+  transition:.25s;
+}
+
+.watch:hover{
+  transform:scale(1.03);
+}
+
+.footer-categories{
+  display:none;
+}
+
+@media(min-width:768px){
+
+.movies{
+    grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+}
+
+}
+</style></head>
+
+<body>
+
+
+<div class="logo">
+  <img src="https://i.ibb.co/1GMMrMmS/logo.png" alt="BUSANSO">
+</div><div class="nav">
+  <button class="active">
+    <i class="fas fa-film"></i><span>Movies</span>
+  </button>
+
+  <button onclick="location.href='series.html'">
+    <i class="fas fa-tv"></i><span>Series</span>
+  </button>
+
+  <button onclick="location.href='account.html'">
+    <i class="fas fa-user-circle"></i><span>Account</span>
+  </button>
+</div>
+
+
+<div class="search">
+  <input id="search" placeholder="🔍 Search movies......">
+  <select id="genreFilter">
+    <option value="ALL">All Genres</option>
+    <option value="ACTION">Action</option>
+    <option value="COMEDY">Comedy</option>
+    <option value="DRAMA">Drama</option>
+    <option value="HORROR">Horror</option>
+    <option value="ROMANCE">Romance</option>
+    <option value="SCI-FI">SCI-FI</option>
+ 
+ </select>
+</div>
+
+<div class="movies" id="list"></div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+const supabaseUrl = 'https://dhkfhhybzcxdeoalcfqx.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRoa2ZoaHliemN4ZGVvYWxjZnF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1MzQxNTEsImV4cCI6MjA4ODExMDE1MX0.jZ4NDNPJmO0Ji05TxDqCnzgLIIzKf9uCx3WrSgk2DaY';
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+
+// ===============================
+// VERIFY USER (PROFILE + LEGACY PIN)
+// ===============================
+
+const loggedIn = localStorage.getItem("loggedIn") === "true";
+const userId = localStorage.getItem("user_id");
+const activePIN = localStorage.getItem("activePIN");
+
+// -------------------------------
+// Not logged in
+// -------------------------------
+if (!loggedIn) {
+
+    // Legacy premium user
+    if (activePIN) {
+        // Allow access
+    } else {
+        window.location.href = "auth.html";
+        throw new Error("Not logged in");
+    }
+
+}
+// -------------------------------
+// Logged in
+// -------------------------------
+else {
+
+    // Missing user_id
+    if (!userId) {
+
+        if (activePIN) {
+            // Legacy premium user
+        } else {
+            window.location.href = "auth.html";
+            throw new Error("Missing user_id");
+        }
+
+    } else {
+
+        // Fetch latest profile
+        const { data: profile, error } = await supabase
+            .from("profiles")
+            .select("*")
+            .eq("id", userId)
+            .single();
+
+        // ------------------------------------
+        // Profile not found
+        // ------------------------------------
+        if (error || !profile) {
+
+            if (activePIN) {
+                // Legacy premium user
+            } else {
+
+                localStorage.removeItem("loggedIn");
+                localStorage.removeItem("user_id");
+                localStorage.removeItem("name");
+                localStorage.removeItem("whatsapp_number");
+                localStorage.removeItem("account_status");
+                localStorage.removeItem("paid_status");
+
+                window.location.href = "auth.html";
+                throw new Error("Profile not found");
+            }
+
+        } else {
+
+            // ------------------------------------
+            // Save latest profile locally
+            // ------------------------------------
+            localStorage.setItem("name", profile.name || "");
+            localStorage.setItem("whatsapp_number", profile.whatsapp_number || "");
+            localStorage.setItem("account_status", profile.account_status || "");
+            localStorage.setItem("paid_status", profile.paid_status || "");
+            localStorage.setItem("expires_at", profile.expires_at || "");
+
+            // ------------------------------------
+            // Premium check
+            // ------------------------------------
+            if (!profile.expires_at) {
+
+                localStorage.removeItem("activePIN");
+                window.location.href = "packages.html";
+                throw new Error("No premium");
+
+            }
+
+            const now = new Date();
+            const expiry = new Date(profile.expires_at);
+
+            if (expiry <= now) {
+
+                localStorage.removeItem("activePIN");
+                localStorage.removeItem("paid_status");
+                localStorage.setItem("account_status", "expired");
+
+                window.location.href = "packages.html";
+                throw new Error("Premium expired");
+
+            }
+
+            // Premium is valid
+            localStorage.setItem("activePIN", "PROFILE_PREMIUM");
+
+        }
+
+    }
+
+}
+
+const box = document.getElementById("list");
+const search = document.getElementById("search");
+const genreSelect = document.getElementById("genreFilter");
+let activeGenre = null;
+let MOVIES = [];
+
+
+
+function render(data){
+
+  box.innerHTML = "";
+
+  if(!data || data.length===0){
+    box.innerHTML="<p>No movies available.</p>";
+    return;
+  }
+
+  data.forEach(m=>{
+
+    const c = document.createElement("div");
+    c.className = "card";
+
+    c.onclick = () => {
+      location.href = `movie.html?id=${m.id}`;
+    };
+
+   let badge = "";  c.innerHTML = `
+      <div style="position:relative">
+        ${badge}
+        <img src="${m.poster}" alt="${m.title}">
+      </div>
+
+      <div class="info">
+        <div class="title">${m.title}</div>
+
+        <div class="meta">
+          ${m.country || ''} • ${m.year || ''} • ${m.genre || ''}
+          <br>👁 ${m.views || 0} views
+        </div>
+      </div>
+    `;
+
+    box.appendChild(c);
+
+  });
+
+}
+
+function applyFilters(){
+  let filtered = [...MOVIES];
+  if(activeGenre){
+    filtered = filtered.filter(m => m.genre && m.genre.toLowerCase() === activeGenre.toLowerCase());
+  }
+  const q = search.value.trim().toLowerCase();
+  if(q){
+    filtered = filtered.filter(m => m.title.toLowerCase().includes(q));
+  }
+  render(filtered);
+}
+
+search.oninput = applyFilters;
+genreSelect.onchange = () => {
+  const val = genreSelect.value;
+  activeGenre = val==="ALL"?null:val;
+  applyFilters();
+}
+
+async function loadMovies(){
+  const { data, error } = await supabase
+    .from('movies')
+    .select('*')
+    .order('created_at',{ascending:false}); // newest first
+  if(error){ console.error(error); box.innerHTML="<p>Failed to load movies.</p>"; return; }
+  if(!data || data.length===0){ box.innerHTML="<p>No movies available.</p>"; return; }
+  MOVIES = data;
+  render(MOVIES);
+}
+
+loadMovies();
+</script>
+
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1,"spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>

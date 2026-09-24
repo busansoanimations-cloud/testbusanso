@@ -1,0 +1,293 @@
+﻿
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BUSANSO – Series</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+const activePIN = localStorage.getItem("activePIN");
+const loggedIn = localStorage.getItem("loggedIn");
+const userId = localStorage.getItem("user_id");
+
+if(
+    (!activePIN || activePIN === "undefined" || activePIN === "")
+    &&
+    !(loggedIn === "true" && userId)
+){
+    window.location.href = "expired.html";
+}
+</script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#0b1c24,#0a0f1a);color:#eaf6ff;font-family:Arial,sans-serif;}
+.logo{display:flex;justify-content:center;padding:18px 10px 10px;background:#07141c;}
+.logo img{height:66px;}
+.nav{display:flex;gap:12px;padding:14px;background:#07141c;position:sticky;top:0;z-index:10;}
+.nav button{flex:1;padding:8px;border:none;border-radius:38px;background:linear-gradient(135deg,#1f6cff,#29ffd8);color:#001018;font-weight:bold;font-size:14px;cursor:pointer;transition:.25s;}
+.nav button:hover{transform:translateY(-2px) scale(1.02);filter:brightness(1.1);}
+.search{padding:16px;background:#07141c;}
+.search input{width:100%;padding:16px;border-radius:20px;border:none;background:#102a38;color:#eaf6ff;font-size:15px;}
+.search input::placeholder{color:#9fc6d9;}
+.filters{display:flex;gap:12px;margin:12px 0;}
+.filters select{flex:1;padding:12px;border-radius:16px;border:none;background:#102a38;color:#eaf6ff;font-size:14px;}
+.series{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:16px;margin-bottom:80px;}
+@media(min-width:768px){.series{grid-template-columns:repeat(4,1fr);gap:16px;}}
+@media(min-width:1200px){.series{grid-template-columns:repeat(5,1fr);gap:18px;}}
+.card{background:linear-gradient(180deg,#102a38,#0b1c24);border-radius:22px;overflow:hidden;box-shadow:0 14px 35px rgba(0,0,0,.5);opacity:0;transform:translateY(20px);animation:fade .4s forwards;transition:.25s;}
+.card:hover{transform:translateY(-6px);}
+@keyframes fade{to{opacity:1;transform:none}}
+.card img{width:100%;aspect-ratio:2/3;object-fit:cover;}
+  .poster-wrap{
+  position:relative;
+}
+
+/* STATUS BADGE ON POSTER */
+.status-badge{
+  position:absolute;
+  top:10px;
+  left:10px;
+  z-index:5;
+
+  padding:5px 10px;
+  border-radius:999px;
+
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.5px;
+
+  color:#fff;
+
+  backdrop-filter:blur(6px);
+  box-shadow:0 4px 12px rgba(0,0,0,.45);
+}
+
+/* COLORS */
+.status-badge.completed{
+  background:rgba(16,185,129,.92);
+}
+
+.status-badge.ongoing{
+  background:rgba(59,130,246,.92);
+}
+
+.status-badge.canceled{
+  background:rgba(239,68,68,.92);
+}
+.info{padding:12px}
+.title{font-weight:bold;font-size:14px;}
+.meta{
+
+    color:#9ca3af;
+
+    font-size:12px;
+
+    line-height:1.5;
+
+}
+.watch{width:100%;padding:12px;border:none;border-radius:20px;background:linear-gradient(135deg,#29ffd8,#1f6cff);color:#001018;font-weight:bold;font-size:13px;cursor:pointer;transition:.25s;}
+.watch:hover{transform:scale(1.03);filter:brightness(1.1);}
+ 
+</style>
+</head>
+
+<body>
+
+<!-- LOGO -->
+<div class="logo">
+  <img src="https://i.ibb.co/1GMMrMmS/logo.png" alt="BUSANSO">
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button onclick="location.href='account.html'">👤 My Account</button>
+  <button onclick="location.href='movies.html'">🎬 Movies</button>
+  <button onclick="location.href='donate.html'">❤️ Donate</button>
+</div>
+
+<!-- SEARCH & FILTERS -->
+<div class="search">
+  <input id="search" placeholder="Search series...">
+  <div class="filters">
+    <select id="countryFilter">
+      <option value="">All Countries</option>
+    </select>
+    <select id="genreFilter">
+      <option value="">All Genres</option>
+    </select>
+  </div>
+</div>
+
+<!-- SERIES GRID -->
+<div class="series" id="list"></div>
+
+<!-- ===== SUPABASE FETCH LOGIC ===== -->
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+const SUPABASE_URL = "https://dhkfhhybzcxdeoalcfqx.supabase.co"; 
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRoa2ZoaHliemN4ZGVvYWxjZnF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1MzQxNTEsImV4cCI6MjA4ODExMDE1MX0.jZ4NDNPJmO0Ji05TxDqCnzgLIIzKf9uCx3WrSgk2DaY";
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+async function checkPremiumAccess(){
+
+    const activePIN = localStorage.getItem("activePIN");
+
+    // PIN users allowed
+    if(activePIN){
+        return true;
+    }
+
+
+    const loggedIn = localStorage.getItem("loggedIn");
+    const userId = localStorage.getItem("user_id");
+
+
+    if(loggedIn !== "true" || !userId){
+        location.href="expired.html";
+        return false;
+    }
+
+
+    const {data,error} = await supabase
+    .from("profiles")
+    .select("membership,expires_at")
+    .eq("id",userId)
+    .single();
+
+
+
+    if(error || !data){
+        location.href="expired.html";
+        return false;
+    }
+
+
+    const expiry = new Date(data.expires_at).getTime();
+
+
+    if(
+        data.membership !== "premium" ||
+        !data.expires_at ||
+        expiry < Date.now()
+    ){
+        location.href="expired.html";
+        return false;
+    }
+
+
+    return true;
+
+}
+
+const box = document.getElementById("list");
+const search = document.getElementById("search");
+const countryFilter = document.getElementById("countryFilter");
+const genreFilter = document.getElementById("genreFilter");
+let SERIES = [];
+
+// CACHE IMAGE
+async function cacheImage(url){
+  if('caches' in window){
+    const cache = await caches.open('series-images');
+    const res = await fetch(url, {mode:'no-cors'});
+    await cache.put(url, res);
+  }
+}
+
+// RENDER SERIES
+function render(data){
+  box.innerHTML = "";
+  data.forEach((s,i)=>{
+    const c = document.createElement("div");
+    c.className = "card";
+    c.style.animationDelay = i*.05+"s";
+c.innerHTML = `
+  <div class="poster-wrap">
+
+    <img src="${s.poster}" loading="lazy" class="poster-click">
+
+    <div class="status-badge ${s.status?.toLowerCase()}">
+      ${s.status || "COMPLETED"}
+    </div>
+
+  </div>
+
+  <div class="info">
+    <div class="title">${s.title}</div>
+
+    <div class="meta">
+      ${s.country} • ${s.genre} • ${s.year}
+    </div>
+  </div>
+`;
+
+// CLICK ENTIRE CARD (OR JUST POSTER)
+c.querySelector(".poster-click").onclick = () =>
+  location.href = `serie.html?id=${s.id}`;
+    box.appendChild(c);
+    cacheImage(s.poster);
+  });
+}
+
+// POPULATE FILTERS
+function populateFilters(data){
+  const countries = [...new Set(data.map(s=>s.country).filter(Boolean))];
+  const genres = [...new Set(data.map(s=>s.genre).filter(Boolean))];
+  countries.forEach(c=>{
+    const opt = document.createElement('option'); opt.value=c; opt.textContent=c; countryFilter.appendChild(opt);
+  });
+  genres.forEach(g=>{
+    const opt = document.createElement('option'); opt.value=g; opt.textContent=g; genreFilter.appendChild(opt);
+  });
+}
+
+// APPLY SEARCH & DROPDOWN FILTERS
+function applyFilters(){
+  let filtered = SERIES;
+  const q = search.value.toLowerCase();
+  const selectedCountry = countryFilter.value;
+  const selectedGenre = genreFilter.value;
+  if(selectedGenre) filtered = filtered.filter(s=>s.genre && s.genre.toUpperCase() === selectedGenre.toUpperCase());
+  if(selectedCountry) filtered = filtered.filter(s=>s.country && s.country === selectedCountry);
+  if(q) filtered = filtered.filter(s=>s.title.toLowerCase().includes(q));
+  render(filtered);
+}
+
+search.oninput = applyFilters;
+countryFilter.onchange = applyFilters;
+genreFilter.onchange = applyFilters;
+
+// FETCH SERIES FROM SUPABASE
+(async()=>{
+
+  const allowed = await checkPremiumAccess();
+
+  if(!allowed) return;
+
+
+  try{
+
+    const { data, error } = await supabase
+    .from("series")
+    .select("*")
+    .order("created_at",{ascending:false});
+    SERIES = data;
+    populateFilters(SERIES);
+    render(SERIES);
+    console.log("Series fetched:", data);
+  }catch(err){
+    console.error("Supabase fetch failed:", err);
+    alert("Failed to fetch series from Supabase. Check console for details.");
+  }
+})();
+</script>
+
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1,"spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,524 @@
+﻿
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BUSANSO SERIES by King VJ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+
+
+<style>
+body {
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#000;
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:12px;
+}
+
+/* HEADER */
+.logo { text-align:center; margin-bottom:12px; }
+.logo img { max-height:55px; }
+
+.poster {
+  width:100%;
+  max-width:960px;
+  aspect-ratio:16/9;
+  border-radius:14px;
+  overflow:hidden;
+  margin-bottom:12px;
+  position:relative;
+  background:#111;
+}
+
+.poster img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+}
+
+/* DETAILS */
+.details {
+  width:100%;
+  max-width:960px;
+  background:#111;
+  border-radius:12px;
+  padding:16px;
+  margin-bottom:14px;
+}
+
+.details h1 {
+  margin:0 0 6px 0;
+}
+
+.meta {
+  color:#aaa;
+  margin-bottom:10px;
+}
+
+.synopsis {
+  margin-bottom:12px;
+  line-height:1.5;
+  color:#ddd;
+}
+
+.cast span {
+  display:inline-block;
+  margin:4px;
+  padding:6px 10px;
+  border-radius:20px;
+  background:#222;
+  font-size:13px;
+}
+
+/* WATCH NOW */
+#watchBtn {
+  width:100%;
+  padding:18px;
+  font-size:20px;
+  background:#e50914;
+  color:#fff;
+  border:none;
+  border-radius:12px;
+  font-weight:bold;
+  cursor:pointer;
+  box-shadow:0 0 12px #e50914;
+  margin-top:12px;
+}
+
+/* EPISODES LIST */
+.episodes {
+  margin-top:12px;
+  display:none;
+  gap:8px;
+  flex-direction:column;
+}
+
+.episode {
+  background:#181818;
+  padding:12px;
+  border-radius:8px;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.episode:hover {
+  background:#333;
+}
+
+/* SHARE */
+#shareBtn {
+  width:100%;
+  margin-top:10px;
+  padding:14px;
+  border-radius:12px;
+  border:none;
+  background:#1DA1F2;
+  color:#fff;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+/* COMMENTS */
+#commentsSection {
+  width:100%;
+  max-width:960px;
+  background:#111;
+  border-radius:12px;
+  padding:16px;
+  margin-top:18px;
+}
+
+.comment {
+  padding:10px;
+  border-bottom:1px solid #333;
+}
+
+input, textarea {
+  width:100%;
+  padding:10px;
+  border-radius:6px;
+  border:none;
+  background:#222;
+  color:#fff;
+  margin-top:6px;
+}
+
+#commentBtn {
+  margin-top:8px;
+  padding:12px;
+  border:none;
+  border-radius:8px;
+  background:#e50914;
+  color:#fff;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+/* FOOTER */
+.footer {
+  margin-top:30px;
+  padding:20px;
+  text-align:center;
+  color:#aaa;
+  border-top:1px solid #222;
+  width:100%;
+  max-width:960px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="logo">
+
+<button id="backBtn" style="
+position:absolute;
+left:15px;
+top:15px;
+padding:10px 16px;
+border:none;
+border-radius:10px;
+background:#111;
+color:white;
+font-weight:bold;
+cursor:pointer;
+box-shadow:0 0 10px #e50914;
+">
+← BACK
+</button>
+
+
+<img src="https://i.ibb.co/hxgrLF35/BUSANSO-New.png">
+
+</div>
+
+<!-- POSTER -->
+<div class="poster">
+  <img id="poster" src="" alt="Series Poster">
+</div>
+
+<!-- DETAILS -->
+<div class="details">
+  <h1 id="title">Loading...</h1>
+  <div class="meta" id="meta"></div>
+  <p class="synopsis" id="synopsis"></p>
+
+  <div class="cast" id="cast"></div>
+
+<!-- WATCH NOW -->
+<button id="watchBtn">▶ WATCH NOW</button>
+
+
+
+<!-- SHARE -->
+<button id="shareBtn">Share</button>
+
+<!-- COMMENTS -->
+<div id="commentsSection">
+
+  <!-- TOGGLE BUTTON -->
+  <button id="toggleCommentsBtn" style="
+    width:100%;
+    padding:16px;
+    border:none;
+    border-radius:12px;
+    background:#111;
+    color:#fff;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 0 10px #e50914;
+  ">
+    💬 See what others are saying about this series
+  </button>
+
+  <!-- HIDDEN CONTENT -->
+  <div id="commentsBox" style="display:none; margin-top:12px;">
+
+    <h3 style="margin-bottom:10px;">Comments</h3>
+
+    <div id="commentsList"></div>
+
+    <input id="usernameInput" placeholder="Nickname">
+    <textarea id="commentInput" placeholder="Write comment"></textarea>
+    <button id="commentBtn">Post Comment</button>
+
+  </div>
+</div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+const supabase = createClient(
+  "https://dhkfhhybzcxdeoalcfqx.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRoa2ZoaHliemN4ZGVvYWxjZnF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1MzQxNTEsImV4cCI6MjA4ODExMDE1MX0.jZ4NDNPJmO0Ji05TxDqCnzgLIIzKf9uCx3WrSgk2DaY"
+);
+
+const firebaseConfig = {
+  apiKey:"AIzaSyBGGV9F3Nv13nRJ8t4QCP5Y0IosmKfYz1s",
+  authDomain:"busanso-pins.firebaseapp.com",
+  databaseURL:"https://busanso-pins-default-rtdb.firebaseio.com",
+  projectId:"busanso-pins"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+const params = new URLSearchParams(location.search);
+const id = params.get("id");
+
+const toggleCommentsBtn = document.getElementById("toggleCommentsBtn");
+const commentsBox = document.getElementById("commentsBox");
+// ==============================
+// BACK BUTTON
+// ==============================
+
+document.getElementById("backBtn").onclick = () => {
+
+    location.href = "series.html";
+
+};
+
+toggleCommentsBtn.onclick = () => {
+  commentsBox.style.display =
+    commentsBox.style.display === "none" || commentsBox.style.display === ""
+      ? "block"
+      : "none";
+};
+
+let serie = null;
+
+
+// ==============================
+// MEMBERSHIP CHECK
+// ==============================
+function checkLogin(){
+
+const loggedIn =
+localStorage.getItem("loggedIn");
+
+if(
+!loggedIn
+){
+
+showAccessMessage(
+"🔑 Login Required",
+"Please login to continue watching this series."
+);
+
+setTimeout(()=>{
+
+location.href="auth.html";
+
+},2500);
+
+return false;
+
+}
+
+return true;
+
+}
+
+
+// CUSTOM MESSAGE (NO BROWSER ALERT)
+
+function showAccessMessage(title,text){
+
+if(document.getElementById("loginPopup")) return;
+
+document.body.innerHTML += `
+
+<div id="loginPopup" style="
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.85);
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:99999;
+">
+
+<div style="
+background:#111;
+padding:25px;
+border-radius:20px;
+width:90%;
+max-width:400px;
+text-align:center;
+box-shadow:0 0 30px red;
+">
+
+<h2>${title}</h2>
+
+<p style="
+color:#ddd;
+margin:20px 0;
+line-height:1.5;
+">
+${text}
+</p>
+
+<button
+onclick="location.href='auth.html'"
+style="
+padding:15px;
+width:100%;
+border:none;
+border-radius:12px;
+background:#e50914;
+color:white;
+font-weight:bold;
+cursor:pointer;
+">
+LOGIN
+</button>
+
+</div>
+
+</div>
+
+`;
+
+}
+async function loadSeries(){
+
+  const { data } = await supabase
+    .from("series")
+    .select("*, episodes(*)")
+    .eq("id", id)
+    .order("episode_number", {
+      foreignTable: "episodes",
+      ascending: true
+    })
+    .single();
+
+  if(!data) return;
+
+  serie = data;
+
+ 
+ if(
+serie.type === "premium" &&
+!checkLogin()
+){
+
+document.getElementById("watchBtn").style.display="none";
+
+}
+// 🔥 increase views
+  await supabase
+    .from("series")
+    .update({
+      views: (data.views || 0) + 1
+    })
+    .eq("id", data.id);
+
+  document.getElementById("title").textContent = serie.title;
+
+  document.getElementById("meta").textContent =
+    `${serie.genre} • ${serie.country} • ${serie.year}`;
+
+  document.getElementById("synopsis").textContent =
+    serie.synopsis || "";
+
+  document.getElementById("poster").src =
+    serie.horizontal_poster || serie.poster || "";
+
+  const cast = document.getElementById("cast");
+  cast.innerHTML = "";
+
+  serie.cast?.forEach(c => {
+    const s = document.createElement("span");
+    s.textContent = c;
+    cast.appendChild(s);
+  });
+
+
+document.getElementById("watchBtn").onclick = () => {
+
+
+if(
+serie.type === "premium"
+){
+
+if(
+!checkLogin()
+){
+
+return;
+
+}
+
+}
+
+
+
+location.href =
+`episodes-player.html?id=${serie.id}&ep=0`;
+
+
+};
+
+}
+loadSeries();
+/* SHARE (UNCHANGED LOGIC) */
+document.getElementById("shareBtn").onclick = () => {
+  if(!serie) return;
+
+  const shareText =
+`🎬 ${serie.title}
+
+📝 ${serie.synopsis || ""}
+
+🌐 Watch Luganda Translated Series on https://busanso.com/installer`;
+
+  window.open(
+    `https://wa.me/?text=${encodeURIComponent(shareText)}`,
+    "_blank"
+  );
+};
+
+/* COMMENTS */
+const commentsRef = db.ref("comments/series/"+id);
+
+document.getElementById("commentBtn").onclick = () => {
+  const name = document.getElementById("usernameInput").value;
+  const text = document.getElementById("commentInput").value;
+
+  if(!name || !text) return;
+
+  commentsRef.push({
+    user:name,
+    text,
+    timestamp:Date.now()
+  });
+
+  document.getElementById("commentInput").value="";
+};
+
+commentsRef.on("child_added", snap=>{
+  const c = snap.val();
+
+  const div = document.createElement("div");
+  div.className="comment";
+  div.innerHTML = `<b>${c.user}</b>: ${c.text}`;
+
+  document.getElementById("commentsList").prepend(div);
+});
+</script>
+
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1,"spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>

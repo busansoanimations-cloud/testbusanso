@@ -1,0 +1,1125 @@
+﻿
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>
+Movie Name - Luganda Translated Movie | BUSANSO Nation
+</title>
+
+<meta name="description" content="
+Watch Movie Name in Luganda translated version on BUSANSO Nation.
+Agasobanuye movies and Korean translated series available online.
+">
+
+<style>
+body {
+  margin: 0;
+  background:#090909;
+  color: #fff;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.header {
+  padding: 15px;
+  font-size: 20px;
+   color:#fbbf24;
+  font-weight: bold;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 10px;
+}
+
+.player {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: black;
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+}
+  .player iframe,
+.player video {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+
+.poster {
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+}
+
+.playOverlay {
+  position:absolute;
+  inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:60px;
+  cursor:pointer;
+  background:linear-gradient(
+    to top,
+    rgba(0,0,0,.75),
+    rgba(0,0,0,.2)
+  );
+  backdrop-filter:blur(2px);
+  transition:.25s;
+}
+
+.playOverlay:hover{
+  background:rgba(0,0,0,.45);
+}
+
+.meta {
+  padding: 15px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.desc {
+  margin-top: 10px;
+  color: #ccc;
+}
+
+.views {
+  margin-top: 10px;
+  color: #aaa;
+}
+
+
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+button {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-size: 14px;
+}
+
+/* ▶ Watch */
+#watchBtn {
+  background:linear-gradient(135deg,#fbbf24,#d97706);
+  color:#000;
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+}
+
+#watchBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.6);
+}
+
+/* 🔗 Share */
+#shareBtn {
+  background: #1f2937;
+  color: #fff;
+  border: 1px solid #374151;
+}
+
+#shareBtn:hover {
+  background:#111;
+  border:1px solid #333;
+  transform: translateY(-2px);
+}
+
+/* 🎞 Trailer */
+#trailerBtn {
+   background:#18181b;
+  color:#fbbf24;
+   border:1px solid #fbbf24;
+  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+}
+
+#trailerBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.6);
+}
+
+.similar {
+  margin-top: 30px;
+  padding: 15px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px,1fr));
+  gap: 10px;
+}
+
+.card img {
+  width: 100%;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.badge{
+  background:#1a1a1a;
+  color:#fbbf24;
+  border:1px solid rgba(251,191,36,.3);
+}
+
+.badge {
+  background: #1f2937;
+  color: #22c55e;
+  padding: 6px 12px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.commentsBox {
+  margin-top: 40px;
+  background: #111827;
+  padding: 20px;
+  border-radius: 14px;
+}
+
+.commentForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.commentForm input,
+.commentForm textarea {
+  background: #1f2937;
+  border: none;
+  color: white;
+  padding: 12px;
+  border-radius: 10px;
+}
+
+.commentForm textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.commentItem {
+  margin-top: 20px;
+  padding: 15px;
+  border-bottom: 1px solid #222;
+}
+
+.commentUser {
+  font-weight: bold;
+  color: #22c55e;
+}
+
+.commentDate {
+  font-size: 12px;
+  color: #999;
+  margin-top: 4px;
+}
+
+.commentText {
+  margin-top: 10px;
+  color: #ddd;
+}
+#fullBtn {
+  background: #111827;
+  color: white;
+  border: 1px solid #374151;
+}
+
+#fullBtn:hover {
+  background: #374151;
+}
+
+.commentActions{
+  margin-top:12px;
+  display:flex;
+  gap:10px;
+}
+
+.commentActions button{
+  background:#1f2937;
+  color:white;
+  border:1px solid #374151;
+  padding:8px 12px;
+  border-radius:8px;
+}
+
+.replyItem{
+  margin-top:12px;
+  margin-left:20px;
+  padding:12px;
+  background:#1f2937;
+  border-left:3px solid #fbbf24;
+  border-radius:10px;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="header">🎬 Busanso Nation</div>
+
+<div class="container">
+
+  <div class="player" id="player"></div>
+
+<div class="meta">
+
+  <div class="title" id="title">Loading...</div>
+
+  <div class="badges">
+    <span class="badge" id="genre"></span>
+    <span class="badge" id="duration"></span>
+  </div>
+
+  <div class="desc" id="desc"></div>
+
+  <div class="views" id="views"></div>
+
+</div>
+<div class="actions">
+
+<button id="watchBtn">
+  <i data-lucide="play"></i>
+  Watch
+</button>
+
+<button id="trailerBtn">
+  <i data-lucide="film"></i>
+  Trailer
+</button>
+
+<button id="shareBtn">
+  <i data-lucide="share-2"></i>
+  Share
+</button>
+
+<!-- ⛶ ADD THIS HERE -->
+<button id="fullBtn">
+  ⛶ Fullscreen
+</button>
+<button id="downloadBtn" style="display:none">Download</button>
+
+</div>
+
+<!-- COMMENTS SECTION -->
+<div class="commentsBox">
+
+  <h3>Comments</h3>
+
+  <button id="openCommentBox">
+    Write a comment
+  </button>
+
+  <div class="commentForm" id="commentForm" style="display:none;">
+    <input id="username" placeholder="Your name" style="display:none;">
+    <textarea id="commentText" placeholder="Write comment..."></textarea>
+    <button id="postComment">Post Comment</button>
+  </div>
+
+  <div id="commentsList"></div>
+
+</div>
+
+  <div class="similar">
+    <h3>Similar Movies</h3>
+    <div class="grid" id="similar"></div>
+  </div>
+
+</div>
+
+
+
+<script type="module">
+
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+
+const supabase = createClient(
+  "https://dhkfhhybzcxdeoalcfqx.supabase.co",
+   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRoa2ZoaHliemN4ZGVvYWxjZnF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1MzQxNTEsImV4cCI6MjA4ODExMDE1MX0.jZ4NDNPJmO0Ji05TxDqCnzgLIIzKf9uCx3WrSgk2DaY"
+);
+
+
+// ===============================
+// LOGIN CHECK
+// ===============================
+
+const userId = localStorage.getItem("user_id");
+if(!userId){window.location.href="home.html";throw new Error("No user");}
+
+
+// Verify profile
+
+const { data: profile, error: profileError } = await supabase
+    .from("profiles")
+.select(`
+id,
+name,
+membership,
+expires_at,
+account_status,
+device_id
+`)
+    .eq("id", userId)
+    .single();
+
+
+if (profileError || !profile) {
+
+    localStorage.clear();
+    window.location.href = "auth.html";
+    throw new Error("Profile not found");
+
+}
+
+
+if(profile.account_status !== "active"){
+
+    localStorage.clear();
+    window.location.href = "auth.html";
+    throw new Error("Account inactive");
+
+}
+// =====================================
+// SILENT PREMIUM EXPIRY MONITOR
+// =====================================
+
+let expiryTimer = null;
+
+
+function stopPlayerAndRedirect(){
+
+    const playerBox = document.getElementById("player");
+
+    if(playerBox){
+
+        playerBox.innerHTML = `
+        <div style="
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        height:100%;
+        background:#000;
+        color:#fbbf24;
+        font-size:22px;
+        text-align:center;
+        padding:20px;
+        ">
+        ⏳ Your membership has expired.<br>
+        Redirecting to packages...
+        </div>
+        `;
+
+    }
+
+
+    setTimeout(()=>{
+
+        window.location.href="packages.html";
+
+    },3000);
+
+}
+
+
+
+async function checkMembershipExpiry(){
+
+    const userId = localStorage.getItem("user_id");
+
+    if(!userId) return;
+
+
+    const {data,error}=await supabase
+    .from("profiles")
+    .select("expires_at")
+    .eq("id",userId)
+    .single();
+
+
+    if(error || !data) return;
+
+
+    if(
+        data.expires_at &&
+        new Date(data.expires_at) <= new Date()
+    ){
+
+        clearInterval(expiryTimer);
+
+
+        stopPlayerAndRedirect();
+
+    }
+
+}
+
+
+// Run silently every 5 minutes
+
+expiryTimer = setInterval(
+    checkMembershipExpiry,
+    300000
+);
+
+
+// Also check immediately once
+
+checkMembershipExpiry();
+const params = new URLSearchParams(window.location.search);
+const movieId = params.get("id");
+
+const player = document.getElementById("player");
+const titleEl = document.getElementById("title");
+const descEl = document.getElementById("desc");
+const viewsEl = document.getElementById("views");
+const genreEl = document.getElementById("genre");
+const durationEl = document.getElementById("duration");
+const commentsList = document.getElementById("commentsList");
+const similarEl = document.getElementById("similar");
+
+let movie = null;
+let currentUserName = "Guest";
+
+
+async function loadCurrentUser(){
+
+const userID = localStorage.getItem("user_id");
+
+if(!userID) return;
+
+
+const {data,error}=await supabase
+.from("profiles")
+.select("name")
+.eq("id",userID)
+.single();
+
+
+if(data?.name){
+
+currentUserName = data.name;
+
+}
+
+}
+
+async function canWatchPremium(){
+
+  // Profile membership users
+  if(
+    profile &&
+    profile.membership &&
+    ["premium","kibanda"].includes((profile.membership||"").toLowerCase()) &&
+    profile.expires_at &&
+    new Date(profile.expires_at) > new Date()
+  ){
+    return true;
+  }
+
+
+  return false;
+
+}
+
+
+async function loadMovie() {
+
+  const { data } = await supabase
+    .from("movies")
+    .select("*")
+    .eq("id", movieId)
+    .single();
+
+  if (!data) {
+    titleEl.textContent = "Movie not found";
+    return;
+  }
+
+  movie = data;
+
+
+// =====================================
+// PREMIUM ACCESS CHECK
+// =====================================
+
+if ((data.type || "").toLowerCase() === "premium") {
+
+    let allowPremium = false;
+
+if (
+    profile.account_status === "active" &&
+    profile.membership &&
+    ["premium","kibanda"].includes((profile.membership||"").toLowerCase()) &&
+    profile.expires_at &&
+    new Date(profile.expires_at) > new Date() &&
+    profile.device_id === localStorage.getItem("device_id")
+)
+{
+    allowPremium = true;
+}
+
+    if (!allowPremium) {
+
+        window.location.href = "packages.html";
+        return;
+
+    }
+
+}
+  titleEl.textContent = data.title;
+
+ descEl.textContent = data.synopsis || "No description";
+
+  viewsEl.textContent = (data.views || 0) + " views";
+  genreEl.textContent = data.genre || "Unknown";
+durationEl.textContent = data.duration || "N/A";
+
+ showPoster(
+  data.horizontal_poster || data.poster,
+  data.video
+);
+
+
+  loadSimilar(data.id);
+  loadComments(data.id);
+}
+
+// 🎬 Poster preload
+function showPoster(poster, videoUrl) {
+
+  player.innerHTML = `
+    <img src="${poster}" class="poster">
+    <div class="playOverlay">▶</div>
+  `;
+
+  player.onclick = () => {
+    renderPlayer(videoUrl);
+  };
+}
+
+// 🎬 Player switch
+function renderPlayer(url) {
+
+  if (url.includes("youtube") || url.includes("youtu.be")) {
+    const id = url.match(/(?:v=|youtu\.be\/)([^&]+)/)?.[1];
+    player.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe>`;
+  }
+
+  else if (url.includes("vimeo")) {
+    const id = url.split("/").pop();
+    player.innerHTML = `<iframe src="https://player.vimeo.com/video/${id}" allowfullscreen></iframe>`;
+  }
+
+  else if (url.includes("drive.google.com")) {
+    const id = url.match(/\/d\/(.*?)\//)?.[1];
+    player.innerHTML = `<iframe src="https://drive.google.com/file/d/${id}/preview" allowfullscreen></iframe>`;
+  }
+
+  else {
+    player.innerHTML = `<video controls autoplay src="${url}"></video>`;
+  }
+}
+
+// 🎞 Similar movies (SMART + PROTECTED)
+async function loadSimilar(currentId) {
+
+  try {
+    const isPremiumUser = await canWatchPremium();
+
+    // 1️⃣ Get current movie genre
+    const { data: current, error: currentError } = await supabase
+      .from("movies")
+      .select("genre")
+      .eq("id", currentId)
+      .single();
+
+    if (currentError || !current) {
+      console.error("Current movie fetch error:", currentError);
+      return;
+    }
+
+    // 2️⃣ Base query (same genre)
+    let query = supabase
+      .from("movies")
+      .select("*")
+      .neq("id", currentId)
+      .eq("genre", current.genre);
+
+    // 🔒 Filter premium
+    if (!isPremiumUser) {
+      query = query.eq("type", "free");
+    }
+
+    let { data, error } = await query.limit(8);
+
+    if (error) {
+      console.error("Similar error:", error);
+      return;
+    }
+
+    // 3️⃣ Fallback if not enough results
+    if (!data || data.length < 4) {
+
+      let fallbackQuery = supabase
+        .from("movies")
+        .select("*")
+        .neq("id", currentId);
+
+      if (!isPremiumUser) {
+        fallbackQuery = fallbackQuery.eq("type", "free");
+      }
+
+      const { data: fallback, error: fallbackError } = await fallbackQuery.limit(8);
+
+      if (fallbackError) {
+        console.error("Fallback error:", fallbackError);
+        return;
+      }
+
+      data = fallback;
+    }
+
+    // 4️⃣ Render
+    similarEl.innerHTML = data.map(m => `
+      <div class="card">
+        <img src="${m.poster}" onclick="location.href='?id=${m.id}'">
+      </div>
+    `).join("");
+
+ } catch (err) {
+  console.error("Crash in loadSimilar:", err);
+}
+
+} // ← CLOSE loadSimilar HERE
+
+
+function timeAgo(date){
+
+const seconds =
+Math.floor(
+(Date.now()-new Date(date))/1000
+);
+
+
+if(seconds<60)return "Just now";
+
+
+const minutes=Math.floor(seconds/60);
+
+
+if(minutes<60)
+return minutes+" minutes ago";
+
+
+const hours=Math.floor(minutes/60);
+
+
+if(hours<24)
+return hours+" hours ago";
+
+
+const days=Math.floor(hours/24);
+
+
+return days+" days ago";
+
+}
+async function loadComments(movieId){
+
+
+const {data}=await supabase
+
+.from("movies_comments")
+
+.select("*")
+
+.eq("movie_id",movieId)
+
+.order(
+"created_at",
+{
+ascending:false
+}
+);
+
+
+
+const comments=data||[];
+
+
+
+commentsList.innerHTML =
+
+
+comments
+.filter(c=>!c.parent_id)
+
+.map(c=>{
+
+
+const replies =
+comments.filter(
+r=>r.parent_id===c.id
+);
+
+
+
+return `
+
+<div class="commentItem">
+
+
+<div class="commentUser">
+
+${c.user_name}
+
+</div>
+
+
+<div class="commentText">
+
+${c.comment}
+
+</div>
+
+
+<div class="commentDate">
+
+🕒 ${timeAgo(c.created_at)}
+
+</div>
+
+
+
+<div class="commentActions">
+
+
+<button onclick="likeMovieComment(${c.id})">
+
+❤️ ${c.likes || 0}
+
+</button>
+
+
+
+<button onclick="openMovieReply(${c.id})">
+
+💬 ${replies.length} Replies
+
+</button>
+
+
+</div>
+
+
+
+
+<div id="movieReplies-${c.id}" style="display:none">
+
+
+${replies.map(r=>`
+
+<div class="replyItem">
+
+<b>${r.user_name}</b>
+
+<p>${r.comment}</p>
+
+</div>
+
+
+`).join("")}
+
+
+
+<textarea id="movieReply-${c.id}"
+placeholder="Write reply..."></textarea>
+
+
+<button onclick="sendMovieReply(${c.id})">
+
+Post Reply
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+`;
+
+}).join("");
+
+}
+
+
+
+
+window.likeMovieComment = async function(id){
+
+
+const {data}=await supabase
+
+.from("movies_comments")
+
+.select("likes")
+
+.eq("id",id)
+
+.single();
+
+
+
+const likes=(data.likes||0)+1;
+
+
+
+await supabase
+
+.from("movies_comments")
+
+.update({
+
+likes
+
+})
+
+.eq("id",id);
+
+
+
+loadComments(movie.id);
+
+
+};
+
+
+
+
+
+window.openMovieReply=function(id){
+
+
+const box =
+document.getElementById(
+"movieReplies-"+id
+);
+
+
+if(box){
+
+box.style.display =
+box.style.display==="none"
+?
+"block"
+:
+"none";
+
+}
+
+};
+
+
+
+
+
+window.sendMovieReply=async function(parent){
+
+
+const text =
+document.getElementById(
+"movieReply-"+parent
+).value.trim();
+
+
+
+if(!text)return;
+
+
+
+await supabase
+
+.from("movies_comments")
+
+.insert([{
+
+movie_id:movie.id,
+
+user_name:currentUserName,
+
+comment:text,
+
+parent_id:parent,
+
+created_at:new Date().toISOString()
+
+}]);
+
+
+
+loadComments(movie.id);
+
+
+};
+// 🔗 SHARE SITE (FIXED)
+document.getElementById("shareBtn").onclick = () => {
+
+  const siteURL = "https://busanso.com/installer"; // 👈 CHANGE THIS
+
+const text =
+`🎬 Watch movies on Busanso Nation
+
+🔥 Stream now:
+${siteURL}`;
+
+window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
+};
+
+// 🎞 Trailer
+document.getElementById("trailerBtn").onclick = () => {
+
+  if (!movie || !movie.trailer) {
+location.href = "packages.html";
+    return;
+  }
+
+  renderPlayer(movie.trailer);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  
+};
+document.getElementById("postComment").onclick = async () => {
+
+  
+const username = currentUserName;
+
+const comment = document.getElementById("commentText").value.trim();
+
+
+  if (!username || !comment) return;
+
+const { error } = await supabase
+  .from("movies_comments")
+  .insert([{
+    movie_id: movie.id,
+    user_name: username,
+    comment
+  }]);
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  document.getElementById("commentText").value = "";
+
+  loadComments(movie.id);
+};
+
+// ▶ Watch (FIXED)
+
+document.getElementById("watchBtn").onclick = async () => {
+
+  if (!movie) return;
+
+
+  // 🔒 FINAL SECURITY CHECK
+  if(
+    (movie.type || "").toLowerCase() === "premium"
+  ){
+
+    const allowed = await canWatchPremium();
+
+    if(!allowed){
+
+      alert("First pay to watch this movie");
+
+      window.location.href="packages.html";
+
+      return;
+
+    }
+
+  }
+
+
+  // Increase views only after access granted
+  await supabase
+    .from("movies")
+    .update({
+      views:(movie.views || 0)+1
+    })
+    .eq("id",movie.id);
+
+
+  renderPlayer(movie.video);
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+};
+ 
+document.getElementById("fullBtn").onclick = () => {
+  const el = document.getElementById("player");
+
+  if (!document.fullscreenElement) {
+    if (el.requestFullscreen) el.requestFullscreen();
+    else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+    else if (el.msRequestFullscreen) el.msRequestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+};
+
+
+await loadCurrentUser();
+
+document.getElementById("downloadBtn").style.display=((profile.membership||"").toLowerCase()==="kibanda")?"inline-block":"none";
+document.getElementById("downloadBtn").onclick=()=>{if(movie&&movie.video) window.open(movie.video,"_blank");};
+loadMovie().then(() => {
+
+  lucide.createIcons();
+
+  const openBtn = document.getElementById("openCommentBox");
+  const form = document.getElementById("commentForm");
+
+  openBtn.addEventListener("click", () => {
+    if (!form) return;
+
+    form.style.display =
+      form.style.display === "none" ? "flex" : "none";
+  });
+});
+</script>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1,"spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>
+

@@ -1,0 +1,2759 @@
+﻿
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css">
+<title>Busanso Nation - Watch Episode</title>
+
+<style>
+
+*{
+box-sizing:border-box;
+}
+
+body{
+margin:0;
+background:#070A12;
+color:white;
+font-family:'Segoe UI',Arial,sans-serif;
+}
+
+
+/* ================= HEADER ================= */
+
+.header{
+
+position:sticky;
+top:0;
+
+background:rgba(10,14,28,0.96);
+
+backdrop-filter:blur(12px);
+
+padding:14px 18px;
+
+display:flex;
+
+align-items:center;
+
+gap:14px;
+
+border-bottom:1px solid #1e293b;
+
+z-index:100;
+
+box-shadow:
+0 4px 20px rgba(0,0,0,.45);
+
+}
+
+
+/* LOGO */
+
+.logo{
+
+width:72px;
+height:42px;
+
+border-radius:12px;
+
+object-fit:cover;
+
+box-shadow:
+0 0 15px rgba(37,99,235,.55);
+
+}
+
+
+
+/* BACK */
+
+.backBtn{
+
+width:42px;
+height:42px;
+
+border-radius:12px;
+
+background:#111827;
+
+border:1px solid #334155;
+
+color:#60a5fa;
+
+font-size:20px;
+
+cursor:pointer;
+
+transition:.25s;
+
+}
+
+
+.backBtn:hover{
+
+transform:scale(1.06);
+
+background:#172033;
+
+box-shadow:
+0 0 15px rgba(96,165,250,.45);
+
+}
+
+
+
+/* TITLE */
+
+#seriesTitle{
+
+font-size:36px;
+
+font-weight:800;
+
+color:white;
+
+letter-spacing:.3px;
+
+text-shadow:
+0 0 18px rgba(96,165,250,.4);
+
+white-space:nowrap;
+
+overflow:hidden;
+
+text-overflow:ellipsis;
+
+}
+
+
+
+/* MAIN */
+
+.container{
+
+max-width:1250px;
+
+margin:auto;
+
+padding:18px;
+
+}
+
+
+
+/* SUB ALERT */
+
+.subscriptionAlert{
+
+margin-bottom:15px;
+
+padding:18px;
+
+border-radius:16px;
+
+text-align:center;
+
+font-weight:800;
+
+font-size:18px;
+
+}
+
+
+
+/* PLAYER */
+
+.player{
+
+width:100%;
+
+aspect-ratio:16/9;
+
+background:#000;
+
+border-radius:22px;
+
+overflow:hidden;
+
+position:relative;
+
+box-shadow:
+
+0 0 0 1px rgba(255,255,255,.05),
+
+0 25px 70px rgba(0,0,0,.75),
+
+0 0 35px rgba(37,99,235,.2);
+
+}
+
+
+
+.player iframe,
+.player video{
+
+width:100%;
+
+height:100%;
+
+display:block;
+
+border:none;
+
+}
+
+
+
+/* NAV */
+
+.episodeNav{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+gap:14px;
+
+margin-top:18px;
+
+}
+
+
+
+.navBtn{
+
+flex:1;
+
+padding:15px;
+
+border-radius:16px;
+
+border:1px solid rgba(96,165,250,.35);
+
+background:
+
+linear-gradient(135deg,#111827,#172033);
+
+color:white;
+
+font-size:16px;
+
+font-weight:700;
+
+cursor:pointer;
+
+transition:.25s;
+
+box-shadow:
+
+0 0 12px rgba(96,165,250,.25);
+
+}
+
+
+
+.navBtn:hover{
+
+transform:translateY(-2px);
+
+box-shadow:
+
+0 0 22px rgba(96,165,250,.65);
+
+}
+
+
+
+.epLabel{
+
+flex:1.2;
+
+text-align:center;
+
+font-weight:800;
+
+font-size:22px;
+
+color:#60a5fa;
+
+text-shadow:
+
+0 0 12px rgba(96,165,250,.45);
+
+}
+
+
+
+/* FULLSCREEN */
+
+.fullBtn{
+
+margin-top:14px;
+
+width:100%;
+
+padding:15px;
+
+border-radius:16px;
+
+background:
+
+linear-gradient(135deg,#2563eb,#1d4ed8);
+
+border:none;
+
+color:white;
+
+font-weight:800;
+
+font-size:16px;
+
+cursor:pointer;
+
+box-shadow:
+
+0 0 18px rgba(37,99,235,.4);
+
+transition:.25s;
+
+}
+
+
+
+.fullBtn:hover{
+
+transform:translateY(-2px);
+
+box-shadow:
+
+0 0 28px rgba(37,99,235,.7);
+
+}
+
+
+
+/* EPISODE LIST */
+
+#episodeList{
+
+margin-top:12px;
+
+background:#0b1220;
+
+border:1px solid #1f2937;
+
+border-radius:16px;
+
+padding:12px;
+
+}
+
+
+
+.episodeItem{
+
+padding:12px;
+
+margin-bottom:8px;
+
+border-radius:10px;
+
+background:#111827;
+
+cursor:pointer;
+
+border:1px solid #1f2937;
+
+}
+
+
+
+.episodeItem:hover{
+
+background:#172033;
+
+}
+
+
+
+.episodeItem.active{
+
+border:1px solid #60a5fa;
+
+box-shadow:
+
+0 0 10px rgba(96,165,250,.4);
+
+}
+
+
+
+/* COMMENTS */
+
+.commentsBox{
+
+margin-top:30px;
+
+background:#0b1220;
+
+border:1px solid #1f2937;
+
+border-radius:18px;
+
+padding:18px;
+
+}
+
+
+
+.commentsTitle{
+
+font-size:18px;
+
+margin-bottom:12px;
+
+color:#60a5fa;
+
+font-weight:700;
+
+}
+
+
+
+.commentToggleBtn{
+
+width:100%;
+
+padding:14px;
+
+border-radius:14px;
+
+border:1px solid rgba(96,165,250,.35);
+
+background:#0f172a;
+
+color:#60a5fa;
+
+font-weight:800;
+
+cursor:pointer;
+
+}
+
+
+
+.commentForm input,
+.commentForm textarea{
+
+width:100%;
+
+margin-top:10px;
+
+padding:14px;
+
+border-radius:12px;
+
+border:1px solid #1f2937;
+
+background:#0f172a;
+
+color:white;
+
+outline:none;
+
+font-size:15px;
+
+}
+
+
+
+.commentForm textarea{
+
+min-height:90px;
+
+resize:none;
+
+}
+
+
+
+#postComment{
+
+margin-top:12px;
+
+width:100%;
+
+padding:14px;
+
+border-radius:12px;
+
+border:none;
+
+background:
+
+linear-gradient(135deg,#22c55e,#16a34a);
+
+font-weight:800;
+
+color:white;
+
+cursor:pointer;
+
+}
+
+
+
+/* COMMENT CARDS */
+
+.commentItem{
+
+margin-top:14px;
+
+padding:14px;
+
+background:#0f172a;
+
+border:1px solid #1f2937;
+
+border-radius:14px;
+
+}
+
+
+
+.commentUser{
+
+color:#60a5fa;
+
+font-weight:bold;
+
+}
+
+
+
+.commentText{
+
+margin-top:8px;
+
+color:#d1d5db;
+
+font-size:14px;
+
+line-height:1.5;
+
+}
+
+
+
+.commentActions{
+
+margin-top:12px;
+
+display:flex;
+
+gap:10px;
+
+}
+
+
+
+.commentActions button{
+
+background:#111827;
+
+border:1px solid #334155;
+
+color:white;
+
+padding:8px 14px;
+
+border-radius:10px;
+
+cursor:pointer;
+
+}
+
+
+
+.replyItem{
+
+margin-top:12px;
+
+margin-left:20px;
+
+padding:12px;
+
+background:#111827;
+
+border-radius:12px;
+
+border-left:3px solid #60a5fa;
+
+}
+
+
+
+.replyBox textarea{
+
+width:100%;
+
+}
+
+
+
+/* FOOTER */
+
+.footer{
+
+margin-top:40px;
+
+padding:25px;
+
+text-align:center;
+
+font-size:13px;
+
+color:#94a3b8;
+
+border-top:1px solid #1f2937;
+
+}
+
+
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+#seriesTitle{
+
+font-size:20px;
+
+}
+
+
+.player{
+
+border-radius:18px;
+
+}
+
+
+.episodeNav{
+
+gap:8px;
+
+}
+
+
+.navBtn{
+
+padding:12px 8px;
+
+font-size:14px;
+
+}
+
+
+.epLabel{
+
+font-size:16px;
+
+}
+
+
+.criticalExpiry{
+
+animation:shakeFlash .6s infinite;
+
+border:3px solid red!important;
+
+box-shadow:0 0 25px red!important;
+
+}
+
+
+@keyframes shakeFlash{
+
+0%{
+transform:translateX(0);
+background:#7f1d1d;
+}
+
+25%{
+transform:translateX(-2px);
+background:#991b1b;
+}
+
+50%{
+transform:translateX(2px);
+background:#dc2626;
+}
+
+75%{
+transform:translateX(-2px);
+background:#b91c1c;
+}
+
+100%{
+transform:translateX(0);
+background:#7f1d1d;
+}
+
+}
+
+
+}
+.player:fullscreen,
+.player:-webkit-full-screen {
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: 100vw !important;
+    max-height: 100vh !important;
+    aspect-ratio: auto !important;
+    border-radius: 0 !important;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* YouTube iframe fills fullscreen */
+.player:fullscreen iframe,
+.player:-webkit-full-screen iframe{
+    width:100%;
+    height:100%;
+}
+
+/* R2/MP4 keeps correct aspect ratio */
+.player:fullscreen video,
+.player:-webkit-full-screen video{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    background:#000;
+}
+
+.player #videoPlayer,.player .plyr,.player .plyr__video-wrapper,.player iframe{
+width:100%!important;height:100%!important;
+}
+.player:fullscreen .plyr,.player:-webkit-full-screen .plyr{width:100vw!important;height:100vh!important;}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- HEADER -->
+
+<div class="header">
+
+
+<img 
+src="https://i.ibb.co/1GMMrMmS/logo.png" 
+class="logo">
+
+
+<button class="backBtn" onclick="history.back()">
+←
+</button>
+
+
+<span id="seriesTitle">
+Loading...
+</span>
+
+
+</div>
+
+
+
+
+<div class="container">
+
+
+
+<div id="subscriptionAlert" style="display:none;"></div>
+
+
+
+<!-- PLAYER -->
+
+<div class="player" id="player"></div>
+
+
+
+
+<!-- EPISODE NAVIGATION -->
+
+<div class="episodeNav">
+
+
+<button class="navBtn" id="prevEp">
+⬅ Prev
+</button>
+
+
+<div class="epLabel" id="epLabel">
+Episode
+</div>
+
+
+<button class="navBtn" id="nextEp">
+Next ➡
+</button>
+
+
+</div>
+
+
+
+
+<button class="fullBtn" id="fullBtn">
+⛶ Fullscreen
+</button>
+
+
+
+<button class="fullBtn" id="toggleEpisodes">
+📺 Episode List
+</button>
+
+
+
+
+<div id="episodeList" style="display:none;"></div>
+
+
+
+
+
+<!-- COMMENTS -->
+
+
+<div class="commentsBox">
+
+
+<div class="commentsTitle">
+💬 Comments
+</div>
+
+
+
+<button id="openCommentBox" class="commentToggleBtn">
+
+💬 Comment on this episode
+
+</button>
+
+
+
+
+<div class="commentForm" id="commentForm" style="display:none;">
+
+
+<input 
+id="username"
+type="text"
+placeholder="Your name"
+autocomplete="name">
+
+
+<textarea 
+id="commentText"
+placeholder="Write your comment...">
+</textarea>
+
+
+
+<button id="postComment">
+
+Post Comment
+
+</button>
+
+
+</div>
+
+
+
+
+<div id="commentsList"></div>
+
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+<footer class="footer">
+
+<p>
+© 2026 Busanso Nation. All rights reserved.
+</p>
+
+<p>
+Thank you for choosing Busanso Nation ❤️
+</p>
+
+</footer>
+
+
+
+
+
+
+<script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+<script type="module">
+
+
+import { createClient } 
+from 
+"https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+
+
+const supabase = createClient(
+
+
+"https://dhkfhhybzcxdeoalcfqx.supabase.co",
+
+
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRoa2ZoaHliemN4ZGVvYWxjZnF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1MzQxNTEsImV4cCI6MjA4ODExMDE1MX0.jZ4NDNPJmO0Ji05TxDqCnzgLIIzKf9uCx3WrSgk2DaY"
+);
+
+
+
+/* =========================
+STATE
+========================= */
+
+
+const params =
+new URLSearchParams(window.location.search);
+
+
+
+const seriesId =
+params.get("id");
+
+
+
+let episodes = [];
+
+let index = 0;
+
+
+
+let currentUserName = "Guest";
+
+
+
+
+
+/* =========================
+LOAD CURRENT USER
+========================= */
+
+
+async function loadCurrentUser(){
+
+
+const savedName =
+localStorage.getItem("name");
+
+
+
+if(savedName){
+
+currentUserName = savedName;
+
+return;
+
+}
+
+
+
+const deviceId =
+localStorage.getItem("device_id");
+
+
+
+if(!deviceId) return;
+
+
+
+const {data} = await supabase
+
+.from("profiles")
+
+.select("name")
+
+.eq("device_id",deviceId)
+
+.single();
+
+
+
+if(data?.name){
+
+
+currentUserName=data.name;
+
+
+localStorage.setItem(
+"name",
+data.name
+);
+
+
+}
+
+
+}
+
+
+
+
+
+
+/* =========================
+   UNIVERSAL VIDEO PLAYER
+   BUSANSO NATION VERSION
+========================= */
+
+function renderPlayer(url){
+
+const player=document.getElementById("player");
+
+if(!url){
+player.innerHTML=`
+<div style="
+height:100%;
+display:flex;
+align-items:center;
+justify-content:center;
+color:#94a3b8;">
+Video unavailable
+</div>`;
+return;
+}
+
+
+/* =========================
+GOOGLE DRIVE
+========================= */
+
+if(url.includes("drive.google.com")){
+
+ const m=url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+
+ if(m){
+
+ player.innerHTML=`
+
+ <iframe
+ src="https://drive.google.com/file/d/${m[1]}/preview"
+ allow="autoplay; fullscreen"
+ allowfullscreen
+ style="width:100%;height:100%;border:0;">
+ </iframe>
+
+ `;
+
+ return;
+
+ }
+
+}
+
+
+
+/* =========================
+YOUTUBE PLYR
+========================= */
+
+if(/youtube\.com|youtu\.be/.test(url)){
+
+let id=(url.match(
+/(?:v=|youtu\.be\/|embed\/|shorts\/)([A-Za-z0-9_-]{11})/
+)||[])[1];
+
+
+if(id){
+
+player.innerHTML=`
+
+<div id="videoPlayer"
+data-plyr-provider="youtube"
+data-plyr-embed-id="${id}">
+</div>
+
+`;
+
+
+new Plyr("#videoPlayer",{
+
+autoplay:true,
+
+controls:[
+"play-large",
+"play",
+"progress",
+"current-time",
+"settings"
+]
+
+});
+
+
+return;
+
+}
+
+}
+
+
+
+/* =========================
+VIMEO PLYR
+========================= */
+
+if(/vimeo\.com/.test(url)){
+
+
+let id=(url.match(
+/vimeo\.com\/(?:video\/)?([0-9]+)/
+)||[])[1];
+
+
+if(id){
+
+
+player.innerHTML=`
+
+<div id="videoPlayer"
+data-plyr-provider="vimeo"
+data-plyr-embed-id="${id}">
+</div>
+
+`;
+
+
+try{
+
+
+new Plyr("#videoPlayer",{
+
+autoplay:true,
+
+controls:[
+"play-large",
+"play",
+"progress",
+"current-time",
+"settings"
+],
+
+settings:[
+"speed"
+]
+
+});
+
+
+}catch(e){
+
+
+console.log("Plyr Vimeo failed, using iframe");
+
+
+player.innerHTML=`
+
+<iframe
+
+src="https://player.vimeo.com/video/${id}?autoplay=1"
+
+allow="autoplay; fullscreen"
+
+allowfullscreen
+
+style="
+width:100%;
+height:100%;
+border:0;">
+
+</iframe>
+
+`;
+
+}
+
+
+return;
+
+
+}
+
+}
+
+
+
+/* =========================
+DIRECT MP4 / R2 / OTHER VIDEO
+========================= */
+
+
+player.innerHTML=`
+
+<video 
+id="videoPlayer"
+playsinline
+autoplay
+controls
+preload="metadata">
+
+<source src="${url}">
+
+</video>
+
+`;
+
+
+const video=document.getElementById("videoPlayer");
+
+
+const plyr=new Plyr(video,{
+
+controls:[
+
+"play-large",
+"play",
+"progress",
+"current-time",
+"settings"
+
+],
+
+settings:[
+"quality",
+"speed"
+],
+
+keyboard:{
+focused:true,
+global:true
+}
+
+});
+
+
+video.onended=()=>{
+
+if(index < episodes.length-1){
+
+loadEpisode(index+1);
+
+}
+
+};
+
+
+}
+
+/* =========================
+ACCESS CONTROL
+========================= */
+
+
+// =====================================
+// SILENT PREMIUM EXPIRY MONITOR
+// =====================================
+
+let expiryTimer = null;
+
+
+function stopSeriesPlayerAndRedirect(){
+
+    const playerBox =
+    document.getElementById("player");
+
+
+    if(playerBox){
+
+        playerBox.innerHTML = `
+
+        <div style="
+        height:100%;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        background:#000;
+        color:#fbbf24;
+        font-size:22px;
+        text-align:center;
+        padding:20px;
+        ">
+
+        ⏳ Your subscription has expired.
+
+        <br><br>
+
+        Redirecting to packages...
+
+        </div>
+
+        `;
+
+    }
+
+
+    setTimeout(()=>{
+
+        window.location.href="packages.html";
+
+    },3000);
+
+}
+
+
+
+
+async function checkMembershipExpiry(){
+
+    const userId =
+    localStorage.getItem("user_id");
+
+
+    if(!userId){
+        return;
+    }
+
+
+    const {data,error}=await supabase
+
+    .from("profiles")
+
+    .select("expires_at")
+
+    .eq("id",userId)
+
+    .single();
+
+
+
+    if(error || !data){
+        return;
+    }
+
+
+
+    if(
+        data.expires_at &&
+        new Date(data.expires_at) <= new Date()
+    ){
+
+        clearInterval(expiryTimer);
+
+
+        stopSeriesPlayerAndRedirect();
+
+    }
+
+}
+
+
+
+// Check silently every 5 minutes
+
+expiryTimer =
+setInterval(
+checkMembershipExpiry,
+300000
+);
+
+
+// Check once immediately
+
+checkMembershipExpiry();
+
+
+
+
+
+/* =========================
+   PREMIUM ACCESS CONTROL
+========================= */
+
+async function checkAccess(seriesType){
+
+
+    // =========================
+    // FREE CONTENT
+    // =========================
+
+    if(
+        seriesType &&
+        seriesType.toLowerCase() === "free"
+    ){
+
+        return {
+            allowed:true
+        };
+
+    }
+
+
+
+    // =========================
+    // PREMIUM CONTENT
+    // =========================
+
+
+    // CHECK ACTIVE PIN FIRST
+
+    const activePIN =
+    localStorage.getItem("activePIN");
+
+
+    const pinExpiry =
+    localStorage.getItem("pinExpiry");
+
+
+
+    if(
+        activePIN &&
+        pinExpiry &&
+        Date.now() < Number(pinExpiry)
+    ){
+
+        return {
+            allowed:true,
+            method:"PIN"
+        };
+
+    }
+
+
+
+    // =========================
+    // CHECK LOGIN
+    // =========================
+
+    const loggedIn =
+    localStorage.getItem("loggedIn");
+
+
+    if(loggedIn !== "true"){
+
+        return {
+            allowed:false,
+            reason:"not_logged_in"
+        };
+
+    }
+
+
+
+    // =========================
+    // GET USER PROFILE
+    // =========================
+
+    const userID =
+    localStorage.getItem("user_id");
+
+
+    if(!userID){
+
+        return {
+            allowed:false,
+            reason:"missing_identity"
+        };
+
+    }
+
+
+
+    const {data:user,error}=
+
+    await supabase
+
+    .from("profiles")
+
+    .select("*")
+
+    .eq("id",userID)
+
+    .single();
+
+
+
+    if(error || !user){
+
+        return {
+            allowed:false,
+            reason:"profile_missing"
+        };
+
+    }
+
+
+
+
+    // =========================
+    // PREMIUM VALIDATION
+    // =========================
+
+
+    if(
+        user.account_status !== "active"
+    ){
+
+        return {
+            allowed:false,
+            reason:"account_inactive"
+        };
+
+    }
+
+
+
+
+    if(
+        user.membership?.toLowerCase()
+        !== "premium"
+    ){
+
+        return {
+            allowed:false,
+            reason:"not_premium"
+        };
+
+    }
+
+
+
+    if(
+        !user.expires_at ||
+        new Date(user.expires_at) <= new Date()
+    ){
+
+        return {
+            allowed:false,
+            reason:"expired"
+        };
+
+    }
+
+
+
+
+    return {
+        allowed:true,
+        method:"premium"
+    };
+
+
+}
+
+/* =========================
+SUBSCRIPTION ALERT
+========================= */
+
+
+async function showSubscriptionReminder(){
+
+
+const box =
+document.getElementById(
+"subscriptionAlert"
+);
+
+
+
+let expiry =
+localStorage.getItem("pinExpires");
+
+
+// If no PIN expiry, check profile expiry
+
+if(!expiry){
+
+    const userId =
+    localStorage.getItem("user_id");
+
+
+    if(userId){
+
+        const {data:user}=await supabase
+
+        .from("profiles")
+
+        .select("expires_at")
+
+        .eq("id",userId)
+
+        .single();
+
+
+        if(user?.expires_at){
+
+            expiry =
+            new Date(user.expires_at).getTime();
+
+        }
+
+    }
+
+}
+
+
+if(!expiry) return;
+
+
+
+const left =
+Number(expiry)-Date.now();
+
+
+
+const days =
+Math.ceil(left/86400000);
+
+
+
+if(days>5)return;
+
+
+
+box.style.display="block";
+
+box.className="subscriptionAlert";
+
+
+
+
+
+if(days>1){
+
+
+box.style.background="#991b1b";
+
+
+box.innerHTML=`
+
+🚨 Your subscription expires in 
+<b>${days} days</b>
+
+<br><br>
+
+<button class="fullBtn"
+onclick="location.href='packages.html'">
+
+Renew Subscription
+
+</button>
+
+`;
+
+
+
+}
+
+
+
+
+else if(days===1){
+
+
+box.style.background=
+"linear-gradient(135deg,#dc2626,#7f1d1d)";
+
+
+box.classList.add(
+"criticalExpiry"
+);
+
+
+
+box.innerHTML=`
+
+🚨 FINAL WARNING 🚨
+
+<br><br>
+
+Your subscription EXPIRES TOMORROW
+
+<br><br>
+
+<button class="fullBtn"
+onclick="location.href='packages.html'">
+
+RENEW NOW
+
+</button>
+
+`;
+
+
+
+}
+
+
+
+
+else{
+
+
+box.style.background="#ef4444";
+
+box.classList.add(
+"criticalExpiry"
+);
+
+
+
+box.innerHTML=`
+
+⛔ LAST DAY OF ACCESS ⛔
+
+<br><br>
+
+Your subscription expires TODAY
+
+<br><br>
+
+<button class="fullBtn"
+onclick="location.href='packages.html'">
+
+Renew Subscription
+
+</button>
+
+`;
+
+
+
+}
+
+
+
+
+}
+
+
+
+
+
+
+
+
+function showFreeUserUpsell(){
+
+
+const box =
+document.getElementById(
+"subscriptionAlert"
+);
+
+
+
+box.style.display="block";
+
+
+box.className="subscriptionAlert";
+
+
+box.style.border=
+"2px solid #60a5fa";
+
+
+
+box.innerHTML=`
+
+🎬 Enjoying Busanso Nation?
+
+<br><br>
+
+Unlock premium series,
+movies and exclusive content.
+
+<br><br>
+
+
+<button class="fullBtn"
+onclick="location.href='packages.html'">
+
+Upgrade Now
+
+</button>
+
+
+`;
+
+
+
+}
+
+
+
+
+
+
+
+
+/* =========================
+LOAD EPISODES
+========================= */
+
+
+async function loadEpisodes(){
+
+
+
+const {data:series,error}=await supabase
+
+.from("series")
+
+.select("type,title")
+
+.eq("id",seriesId)
+
+.single();
+
+
+
+
+if(!series){
+
+console.log("SERIES ERROR:", error);
+console.log("SERIES ID:", seriesId);
+
+alert("Series missing: "+seriesId);
+
+return;
+
+}
+
+
+
+
+const access =
+await checkAccess(series.type);
+
+
+if(!access.allowed){
+
+
+    if(access.reason === "not_logged_in"){
+
+        location.href = "login.html";
+        return;
+
+    }
+
+
+
+    if(access.reason === "expired"){
+
+        location.href = "packages.html";
+        return;
+
+    }
+
+
+const membership =
+user.membership?.toLowerCase();
+
+
+if(
+    membership !== "premium" &&
+    membership !== "kibanda"
+){
+
+    return {
+        allowed:false,
+        reason:"not_premium"
+    };
+
+}
+
+    if(access.reason === "account_inactive"){
+
+        const box =
+        document.getElementById("subscriptionAlert");
+
+        if(box){
+
+            box.style.display = "block";
+
+            box.className = "subscriptionAlert";
+
+            box.style.background =
+            "linear-gradient(135deg,#7f1d1d,#991b1b)";
+
+            box.innerHTML = `
+
+            ⚠️ Your account is currently inactive.
+
+            <br><br>
+
+            Please contact Busanso Nation support.
+
+            <br><br>
+
+            <a href="https://wa.me/YOUR_NUMBER"
+            style="
+            display:inline-block;
+            padding:14px 20px;
+            background:#22c55e;
+            color:white;
+            border-radius:12px;
+            text-decoration:none;
+            font-weight:800;
+            ">
+
+            💬 Contact Support
+
+            </a>
+
+            `;
+
+        }
+
+        return;
+
+    }
+
+
+
+    // fallback
+
+    location.href="packages.html";
+
+    return;
+
+
+}
+
+
+
+
+
+
+if(series.type?.toLowerCase()==="free"){
+
+
+if(!access.premium){
+
+showFreeUserUpsell();
+
+}
+
+
+}
+
+else{
+
+
+showSubscriptionReminder();
+
+
+}
+
+
+
+
+
+
+
+const {data}=await supabase
+
+.from("episodes")
+
+.select("*")
+
+.eq("series_id",seriesId)
+
+.order(
+"episode_number",
+{
+ascending:true
+}
+);
+
+
+
+episodes=data || [];
+
+
+
+
+document.getElementById(
+"seriesTitle"
+).textContent =
+series.title;
+
+
+
+
+
+const saved =
+localStorage.getItem(
+`busanso_last_episode_${seriesId}`
+);
+
+
+
+if(saved!==null){
+
+loadEpisode(Number(saved));
+
+}
+
+else{
+
+loadEpisode(0);
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+/* =========================
+LOAD SINGLE EPISODE
+========================= */
+
+
+function loadEpisode(i){
+
+
+
+index=i;
+
+
+
+const ep =
+episodes[i];
+
+
+
+if(!ep)return;
+
+
+
+localStorage.setItem(
+
+`busanso_last_episode_${seriesId}`,
+
+i
+
+);
+
+
+
+
+document.getElementById(
+"epLabel"
+).textContent =
+`Episode ${ep.episode_number}`;
+
+
+
+renderPlayer(ep.video);
+
+
+
+loadComments(ep.id);
+
+
+
+renderEpisodeList();
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+function renderEpisodeList(){
+
+
+
+const list =
+document.getElementById(
+"episodeList"
+);
+
+
+
+list.innerHTML =
+episodes.map((ep,i)=>`
+
+
+<div class="episodeItem 
+${i===index?'active':''}"
+
+onclick="window.selectEpisode(${i})">
+
+Episode ${ep.episode_number}
+
+${ep.title ? " - "+ep.title : ""}
+
+
+</div>
+
+
+`).join("");
+
+
+
+}
+
+
+
+
+window.selectEpisode=function(i){
+
+
+loadEpisode(i);
+
+
+
+document.getElementById(
+"episodeList"
+).style.display="none";
+
+
+
+window.scrollTo({
+
+top:
+document.getElementById("player")
+.offsetTop-80,
+
+behavior:"smooth"
+
+});
+
+
+};
+
+
+
+
+
+
+
+
+
+/* =========================
+COMMENTS
+========================= */
+
+
+function timeAgo(date){
+
+
+const seconds =
+Math.floor(
+(Date.now()-new Date(date))/1000
+);
+
+
+
+if(seconds<60)return"Just now";
+
+
+const minutes=Math.floor(seconds/60);
+
+
+if(minutes<60)
+return minutes+" minutes ago";
+
+
+
+const hours=Math.floor(minutes/60);
+
+
+if(hours<24)
+return hours+" hours ago";
+
+
+
+const days=Math.floor(hours/24);
+
+
+return days+" days ago";
+
+
+}
+
+
+
+
+
+
+async function loadComments(epId){
+
+
+const {data}=await supabase
+
+.from("episode_comments")
+
+.select("*")
+
+.eq("episode_id",epId)
+
+.order(
+"created_at",
+{
+ascending:false
+}
+);
+
+
+
+const comments=data||[];
+
+
+
+
+document.getElementById(
+"commentsList"
+).innerHTML =
+
+
+comments
+.filter(c=>!c.parent_id)
+
+.map(c=>{
+
+
+const replies =
+comments.filter(
+r=>r.parent_id===c.id
+);
+
+
+
+return `
+
+<div class="commentItem">
+
+
+<div class="commentUser">
+
+${c.user_name}
+
+</div>
+
+
+<div class="commentText">
+
+${c.comment}
+
+</div>
+
+
+<small>
+🕒 ${timeAgo(c.created_at)}
+</small>
+
+
+<div class="commentActions">
+
+
+<button onclick="likeComment(${c.id})">
+
+❤️ ${c.likes||0}
+
+</button>
+
+
+<button onclick="openReply(${c.id})">
+
+💬 ${replies.length} Replies
+
+</button>
+
+
+</div>
+
+
+
+<div id="replies-${c.id}" style="display:none">
+
+
+${replies.map(r=>`
+
+<div class="replyItem">
+
+<b>${r.user_name}</b>
+
+<p>${r.comment}</p>
+
+</div>
+
+`).join("")}
+
+
+
+<textarea 
+id="replyText-${c.id}"
+placeholder="Write reply...">
+</textarea>
+
+
+<button onclick="sendReply(${c.id})">
+
+Post Reply
+
+</button>
+
+
+
+</div>
+
+
+
+</div>
+
+
+`;
+
+}).join("");
+
+
+
+}
+
+
+
+
+
+
+
+
+window.likeComment=async function(id){
+
+
+const {data}=await supabase
+
+.from("episode_comments")
+
+.select("likes")
+
+.eq("id",id)
+
+.single();
+
+
+
+const likes=(data.likes||0)+1;
+
+
+
+await supabase
+
+.from("episode_comments")
+
+.update({
+
+likes
+
+})
+
+.eq("id",id);
+
+
+
+loadComments(
+episodes[index].id
+);
+
+
+};
+
+
+
+
+
+
+
+
+window.openReply=function(id){
+
+
+const box=
+document.getElementById(
+"replies-"+id
+);
+
+
+
+if(box)
+
+box.style.display =
+box.style.display==="none"
+?"block"
+:"none";
+
+
+};
+
+
+
+
+
+
+
+
+
+window.sendReply=async function(parent){
+
+
+const text =
+document.getElementById(
+"replyText-"+parent
+).value.trim();
+
+
+
+if(!text)return;
+
+
+
+await supabase
+
+.from("episode_comments")
+
+.insert([{
+
+
+episode_id:
+episodes[index].id,
+
+
+user_name:
+currentUserName,
+
+
+comment:text,
+
+
+parent_id:parent,
+
+
+created_at:
+new Date().toISOString()
+
+
+}]);
+
+
+
+loadComments(
+episodes[index].id
+);
+
+
+
+};
+
+
+
+
+
+
+
+
+document.getElementById(
+"postComment"
+).onclick=async()=>{
+
+
+const text =
+document.getElementById(
+"commentText"
+).value.trim();
+
+
+
+const user =
+currentUserName!=="Guest"
+?
+currentUserName
+:
+document.getElementById(
+"username"
+).value.trim()
+||"Guest";
+
+
+
+if(!text)return;
+
+
+
+await supabase
+
+.from("episode_comments")
+
+.insert([{
+
+
+episode_id:
+episodes[index].id,
+
+
+user_name:user,
+
+
+comment:text,
+
+
+created_at:
+new Date().toISOString()
+
+
+}]);
+
+
+
+loadComments(
+episodes[index].id
+);
+
+
+};
+
+
+
+
+
+
+
+
+
+/* =========================
+BUTTONS
+========================= */
+
+
+document.getElementById(
+"nextEp"
+).onclick=()=>{
+
+
+if(index<episodes.length-1)
+
+loadEpisode(index+1);
+
+
+};
+
+
+
+
+
+document.getElementById(
+"prevEp"
+).onclick=()=>{
+
+
+if(index>0)
+
+loadEpisode(index-1);
+
+
+};
+
+
+
+
+
+
+document.getElementById(
+"toggleEpisodes"
+).onclick=()=>{
+
+
+const box=
+document.getElementById(
+"episodeList"
+);
+
+
+
+box.style.display =
+box.style.display==="none"
+?
+"block"
+:
+"none";
+
+
+};
+
+
+
+
+
+
+
+document.getElementById(
+"openCommentBox"
+).onclick=()=>{
+
+
+const box=
+document.getElementById(
+"commentForm"
+);
+
+
+
+box.style.display =
+box.style.display==="none"
+?
+"block"
+:
+"none";
+
+
+};
+
+
+
+
+
+
+
+
+
+/* FULLSCREEN */
+
+
+document.getElementById("fullBtn").onclick = async () => {
+
+    const player = document.getElementById("player");
+
+    if (!document.fullscreenElement) {
+
+        await player.requestFullscreen();
+
+        // Force landscape where supported
+        try {
+            if (screen.orientation?.lock) await screen.orientation.lock("landscape");
+        } catch(e){}
+
+        // Fallback for Android browsers: prompt fullscreen on play
+
+    } else {
+
+        await document.exitFullscreen();
+
+        try {
+            if (screen.orientation && screen.orientation.unlock) {
+                screen.orientation.unlock();
+            }
+        } catch (e) {}
+
+    }
+};
+
+
+
+
+
+
+
+
+
+
+// Auto-enter fullscreen and request landscape on mobile playback
+document.addEventListener("play", async (e)=>{
+  const el=e.target;
+  if(el.tagName==="VIDEO"){
+    const p=document.getElementById("player");
+    try{
+      if(!document.fullscreenElement) await p.requestFullscreen();
+    }catch(e){}
+    try{
+      if(screen.orientation?.lock) await screen.orientation.lock("landscape");
+    }catch(e){}
+  }
+},true);
+
+/* =========================
+START
+========================= */
+
+
+await loadCurrentUser();
+
+
+
+if(currentUserName!=="Guest"){
+
+document.getElementById(
+"username"
+).style.display="none";
+
+}
+
+
+
+loadEpisodes();
+
+
+
+</script>
+
+
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1,"spa":2}' crossorigin="anonymous"></script>
+</body>
+
+</html>
+
+
+

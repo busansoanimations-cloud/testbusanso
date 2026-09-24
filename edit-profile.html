@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Profile - BUSANSO NATION</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  min-height:100vh;font-family:Arial,Helvetica,sans-serif;color:#fff;
+  background:
+    radial-gradient(circle at 15% 0%,rgba(212,175,55,.22),transparent 32%),
+    radial-gradient(circle at 100% 100%,rgba(255,180,60,.10),transparent 35%),
+    linear-gradient(180deg,#120e05,#050505 58%,#000);
+  padding:18px;
+}
+.wrap{max-width:520px;margin:auto}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.back{color:#e4bd4f;text-decoration:none;font-weight:800;font-size:13px}
+.brand{color:#d4af37;font-size:12px;font-weight:900;letter-spacing:2px}
+.card{
+  background:linear-gradient(145deg,rgba(255,255,255,.09),rgba(255,255,255,.025));
+  border:1px solid rgba(212,175,55,.35);border-radius:28px;padding:28px 20px;
+  box-shadow:0 28px 70px rgba(0,0,0,.65);
+}
+.logo{width:92px;height:92px;display:block;object-fit:contain;margin:0 auto 14px;filter:drop-shadow(0 8px 25px rgba(212,175,55,.35))}
+h1{text-align:center;font-size:25px;background:linear-gradient(90deg,#fff4b0,#d4af37,#fff4b0);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sub{text-align:center;color:#aaa;font-size:12px;margin:8px 0 24px}
+.field{margin-bottom:16px}
+label{display:block;color:#c9b875;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.3px;margin-bottom:8px}
+input{
+  width:100%;padding:15px;border-radius:15px;border:1px solid rgba(212,175,55,.24);
+  background:rgba(0,0,0,.35);color:#fff;font-size:14px;outline:none;
+}
+input:focus{border-color:#d4af37;box-shadow:0 0 0 3px rgba(212,175,55,.10)}
+.note{font-size:11px;color:#888;line-height:1.6;margin-top:7px}
+button,.btn{
+  width:100%;border:0;border-radius:16px;padding:15px;text-align:center;text-decoration:none;
+  font-size:13px;font-weight:900;cursor:pointer;display:block;
+}
+.save{background:linear-gradient(135deg,#8f6b18,#d4af37,#f5df7a);color:#160f00;box-shadow:0 10px 28px rgba(212,175,55,.2)}
+.home{margin-top:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);color:#fff}
+.msg{display:none;margin:15px 0 0;padding:13px;border-radius:13px;text-align:center;font-size:12px;line-height:1.5}
+.ok{background:rgba(50,180,100,.12);border:1px solid rgba(50,180,100,.25);color:#9ff0ba}
+.err{background:rgba(255,70,70,.10);border:1px solid rgba(255,70,70,.22);color:#ffaaaa}
+.loading{text-align:center;color:#aaa;padding:25px 0}
+hr{border:0;height:1px;background:linear-gradient(90deg,transparent,#d4af37,transparent);margin:24px 0}
+@media(max-width:400px){.card{padding:24px 16px}h1{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="back" href="account.html">← ACCOUNT</a>
+    <div class="brand">BUSANSO NATION</div>
+  </div>
+
+  <div class="card">
+    <img class="logo" src="https://i.ibb.co/hxgrLF35/BUSANSO-New.png" alt="BUSANSO NATION">
+    <h1>EDIT PROFILE</h1>
+    <div class="sub">Keep your BUSANSO profile information up to date.</div>
+
+    <div id="loading" class="loading">Loading your profile...</div>
+
+    <form id="profileForm" style="display:none">
+      <div class="field">
+        <label for="name">Your Name</label>
+        <input id="name" maxlength="80" required autocomplete="name" placeholder="Enter your name">
+      </div>
+
+      <div class="field">
+        <label for="whatsapp">WhatsApp / Phone Number</label>
+        <input id="whatsapp" maxlength="30" autocomplete="tel" placeholder="Optional">
+        <div class="note">This is optional. It is only saved to your BUSANSO profile.</div>
+      </div>
+
+      <hr>
+
+      <button id="saveBtn" class="save" type="submit">SAVE PROFILE</button>
+      <a class="btn home" href="account.html">CANCEL</a>
+
+      <div id="message" class="msg"></div>
+    </form>
+  </div>
+</div>
+
+<script>
+(() => {
+  "use strict";
+
+  const SUPABASE_URL = "https://dhkfhhybzcxdeoalcfqx.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_Rjm3T44VKTeuOF2yJS5rMw_xDfwPjuG";
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const loading = document.getElementById("loading");
+  const form = document.getElementById("profileForm");
+  const nameInput = document.getElementById("name");
+  const whatsappInput = document.getElementById("whatsapp");
+  const saveBtn = document.getElementById("saveBtn");
+  const message = document.getElementById("message");
+
+  let profile = null;
+  let authUser = null;
+  let mode = null;
+
+  function showMessage(text, ok=false) {
+    message.textContent = text;
+    message.className = "msg " + (ok ? "ok" : "err");
+    message.style.display = "block";
+  }
+
+  async function findProfile() {
+    const sessionResult = await supabase.auth.getSession();
+    if (!sessionResult.error && sessionResult.data?.session?.user) {
+      authUser = sessionResult.data.session.user;
+
+      const r = await supabase.from("profiles")
+        .select("*")
+        .eq("auth_user_id", authUser.id)
+        .maybeSingle();
+
+      if (r.error) throw r.error;
+      if (r.data) {
+        profile = r.data;
+        mode = "google";
+        return;
+      }
+    }
+
+    const storedId = localStorage.getItem("user_id");
+    if (storedId && Number.isFinite(Number(storedId))) {
+      const r = await supabase.from("profiles")
+        .select("*")
+        .eq("id", Number(storedId))
+        .maybeSingle();
+
+      if (!r.error && r.data) {
+        profile = r.data;
+        mode = "legacy";
+        return;
+      }
+    }
+
+    const storedName = localStorage.getItem("name");
+    if (storedName) {
+      const r = await supabase.from("profiles")
+        .select("*")
+        .eq("name", storedName)
+        .limit(1);
+
+      if (!r.error && r.data?.length) {
+        profile = r.data[0];
+        mode = "legacy";
+      }
+    }
+  }
+
+  async function init() {
+    try {
+      await findProfile();
+
+      if (!profile) {
+        loading.innerHTML = 'No BUSANSO profile was found.<br><br><a href="auth.html" style="color:#d4af37;font-weight:800">GO TO SIGN IN</a>';
+        return;
+      }
+
+      nameInput.value = profile.name || "";
+      whatsappInput.value = profile.whatsapp_number || "";
+
+      localStorage.setItem("user_id", String(profile.id));
+      localStorage.setItem("name", profile.name || "");
+      if (authUser?.id) {
+        localStorage.setItem("auth_user_id", authUser.id);
+        localStorage.setItem("supabase_auth_user_id", authUser.id);
+      }
+
+      loading.style.display = "none";
+      form.style.display = "block";
+    } catch (e) {
+      console.error(e);
+      loading.textContent = "Unable to load your profile. Please try again.";
+    }
+  }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    message.style.display = "none";
+
+    const newName = nameInput.value.trim();
+    const newWhatsapp = whatsappInput.value.trim();
+
+    if (!newName) {
+      showMessage("Please enter your name.");
+      return;
+    }
+
+    saveBtn.disabled = true;
+    saveBtn.textContent = "SAVING...";
+
+    try {
+      const updates = {
+        name: newName,
+        whatsapp_number: newWhatsapp || null
+      };
+
+      const r = await supabase.from("profiles")
+        .update(updates)
+        .eq("id", profile.id)
+        .select("*")
+        .maybeSingle();
+
+      if (r.error) throw r.error;
+      if (!r.data) throw new Error("The profile could not be updated. Check your Supabase UPDATE policy.");
+
+      profile = r.data;
+      localStorage.setItem("user_id", String(profile.id));
+      localStorage.setItem("name", profile.name || "");
+      localStorage.setItem("whatsapp_number", profile.whatsapp_number || "");
+
+      showMessage("Profile updated successfully.", true);
+      setTimeout(() => location.href = "account.html", 900);
+    } catch (e) {
+      console.error(e);
+      showMessage("Could not save the profile. " + (e.message || "Please try again."));
+    } finally {
+      saveBtn.disabled = false;
+      saveBtn.textContent = "SAVE PROFILE";
+    }
+  });
+
+  init();
+})();
+</script>
+</body>
+</html>
