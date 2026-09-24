@@ -1,269 +1,1339 @@
-﻿
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>GK Foundation Uganda</title>
-  <meta name="description" content="GK Foundation Uganda, founded by King VJ, provides shelter, education, and daily care to orphaned and vulnerable children. Learn our goals, see what is needed, and donate to make a difference." />
-  <meta property="og:title" content="GK Foundation Uganda" />
-  <meta property="og:description" content="Caring for 21 children with love, education, and daily needs." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://images.unsplash.com/photo-1604881991720-f91add269bed?q=80&w=1400&auto=format&fit=crop" />
-  <meta name="theme-color" content="#0ea5e9" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <style>
-    :root{
-      --bg:#f7fafc; --card:#ffffff; --ink:#0f172a; --muted:#475569; --brand:#0ea5e9;
-      --brand-600:#0284c7; --accent:#10b981; --ring: rgba(14,165,233,.35); --shadow:0 10px 30px rgba(2,8,23,.08)
-    }
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0}
-    body{font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:var(--ink); background:var(--bg); line-height:1.6}
-    a{color:var(--brand); text-decoration:none}
-    a:hover{text-decoration:underline}
-    img{max-width:100%; display:block}
-    .container{max-width:1100px; margin:0 auto; padding:0 1rem}
-    header{position:sticky; top:0; z-index:50; backdrop-filter:saturate(180%) blur(6px); background:rgba(255,255,255,.85); border-bottom:1px solid #e5e7eb}
-    .nav{display:flex; align-items:center; justify-content:space-between; padding:.75rem 0}
-    .brand{display:flex; align-items:center; gap:.6rem; font-weight:700}
-    .brand-logo{width:36px; height:36px; border-radius:8px; background:linear-gradient(135deg,var(--brand),var(--accent)); display:grid; place-items:center; color:white; font-weight:800}
-    .nav-links{display:flex; gap:1rem; align-items:center}
-    .nav a{font-weight:600; color:var(--muted)}
-    .btn{display:inline-flex; align-items:center; gap:.5rem; background:var(--brand); color:white; padding:.7rem 1rem; border-radius:12px; font-weight:700; border:0; box-shadow:var(--shadow); cursor:pointer}
-    .btn:hover{background:var(--brand-600)}
-    .btn-outline{background:transparent; color:var(--brand); border:2px solid var(--brand); box-shadow:none}
-    .btn-outline:hover{color:white}
-    .hero{position:relative; overflow:hidden; padding:3.2rem 0 2rem; background:radial-gradient(1200px 600px at 90% -10%, rgba(14,165,233,.18), transparent), radial-gradient(1200px 600px at -10% 120%, rgba(16,185,129,.18), transparent)}
-    .hero-grid{display:grid; gap:2rem; align-items:center; grid-template-columns:1.1fr .9fr}
-    .hero h1{font-size:clamp(2rem, 4vw, 3rem); line-height:1.1; margin:.2rem 0}
-    .eyebrow{font-weight:700; color:var(--brand); letter-spacing:.12em; text-transform:uppercase; font-size:.8rem}
-    .lead{color:var(--muted); font-size:1.05rem}
-    .card{background:var(--card); border:1px solid #e5e7eb; border-radius:16px; padding:1.25rem; box-shadow:var(--shadow)}
-    .grid{display:grid; gap:1rem}
-    .grid-3{grid-template-columns:repeat(3,1fr)}
-    .grid-2{grid-template-columns:repeat(2,1fr)}
-    .section{padding:2.4rem 0}
-    h2{font-size:clamp(1.4rem, 2.5vw, 2rem); margin:.2rem 0 1rem}
-    .muted{color:var(--muted)}
-    .tag{display:inline-block; font-size:.75rem; background:#eff6ff; color:#1d4ed8; padding:.25rem .5rem; border-radius:999px; border:1px solid #bfdbfe}
-    .list{margin:0; padding-left:1.1rem}
-    .stats{display:grid; grid-template-columns:repeat(4,1fr); gap:1rem}
-    .stat{background:var(--card); border:1px solid #e5e7eb; border-radius:16px; padding:1rem; text-align:center}
-    .stat b{display:block; font-size:1.6rem}
-    .needs li{margin:.35rem 0}
-    .donate{display:grid; grid-template-columns:1.1fr .9fr; gap:1rem}
-    .donate form{display:grid; gap:.75rem}
-    input, select, textarea{width:100%; padding:.7rem .8rem; border:1px solid #e5e7eb; border-radius:12px; font:inherit}
-    input:focus, select:focus, textarea:focus{outline:none; box-shadow:0 0 0 4px var(--ring); border-color:var(--brand)}
-    .inline{display:flex; gap:.6rem; align-items:center; flex-wrap:wrap}
-    .pill{padding:.4rem .7rem; border:1px solid #e5e7eb; border-radius:999px; cursor:pointer}
-    .pill[data-active="true"]{background:#ecfeff; border-color:#a5f3fc}
-    .methods{display:grid; grid-template-columns:repeat(3,1fr); gap:.75rem}
-    .method{padding:1rem; border:1px dashed #cbd5e1; border-radius:14px; text-align:center}
-    footer{background:#0b1220; color:#cbd5e1; padding:2rem 0; margin-top:2rem}
-    footer a{color:#93c5fd}
-    .small{font-size:.9rem}
 
-    @media (max-width: 900px){
-      .hero-grid, .donate, .grid-3, .grid-2{grid-template-columns:1fr}
-      .stats{grid-template-columns:repeat(2,1fr)}
-      .nav-links{display:none}
-      .nav-toggle{display:inline-flex}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>BUSANSO Premium</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html,body{
+    min-height:100%;
+}
+
+body{
+    min-height:100vh;
+    font-family:Poppins,Arial,sans-serif;
+    color:#fff;
+
+    background:
+        radial-gradient(circle at top,#3b2a00 0%,#15110a 35%,#050505 75%,#000 100%);
+
+    padding:20px;
+}
+
+.page{
+    width:100%;
+    max-width:620px;
+    margin:0 auto;
+}
+
+/* HEADER */
+
+.topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:20px;
+}
+
+.logo{
+    width:58px;
+    height:58px;
+    object-fit:contain;
+    border-radius:15px;
+}
+
+.top-actions{
+    display:flex;
+    gap:8px;
+}
+
+.top-btn{
+    border:1px solid rgba(255,215,0,.25);
+    background:rgba(255,215,0,.08);
+    color:#ffd84d;
+    padding:9px 14px;
+    border-radius:10px;
+    text-decoration:none;
+    font-size:12px;
+    font-weight:700;
+}
+
+/* MAIN CARD */
+
+.account-card{
+    position:relative;
+    overflow:hidden;
+
+    border-radius:28px;
+
+    padding:30px 22px 25px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,215,0,.14),
+            rgba(255,255,255,.045) 35%,
+            rgba(255,255,255,.025)
+        );
+
+    border:1px solid rgba(255,215,0,.28);
+
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.65),
+        inset 0 1px rgba(255,255,255,.08);
+}
+
+.account-card:before{
+    content:"";
+    position:absolute;
+    width:260px;
+    height:260px;
+    border-radius:50%;
+    background:rgba(255,215,0,.08);
+    filter:blur(60px);
+    top:-150px;
+    right:-100px;
+}
+
+.badge{
+    position:relative;
+    display:inline-block;
+
+    padding:7px 13px;
+    border-radius:30px;
+
+    background:linear-gradient(135deg,#ffe27a,#c99600);
+    color:#211700;
+
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:1px;
+    text-transform:uppercase;
+
+    margin-bottom:17px;
+}
+
+h1{
+    position:relative;
+    font-size:30px;
+    line-height:1.1;
+    margin-bottom:8px;
+
+    background:linear-gradient(90deg,#fff,#ffe27a,#c99716);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+}
+
+.welcome{
+    position:relative;
+    color:#bdb7a5;
+    font-size:14px;
+    margin-bottom:25px;
+}
+
+/* PACKAGE */
+
+.package-box{
+    position:relative;
+
+    padding:20px;
+
+    border-radius:20px;
+
+    background:rgba(0,0,0,.35);
+    border:1px solid rgba(255,215,0,.18);
+
+    margin-bottom:18px;
+}
+
+.package-title{
+    color:#918b7c;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:1.5px;
+    margin-bottom:6px;
+}
+
+.package-name{
+    font-size:24px;
+    font-weight:900;
+    color:#ffe06b;
+}
+
+.status{
+    margin-top:7px;
+    font-size:13px;
+    color:#aaa;
+}
+
+/* EXPIRY */
+
+.expiry-box{
+    position:relative;
+
+    padding:20px;
+
+    border-radius:20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,215,0,.12),
+            rgba(255,255,255,.035)
+        );
+
+    border:1px solid rgba(255,215,0,.2);
+
+    margin-bottom:25px;
+}
+
+.expiry-label{
+    color:#9e9888;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:1.4px;
+    margin-bottom:9px;
+}
+
+.expiry-date{
+    color:#fff;
+    font-size:14px;
+    margin-bottom:14px;
+}
+
+.countdown{
+    font-size:22px;
+    font-weight:900;
+    color:#ffd84d;
+    line-height:1.2;
+}
+
+.countdown.expired{
+    color:#ff6b6b;
+}
+
+/* BIG BUTTONS */
+
+.big-actions{
+    position:relative;
+
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+
+    margin-bottom:14px;
+}
+
+.big-btn{
+    min-height:82px;
+
+    border-radius:18px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    gap:7px;
+
+    text-decoration:none;
+
+    font-size:14px;
+    font-weight:900;
+
+    color:#1b1400;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff0a3,
+            #ffd43b 45%,
+            #b77d00
+        );
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.35),
+        inset 0 1px rgba(255,255,255,.7);
+
+    transition:transform .15s ease;
+}
+
+.big-btn:hover{
+    transform:translateY(-2px);
+}
+
+.big-btn span{
+    font-size:27px;
+}
+
+/* SMALL BUTTONS */
+
+.small-actions{
+    position:relative;
+
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+
+    margin-bottom:25px;
+}
+
+.small-btn{
+    min-height:52px;
+
+    border-radius:14px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+
+    text-decoration:none;
+
+    color:#ddd5bd;
+
+    background:rgba(255,255,255,.055);
+
+    border:1px solid rgba(255,215,0,.15);
+
+    font-size:12px;
+    font-weight:800;
+
+    transition:background .15s ease;
+}
+
+.small-btn:hover{
+    background:rgba(255,215,0,.11);
+}
+
+/* SETTINGS */
+
+.settings-btn{
+    position:relative;
+
+    width:100%;
+    min-height:48px;
+
+    border-radius:14px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+
+    text-decoration:none;
+
+    color:#ffd84d;
+
+    border:1px solid rgba(255,215,0,.25);
+    background:rgba(255,215,0,.06);
+
+    font-size:13px;
+    font-weight:800;
+
+    margin-bottom:10px;
+}
+
+/* HOME */
+
+.home-btn{
+    position:relative;
+
+    display:block;
+    text-align:center;
+
+    padding:13px;
+
+    color:#777;
+    text-decoration:none;
+
+    font-size:12px;
+}
+
+.home-btn:hover{
+    color:#fff;
+}
+
+/* LOADING */
+
+.loading{
+    min-height:100vh;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:#d0c8b5;
+    font-size:14px;
+}
+
+.hidden{
+    display:none!important;
+}
+
+/* ERROR */
+
+.error{
+    text-align:center;
+    padding:40px 20px;
+}
+
+.error h2{
+    color:#ffd84d;
+    margin-bottom:10px;
+}
+
+.error p{
+    color:#aaa;
+    font-size:13px;
+    line-height:1.6;
+}
+
+.error a{
+    display:inline-block;
+    margin-top:20px;
+    color:#ffd84d;
+    text-decoration:none;
+}
+
+/* MOBILE */
+
+@media(max-width:480px){
+
+    body{
+        padding:12px;
     }
-    @media (min-width: 901px){
-      .nav-toggle{display:none}
+
+    .account-card{
+        padding:25px 16px 20px;
+        border-radius:22px;
     }
-  </style>
+
+    h1{
+        font-size:27px;
+    }
+
+    .big-actions{
+        grid-template-columns:1fr;
+    }
+
+    .big-btn{
+        min-height:76px;
+    }
+
+}
+
+</style>
+
 </head>
+
 <body>
-  <header aria-label="Main Navigation">
-    <div class="container nav">
-      <div class="brand" aria-label="Organization name">
-        <div class="brand-logo" aria-hidden="true">GK</div>
-        <span>GK Foundation Uganda</span>
-      </div>
 
-    <div id="mobileNav" hidden>
-      <div class="container" style="padding: .75rem 0 1rem; display:grid; gap:.4rem">
-        <a href="#about">About</a>
-        <a href="#goals">Goals</a>
-        <a href="#needs">What is Needed</a>
-        <a href="#donate">Donate</a>
-        <a href="#contact">Contact</a>
-      </div>
-    </div>
-  </header>
+<div id="loading" class="loading">
+    Loading your BUSANSO account...
+</div>
 
-  <section class="hero" id="home">
-    <div class="container hero-grid">
-      <div>
-        <span class="eyebrow">Together, we can rewrite a child's story</span>
-        <h1>Supporting 21 children with shelter, education, and daily care.</h1>
-        <p class="lead">GK Foundation Uganda, founded by King VJ in 2019, provides a safe home and opportunities for orphaned and vulnerable children. We care for 21 children, mostly girls, giving them education, food, healthcare, and love. Your support provides books, uniforms, meals, sanitary pads, and other essentials. You can donate anything you have on 0792172818 in names of Senyonjo Geofrey</p>
-        <div class="inline" style="margin-top:.8rem">
+<div id="page" class="page hidden">
 
-      </div>
-      <figure class="card" aria-label="Hero image: children together">
-        <img alt="Children together" src="https://i.ibb.co/nM4d6ZvG/IMG-5231.jpg" />
-        <figcaption class="muted small">Every contribution helps us meet daily needs and education goals.</figcaption>
-      </figure>
-    </div>
-  </section>
+    <div class="topbar">
 
-  <section class="section" id="about">
-    <div class="container grid grid-2">
-      <div class="card">
-        <h2>About GK Foundation Uganda</h2>
-        <p>Founded by King VJ, GK Foundation Uganda provides a nurturing environment for 21 children, mostly girls. We ensure they have access to education, nutritious meals, healthcare, and daily essentials. Our mission is to raise them in dignity, hope, and love.</p>
-        <ul class="list">
-          <li>Founded by King VJ</li>
-          <li>21 children cared for daily</li>
-          <li>Focus on education, food, and healthcare</li>
-        </ul>
-      </div>
-            <figure class="card" aria-label="Hero image: children together">
-        <img alt="Children together" src="https://i.ibb.co/jkkKx7b8/IMG-5053.jpg" />
-        <figcaption class="muted small">No child wants to be an orphan.</figcaption>
-      </figure>
-    </div>
-      <div class="card">
-        <h2>Our Impact</h2>
-        <div class="stats" role="list" aria-label="Key impact stats">
-          <div class="stat" role="listitem"><b>21</b>Children in our care</div>
-          <div class="stat" role="listitem"><b>80%</b>Girls supported</div>
-          <div class="stat" role="listitem"><b>3</b>Meals provided daily</div>
-          <div class="stat" role="listitem"><b>100%</b>School enrollment</div>
+        <img
+            class="logo"
+            src="https://i.ibb.co/hxgrLF35/BUSANSO-New.png"
+            alt="BUSANSO">
+
+        <div class="top-actions">
+            <a class="top-btn" href="home.html">HOME</a>
         </div>
-      </div>
-      
-    </div>
-  </section>
 
-  <section class="section" id="goals">
-    <div class="container">
-      <span class="tag">2025 Focus</span>
-      <h2>Our Goals</h2>
-      <div class="grid grid-3">
-        <article class="card">
-          <h3>1) Education</h3>
-          <p class="muted">Provide books, pens, and school uniforms so every child can attend school confidently.</p>
-        </article>
-        <article class="card">
-          <h3>2) Nutrition</h3>
-          <p class="muted">Ensure three nutritious meals daily for healthy growth and learning.</p>
-        </article>
-        <article class="card">
-          <h3>3) Health & Hygiene</h3>
-          <p class="muted">Provide healthcare, sanitary pads for girls, and daily hygiene supplies.</p>
-        </article>
-      </div>
     </div>
-  </section>
 
-  <section class="section" id="needs">
-    <div class="container">
-      <h2>What is Needed Now</h2>
-      <p class="muted">Our children urgently need the following items. Your donation will help us cover these priorities.</p>
-      <div class="grid grid-3 needs">
-        <div class="card">
-          <h3>Education</h3>
-          <ul class="list">
-            <li>Books and pens</li>
-            <li>School uniforms</li>
-            <li>Backpacks</li>
-          </ul>
+
+    <main class="account-card">
+
+        <div class="badge">✦ PREMIUM ACCOUNT</div>
+
+        <h1>Welcome, <span id="userName">User</span></h1>
+
+        <div class="welcome">
+            Your BUSANSO membership is active.
         </div>
-        <div class="card">
-          <h3>Food</h3>
-          <ul class="list">
-            <li>Rice, beans, maize flour</li>
-            <li>Cooking oil</li>
-            <li>Fresh fruits and vegetables</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Health & Hygiene</h3>
-          <ul class="list">
-            <li>Sanitary pads for girls</li>
-            <li>Soap and toothpaste</li>
-            <li>Mosquito nets</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <section class="section" id="donate">
-    <div class="container donate">
-      <div class="card">
-        <h2>Donate</h2>
-        <p class="muted">Any support goes a long way in changing the lives of our children. Donations can be sent via Mobile Money.</p>
-        <ul class="list">
-          <li><b>Mobile Money:</b> 0792172818 (Senyonjo Geofrey)</li>
-        </ul>
-        <p class="muted small">Thank you for your kindness and generosity.</p>
-      </div>
-    </div>
-  </section>
 
-  <section class="section" id="contact">
-    <div class="container">
-      <div class="card">
-        <h2>Contact Us</h2>
-        <ul class="list">
-          <li><b>Phone:</b> <a href="tel:+256703888884">+256 792172818</a></li>
-          <li><b>Email:</b> <a href="mailto:gkfoundationuganda@gmail.com">gkfoundationuganda@gmail.com</a></li>
-        </ul>
-      </div>
-    </div>
-  </section>
+        <section class="package-box">
 
-  <footer>
-    <div class="container">
-      <div class="grid grid-2" style="gap:1.2rem">
-        <div>
-          <div class="brand" style="margin-bottom:.6rem">
-            <div class="brand-logo" aria-hidden="true">GK</div>
-            <span>GK Foundation Uganda</span>
-          </div>
-          <p class="small">Founded by King VJ. © <span id="year"></span> GK Foundation Uganda.</p>
-        </div>
-        <div>
-          <b>May God bless your</b>
+            <div class="package-title">
+                Membership
+            </div>
+
+            <div
+                id="packageName"
+                class="package-name">
+                PREMIUM
+            </div>
+
+            <div
+                id="membershipStatus"
+                class="status">
+                Active
+            </div>
+
+        </section>
+
+
+        <section
+            id="expiryBox"
+            class="expiry-box">
+
+            <div class="expiry-label">
+                Access expires
+            </div>
+
+            <div
+                id="expiryDate"
+                class="expiry-date">
+                Loading...
+            </div>
+
+            <div
+                id="countdown"
+                class="countdown">
+                Loading countdown...
+            </div>
+
+        </section>
+
+
+        <!-- BIG ACTION BUTTONS -->
+
+        <div class="big-actions">
+
+            <a
+                href="movies.html"
+                class="big-btn">
+
+                <span>🎬</span>
+
+                WATCH MOVIES
+
+            </a>
+
+
+            <a
+                href="series.html"
+                class="big-btn">
+
+                <span>📺</span>
+
+                WATCH SERIES
+
+            </a>
 
         </div>
-      </div>
-    </div>
-  </footer>
 
-  <script>
-    const toggle = document.querySelector('.nav-toggle');
-    const mobile = document.getElementById('mobileNav');
-    toggle?.addEventListener('click', () => {
-      const expanded = toggle.getAttribute('aria-expanded') === 'true';
-      toggle.setAttribute('aria-expanded', String(!expanded));
-      mobile.hidden = expanded;
-    });
 
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
+        <!-- SMALL ACTION BUTTONS -->
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "NGO",
-    "name": "GK Foundation Uganda",
-    "founder": "King VJ",
-    "url": "https://example.org",
-    "email": "gkfounda@gmail.com",
-    "telephone": "+256782398843",
-    "description": "GK Foundation Uganda provides care and education to 21 children.",
-    "areaServed": "UG"
-  }
-  </script>
-<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1,"spa":2}' crossorigin="anonymous"></script>
+        <div class="small-actions">
+
+            <a
+                href="happy-birthday.html"
+                class="small-btn">
+
+                🎂 HAPPY BIRTHDAY WISHES
+
+            </a>
+
+
+            <a
+                href="donate.html"
+                class="small-btn">
+
+                ❤️ DONATE
+
+            </a>
+
+        </div>
+
+
+        <!-- SETTINGS -->
+
+        <a
+            href="edit-profile.html"
+            class="settings-btn">
+
+            ⚙️ SETTINGS
+
+        </a>
+
+
+        <a
+            href="home.html"
+            class="home-btn">
+
+            ← Back to BUSANSO
+
+        </a>
+
+    </main>
+
+</div>
+
+
+<div id="errorPage" class="page hidden">
+
+    <main class="account-card error">
+
+        <div class="badge">BUSANSO</div>
+
+        <h2>Account Not Found</h2>
+
+        <p id="errorMessage">
+            We could not identify this account.
+        </p>
+
+        <a href="auth.html">
+            Sign in with Google
+        </a>
+
+    </main>
+
+</div>
+
+
+<script>
+
+const SUPABASE_URL =
+    "https://dhkfhhybzcxdeoalcfqx.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_Rjm3T44VKTeuOF2yJS5rMw_xDfwPjuG";
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+let currentProfile = null;
+let countdownTimer = null;
+
+
+/*
+==================================================
+HELPERS
+==================================================
+*/
+
+function clean(value){
+
+    if(value === null ||
+       value === undefined){
+
+        return "";
+    }
+
+    return String(value).trim();
+
+}
+
+
+function normalizeMembership(profile){
+
+    const membership =
+        clean(profile.membership).toLowerCase();
+
+    const packageType =
+        clean(profile.package_type).toLowerCase();
+
+    if(
+        membership === "kibanda" ||
+        packageType === "kibanda"
+    ){
+        return "kibanda";
+    }
+
+    if(
+        membership === "premium" ||
+        packageType === "premium" ||
+        profile.paid_status === true
+    ){
+        return "premium";
+    }
+
+    return "free";
+}
+
+
+function isExpired(profile){
+
+    const access =
+        normalizeMembership(profile);
+
+    if(access === "free"){
+        return false;
+    }
+
+    if(!profile.expires_at){
+        return false;
+    }
+
+    return new Date(profile.expires_at) <= new Date();
+
+}
+
+
+/*
+==================================================
+SAVE COMPATIBILITY DATA
+==================================================
+*/
+
+function saveCompatibilityData(profile,user){
+
+    if(profile.id !== null &&
+       profile.id !== undefined){
+
+        localStorage.setItem(
+            "user_id",
+            String(profile.id)
+        );
+
+    }
+
+    if(profile.name){
+
+        localStorage.setItem(
+            "name",
+            profile.name
+        );
+
+    }
+
+    localStorage.setItem(
+        "membership",
+        profile.membership || "free"
+    );
+
+    localStorage.setItem(
+        "package_type",
+        profile.package_type || ""
+    );
+
+    localStorage.setItem(
+        "paid_status",
+        profile.paid_status ? "true" : "false"
+    );
+
+    localStorage.setItem(
+        "expires_at",
+        profile.expires_at || ""
+    );
+
+    if(user && user.id){
+
+        localStorage.setItem(
+            "auth_user_id",
+            user.id
+        );
+
+        localStorage.setItem(
+            "supabase_auth_user_id",
+            user.id
+        );
+
+    }
+
+}
+
+
+/*
+==================================================
+FIND GOOGLE USER PROFILE
+==================================================
+*/
+
+async function findGoogleProfile(){
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient.auth.getSession();
+
+    if(error){
+
+        console.error(
+            "Supabase session error:",
+            error
+        );
+
+        return {
+            user:null,
+            profile:null
+        };
+
+    }
+
+    const session =
+        data.session;
+
+    if(!session){
+
+        return {
+            user:null,
+            profile:null
+        };
+
+    }
+
+    const user =
+        session.user;
+
+    const result =
+        await supabaseClient
+            .from("profiles")
+            .select("*")
+            .eq("auth_user_id",user.id)
+            .maybeSingle();
+
+    if(result.error){
+
+        console.error(
+            "Google profile lookup error:",
+            result.error
+        );
+
+        return {
+            user,
+            profile:null
+        };
+
+    }
+
+    return {
+        user,
+        profile:result.data
+    };
+
+}
+
+
+/*
+==================================================
+FIND LEGACY USER
+==================================================
+*/
+
+async function findLegacyProfile(){
+
+    const userId =
+        clean(
+            localStorage.getItem("user_id")
+        );
+
+    const name =
+        clean(
+            localStorage.getItem("name")
+        );
+
+    const deviceId =
+        clean(
+            localStorage.getItem("device_id")
+        );
+
+
+    /*
+    FIRST:
+    legacy numeric profile ID
+    */
+
+    if(userId){
+
+        const numericId =
+            Number(userId);
+
+        if(Number.isInteger(numericId)){
+
+            const result =
+                await supabaseClient
+                    .from("profiles")
+                    .select("*")
+                    .eq("id",numericId)
+                    .maybeSingle();
+
+            if(
+                !result.error &&
+                result.data
+            ){
+
+                return result.data;
+
+            }
+
+        }
+
+    }
+
+
+    /*
+    SECOND:
+    old name + device_id
+    */
+
+    if(name && deviceId){
+
+        const result =
+            await supabaseClient
+                .from("profiles")
+                .select("*")
+                .eq("name",name)
+                .eq("device_id",deviceId)
+                .maybeSingle();
+
+        if(
+            !result.error &&
+            result.data
+        ){
+
+            return result.data;
+
+        }
+
+    }
+
+
+    /*
+    THIRD:
+    old name-only fallback.
+    This preserves the old system where
+    the profile was already identified by name.
+    */
+
+    if(name){
+
+        const result =
+            await supabaseClient
+                .from("profiles")
+                .select("*")
+                .eq("name",name)
+                .maybeSingle();
+
+        if(
+            !result.error &&
+            result.data
+        ){
+
+            return result.data;
+
+        }
+
+    }
+
+
+    return null;
+
+}
+
+
+/*
+==================================================
+UNIFIED USER RESOLVER
+==================================================
+*/
+
+async function resolveCurrentUser(){
+
+    /*
+    NEW SYSTEM FIRST
+    */
+
+    const google =
+        await findGoogleProfile();
+
+    if(
+        google.user &&
+        google.profile
+    ){
+
+        return {
+            type:"google",
+            user:google.user,
+            profile:google.profile
+        };
+
+    }
+
+
+    /*
+    OLD SYSTEM SECOND
+    */
+
+    const legacy =
+        await findLegacyProfile();
+
+    if(legacy){
+
+        return {
+            type:"legacy",
+            user:null,
+            profile:legacy
+        };
+
+    }
+
+
+    return null;
+
+}
+
+
+/*
+==================================================
+EXPIRY COUNTDOWN
+==================================================
+*/
+
+function startCountdown(expiresAt){
+
+    const countdown =
+        document.getElementById("countdown");
+
+    const expiryDate =
+        document.getElementById("expiryDate");
+
+    if(countdownTimer){
+
+        clearInterval(countdownTimer);
+
+    }
+
+
+    if(!expiresAt){
+
+        expiryDate.textContent =
+            "No expiry date set";
+
+        countdown.textContent =
+            "Active";
+
+        return;
+
+    }
+
+
+    const expiry =
+        new Date(expiresAt);
+
+
+    if(isNaN(expiry.getTime())){
+
+        expiryDate.textContent =
+            "Expiry date unavailable";
+
+        countdown.textContent =
+            "Please contact BUSANSO";
+
+        return;
+
+    }
+
+
+    expiryDate.textContent =
+        expiry.toLocaleString(
+            undefined,
+            {
+                dateStyle:"medium",
+                timeStyle:"short"
+            }
+        );
+
+
+    function update(){
+
+        const now =
+            new Date();
+
+        let difference =
+            expiry.getTime() -
+            now.getTime();
+
+
+        if(difference <= 0){
+
+            countdown.textContent =
+                "ACCESS EXPIRED";
+
+            countdown.classList.add(
+                "expired"
+            );
+
+            document.getElementById(
+                "membershipStatus"
+            ).textContent =
+                "Expired";
+
+            clearInterval(
+                countdownTimer
+            );
+
+            return;
+
+        }
+
+
+        const totalSeconds =
+            Math.floor(
+                difference / 1000
+            );
+
+
+        const days =
+            Math.floor(
+                totalSeconds / 86400
+            );
+
+        const hours =
+            Math.floor(
+                (totalSeconds % 86400) / 3600
+            );
+
+        const minutes =
+            Math.floor(
+                (totalSeconds % 3600) / 60
+            );
+
+        const seconds =
+            totalSeconds % 60;
+
+
+        countdown.textContent =
+            days + " DAYS " +
+            String(hours).padStart(2,"0") +
+            " HOURS " +
+            String(minutes).padStart(2,"0") +
+            " MINUTES " +
+            String(seconds).padStart(2,"0") +
+            " SECONDS";
+
+    }
+
+
+    update();
+
+    countdownTimer =
+        setInterval(
+            update,
+            1000
+        );
+
+}
+
+
+/*
+==================================================
+DISPLAY ACCOUNT
+==================================================
+*/
+
+function displayAccount(result){
+
+    const profile =
+        result.profile;
+
+    currentProfile =
+        profile;
+
+
+    saveCompatibilityData(
+        profile,
+        result.user
+    );
+
+
+    const access =
+        normalizeMembership(profile);
+
+
+    /*
+    Name
+    */
+
+    document.getElementById(
+        "userName"
+    ).textContent =
+        profile.name ||
+        (
+            result.user &&
+            result.user.email
+                ? result.user.email.split("@")[0]
+                : "BUSANSO User"
+        );
+
+
+    /*
+    Package
+    */
+
+    let packageLabel =
+        "FREE";
+
+
+    if(access === "premium"){
+
+        packageLabel =
+            "PREMIUM";
+
+    }
+
+    if(access === "kibanda"){
+
+        packageLabel =
+            "KIBANDA";
+
+    }
+
+
+    document.getElementById(
+        "packageName"
+    ).textContent =
+        packageLabel;
+
+
+    /*
+    Status
+    */
+
+    if(
+        access === "premium" ||
+        access === "kibanda"
+    ){
+
+        if(isExpired(profile)){
+
+            document.getElementById(
+                "membershipStatus"
+            ).textContent =
+                "Expired";
+
+        }else{
+
+            document.getElementById(
+                "membershipStatus"
+            ).textContent =
+                "Active";
+
+        }
+
+    }else{
+
+        document.getElementById(
+            "membershipStatus"
+        ).textContent =
+            "Free membership";
+
+    }
+
+
+    /*
+    Expiry
+    */
+
+    startCountdown(
+        profile.expires_at
+    );
+
+
+    /*
+    Show page
+    */
+
+    document.getElementById(
+        "loading"
+    ).classList.add("hidden");
+
+    document.getElementById(
+        "page"
+    ).classList.remove("hidden");
+
+}
+
+
+/*
+==================================================
+START
+==================================================
+*/
+
+async function start(){
+
+    try{
+
+        const result =
+            await resolveCurrentUser();
+
+
+        if(!result){
+
+            document.getElementById(
+                "loading"
+            ).classList.add("hidden");
+
+            document.getElementById(
+                "errorPage"
+            ).classList.remove("hidden");
+
+            return;
+
+        }
+
+
+        displayAccount(result);
+
+
+    }catch(error){
+
+        console.error(
+            "BUSANSO account error:",
+            error
+        );
+
+
+        document.getElementById(
+            "loading"
+        ).classList.add("hidden");
+
+        document.getElementById(
+            "errorPage"
+        ).classList.remove("hidden");
+
+        document.getElementById(
+            "errorMessage"
+        ).textContent =
+            error.message ||
+            "Unable to load your account.";
+
+    }
+
+}
+
+
+start();
+
+</script>
+
 </body>
-</
+</html>
