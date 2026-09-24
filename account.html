@@ -1082,7 +1082,7 @@ const SUPABASE_URL =
     "https://dhkfhhybzcxdeoalcfqx.supabase.co";
 
 const SUPABASE_KEY =
-    "sb_publishable_Rjm3T44VKTeuOF2yJS5rMw_xDfwPjuG";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRoa2ZoaHliemN4ZGVvYWxjZnF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1MzQxNTEsImV4cCI6MjA4ODExMDE1MX0.jZ4NDNPJmO0Ji05TxDqCnzgLIIzKf9uCx3WrSgk2DaY";
 
 const supabaseClient =
     window.supabase.createClient(
@@ -1199,14 +1199,10 @@ async function loadAccount(){
         document.getElementById("expiryBox");
 
     const moviesBtn =
-        document.querySelector(
-            'a[href="movies.html"]'
-        );
+        document.getElementById("moviesBtn");
 
     const seriesBtn =
-        document.querySelector(
-            'a[href="series.html"]'
-        );
+        document.getElementById("seriesBtn");
 
 
     /*
