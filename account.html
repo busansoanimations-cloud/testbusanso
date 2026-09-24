@@ -1,1487 +1,1301 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>BUSANSO – Series</title>
+<title>BUSANSO Premium</title>
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
-
-<script>
-
-/*
-====================================================
-BASIC SESSION CHECK
-====================================================
-*/
-
-const activePIN =
-localStorage.getItem("activePIN");
-
-const loggedIn =
-localStorage.getItem("loggedIn");
-
-const userId =
-localStorage.getItem("user_id");
-
-
-if(
-    (!activePIN ||
-     activePIN === "undefined" ||
-     activePIN === "")
-    &&
-    !(loggedIn === "true" && userId)
-){
-
-    window.location.href =
-    "expired.html";
-
-}
-
-</script>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 
-/* ==================================================
-   GLOBAL
-================================================== */
-
 *{
     box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
+html,
+body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+}
 
 body{
-
-    margin:0;
-
-    font-family:
-    Arial,
-    Helvetica,
-    sans-serif;
-
-    background:
-    radial-gradient(
-        circle at top,
-        #3b2a00 0%,
-        #171006 32%,
-        #080704 70%,
-        #000000 100%
-    );
-
-    color:#fff5d6;
-
     min-height:100vh;
-
-}
-
-
-/* ==================================================
-   LOGO
-================================================== */
-
-.logo{
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    padding:
-    18px
-    10px
-    12px;
+    font-family:Poppins,Arial,sans-serif;
+    color:#fff;
 
     background:
-    linear-gradient(
-        180deg,
-        #171006,
-        #0a0703
-    );
-
-    border-bottom:
-    1px solid
-    rgba(255,215,0,.20);
-
-}
-
-
-.logo img{
-
-    height:66px;
-
-    max-width:90%;
-
-    object-fit:contain;
-
-    filter:
-    drop-shadow(
-        0 0 12px
-        rgba(255,215,0,.28)
-    );
-
-}
-
-
-/* ==================================================
-   NAVIGATION
-================================================== */
-
-.nav{
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(2,1fr);
-
-    gap:10px;
-
-    padding:12px;
-
-    background:
-    rgba(8,6,3,.98);
-
-    position:sticky;
-
-    top:0;
-
-    z-index:100;
-
-    border-bottom:
-    1px solid
-    rgba(255,215,0,.18);
-
-}
-
-
-/* ==================================================
-   WATCH BUTTONS
-================================================== */
-
-.watch-btn{
-
-    display:flex;
-
-    flex-direction:column;
-
-    align-items:center;
-
-    justify-content:center;
-
-    min-height:68px;
+        radial-gradient(
+            circle at top,
+            #3b2a00 0%,
+            #15110a 35%,
+            #050505 75%,
+            #000 100%
+        );
 
     padding:10px;
+}
 
-    border-radius:17px;
+.page{
+    width:100%;
+    max-width:620px;
+    height:100%;
+    max-height:100vh;
+    margin:0 auto;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.topbar{
+    height:54px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    margin-bottom:8px;
+}
+
+.logo{
+    width:48px;
+    height:48px;
+    object-fit:contain;
+    border-radius:13px;
+}
+
+.top-actions{
+    display:flex;
+    gap:8px;
+}
+
+.top-btn{
+    border:1px solid rgba(255,215,0,.25);
+    background:rgba(255,215,0,.08);
+    color:#ffd84d;
+
+    padding:8px 13px;
+    border-radius:10px;
 
     text-decoration:none;
+    font-size:11px;
+    font-weight:700;
+}
 
-    font-size:12px;
+/* =========================
+   MAIN CARD
+========================= */
 
+.account-card{
+    position:relative;
+    overflow:hidden;
+
+    width:100%;
+
+    border-radius:24px;
+
+    padding:19px 18px 14px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,215,0,.14),
+            rgba(255,255,255,.045) 35%,
+            rgba(255,255,255,.025)
+        );
+
+    border:1px solid rgba(255,215,0,.28);
+
+    box-shadow:
+        0 20px 55px rgba(0,0,0,.65),
+        inset 0 1px rgba(255,255,255,.08);
+}
+
+.account-card:before{
+    content:"";
+
+    position:absolute;
+
+    width:220px;
+    height:220px;
+
+    border-radius:50%;
+
+    background:rgba(255,215,0,.08);
+
+    filter:blur(55px);
+
+    top:-140px;
+    right:-80px;
+
+    pointer-events:none;
+}
+
+/* =========================
+   TITLE
+========================= */
+
+.badge{
+    position:relative;
+
+    display:inline-block;
+
+    padding:5px 11px;
+
+    border-radius:30px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffe27a,
+            #c99600
+        );
+
+    color:#211700;
+
+    font-size:9px;
     font-weight:900;
+    letter-spacing:1px;
+    text-transform:uppercase;
 
-    letter-spacing:.2px;
+    margin-bottom:9px;
+}
 
-    color:#171000;
+h1{
+    position:relative;
+
+    font-size:25px;
+    line-height:1.05;
+
+    margin-bottom:5px;
 
     background:
-    linear-gradient(
-        135deg,
-        #fff0a3,
-        #ffd43b 48%,
-        #b77d00
-    );
+        linear-gradient(
+            90deg,
+            #fff,
+            #ffe27a,
+            #c99716
+        );
 
-    border:
-    1px solid
-    rgba(255,235,150,.65);
-
-    box-shadow:
-    0 8px 22px
-    rgba(0,0,0,.38),
-
-    inset
-    0 1px
-    rgba(255,255,255,.65);
-
-    transition:
-    transform .2s,
-    filter .2s;
-
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
 }
 
+.welcome{
+    position:relative;
 
-.watch-btn:hover{
+    color:#bdb7a5;
 
-    transform:
-    translateY(-2px);
+    font-size:11px;
 
-    filter:
-    brightness(1.08);
-
+    margin-bottom:13px;
 }
 
+/* =========================
+   PACKAGE
+========================= */
 
-.watch-icon{
+.package-box{
+    position:relative;
 
-    font-size:22px;
+    padding:12px 15px;
 
-    margin-bottom:4px;
+    border-radius:16px;
 
+    background:rgba(0,0,0,.35);
+
+    border:1px solid rgba(255,215,0,.18);
+
+    margin-bottom:10px;
 }
 
-
-/* ==================================================
-   FREE USER LOCKED WATCH BUTTONS
-
-   THIS IS COPIED FROM ACCOUNT (2) BEHAVIOR
-================================================== */
-
-.watch-btn.locked{
-
-    background:
-    #374151 !important;
-
-    color:
-    #9ca3af !important;
-
-    border:
-    1px solid
-    rgba(255,255,255,.08);
-
-    box-shadow:
-    none !important;
-
-    cursor:
-    not-allowed;
-
-    transform:
-    none !important;
-
-}
-
-
-.watch-btn.locked .watch-icon{
-
-    opacity:.55;
-
-}
-
-
-.watch-btn.locked::after{
-
-    content:
-    "🔒 PREMIUM ONLY";
-
-    display:block;
-
-    margin-top:5px;
+.package-title{
+    color:#918b7c;
 
     font-size:9px;
 
-    color:#facc15;
+    text-transform:uppercase;
+    letter-spacing:1.3px;
 
-    letter-spacing:.3px;
-
+    margin-bottom:3px;
 }
 
+.package-name{
+    font-size:19px;
+    font-weight:900;
 
-/* ==================================================
-   SMALL NAV BUTTONS
-================================================== */
+    color:#ffe06b;
+}
 
-.small-nav{
+.status{
+    margin-top:3px;
+
+    font-size:10px;
+
+    color:#aaa;
+}
+
+/* =========================
+   EXPIRY
+========================= */
+
+.expiry-box{
+    position:relative;
+
+    padding:12px 15px;
+
+    border-radius:16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,215,0,.12),
+            rgba(255,255,255,.035)
+        );
+
+    border:1px solid rgba(255,215,0,.2);
+
+    margin-bottom:11px;
+}
+
+.expiry-label{
+    color:#9e9888;
+
+    font-size:9px;
+
+    text-transform:uppercase;
+    letter-spacing:1.2px;
+
+    margin-bottom:5px;
+}
+
+.expiry-date{
+    color:#fff;
+
+    font-size:11px;
+
+    margin-bottom:6px;
+}
+
+.countdown{
+    font-size:12px;
+    font-weight:700;
+
+    color:#ffd84d;
+
+    line-height:1.2;
+
+    text-transform:lowercase;
+}
+
+.countdown.expired{
+    color:#ff6b6b;
+}
+
+/* =========================
+   BIG BUTTONS
+========================= */
+
+.big-actions{
+    position:relative;
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:9px;
+
+    margin-bottom:9px;
+}
+
+.big-btn{
+    min-height:60px;
+
+    border-radius:15px;
 
     display:flex;
 
     align-items:center;
-
     justify-content:center;
 
-    min-height:44px;
+    flex-direction:column;
 
-    padding:9px;
-
-    border-radius:13px;
+    gap:3px;
 
     text-decoration:none;
 
-    color:#e6d8b0;
+    font-size:11px;
+    font-weight:900;
+
+    color:#1b1400;
 
     background:
-    rgba(255,255,255,.045);
+        linear-gradient(
+            135deg,
+            #fff0a3,
+            #ffd43b 45%,
+            #b77d00
+        );
 
-    border:
-    1px solid
-    rgba(255,215,0,.15);
+    box-shadow:
+        0 7px 20px rgba(0,0,0,.35),
+        inset 0 1px rgba(255,255,255,.7);
+
+    transition:
+        transform .15s ease;
+}
+
+.big-btn:hover{
+    transform:translateY(-2px);
+}
+
+.big-btn span{
+    font-size:21px;
+}
+
+/* =========================
+   SMALL BUTTONS
+========================= */
+
+.small-actions{
+    position:relative;
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:8px;
+
+    margin-bottom:9px;
+}
+
+.small-btn{
+    min-height:42px;
+
+    border-radius:12px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    gap:6px;
+
+    text-decoration:none;
+
+    color:#ddd5bd;
+
+    background:rgba(255,255,255,.055);
+
+    border:1px solid rgba(255,215,0,.15);
 
     font-size:10px;
-
     font-weight:800;
 
     text-align:center;
 
-    transition:.2s;
-
+    transition:
+        background .15s ease;
 }
 
-
-.small-nav:hover{
-
-    background:
-    rgba(255,215,0,.10);
-
+.small-btn:hover{
+    background:rgba(255,215,0,.11);
 }
 
+/* =========================
+   SETTINGS
+========================= */
 
-/* ==================================================
-   PAY TO WATCH
-================================================== */
+.settings-btn{
+    position:relative;
 
-.pay-btn{
+    width:100%;
 
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    min-height:52px;
-
-    border-radius:15px;
-
-    text-decoration:none;
-
-    font-size:13px;
-
-    font-weight:900;
-
-    color:#171000;
-
-    background:
-    linear-gradient(
-        135deg,
-        #facc15,
-        #f97316
-    );
-
-    box-shadow:
-    0 0 25px
-    rgba(250,204,21,.38);
-
-    animation:
-    pulsePay 1.7s infinite;
-
-}
-
-
-@keyframes pulsePay{
-
-    0%{
-        transform:scale(1);
-    }
-
-    50%{
-        transform:scale(1.025);
-    }
-
-    100%{
-        transform:scale(1);
-    }
-
-}
-
-
-/* ==================================================
-   ADMIN
-================================================== */
-
-.admin-btn{
-
-    display:none;
-
-    align-items:center;
-
-    justify-content:center;
-
-    min-height:48px;
-
-    border-radius:14px;
-
-    text-decoration:none;
-
-    background:
-    linear-gradient(
-        135deg,
-        #22c55e,
-        #15803d
-    );
-
-    color:white;
-
-    font-size:12px;
-
-    font-weight:900;
-
-    box-shadow:
-    0 10px 25px
-    rgba(34,197,94,.25);
-
-}
-
-
-/* ==================================================
-   ACCOUNT STATUS AREA
-================================================== */
-
-.member-area{
-
-    padding:
-    12px
-    15px
-    0;
-
-    text-align:center;
-
-}
-
-
-.member-badge{
-
-    display:inline-block;
-
-    padding:
-    7px
-    14px;
-
-    border-radius:999px;
-
-    background:
-    rgba(255,215,0,.09);
-
-    border:
-    1px solid
-    rgba(255,215,0,.22);
-
-    color:#ffd84d;
-
-    font-size:11px;
-
-    font-weight:900;
-
-}
-
-
-.expiry{
-
-    display:none;
-
-    margin:
-    8px auto
-    0;
-
-    max-width:500px;
-
-    padding:10px;
+    min-height:40px;
 
     border-radius:12px;
 
-    background:
-    rgba(255,255,255,.035);
-
-    border:
-    1px solid
-    rgba(255,215,0,.10);
-
-}
-
-
-.expiry-title{
-
-    font-size:9px;
-
-    color:#9d906e;
-
-    margin-bottom:4px;
-
-}
-
-
-#expiry{
-
-    font-size:13px;
-
-    font-weight:900;
-
-}
-
-
-.expiry-green{
-
-    color:#22c55e;
-
-}
-
-
-.expiry-yellow{
-
-    color:#facc15;
-
-}
-
-
-.expiry-red{
-
-    color:#ef4444;
-
-}
-
-
-/* ==================================================
-   SEARCH
-================================================== */
-
-.search{
-
-    padding:16px;
-
-    background:
-    linear-gradient(
-        180deg,
-        #100c06,
-        #0b0804
-    );
-
-}
-
-
-.search input{
-
-    width:100%;
-
-    padding:15px 17px;
-
-    border-radius:20px;
-
-    border:
-    1px solid
-    rgba(255,215,0,.25);
-
-    background:
-    #211708;
-
-    color:#fff5d6;
-
-    font-size:15px;
-
-    outline:none;
-
-}
-
-
-.search input:focus{
-
-    border-color:
-    rgba(255,215,0,.55);
-
-}
-
-
-.search input::placeholder{
-
-    color:#b9a568;
-
-}
-
-
-/* ==================================================
-   FILTERS
-================================================== */
-
-.filters{
-
     display:flex;
 
-    gap:12px;
+    align-items:center;
+    justify-content:center;
 
-    margin-top:12px;
+    gap:7px;
 
+    text-decoration:none;
+
+    color:#ffd84d;
+
+    border:1px solid rgba(255,215,0,.25);
+
+    background:rgba(255,215,0,.06);
+
+    font-size:11px;
+    font-weight:800;
+
+    margin-bottom:2px;
 }
 
+/* =========================
+   HOME
+========================= */
 
-.filters select{
-
-    flex:1;
-
-    padding:12px;
-
-    border-radius:16px;
-
-    border:
-    1px solid
-    rgba(255,215,0,.22);
-
-    background:
-    #211708;
-
-    color:#fff5d6;
-
-    font-size:14px;
-
-    outline:none;
-
-}
-
-
-/* ==================================================
-   SERIES GRID
-================================================== */
-
-.series{
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(3,1fr);
-
-    gap:12px;
-
-    padding:16px;
-
-    margin-bottom:80px;
-
-}
-
-
-@media(min-width:768px){
-
-    .series{
-
-        grid-template-columns:
-        repeat(4,1fr);
-
-        gap:16px;
-
-    }
-
-}
-
-
-@media(min-width:1200px){
-
-    .series{
-
-        grid-template-columns:
-        repeat(5,1fr);
-
-        gap:18px;
-
-    }
-
-}
-
-
-/* ==================================================
-   CARD
-================================================== */
-
-.card{
-
-    background:
-    linear-gradient(
-        180deg,
-        #241909,
-        #0f0a04
-    );
-
-    border-radius:22px;
-
-    overflow:hidden;
-
-    box-shadow:
-    0 14px 35px
-    rgba(0,0,0,.65),
-
-    0 0 0 1px
-    rgba(212,175,55,.14);
-
-    opacity:0;
-
-    transform:
-    translateY(20px);
-
-    animation:
-    fade .4s forwards;
-
-    transition:.25s;
-
-}
-
-
-.card:hover{
-
-    transform:
-    translateY(-5px);
-
-}
-
-
-@keyframes fade{
-
-    to{
-
-        opacity:1;
-
-        transform:none;
-
-    }
-
-}
-
-
-/* ==================================================
-   POSTER
-================================================== */
-
-.poster-wrap{
-
+.home-btn{
     position:relative;
-
-}
-
-
-.card img{
-
-    width:100%;
-
-    aspect-ratio:2/3;
-
-    object-fit:cover;
 
     display:block;
 
-    cursor:pointer;
+    text-align:center;
 
-}
+    padding:6px;
 
+    color:#777;
 
-/* ==================================================
-   STATUS BADGE
-================================================== */
-
-.status-badge{
-
-    position:absolute;
-
-    top:10px;
-
-    left:10px;
-
-    z-index:5;
-
-    padding:
-    5px
-    10px;
-
-    border-radius:999px;
+    text-decoration:none;
 
     font-size:10px;
-
-    font-weight:700;
-
-    letter-spacing:.5px;
-
-    color:white;
-
-    backdrop-filter:
-    blur(6px);
-
-    box-shadow:
-    0 4px 12px
-    rgba(0,0,0,.45);
-
 }
 
-
-.status-badge.completed{
-
-    background:
-    rgba(16,185,129,.92);
-
+.home-btn:hover{
+    color:#fff;
 }
 
+/* =========================
+   LOADING
+========================= */
 
-.status-badge.ongoing{
+.loading{
+    width:100%;
+    height:100vh;
 
-    background:
-    rgba(59,130,246,.92);
+    display:flex;
 
+    align-items:center;
+    justify-content:center;
+
+    color:#d0c8b5;
+
+    font-size:13px;
+
+    text-align:center;
 }
 
-
-.status-badge.canceled{
-
-    background:
-    rgba(239,68,68,.92);
-
+.hidden{
+    display:none!important;
 }
 
+/* =========================
+   ERROR
+========================= */
 
-/* ==================================================
-   CARD INFO
-================================================== */
+.error{
+    text-align:center;
 
-.info{
-
-    padding:12px;
-
+    padding:30px 18px;
 }
 
+.error h2{
+    color:#ffd84d;
 
-.title{
+    margin-bottom:8px;
 
-    font-weight:bold;
-
-    font-size:14px;
-
-    color:#ffe7a0;
-
+    font-size:20px;
 }
 
+.error p{
+    color:#aaa;
 
-.meta{
+    font-size:11px;
 
-    color:#c9ad67;
+    line-height:1.6;
+}
+
+.error a{
+    display:inline-block;
+
+    margin-top:15px;
+
+    color:#ffd84d;
+
+    text-decoration:none;
 
     font-size:12px;
-
-    line-height:1.5;
-
 }
 
-
-/* ==================================================
-   MOBILE
-================================================== */
+/* =========================
+   SMALL DEVICES
+========================= */
 
 @media(max-width:480px){
 
-    .nav{
-
-        gap:8px;
-
-        padding:9px;
-
+    body{
+        padding:7px;
     }
 
+    .topbar{
+        height:45px;
+        margin-bottom:5px;
+    }
 
-    .watch-btn{
+    .logo{
+        width:42px;
+        height:42px;
+    }
 
-        min-height:62px;
+    .account-card{
+        padding:16px 13px 10px;
+        border-radius:20px;
+    }
 
+    h1{
+        font-size:22px;
+    }
+
+    .welcome{
         font-size:10px;
-
+        margin-bottom:10px;
     }
 
-
-    .watch-icon{
-
-        font-size:20px;
-
+    .package-box,
+    .expiry-box{
+        padding:10px 12px;
+        margin-bottom:8px;
     }
 
+    .package-name{
+        font-size:17px;
+    }
 
-    .small-nav{
+    .big-btn{
+        min-height:55px;
+    }
 
+    .big-btn span{
+        font-size:19px;
+    }
+
+    .small-btn{
+        min-height:38px;
         font-size:9px;
-
     }
 
+    .settings-btn{
+        min-height:37px;
+    }
+
+    .home-btn{
+        padding:4px;
+    }
+}
+
+/* =========================
+   VERY SHORT SCREENS
+========================= */
+
+@media(max-height:650px){
+
+    body{
+        padding:5px;
+    }
+
+    .topbar{
+        height:39px;
+        margin-bottom:3px;
+    }
+
+    .logo{
+        width:36px;
+        height:36px;
+    }
+
+    .top-btn{
+        padding:6px 10px;
+        font-size:10px;
+    }
+
+    .account-card{
+        padding:12px 12px 8px;
+        border-radius:18px;
+    }
+
+    .badge{
+        padding:4px 9px;
+        margin-bottom:6px;
+        font-size:8px;
+    }
+
+    h1{
+        font-size:20px;
+        margin-bottom:3px;
+    }
+
+    .welcome{
+        margin-bottom:7px;
+        font-size:9px;
+    }
+
+    .package-box,
+    .expiry-box{
+        padding:8px 10px;
+        margin-bottom:6px;
+    }
+
+    .package-title,
+    .expiry-label{
+        font-size:8px;
+    }
+
+    .package-name{
+        font-size:15px;
+    }
+
+    .status,
+    .expiry-date{
+        font-size:9px;
+    }
+
+    .countdown{
+        font-size:10px;
+    }
+
+    .big-actions{
+        gap:6px;
+        margin-bottom:6px;
+    }
+
+    .big-btn{
+        min-height:47px;
+        font-size:9px;
+    }
+
+    .big-btn span{
+        font-size:16px;
+    }
+
+    .small-actions{
+        gap:6px;
+        margin-bottom:6px;
+    }
+
+    .small-btn{
+        min-height:34px;
+        font-size:8px;
+    }
+
+    .settings-btn{
+        min-height:33px;
+        font-size:9px;
+    }
+
+    .home-btn{
+        font-size:9px;
+        padding:3px;
+    }
+}
+
+
+/* =========================
+   COPIED ACCOUNT ACTIONS
+   GOLDEN THEME PRESERVED
+========================= */
+
+.locked{
+    background:
+        linear-gradient(
+            135deg,
+            #3a3528,
+            #242119
+        ) !important;
+    color:#8f8878 !important;
+    box-shadow:none !important;
+    border-color:rgba(255,215,0,.10) !important;
+    cursor:not-allowed;
+    position:relative;
+    opacity:.8;
+}
+
+.locked::after{
+    content:" 🔒 PREMIUM ONLY";
+    display:block;
+    font-size:8px;
+    margin-top:3px;
+    color:#ffd84d;
+}
+
+.pay-btn{
+    position:relative;
+    display:none;
+    width:100%;
+    min-height:48px;
+    margin:0 0 9px;
+    border-radius:14px;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    text-decoration:none;
+    color:#211700;
+    font-size:11px;
+    font-weight:900;
+    background:
+        linear-gradient(
+            135deg,
+            #fff0a3,
+            #ffd43b 45%,
+            #b77d00
+        );
+    border:1px solid rgba(255,235,130,.65);
+    box-shadow:
+        0 8px 22px rgba(255,196,0,.20),
+        inset 0 1px rgba(255,255,255,.8);
+    animation:goldPayPulse 1.8s infinite;
+}
+
+@keyframes goldPayPulse{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.02);}
+}
+
+.admin-btn{
+    display:none;
+    width:100%;
+    min-height:40px;
+    margin-top:8px;
+    border-radius:12px;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    text-decoration:none;
+    color:#211700;
+    font-size:10px;
+    font-weight:900;
+    background:
+        linear-gradient(
+            135deg,
+            #fff0a3,
+            #ffd43b 45%,
+            #b77d00
+        );
+    border:1px solid rgba(255,215,0,.35);
+    box-shadow:
+        0 7px 18px rgba(0,0,0,.3),
+        inset 0 1px rgba(255,255,255,.7);
+}
+
+.logout-btn{
+    display:block;
+    width:100%;
+    min-height:34px;
+    margin-top:7px;
+    border:1px solid rgba(255,215,0,.12);
+    border-radius:10px;
+    background:rgba(255,255,255,.035);
+    color:#8f8878;
+    font-size:9px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.logout-btn:hover{
+    color:#ffd84d;
+    background:rgba(255,215,0,.08);
+}
+
+@media(max-width:480px){
+    .pay-btn{
+        min-height:43px;
+        font-size:10px;
+    }
+
+    .admin-btn{
+        min-height:37px;
+    }
+
+    .logout-btn{
+        min-height:31px;
+    }
+}
+
+@media(max-height:650px){
+    .pay-btn{
+        min-height:38px;
+        font-size:9px;
+        margin-bottom:6px;
+    }
+
+    .admin-btn{
+        min-height:33px;
+    }
+
+    .logout-btn{
+        min-height:28px;
+        margin-top:5px;
+    }
 }
 
 </style>
 
 </head>
 
-
 <body>
 
-
-<!-- ==================================================
-     LOGO
-================================================== -->
-
-<div class="logo">
-
-    <img
-        src="https://i.ibb.co/qL8vn3jS/busanso-logo-source.png"
-        alt="BUSANSO"
-    >
-
+<div id="loading" class="loading">
+    Loading your BUSANSO account...
 </div>
 
 
-<!-- ==================================================
-     MEMBERSHIP STATUS
-================================================== -->
+<div id="page" class="page hidden">
 
-<div class="member-area">
+    <div class="topbar">
 
-    <div
-        class="member-badge"
-        id="memberBadge"
-    >
-        Loading...
-    </div>
+        <img
+            class="logo"
+            src="https://i.ibb.co/hxgrLF35/BUSANSO-New.png"
+            alt="BUSANSO">
 
+        <div class="top-actions">
 
-    <div
-        class="expiry"
-        id="expiryBox"
-    >
+            <a
+                class="top-btn"
+                href="home.html">
+                HOME
+            </a>
 
-        <div class="expiry-title">
-            Your Account expires in
         </div>
 
-        <span id="expiry">
-            Loading...
-        </span>
-
     </div>
 
+
+    <main class="account-card">
+
+        <div class="badge">
+            ✦ PREMIUM ACCOUNT
+        </div>
+
+
+        <h1>
+            Welcome,
+            <span id="userName">
+                User
+            </span>
+        </h1>
+
+
+        <div class="welcome">
+            Your BUSANSO package is active.
+        </div>
+
+
+        <!-- PACKAGE -->
+
+        <section class="package-box">
+
+            <div class="package-title">
+                Package
+            </div>
+
+            <div
+                id="packageName"
+                class="package-name">
+                Loading...
+            </div>
+
+            <div
+                id="membershipStatus"
+                class="status">
+                Loading...
+            </div>
+
+        </section>
+
+
+        <!-- EXPIRY -->
+
+        <section
+            id="expiryBox"
+            class="expiry-box">
+
+            <div class="expiry-label">
+                Access expires
+            </div>
+
+            <div
+                id="expiryDate"
+                class="expiry-date">
+                Loading...
+            </div>
+
+            <div
+                id="countdown"
+                class="countdown">
+                Loading countdown...
+            </div>
+
+        </section>
+
+
+        <!-- BIG ACTION BUTTONS -->
+
+        <div class="big-actions">
+
+            <a
+                href="movies.html"
+                id="moviesBtn"
+                class="big-btn">
+
+                <span>🎬</span>
+
+                WATCH MOVIES
+
+            </a>
+
+
+            <a
+                href="series.html"
+                id="seriesBtn"
+                class="big-btn">
+
+                <span>📺</span>
+
+                WATCH SERIES
+
+            </a>
+
+        </div>
+
+
+        <!-- SMALL ACTION BUTTONS -->
+
+        <div class="small-actions">
+
+            <a
+                href="happy-birthday.html"
+                class="small-btn">
+
+                🎂 HAPPY BIRTHDAY WISHES
+
+            </a>
+
+
+            <a
+                href="donate.html"
+                class="small-btn">
+
+                ❤️ DONATE
+
+            </a>
+
+        </div>
+
+
+        <!-- PAYMENT -->
+        <a
+            href="packages.html"
+            id="payBtn"
+            class="pay-btn">
+            🔓 PAY TO WATCH
+        </a>
+
+
+        <!-- SETTINGS -->
+
+        <a
+            href="edit-profile.html"
+            class="settings-btn">
+
+            ⚙️ SETTINGS
+
+        </a>
+
+
+        <a
+            href="home.html"
+            class="home-btn">
+
+            ← Back to BUSANSO
+
+        </a>
+
+
+        <a
+            href="adm-page.html"
+            id="adminBtn"
+            class="admin-btn">
+
+            👑 ADMIN PANEL
+
+        </a>
+
+
+        <button
+            type="button"
+            class="logout-btn"
+            onclick="logout()">
+
+            🚪 LOGOUT
+
+        </button>
+
+    </main>
+
 </div>
 
 
-<!-- ==================================================
-     NAVIGATION
-================================================== -->
-
-<div class="nav">
-
-
-    <!-- WATCH MOVIES -->
-
-    <a
-        href="movies.html"
-        id="moviesBtn"
-        class="watch-btn"
-    >
-
-        <span class="watch-icon">
-            🎬
-        </span>
-
-        WATCH MOVIES
-
-    </a>
-
-
-    <!-- WATCH SERIES -->
-
-    <a
-        href="series.html"
-        id="seriesBtn"
-        class="watch-btn"
-    >
-
-        <span class="watch-icon">
-            📺
-        </span>
-
-        WATCH SERIES
-
-    </a>
-
-
-    <!-- PAY TO WATCH -->
-
-    <a
-        href="packages.html"
-        id="payBtn"
-        class="pay-btn"
-    >
-
-        🔓 PAY TO WATCH
-
-    </a>
-
-
-    <!-- ADMIN -->
-
-    <a
-        href="adm-page.html"
-        id="adminBtn"
-        class="admin-btn"
-    >
-
-        👑 ADMIN PANEL
-
-    </a>
-
-
-    <!-- ACCOUNT -->
-
-    <a
-        href="account.html"
-        class="small-nav"
-    >
-
-        👤 MY ACCOUNT
-
-    </a>
-
-
-    <!-- BIRTHDAY -->
-
-    <a
-        href="happy-birthday.html"
-        class="small-nav"
-    >
-
-        🎂 HAPPY BIRTHDAY
-
-    </a>
-
-
-    <!-- DONATE -->
-
-    <a
-        href="donate.html"
-        class="small-nav"
-    >
-
-        ❤️ DONATE
-
-    </a>
-
-
-    <!-- SETTINGS -->
-
-    <a
-        href="edit-profile.html"
-        class="small-nav"
-    >
-
-        ⚙️ SETTINGS
-
-    </a>
-
-</div>
-
-
-<!-- ==================================================
-     SEARCH + FILTERS
-================================================== -->
-
-<div class="search">
-
-    <input
-        id="search"
-        placeholder="Search series..."
-        autocomplete="off"
-    >
-
-
-    <div class="filters">
-
-        <select id="countryFilter">
-
-            <option value="">
-                All Countries
-            </option>
-
-        </select>
-
-
-        <select id="genreFilter">
-
-            <option value="">
-                All Genres
-            </option>
-
-        </select>
-
-    </div>
-
-</div>
-
-
-<!-- ==================================================
-     SERIES GRID
-================================================== -->
+<!-- ERROR -->
 
 <div
-    class="series"
-    id="list"
-></div>
+    id="errorPage"
+    class="page hidden">
 
+    <main class="account-card error">
 
-<!-- ==================================================
-     SUPABASE
-================================================== -->
+        <div class="badge">
+            BUSANSO
+        </div>
 
-<script
-    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-</script>
+        <h2>
+            Account Not Found
+        </h2>
+
+        <p id="errorMessage">
+            We could not identify this account.
+        </p>
+
+        <a href="auth.html">
+            Sign in with Google
+        </a>
+
+    </main>
+
+</div>
 
 
 <script>
 
 const SUPABASE_URL =
-"https://dhkfhhybzcxdeoalcfqx.supabase.co";
-
+    "https://dhkfhhybzcxdeoalcfqx.supabase.co";
 
 const SUPABASE_KEY =
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkaGtoZmh5YnpjeGRlb2FsY2ZxeCIsInJlZiI6ImRoa2ZoaHliemN4ZGVvYWxjZnF4IiwiaWF0IjoxNzcyNTM0MTUxLCJleHAiOjIwODgxMTAxNTF9.jZ4NDNPJmO0Ji05TxDqCnzgLIIzKf9uCx3WrSgk2DaY";
-
+    "sb_publishable_Rjm3T44VKTeuOF2yJS5rMw_xDfwPjuG";
 
 const supabaseClient =
-supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-);
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+let countdownTimer = null;
 
 
-/* ==================================================
-   ELEMENTS
-================================================== */
+/* =========================================
+   ACCOUNT (2) LOGIN/PROFILE LOGIC
+   IMPORTANT: use the existing user_id session
+   exactly like account (2).html.
+========================================= */
 
-const box =
-document.getElementById("list");
+async function loadAccount(){
 
-const search =
-document.getElementById("search");
-
-const countryFilter =
-document.getElementById("countryFilter");
-
-const genreFilter =
-document.getElementById("genreFilter");
-
-const moviesBtn =
-document.getElementById("moviesBtn");
-
-const seriesBtn =
-document.getElementById("seriesBtn");
-
-const payBtn =
-document.getElementById("payBtn");
-
-const adminBtn =
-document.getElementById("adminBtn");
-
-const memberBadge =
-document.getElementById("memberBadge");
-
-const expiryBox =
-document.getElementById("expiryBox");
-
-const expiryElement =
-document.getElementById("expiry");
-
-
-let SERIES = [];
-
-
-/* ==================================================
-   LOAD USER
-
-   THIS IS THE ACCOUNT (2) LOGIC
-================================================== */
-
-async function loadPremiumUser(){
+    const loading = document.getElementById("loading");
+    const page = document.getElementById("page");
+    const errorPage = document.getElementById("errorPage");
+    const errorMessage = document.getElementById("errorMessage");
 
     const userID =
-    localStorage.getItem("user_id");
-
+        localStorage.getItem("user_id");
 
     /*
-    NO USER ID
-    */
-
+     * Do NOT require a new Supabase Auth session here.
+     * account (2).html identifies the logged-in user
+     * through localStorage user_id.
+     */
     if(!userID){
 
-        location.href =
-        "auth.html";
+        if(errorPage){
+            loading.classList.add("hidden");
+            page.classList.add("hidden");
+            errorPage.classList.remove("hidden");
+            errorMessage.textContent =
+                "Your login session was not found. Please sign in again.";
+        }else{
+            location.href = "auth.html";
+        }
 
-        return;
-
+        return false;
     }
 
 
-    /*
-    LOAD PROFILE
-    */
+    const {data,error} =
+        await supabaseClient
+            .from("profiles")
+            .select("*")
+            .eq("id",Number(userID))
+            .single();
 
-    const {
-        data,
-        error
-    } =
-    await supabaseClient
-
-    .from("profiles")
-
-    .select("*")
-
-    .eq(
-        "id",
-        Number(userID)
-    )
-
-    .single();
-
-
-    /*
-    PROFILE NOT FOUND
-    */
 
     if(error || !data){
 
-        location.href =
-        "auth.html";
+        console.error(
+            "BUSANSO profile error:",
+            error
+        );
 
-        return;
+        if(errorPage){
+            loading.classList.add("hidden");
+            page.classList.add("hidden");
+            errorPage.classList.remove("hidden");
+            errorMessage.textContent =
+                error?.message ||
+                "Unable to load your account.";
+        }else{
+            location.href = "auth.html";
+        }
 
+        return false;
     }
 
 
     /*
-    ACCOUNT STATUS
-    */
-
+     * Keep the same account-status rule used by
+     * account (2).html.
+     */
     if(
-        (data.account_status || "")
-        .toLowerCase()
-        !==
+        (data.account_status || "").toLowerCase() !==
         "active"
     ){
 
         localStorage.clear();
+        location.href = "blocked.html";
 
-        location.href =
-        "blocked.html";
-
-        return;
-
+        return false;
     }
 
-
-    /*
-    MEMBERSHIP
-    */
 
     const membership =
-    (
-        data.membership ||
-        "free"
-    ).toLowerCase();
+        (data.membership || "free").toLowerCase();
 
 
-    /*
-    PACKAGE BADGE
-    */
+    /* =========================================
+       GOLDEN PAGE DISPLAY
+    ========================================= */
 
-    if(
-        membership === "premium"
-    ){
+    document.getElementById("userName").textContent =
+        data.name || "Member";
 
-        memberBadge.textContent =
-        "👑 " +
-        (
-            data.package_type ||
-            "PREMIUM"
+
+    document.getElementById("packageName").textContent =
+        (data.package_type || "free").toUpperCase();
+
+
+    const status =
+        document.getElementById("membershipStatus");
+
+    const expiryBox =
+        document.getElementById("expiryBox");
+
+    const moviesBtn =
+        document.querySelector(
+            'a[href="movies.html"]'
         );
 
-    }
-    else{
-
-        memberBadge.textContent =
-        "🆓 FREE MEMBER";
-
-    }
+    const seriesBtn =
+        document.querySelector(
+            'a[href="series.html"]'
+        );
 
 
     /*
-    PREMIUM + VALID EXPIRY
-    */
-
+     * PREMIUM / FREE BUTTON LOGIC COPIED FROM
+     * account (2).html.
+     */
     const premiumActive =
-    membership === "premium"
-    &&
-    data.expires_at
-    &&
-    new Date(data.expires_at)
-    >
-    new Date();
+        membership === "premium" &&
+        data.expires_at &&
+        new Date(data.expires_at) > new Date();
 
-
-    /* ==================================================
-       PREMIUM USER
-    ================================================== */
 
     if(premiumActive){
 
-        /*
-        ENABLE WATCH MOVIES
-        */
+        status.textContent = "Active";
 
-        moviesBtn.classList.remove(
-            "locked"
-        );
+        moviesBtn.classList.remove("locked");
+        seriesBtn.classList.remove("locked");
 
-        moviesBtn.href =
-        "movies.html";
+        moviesBtn.href = "movies.html";
+        seriesBtn.href = "series.html";
 
-        moviesBtn.onclick =
-        null;
+        expiryBox.style.display = "block";
 
+        startExpiryCountdown(data.expires_at);
 
-        /*
-        ENABLE WATCH SERIES
-        */
+    }else{
 
-        seriesBtn.classList.remove(
-            "locked"
-        );
-
-        seriesBtn.href =
-        "series.html";
-
-        seriesBtn.onclick =
-        null;
-
+        if(membership === "premium"){
+            status.textContent = "Expired";
+        }else{
+            status.textContent = "Free package";
+        }
 
         /*
-        HIDE PAY BUTTON
-        */
+         * Keep the golden page's expiry area,
+         * but show the real status.
+         */
+        if(data.expires_at){
+            expiryBox.style.display = "block";
+            startExpiryCountdown(data.expires_at);
+        }else{
+            expiryBox.style.display = "none";
+        }
 
-        payBtn.style.display =
-        "flex";
+        moviesBtn.classList.add("locked");
+        seriesBtn.classList.add("locked");
 
+        moviesBtn.href = "javascript:void(0)";
+        seriesBtn.href = "javascript:void(0)";
 
-        payBtn.style.display =
-        "none";
+        moviesBtn.onclick = function(){
+            location.href = "packages.html";
+        };
 
-
-        /*
-        SHOW EXPIRY
-        */
-
-        expiryBox.style.display =
-        "block";
-
-        startExpiryCountdown(
-            data.expires_at
-        );
-
+        seriesBtn.onclick = function(){
+            location.href = "packages.html";
+        };
     }
 
 
-    /* ==================================================
-       FREE / EXPIRED USER
-    ================================================== */
-
-    else{
-
-        /*
-        GREY MOVIES BUTTON
-        */
-
-        moviesBtn.classList.add(
-            "locked"
-        );
-
-        moviesBtn.href =
-        "javascript:void(0)";
-
-
-        moviesBtn.onclick =
-        function(e){
-
-            e.preventDefault();
-
-            location.href =
-            "packages.html";
-
-        };
-
-
-        /*
-        GREY SERIES BUTTON
-        */
-
-        seriesBtn.classList.add(
-            "locked"
-        );
-
-        seriesBtn.href =
-        "javascript:void(0)";
-
-
-        seriesBtn.onclick =
-        function(e){
-
-            e.preventDefault();
-
-            location.href =
-            "packages.html";
-
-        };
-
-
-        /*
-        SHOW PAY BUTTON
-        */
-
-        payBtn.style.display =
-        "flex";
-
-
-        /*
-        HIDE EXPIRY
-        */
-
-        expiryBox.style.display =
-        "none";
-
-    }
-
-
-    /* ==================================================
-       LOCAL STORAGE UPDATE
-    ================================================== */
+    /*
+     * Preserve the existing localStorage contract.
+     * Do NOT clear or replace the logged-in user's ID.
+     */
+    localStorage.setItem(
+        "user_id",
+        String(data.id)
+    );
 
     localStorage.setItem(
         "name",
         data.name || ""
     );
 
-
     localStorage.setItem(
         "whatsapp_number",
         data.whatsapp_number || ""
     );
-
 
     localStorage.setItem(
         "membership",
         data.membership || "free"
     );
 
-
     localStorage.setItem(
         "package_type",
         data.package_type || ""
     );
-
 
     localStorage.setItem(
         "expires_at",
@@ -1489,807 +1303,265 @@ async function loadPremiumUser(){
     );
 
 
-    /*
-    MAKE SURE LOGIN STATE EXISTS
-    */
+    /* =========================================
+       REVEAL PAGE
+    ========================================= */
 
-    localStorage.setItem(
-        "loggedIn",
-        "true"
-    );
+    loading.classList.add("hidden");
 
+    if(errorPage){
+        errorPage.classList.add("hidden");
+    }
 
-    /*
-    KEEP USER ID
-    */
+    page.classList.remove("hidden");
 
-    localStorage.setItem(
-        "user_id",
-        data.id
-    );
-
-
-    /*
-    LOAD SERIES AFTER USER STATUS
-    */
-
-    await loadSeries();
-
+    return true;
 }
 
 
-/* ==================================================
-   ADMIN CHECK
-
-   COPIED FROM ACCOUNT (2)
-================================================== */
-
-async function checkAdminAccess(){
-
-    const userID =
-    localStorage.getItem(
-        "user_id"
-    );
-
-
-    if(!userID){
-
-        return;
-
-    }
-
-
-    const {
-        data,
-        error
-    } =
-    await supabaseClient
-
-    .from("profiles")
-
-    .select("role")
-
-    .eq(
-        "id",
-        Number(userID)
-    )
-
-    .single();
-
-
-    console.log(
-        "ADMIN CHECK DATA:",
-        data
-    );
-
-
-    console.log(
-        "ADMIN CHECK ERROR:",
-        error
-    );
-
-
-    if(
-        error ||
-        !data
-    ){
-
-        return;
-
-    }
-
-
-    if(
-        data.role &&
-        data.role
-        .trim()
-        .toLowerCase()
-        ===
-        "admin"
-    ){
-
-        adminBtn.style.display =
-        "flex";
-
-    }
-    else{
-
-        adminBtn.style.display =
-        "none";
-
-    }
-
-}
-
-
-/* ==================================================
+/* =========================================
    EXPIRY COUNTDOWN
+========================================= */
 
-   COPIED FROM ACCOUNT (2)
-================================================== */
+function startExpiryCountdown(expiryDate){
 
-function startExpiryCountdown(
-    expiryDate
-){
+    const expiryDateEl =
+        document.getElementById("expiryDate");
+
+    const countdown =
+        document.getElementById("countdown");
 
     function update(){
 
         const diff =
-        new Date(expiryDate)
-        -
-        new Date();
+            new Date(expiryDate).getTime() -
+            new Date().getTime();
 
 
         if(diff <= 0){
 
-            expiryElement.className =
-            "expiry-red";
+            expiryDateEl.textContent =
+                new Date(expiryDate).toLocaleString();
 
-            expiryElement.innerHTML =
-            "❌ Membership Expired";
+            countdown.textContent =
+                "access expired";
+
+            countdown.classList.add("expired");
+
+            document.getElementById(
+                "membershipStatus"
+            ).textContent = "Expired";
 
             return;
-
         }
+
+
+        expiryDateEl.textContent =
+            new Date(expiryDate).toLocaleString(
+                undefined,
+                {
+                    dateStyle:"medium",
+                    timeStyle:"short"
+                }
+            );
 
 
         const days =
-        Math.floor(
-            diff / 86400000
-        );
-
+            Math.floor(diff / 86400000);
 
         const hours =
-        Math.floor(
-            (
-                diff %
-                86400000
-            )
-            /
-            3600000
-        );
-
-
-        const minutes =
-        Math.floor(
-            (
-                diff %
-                3600000
-            )
-            /
-            60000
-        );
-
-
-        /*
-        COLOR
-        */
-
-        if(days >= 7){
-
-            expiryElement.className =
-            "expiry-green";
-
-        }
-
-        else if(days >= 1){
-
-            expiryElement.className =
-            "expiry-yellow";
-
-        }
-
-        else{
-
-            expiryElement.className =
-            "expiry-red";
-
-        }
-
-
-        let text = "";
-
-
-        if(days > 0){
-
-            text +=
-            days +
-            " Day" +
-            (
-                days > 1
-                ? "s "
-                : " "
+            Math.floor(
+                (diff % 86400000) / 3600000
             );
 
-        }
+        const minutes =
+            Math.floor(
+                (diff % 3600000) / 60000
+            );
+
+        const seconds =
+            Math.floor(
+                (diff % 60000) / 1000
+            );
 
 
-        text +=
-        hours +
-        " Hour" +
-        (
-            hours !== 1
-            ? "s "
-            : " "
-        );
-
-
-        text +=
-        minutes +
-        " Minute" +
-        (
-            minutes !== 1
-            ? "s"
-            : ""
-        );
-
-
-        expiryElement.innerHTML =
-        text +
-        " Remaining";
-
+        countdown.textContent =
+            days + " days " +
+            String(hours).padStart(2,"0") +
+            " hours " +
+            String(minutes).padStart(2,"0") +
+            " minutes " +
+            String(seconds).padStart(2,"0") +
+            " seconds";
     }
 
 
     update();
 
 
-    setInterval(
-        update,
-        60000
-    );
+    if(countdownTimer){
+        clearInterval(countdownTimer);
+    }
 
+    countdownTimer =
+        setInterval(update,1000);
 }
 
 
-/* ==================================================
-   CACHE IMAGE
-================================================== */
+/* =========================================
+   ADMIN BUTTON
+========================================= */
 
-async function cacheImage(url){
+async function checkAdminAccess(){
+
+    const userID =
+        localStorage.getItem("user_id");
+
+    if(!userID){
+        return;
+    }
+
+
+    const {data,error} =
+        await supabaseClient
+            .from("profiles")
+            .select("role")
+            .eq("id",Number(userID))
+            .single();
+
+
+    if(error || !data){
+        return;
+    }
+
 
     if(
-        "caches"
-        in window
+        data.role &&
+        data.role.trim().toLowerCase() === "admin"
     ){
 
-        try{
+        const adminBtn =
+            document.getElementById("adminBtn");
 
-            const cache =
-            await caches.open(
-                "series-images"
-            );
-
-
-            const res =
-            await fetch(
-                url,
-                {
-                    mode:"no-cors"
-                }
-            );
-
-
-            await cache.put(
-                url,
-                res
-            );
-
+        if(adminBtn){
+            adminBtn.style.display = "block";
         }
-        catch(error){
-
-            console.log(
-                "Image cache skipped:",
-                error
-            );
-
-        }
-
     }
-
 }
 
 
-/* ==================================================
-   RENDER SERIES
-================================================== */
+/* =========================================
+   LOGOUT
+========================================= */
 
-function render(data){
+async function logout(){
 
-    box.innerHTML = "";
+    try{
+        await supabaseClient.auth.signOut();
+    }catch(error){
+        console.warn("Supabase signout:",error);
+    }
 
+    localStorage.clear();
 
-    data.forEach(
-        (s,i)=>{
-
-            const c =
-            document.createElement(
-                "div"
-            );
-
-
-            c.className =
-            "card";
-
-
-            c.style.animationDelay =
-            i * .05 +
-            "s";
-
-
-            c.innerHTML = `
-
-                <div class="poster-wrap">
-
-                    <img
-                        src="${s.poster}"
-                        loading="lazy"
-                        class="poster-click"
-                        alt="${s.title || ""}"
-                    >
-
-                    <div
-                        class="status-badge ${
-                            (
-                                s.status ||
-                                "completed"
-                            ).toLowerCase()
-                        }"
-                    >
-
-                        ${
-                            s.status ||
-                            "COMPLETED"
-                        }
-
-                    </div>
-
-                </div>
-
-
-                <div class="info">
-
-                    <div class="title">
-
-                        ${
-                            s.title ||
-                            ""
-                        }
-
-                    </div>
-
-
-                    <div class="meta">
-
-                        ${
-                            s.country ||
-                            ""
-                        }
-
-                        •
-
-                        ${
-                            s.genre ||
-                            ""
-                        }
-
-                        •
-
-                        ${
-                            s.year ||
-                            ""
-                        }
-
-                    </div>
-
-                </div>
-
-            `;
-
-
-            /*
-            CARD CLICK
-            */
-
-            c.querySelector(
-                ".poster-click"
-            ).onclick =
-            () => {
-
-                location.href =
-                `serie.html?id=${s.id}`;
-
-            };
-
-
-            box.appendChild(c);
-
-
-            if(s.poster){
-
-                cacheImage(
-                    s.poster
-                );
-
-            }
-
-        }
-    );
-
+    location.href = "auth.html";
 }
 
 
-/* ==================================================
-   POPULATE FILTERS
-================================================== */
-
-function populateFilters(data){
-
-    /*
-    CLEAR OLD OPTIONS
-    */
-
-    countryFilter.innerHTML =
-    `<option value="">
-        All Countries
-    </option>`;
-
-
-    genreFilter.innerHTML =
-    `<option value="">
-        All Genres
-    </option>`;
-
-
-    const countries =
-    [
-        ...new Set(
-            data
-            .map(
-                s => s.country
-            )
-            .filter(Boolean)
-        )
-    ];
-
-
-    const genres =
-    [
-        ...new Set(
-            data
-            .map(
-                s => s.genre
-            )
-            .filter(Boolean)
-        )
-    ];
-
-
-    countries.forEach(
-        country => {
-
-            const option =
-            document.createElement(
-                "option"
-            );
-
-
-            option.value =
-            country;
-
-
-            option.textContent =
-            country;
-
-
-            countryFilter.appendChild(
-                option
-            );
-
-        }
-    );
-
-
-    genres.forEach(
-        genre => {
-
-            const option =
-            document.createElement(
-                "option"
-            );
-
-
-            option.value =
-            genre;
-
-
-            option.textContent =
-            genre;
-
-
-            genreFilter.appendChild(
-                option
-            );
-
-        }
-    );
-
-}
-
-
-/* ==================================================
-   FILTER
-================================================== */
-
-function applyFilters(){
-
-    let filtered =
-    SERIES;
-
-
-    const q =
-    search.value
-    .toLowerCase()
-    .trim();
-
-
-    const selectedCountry =
-    countryFilter.value;
-
-
-    const selectedGenre =
-    genreFilter.value;
-
-
-    if(selectedGenre){
-
-        filtered =
-        filtered.filter(
-            s =>
-            s.genre &&
-            s.genre
-            .toUpperCase()
-            ===
-            selectedGenre
-            .toUpperCase()
-        );
-
-    }
-
-
-    if(selectedCountry){
-
-        filtered =
-        filtered.filter(
-            s =>
-            s.country &&
-            s.country
-            ===
-            selectedCountry
-        );
-
-    }
-
-
-    if(q){
-
-        filtered =
-        filtered.filter(
-            s =>
-            (
-                s.title ||
-                ""
-            )
-            .toLowerCase()
-            .includes(q)
-        );
-
-    }
-
-
-    render(
-        filtered
-    );
-
-}
-
-
-search.oninput =
-applyFilters;
-
-
-countryFilter.onchange =
-applyFilters;
-
-
-genreFilter.onchange =
-applyFilters;
-
-
-/* ==================================================
-   FETCH SERIES
-
-   ORIGINAL SERIES LOGIC
-================================================== */
-
-async function loadSeries(){
+/* =========================================
+   START
+========================================= */
+
+async function startPage(){
 
     try{
 
-        const {
-            data,
-            error
-        } =
-        await supabaseClient
+        const loaded =
+            await loadAccount();
 
-        .from("series")
-
-        .select("*")
-
-        .order(
-            "created_at",
-            {
-                ascending:false
-            }
-        );
-
-
-        if(error){
-
-            console.error(
-                "Supabase series error:",
-                error
-            );
-
-            box.innerHTML = `
-
-                <div style="
-                    grid-column:1/-1;
-                    text-align:center;
-                    padding:40px;
-                    color:#f87171;
-                    font-weight:bold;
-                ">
-
-                    Failed to load series.
-
-                </div>
-
-            `;
-
+        if(!loaded){
             return;
-
         }
 
-
-        SERIES =
-        data || [];
+        await checkAdminAccess();
 
 
-        populateFilters(
-            SERIES
-        );
+        /*
+         * Keep realtime profile updates from account (2),
+         * without changing the user's login identity.
+         */
+        const userID =
+            localStorage.getItem("user_id");
 
+        if(userID){
 
-        render(
-            SERIES
-        );
+            supabaseClient
+                .channel(
+                    "profile-" + userID
+                )
+                .on(
+                    "postgres_changes",
+                    {
+                        event:"*",
+                        schema:"public",
+                        table:"profiles",
+                        filter:
+                            `id=eq.${userID}`
+                    },
+                    function(){
 
+                        loadAccount();
+                        checkAdminAccess();
 
-        console.log(
-            "Series fetched:",
-            SERIES
-        );
+                    }
+                )
+                .subscribe();
+        }
 
-    }
-
-    catch(error){
+    }catch(error){
 
         console.error(
-            "Series fetch failed:",
+            "BUSANSO account error:",
             error
         );
 
-    }
+        const loading =
+            document.getElementById("loading");
 
-}
+        const page =
+            document.getElementById("page");
 
+        const errorPage =
+            document.getElementById("errorPage");
 
-/* ==================================================
-   START PAGE
-================================================== */
-
-loadPremiumUser();
-
-checkAdminAccess();
-
-
-/* ==================================================
-   REALTIME PROFILE UPDATES
-
-   COPIED FROM ACCOUNT (2)
-================================================== */
-
-const realtimeUserID =
-localStorage.getItem(
-    "user_id"
-);
+        const errorMessage =
+            document.getElementById("errorMessage");
 
 
-if(realtimeUserID){
-
-    const realtimeChannel =
-    supabaseClient
-
-    .channel(
-        "profile-" +
-        realtimeUserID
-    )
-
-    .on(
-
-        "postgres_changes",
-
-        {
-
-            event:"*",
-
-            schema:"public",
-
-            table:"profiles",
-
-            filter:
-            `id=eq.${realtimeUserID}`
-
-        },
-
-        payload => {
-
-            console.log(
-                "Realtime profile update:",
-                payload
-            );
-
-
-            /*
-            RELOAD USER STATUS
-            */
-
-            loadPremiumUser();
-
-
-            /*
-            RECHECK ADMIN
-            */
-
-            checkAdminAccess();
-
+        if(loading){
+            loading.classList.add("hidden");
         }
 
-    )
+        if(page){
+            page.classList.add("hidden");
+        }
 
-    .subscribe();
+        if(errorPage){
+            errorPage.classList.remove("hidden");
+        }
 
+        if(errorMessage){
+            errorMessage.textContent =
+                error.message ||
+                "Unable to load your BUSANSO account.";
+        }
+    }
 }
 
+
+startPage();
+
 </script>
-
-
-<!-- CLOUDFLARE -->
-
-<script
-    type="module"
-    src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496"
-    integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ=="
-    data-cf-beacon='{
-        "version":"2024.11.0",
-        "token":"977e102300684d198adca5d7f4479",
-        "r":1
-    }'
-    crossorigin="anonymous">
-</script>
-
 
 </body>
-
 </html>
