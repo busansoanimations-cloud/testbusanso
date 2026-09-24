@@ -1093,12 +1093,26 @@ const supabaseClient =
 
 async function loadPremiumUser(){
 
+    const loading = document.getElementById("loading");
+    const page = document.getElementById("page");
+    const errorPage = document.getElementById("errorPage");
+    const errorMessage = document.getElementById("errorMessage");
+
     const userID =
         localStorage.getItem("user_id");
 
     if(!userID){
-        location.href="auth.html";
-        return;
+        if(errorPage){
+            loading.classList.add("hidden");
+            page.classList.add("hidden");
+            errorPage.classList.remove("hidden");
+            if(errorMessage){
+                errorMessage.textContent = "Your login session could not be found. Please sign in again.";
+            }
+        }else{
+            location.href="auth.html";
+        }
+        return false;
     }
 
     const {data,error}=await supabaseClient
@@ -1108,8 +1122,18 @@ async function loadPremiumUser(){
         .single();
 
     if(error || !data){
-        location.href="auth.html";
-        return;
+        if(errorPage){
+            loading.classList.add("hidden");
+            page.classList.add("hidden");
+            errorPage.classList.remove("hidden");
+            if(errorMessage){
+                errorMessage.textContent =
+                    error?.message || "Unable to load your BUSANSO account.";
+            }
+        }else{
+            location.href="auth.html";
+        }
+        return false;
     }
 
     /* Account status */
@@ -1117,8 +1141,17 @@ async function loadPremiumUser(){
         (data.account_status || "").toLowerCase() !== "active"
     ){
         localStorage.clear();
-        location.href="blocked.html";
-        return;
+        if(errorPage){
+            loading.classList.add("hidden");
+            page.classList.add("hidden");
+            errorPage.classList.remove("hidden");
+            if(errorMessage){
+                errorMessage.textContent = "This account is not active.";
+            }
+        }else{
+            location.href="blocked.html";
+        }
+        return false;
     }
 
 
@@ -1273,6 +1306,15 @@ async function loadPremiumUser(){
 
     }
 
+    /* SHOW ACCOUNT PAGE AFTER DATA LOAD */
+    loading.classList.add("hidden");
+    if(errorPage){
+        errorPage.classList.add("hidden");
+    }
+    page.classList.remove("hidden");
+
+    return true;
+
 }
 
 
@@ -1420,42 +1462,84 @@ async function logout(){
    START PAGE
 ============================== */
 
-loadPremiumUser();
-checkAdminAccess();
+async function startPage(){
 
+    const loading = document.getElementById("loading");
+    const page = document.getElementById("page");
+    const errorPage = document.getElementById("errorPage");
+    const errorMessage = document.getElementById("errorMessage");
 
-/* ==============================
-   REALTIME PROFILE UPDATES
-============================== */
+    try{
 
-const realtimeChannel =
-    supabaseClient
-        .channel(
-            "profile-" +
-            localStorage.getItem("user_id")
-        )
-        .on(
-            "postgres_changes",
-            {
-                event:"*",
-                schema:"public",
-                table:"profiles",
-                filter:
-                    `id=eq.${localStorage.getItem("user_id")}`
-            },
-            (payload)=>{
+        const loaded = await loadPremiumUser();
 
-                console.log(
-                    "Realtime profile update:",
-                    payload
-                );
+        if(!loaded){
+            return;
+        }
 
-                loadPremiumUser();
-                checkAdminAccess();
+        await checkAdminAccess();
 
-            }
-        )
-        .subscribe();
+        /* ==============================
+           REALTIME PROFILE UPDATES
+        ============================== */
+
+        const currentUserID =
+            localStorage.getItem("user_id");
+
+        if(currentUserID){
+
+            supabaseClient
+                .channel("profile-" + currentUserID)
+                .on(
+                    "postgres_changes",
+                    {
+                        event:"*",
+                        schema:"public",
+                        table:"profiles",
+                        filter:
+                            `id=eq.${currentUserID}`
+                    },
+                    (payload)=>{
+
+                        console.log(
+                            "Realtime profile update:",
+                            payload
+                        );
+
+                        loadPremiumUser();
+                        checkAdminAccess();
+
+                    }
+                )
+                .subscribe();
+
+        }
+
+    }catch(error){
+
+        console.error(
+            "BUSANSO account startup error:",
+            error
+        );
+
+        if(loading) loading.classList.add("hidden");
+        if(page) page.classList.add("hidden");
+
+        if(errorPage){
+            errorPage.classList.remove("hidden");
+        }
+
+        if(errorMessage){
+            errorMessage.textContent =
+                error?.message ||
+                "Unable to load your BUSANSO account. Please sign in again.";
+        }
+
+    }
+
+}
+
+startPage();
 
 </script>
 
