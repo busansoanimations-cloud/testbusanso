@@ -1,4 +1,4 @@
-﻿
+
 <!DOCTYPE html> 
 <html lang="en"> <head> <meta charset="UTF-8"> 
 <title>BUSANSO – Movies</title> 
@@ -238,143 +238,161 @@ body{
 
 <div class="movies" id="list"></div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="busanso-auth.js"></script>
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
 const supabaseUrl = 'https://dhkfhhybzcxdeoalcfqx.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRoa2ZoaHliemN4ZGVvYWxjZnF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1MzQxNTEsImV4cCI6MjA4ODExMDE1MX0.jZ4NDNPJmO0Ji05TxDqCnzgLIIzKf9uCx3WrSgk2DaY';
+const supabaseKey = 'sb_publishable_Rjm3T44VKTeuOF2yJS5rMw_xDfwPjuG';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+/* Wait for the BUSANSO compatibility bridge before guarding the page. */
+async function waitForBusansoAuth() {
+  if (window.BusansoAuth && window.BusansoAuth.ready) {
+    return await window.BusansoAuth.ready;
+  }
 
-// ===============================
-// VERIFY USER (PROFILE + LEGACY PIN)
-// ===============================
+  /* Safe fallback for existing legacy users. */
+  const loggedIn =
+    localStorage.getItem("loggedIn") === "true" ||
+    localStorage.getItem("isLoggedIn") === "true";
 
-const loggedIn = localStorage.getItem("loggedIn") === "true";
-const userId = localStorage.getItem("user_id");
+  const userId =
+    localStorage.getItem("user_id") ||
+    localStorage.getItem("profile_id");
+
+  const name = localStorage.getItem("name");
+
+  if (loggedIn || userId || name) {
+    return { authenticated: true, type: "legacy", profile: null };
+  }
+
+  return { authenticated: false, type: "none", profile: null };
+}
+
+/* -------------------------------------------------
+   AUTHENTICATION
+------------------------------------------------- */
+const authResult = await waitForBusansoAuth();
+
+if (!authResult.authenticated) {
+  window.location.href = "auth.html";
+  throw new Error("BUSANSO: user is not authenticated");
+}
+
+/*
+  Both systems are accepted:
+  - Legacy users keep their existing localStorage identity.
+  - Google users use the Supabase session.
+  - busanso-auth.js copies the Google profile into
+    compatibility localStorage when a profile exists.
+*/
+
+/* -------------------------------------------------
+   LEGACY PROFILE / PREMIUM COMPATIBILITY
+------------------------------------------------- */
+const userId =
+  localStorage.getItem("user_id") ||
+  localStorage.getItem("profile_id");
+
 const activePIN = localStorage.getItem("activePIN");
 
-// -------------------------------
-// Not logged in
-// -------------------------------
-if (!loggedIn) {
+if (authResult.type === "legacy" && userId) {
 
-    // Legacy premium user
-    if (activePIN) {
-        // Allow access
+  const { data: profile, error } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", userId)
+    .maybeSingle();
+
+  /*
+    Never log a user out merely because Supabase is
+    temporarily unavailable or the old profile cannot
+    be refreshed.
+  */
+  if (!error && profile) {
+
+    localStorage.setItem("name", profile.name || "");
+    localStorage.setItem(
+      "whatsapp_number",
+      profile.whatsapp_number || ""
+    );
+    localStorage.setItem(
+      "account_status",
+      profile.account_status || "active"
+    );
+    localStorage.setItem(
+      "paid_status",
+      profile.paid_status === true ? "true" : "false"
+    );
+    localStorage.setItem(
+      "expires_at",
+      profile.expires_at || ""
+    );
+    localStorage.setItem(
+      "package_type",
+      profile.package_type || ""
+    );
+    localStorage.setItem(
+      "membership",
+      profile.membership || ""
+    );
+    localStorage.setItem(
+      "activated_at",
+      profile.activated_at || ""
+    );
+
+    if (!profile.expires_at) {
+
+      if (!activePIN) {
+        window.location.href = "packages.html";
+        throw new Error("No premium");
+      }
+
     } else {
-        window.location.href = "auth.html";
-        throw new Error("Not logged in");
+
+      const expiry = new Date(profile.expires_at);
+      const now = new Date();
+
+      if (expiry <= now) {
+
+        localStorage.removeItem("activePIN");
+        localStorage.setItem("paid_status", "false");
+        localStorage.setItem("account_status", "expired");
+
+        window.location.href = "packages.html";
+        throw new Error("Premium expired");
+      }
+
+      localStorage.setItem(
+        "activePIN",
+        "PROFILE_PREMIUM"
+      );
     }
-
-}
-// -------------------------------
-// Logged in
-// -------------------------------
-else {
-
-    // Missing user_id
-    if (!userId) {
-
-        if (activePIN) {
-            // Legacy premium user
-        } else {
-            window.location.href = "auth.html";
-            throw new Error("Missing user_id");
-        }
-
-    } else {
-
-        // Fetch latest profile
-        const { data: profile, error } = await supabase
-            .from("profiles")
-            .select("*")
-            .eq("id", userId)
-            .single();
-
-        // ------------------------------------
-        // Profile not found
-        // ------------------------------------
-        if (error || !profile) {
-
-            if (activePIN) {
-                // Legacy premium user
-            } else {
-
-                localStorage.removeItem("loggedIn");
-                localStorage.removeItem("user_id");
-                localStorage.removeItem("name");
-                localStorage.removeItem("whatsapp_number");
-                localStorage.removeItem("account_status");
-                localStorage.removeItem("paid_status");
-
-                window.location.href = "auth.html";
-                throw new Error("Profile not found");
-            }
-
-        } else {
-
-            // ------------------------------------
-            // Save latest profile locally
-            // ------------------------------------
-            localStorage.setItem("name", profile.name || "");
-            localStorage.setItem("whatsapp_number", profile.whatsapp_number || "");
-            localStorage.setItem("account_status", profile.account_status || "");
-            localStorage.setItem("paid_status", profile.paid_status || "");
-            localStorage.setItem("expires_at", profile.expires_at || "");
-
-            // ------------------------------------
-            // Premium check
-            // ------------------------------------
-            if (!profile.expires_at) {
-
-                localStorage.removeItem("activePIN");
-                window.location.href = "packages.html";
-                throw new Error("No premium");
-
-            }
-
-            const now = new Date();
-            const expiry = new Date(profile.expires_at);
-
-            if (expiry <= now) {
-
-                localStorage.removeItem("activePIN");
-                localStorage.removeItem("paid_status");
-                localStorage.setItem("account_status", "expired");
-
-                window.location.href = "packages.html";
-                throw new Error("Premium expired");
-
-            }
-
-            // Premium is valid
-            localStorage.setItem("activePIN", "PROFILE_PREMIUM");
-
-        }
-
-    }
-
+  }
 }
 
+/* -------------------------------------------------
+   MOVIES
+------------------------------------------------- */
 const box = document.getElementById("list");
 const search = document.getElementById("search");
 const genreSelect = document.getElementById("genreFilter");
+
 let activeGenre = null;
 let MOVIES = [];
 
-
-
-function render(data){
+function render(data) {
 
   box.innerHTML = "";
 
-  if(!data || data.length===0){
-    box.innerHTML="<p>No movies available.</p>";
+  if (!data || data.length === 0) {
+    box.innerHTML = "<p>No movies available.</p>";
     return;
   }
 
-  data.forEach(m=>{
+  data.forEach(m => {
 
     const c = document.createElement("div");
     c.className = "card";
@@ -383,7 +401,9 @@ function render(data){
       location.href = `movie.html?id=${m.id}`;
     };
 
-   let badge = "";  c.innerHTML = `
+    let badge = "";
+
+    c.innerHTML = `
       <div style="position:relative">
         ${badge}
         <img src="${m.poster}" alt="${m.title}">
@@ -400,37 +420,68 @@ function render(data){
     `;
 
     box.appendChild(c);
-
   });
-
 }
 
-function applyFilters(){
+function applyFilters() {
+
   let filtered = [...MOVIES];
-  if(activeGenre){
-    filtered = filtered.filter(m => m.genre && m.genre.toLowerCase() === activeGenre.toLowerCase());
+
+  if (activeGenre) {
+    filtered = filtered.filter(
+      m =>
+        m.genre &&
+        m.genre.toLowerCase() === activeGenre.toLowerCase()
+    );
   }
+
   const q = search.value.trim().toLowerCase();
-  if(q){
-    filtered = filtered.filter(m => m.title.toLowerCase().includes(q));
+
+  if (q) {
+    filtered = filtered.filter(
+      m =>
+        m.title &&
+        m.title.toLowerCase().includes(q)
+    );
   }
+
   render(filtered);
 }
 
 search.oninput = applyFilters;
-genreSelect.onchange = () => {
-  const val = genreSelect.value;
-  activeGenre = val==="ALL"?null:val;
-  applyFilters();
-}
 
-async function loadMovies(){
+genreSelect.onchange = () => {
+
+  const val = genreSelect.value;
+
+  activeGenre =
+    val === "ALL"
+      ? null
+      : val;
+
+  applyFilters();
+};
+
+async function loadMovies() {
+
   const { data, error } = await supabase
-    .from('movies')
-    .select('*')
-    .order('created_at',{ascending:false}); // newest first
-  if(error){ console.error(error); box.innerHTML="<p>Failed to load movies.</p>"; return; }
-  if(!data || data.length===0){ box.innerHTML="<p>No movies available.</p>"; return; }
+    .from("movies")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+
+    console.error("BUSANSO movies error:", error);
+    box.innerHTML = "<p>Failed to load movies.</p>";
+    return;
+  }
+
+  if (!data || data.length === 0) {
+
+    box.innerHTML = "<p>No movies available.</p>";
+    return;
+  }
+
   MOVIES = data;
   render(MOVIES);
 }
@@ -438,8 +489,5 @@ async function loadMovies(){
 loadMovies();
 </script>
 
-<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1}' crossorigin="anonymous"></script>
-<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1}' crossorigin="anonymous"></script>
-<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1,"spa":2}' crossorigin="anonymous"></script>
 </body>
 </html>
