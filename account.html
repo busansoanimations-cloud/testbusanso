@@ -700,6 +700,145 @@ h1{
     }
 }
 
+
+/* =========================
+   COPIED ACCOUNT ACTIONS
+   GOLDEN THEME PRESERVED
+========================= */
+
+.locked{
+    background:
+        linear-gradient(
+            135deg,
+            #3a3528,
+            #242119
+        ) !important;
+    color:#8f8878 !important;
+    box-shadow:none !important;
+    border-color:rgba(255,215,0,.10) !important;
+    cursor:not-allowed;
+    position:relative;
+    opacity:.8;
+}
+
+.locked::after{
+    content:" 🔒 PREMIUM ONLY";
+    display:block;
+    font-size:8px;
+    margin-top:3px;
+    color:#ffd84d;
+}
+
+.pay-btn{
+    position:relative;
+    display:none;
+    width:100%;
+    min-height:48px;
+    margin:0 0 9px;
+    border-radius:14px;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    text-decoration:none;
+    color:#211700;
+    font-size:11px;
+    font-weight:900;
+    background:
+        linear-gradient(
+            135deg,
+            #fff0a3,
+            #ffd43b 45%,
+            #b77d00
+        );
+    border:1px solid rgba(255,235,130,.65);
+    box-shadow:
+        0 8px 22px rgba(255,196,0,.20),
+        inset 0 1px rgba(255,255,255,.8);
+    animation:goldPayPulse 1.8s infinite;
+}
+
+@keyframes goldPayPulse{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.02);}
+}
+
+.admin-btn{
+    display:none;
+    width:100%;
+    min-height:40px;
+    margin-top:8px;
+    border-radius:12px;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    text-decoration:none;
+    color:#211700;
+    font-size:10px;
+    font-weight:900;
+    background:
+        linear-gradient(
+            135deg,
+            #fff0a3,
+            #ffd43b 45%,
+            #b77d00
+        );
+    border:1px solid rgba(255,215,0,.35);
+    box-shadow:
+        0 7px 18px rgba(0,0,0,.3),
+        inset 0 1px rgba(255,255,255,.7);
+}
+
+.logout-btn{
+    display:block;
+    width:100%;
+    min-height:34px;
+    margin-top:7px;
+    border:1px solid rgba(255,215,0,.12);
+    border-radius:10px;
+    background:rgba(255,255,255,.035);
+    color:#8f8878;
+    font-size:9px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.logout-btn:hover{
+    color:#ffd84d;
+    background:rgba(255,215,0,.08);
+}
+
+@media(max-width:480px){
+    .pay-btn{
+        min-height:43px;
+        font-size:10px;
+    }
+
+    .admin-btn{
+        min-height:37px;
+    }
+
+    .logout-btn{
+        min-height:31px;
+    }
+}
+
+@media(max-height:650px){
+    .pay-btn{
+        min-height:38px;
+        font-size:9px;
+        margin-bottom:6px;
+    }
+
+    .admin-btn{
+        min-height:33px;
+    }
+
+    .logout-btn{
+        min-height:28px;
+        margin-top:5px;
+    }
+}
+
 </style>
 
 </head>
@@ -807,6 +946,7 @@ h1{
 
             <a
                 href="movies.html"
+                id="moviesBtn"
                 class="big-btn">
 
                 <span>🎬</span>
@@ -818,6 +958,7 @@ h1{
 
             <a
                 href="series.html"
+                id="seriesBtn"
                 class="big-btn">
 
                 <span>📺</span>
@@ -853,6 +994,15 @@ h1{
         </div>
 
 
+        <!-- PAYMENT -->
+        <a
+            href="packages.html"
+            id="payBtn"
+            class="pay-btn">
+            🔓 PAY TO WATCH
+        </a>
+
+
         <!-- SETTINGS -->
 
         <a
@@ -871,6 +1021,26 @@ h1{
             ← Back to BUSANSO
 
         </a>
+
+
+        <a
+            href="adm-page.html"
+            id="adminBtn"
+            class="admin-btn">
+
+            👑 ADMIN PANEL
+
+        </a>
+
+
+        <button
+            type="button"
+            class="logout-btn"
+            onclick="logout()">
+
+            🚪 LOGOUT
+
+        </button>
 
     </main>
 
@@ -921,813 +1091,371 @@ const supabaseClient =
     );
 
 
-let currentProfile = null;
+async function loadPremiumUser(){
 
-let countdownTimer = null;
+    const userID =
+        localStorage.getItem("user_id");
 
-
-/* =========================================
-   HELPERS
-========================================= */
-
-function clean(value){
-
-    if(
-        value === null ||
-        value === undefined
-    ){
-        return "";
-    }
-
-    return String(value).trim();
-
-}
-
-
-/* =========================================
-   PACKAGE TYPE
-   PACKAGE IS NOW DETERMINED ONLY FROM
-   profiles.package_type
-========================================= */
-
-function getPackageType(profile){
-
-    return clean(
-        profile.package_type
-    ).toLowerCase();
-
-}
-
-
-/* =========================================
-   EXPIRY
-========================================= */
-
-function isExpired(profile){
-
-    if(!profile.expires_at){
-        return false;
-    }
-
-    return (
-        new Date(profile.expires_at) <=
-        new Date()
-    );
-
-}
-
-
-/* =========================================
-   SAVE COMPATIBILITY DATA
-========================================= */
-
-function saveCompatibilityData(
-    profile,
-    user
-){
-
-    if(
-        profile.id !== null &&
-        profile.id !== undefined
-    ){
-
-        localStorage.setItem(
-            "user_id",
-            String(profile.id)
-        );
-
-    }
-
-
-    if(profile.name){
-
-        localStorage.setItem(
-            "name",
-            profile.name
-        );
-
-    }
-
-
-    /*
-     * Keep the actual package_type
-     * in localStorage for older pages.
-     */
-
-    localStorage.setItem(
-        "package_type",
-        profile.package_type || ""
-    );
-
-
-    localStorage.setItem(
-        "membership",
-        profile.membership || ""
-    );
-
-
-    localStorage.setItem(
-        "paid_status",
-        profile.paid_status
-            ? "true"
-            : "false"
-    );
-
-
-    localStorage.setItem(
-        "expires_at",
-        profile.expires_at || ""
-    );
-
-
-    if(
-        profile.activated_at
-    ){
-
-        localStorage.setItem(
-            "activated_at",
-            profile.activated_at
-        );
-
-    }
-
-
-    if(
-        user &&
-        user.id
-    ){
-
-        localStorage.setItem(
-            "auth_user_id",
-            user.id
-        );
-
-        localStorage.setItem(
-            "supabase_auth_user_id",
-            user.id
-        );
-
-    }
-
-}
-
-
-/* =========================================
-   GOOGLE USER PROFILE
-========================================= */
-
-async function findGoogleProfile(){
-
-    const {
-        data,
-        error
-    } =
-    await supabaseClient.auth.getSession();
-
-
-    if(error){
-
-        console.error(
-            "Supabase session error:",
-            error
-        );
-
-        return {
-            user:null,
-            profile:null
-        };
-
-    }
-
-
-    const session =
-        data.session;
-
-
-    if(!session){
-
-        return {
-            user:null,
-            profile:null
-        };
-
-    }
-
-
-    const user =
-        session.user;
-
-
-    const result =
-        await supabaseClient
-            .from("profiles")
-            .select("*")
-            .eq(
-                "auth_user_id",
-                user.id
-            )
-            .maybeSingle();
-
-
-    if(result.error){
-
-        console.error(
-            "Google profile lookup error:",
-            result.error
-        );
-
-        return {
-            user,
-            profile:null
-        };
-
-    }
-
-
-    return {
-        user,
-        profile:result.data
-    };
-
-}
-
-
-/* =========================================
-   LEGACY USER
-========================================= */
-
-async function findLegacyProfile(){
-
-    const userId =
-        clean(
-            localStorage.getItem(
-                "user_id"
-            )
-        );
-
-
-    const name =
-        clean(
-            localStorage.getItem(
-                "name"
-            )
-        );
-
-
-    const deviceId =
-        clean(
-            localStorage.getItem(
-                "device_id"
-            )
-        );
-
-
-    /*
-     * FIRST:
-     * legacy numeric profile ID
-     */
-
-    if(userId){
-
-        const numericId =
-            Number(userId);
-
-
-        if(
-            Number.isInteger(
-                numericId
-            )
-        ){
-
-            const result =
-                await supabaseClient
-                    .from("profiles")
-                    .select("*")
-                    .eq(
-                        "id",
-                        numericId
-                    )
-                    .maybeSingle();
-
-
-            if(
-                !result.error &&
-                result.data
-            ){
-
-                return result.data;
-
-            }
-
-        }
-
-    }
-
-
-    /*
-     * SECOND:
-     * name + device ID
-     */
-
-    if(
-        name &&
-        deviceId
-    ){
-
-        const result =
-            await supabaseClient
-                .from("profiles")
-                .select("*")
-                .eq(
-                    "name",
-                    name
-                )
-                .eq(
-                    "device_id",
-                    deviceId
-                )
-                .maybeSingle();
-
-
-        if(
-            !result.error &&
-            result.data
-        ){
-
-            return result.data;
-
-        }
-
-    }
-
-
-    /*
-     * THIRD:
-     * name only
-     */
-
-    if(name){
-
-        const result =
-            await supabaseClient
-                .from("profiles")
-                .select("*")
-                .eq(
-                    "name",
-                    name
-                )
-                .maybeSingle();
-
-
-        if(
-            !result.error &&
-            result.data
-        ){
-
-            return result.data;
-
-        }
-
-    }
-
-
-    return null;
-
-}
-
-
-/* =========================================
-   UNIFIED USER RESOLVER
-========================================= */
-
-async function resolveCurrentUser(){
-
-    /*
-     * NEW GOOGLE SYSTEM FIRST
-     */
-
-    const google =
-        await findGoogleProfile();
-
-
-    if(
-        google.user &&
-        google.profile
-    ){
-
-        return {
-            type:"google",
-            user:google.user,
-            profile:google.profile
-        };
-
-    }
-
-
-    /*
-     * OLD SYSTEM SECOND
-     */
-
-    const legacy =
-        await findLegacyProfile();
-
-
-    if(legacy){
-
-        return {
-            type:"legacy",
-            user:null,
-            profile:legacy
-        };
-
-    }
-
-
-    return null;
-
-}
-
-
-/* =========================================
-   EXPIRY COUNTDOWN
-========================================= */
-
-function startCountdown(
-    expiresAt
-){
-
-    const countdown =
-        document.getElementById(
-            "countdown"
-        );
-
-
-    const expiryDate =
-        document.getElementById(
-            "expiryDate"
-        );
-
-
-    if(countdownTimer){
-
-        clearInterval(
-            countdownTimer
-        );
-
-    }
-
-
-    if(!expiresAt){
-
-        expiryDate.textContent =
-            "No expiry date set";
-
-        countdown.textContent =
-            "active";
-
+    if(!userID){
+        location.href="auth.html";
         return;
-
     }
 
+    const {data,error}=await supabaseClient
+        .from("profiles")
+        .select("*")
+        .eq("id",Number(userID))
+        .single();
 
-    const expiry =
-        new Date(
-            expiresAt
-        );
-
-
-    if(
-        isNaN(
-            expiry.getTime()
-        )
-    ){
-
-        expiryDate.textContent =
-            "Expiry date unavailable";
-
-        countdown.textContent =
-            "please contact BUSANSO";
-
+    if(error || !data){
+        location.href="auth.html";
         return;
+    }
 
+    /* Account status */
+    if(
+        (data.account_status || "").toLowerCase() !== "active"
+    ){
+        localStorage.clear();
+        location.href="blocked.html";
+        return;
     }
 
 
-    expiryDate.textContent =
-        expiry.toLocaleString(
-            undefined,
-            {
-                dateStyle:"medium",
-                timeStyle:"short"
-            }
-        );
+    /* ==============================
+       PREMIUM / FREE UI CONTROL
+    ============================== */
 
-
-    function update(){
-
-        const now =
-            new Date();
-
-
-        let difference =
-            expiry.getTime() -
-            now.getTime();
-
-
-        if(
-            difference <= 0
-        ){
-
-            countdown.textContent =
-                "access expired";
-
-            countdown.classList.add(
-                "expired"
-            );
-
-
-            document.getElementById(
-                "membershipStatus"
-            ).textContent =
-                "Expired";
-
-
-            clearInterval(
-                countdownTimer
-            );
-
-            return;
-
-        }
-
-
-        const totalSeconds =
-            Math.floor(
-                difference / 1000
-            );
-
-
-        const days =
-            Math.floor(
-                totalSeconds / 86400
-            );
-
-
-        const hours =
-            Math.floor(
-                (totalSeconds % 86400) /
-                3600
-            );
-
-
-        const minutes =
-            Math.floor(
-                (totalSeconds % 3600) /
-                60
-            );
-
-
-        const seconds =
-            totalSeconds % 60;
-
-
-        /*
-         * Lowercase and smaller.
-         */
-
-        countdown.textContent =
-            days + " days " +
-            String(hours).padStart(
-                2,
-                "0"
-            ) + " hours " +
-            String(minutes).padStart(
-                2,
-                "0"
-            ) + " minutes " +
-            String(seconds).padStart(
-                2,
-                "0"
-            ) + " seconds";
-
-    }
-
-
-    update();
-
-
-    countdownTimer =
-        setInterval(
-            update,
-            1000
-        );
-
-}
-
-
-/* =========================================
-   DISPLAY ACCOUNT
-========================================= */
-
-function displayAccount(result){
-
-    const profile =
-        result.profile;
-
-
-    currentProfile =
-        profile;
-
-
-    saveCompatibilityData(
-        profile,
-        result.user
-    );
-
-
-    /*
-     * PACKAGE COMES ONLY FROM
-     * package_type
-     */
+    const membership =
+        (data.membership || "free").toLowerCase();
 
     const packageType =
-        getPackageType(
-            profile
-        );
+        (data.package_type || "free").toUpperCase();
+
+    const badge =
+        document.querySelector(".badge");
+
+    if(membership === "premium"){
+        badge.textContent =
+            "👑 " + packageType;
+    }else{
+        badge.textContent =
+            "🆓 FREE MEMBER";
+    }
 
 
-    /*
-     * Display name
-     */
+    const moviesBtn =
+        document.getElementById("moviesBtn");
 
-    document.getElementById(
-        "userName"
-    ).textContent =
-        profile.name ||
-        (
-            result.user &&
-            result.user.email
-                ? result.user.email
-                    .split("@")[0]
-                : "BUSANSO User"
-        );
+    const seriesBtn =
+        document.getElementById("seriesBtn");
 
+    const payBtn =
+        document.getElementById("payBtn");
 
-    /*
-     * Display package_type exactly
-     * in a friendly uppercase format.
-     */
-
-    let packageLabel =
-        packageType || "free";
-
-
-    document.getElementById(
-        "packageName"
-    ).textContent =
-        packageLabel.toUpperCase();
-
-
-    /*
-     * Status is based on expiry,
-     * not membership.
-     */
 
     if(
-        packageType &&
-        packageType !== "free"
+        membership === "premium" &&
+        data.expires_at &&
+        new Date(data.expires_at) > new Date()
     ){
 
-        if(
-            isExpired(profile)
-        ){
+        /* PREMIUM USER */
 
-            document.getElementById(
-                "membershipStatus"
-            ).textContent =
-                "Expired";
-
-        }else{
-
-            document.getElementById(
-                "membershipStatus"
-            ).textContent =
-                "Active";
-
+        if(payBtn){
+            payBtn.style.display="none";
         }
+
+        moviesBtn.classList.remove("locked");
+        seriesBtn.classList.remove("locked");
+
+        moviesBtn.href="movies.html";
+        seriesBtn.href="series.html";
 
     }else{
 
-        document.getElementById(
-            "membershipStatus"
-        ).textContent =
-            "Free package";
+        /* FREE / EXPIRED USER */
 
-    }
+        moviesBtn.classList.add("locked");
+        seriesBtn.classList.add("locked");
 
+        moviesBtn.href="javascript:void(0)";
+        seriesBtn.href="javascript:void(0)";
 
-    /*
-     * Expiry countdown
-     */
+        moviesBtn.onclick=function(){
+            location.href="packages.html";
+        };
 
-    startCountdown(
-        profile.expires_at
-    );
+        seriesBtn.onclick=function(){
+            location.href="packages.html";
+        };
 
-
-    /*
-     * Show page
-     */
-
-    document.getElementById(
-        "loading"
-    ).classList.add(
-        "hidden"
-    );
-
-
-    document.getElementById(
-        "page"
-    ).classList.remove(
-        "hidden"
-    );
-
-}
-
-
-/* =========================================
-   START
-========================================= */
-
-async function start(){
-
-    try{
-
-        const result =
-            await resolveCurrentUser();
-
-
-        if(!result){
-
-            document.getElementById(
-                "loading"
-            ).classList.add(
-                "hidden"
-            );
-
-
-            document.getElementById(
-                "errorPage"
-            ).classList.remove(
-                "hidden"
-            );
-
-
-            return;
-
+        if(payBtn){
+            payBtn.style.display="block";
         }
 
-
-        displayAccount(
-            result
-        );
-
-
     }
-    catch(error){
-
-        console.error(
-            "BUSANSO account error:",
-            error
-        );
 
 
-        document.getElementById(
-            "loading"
-        ).classList.add(
-            "hidden"
-        );
+    /* ==============================
+       UPDATE LOCAL STORAGE
+    ============================== */
+
+    localStorage.setItem(
+        "name",
+        data.name || ""
+    );
+
+    localStorage.setItem(
+        "whatsapp_number",
+        data.whatsapp_number || ""
+    );
+
+    localStorage.setItem(
+        "membership",
+        data.membership || "free"
+    );
+
+    localStorage.setItem(
+        "package_type",
+        data.package_type || ""
+    );
+
+    localStorage.setItem(
+        "expires_at",
+        data.expires_at || ""
+    );
 
 
-        document.getElementById(
-            "errorPage"
-        ).classList.remove(
-            "hidden"
-        );
+    /* ==============================
+       DISPLAY USER DATA
+    ============================== */
+
+    document.getElementById("userName").textContent =
+        data.name || "Member";
+
+    document.getElementById("packageName").textContent =
+        (data.package_type || "FREE").toUpperCase();
 
 
-        document.getElementById(
-            "errorMessage"
-        ).textContent =
-            error.message ||
-            "Unable to load your account.";
+    const status =
+        document.getElementById("membershipStatus");
+
+    const expiryBox =
+        document.getElementById("expiryBox");
+
+
+    if(
+        membership === "premium" &&
+        data.expires_at &&
+        new Date(data.expires_at) > new Date()
+    ){
+
+        status.textContent = "Active";
+        expiryBox.style.display = "block";
+
+        startCountdown(data.expires_at);
+
+    }else if(
+        membership === "premium" &&
+        data.expires_at
+    ){
+
+        status.textContent = "Expired";
+        expiryBox.style.display = "block";
+
+        startCountdown(data.expires_at);
+
+    }else{
+
+        status.textContent = "Free package";
+        expiryBox.style.display = "none";
 
     }
 
 }
 
 
-start();
+async function checkAdminAccess(){
+
+    const userID =
+        localStorage.getItem("user_id");
+
+    if(!userID){
+        return;
+    }
+
+    const {data,error}=await supabaseClient
+        .from("profiles")
+        .select("role")
+        .eq("id",Number(userID))
+        .single();
+
+    console.log("ADMIN CHECK DATA:", data);
+    console.log("ADMIN CHECK ERROR:", error);
+
+    if(error || !data){
+        return;
+    }
+
+    if(
+        data.role &&
+        data.role.trim().toLowerCase() === "admin"
+    ){
+
+        document.getElementById("adminBtn")
+            .style.display="block";
+
+    }
+
+}
+
+
+function startCountdown(expiryDate){
+
+    const countdown =
+        document.getElementById("countdown");
+
+    const expiryElement =
+        document.getElementById("expiryDate");
+
+    function update(){
+
+        const diff =
+            new Date(expiryDate)-new Date();
+
+        if(diff<=0){
+
+            countdown.className="countdown expired";
+            countdown.textContent="access expired";
+
+            const status =
+                document.getElementById("membershipStatus");
+
+            if(status){
+                status.textContent="Expired";
+            }
+
+            return;
+        }
+
+        const days =
+            Math.floor(diff/86400000);
+
+        const hours =
+            Math.floor((diff%86400000)/3600000);
+
+        const minutes =
+            Math.floor((diff%3600000)/60000);
+
+        const seconds =
+            Math.floor((diff%60000)/1000);
+
+        countdown.className="countdown";
+
+        let text="";
+
+        if(days>0){
+            text +=
+                days + " Day" +
+                (days>1 ? "s " : " ");
+        }
+
+        text +=
+            hours + " Hour" +
+            (hours!=1 ? "s " : " ");
+
+        text +=
+            minutes + " Minute" +
+            (minutes!=1 ? "s " : " ");
+
+        text +=
+            seconds + " Second" +
+            (seconds!=1 ? "s" : "");
+
+        countdown.textContent =
+            text + " remaining";
+    }
+
+
+    if(expiryElement){
+        expiryElement.textContent =
+            new Date(expiryDate).toLocaleString(
+                undefined,
+                {
+                    dateStyle:"medium",
+                    timeStyle:"short"
+                }
+            );
+    }
+
+    update();
+
+    setInterval(
+        update,
+        1000
+    );
+
+}
+
+
+/* ==============================
+   LOGOUT
+============================== */
+
+async function logout(){
+
+    try{
+        await supabaseClient.auth.signOut();
+    }catch(error){
+        console.error("Logout error:",error);
+    }
+
+    localStorage.clear();
+    location.href="auth.html";
+}
+
+
+/* ==============================
+   START PAGE
+============================== */
+
+loadPremiumUser();
+checkAdminAccess();
+
+
+/* ==============================
+   REALTIME PROFILE UPDATES
+============================== */
+
+const realtimeChannel =
+    supabaseClient
+        .channel(
+            "profile-" +
+            localStorage.getItem("user_id")
+        )
+        .on(
+            "postgres_changes",
+            {
+                event:"*",
+                schema:"public",
+                table:"profiles",
+                filter:
+                    `id=eq.${localStorage.getItem("user_id")}`
+            },
+            (payload)=>{
+
+                console.log(
+                    "Realtime profile update:",
+                    payload
+                );
+
+                loadPremiumUser();
+                checkAdminAccess();
+
+            }
+        )
+        .subscribe();
 
 </script>
 
