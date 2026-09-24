@@ -17,8 +17,11 @@
     padding:0;
 }
 
-html,body{
-    min-height:100%;
+html,
+body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
 }
 
 body{
@@ -27,31 +30,44 @@ body{
     color:#fff;
 
     background:
-        radial-gradient(circle at top,#3b2a00 0%,#15110a 35%,#050505 75%,#000 100%);
+        radial-gradient(
+            circle at top,
+            #3b2a00 0%,
+            #15110a 35%,
+            #050505 75%,
+            #000 100%
+        );
 
-    padding:20px;
+    padding:10px;
 }
 
 .page{
     width:100%;
     max-width:620px;
+    height:100%;
+    max-height:100vh;
     margin:0 auto;
 }
 
-/* HEADER */
+/* =========================
+   HEADER
+========================= */
 
 .topbar{
+    height:54px;
+
     display:flex;
     align-items:center;
     justify-content:space-between;
-    margin-bottom:20px;
+
+    margin-bottom:8px;
 }
 
 .logo{
-    width:58px;
-    height:58px;
+    width:48px;
+    height:48px;
     object-fit:contain;
-    border-radius:15px;
+    border-radius:13px;
 }
 
 .top-actions{
@@ -63,22 +79,28 @@ body{
     border:1px solid rgba(255,215,0,.25);
     background:rgba(255,215,0,.08);
     color:#ffd84d;
-    padding:9px 14px;
+
+    padding:8px 13px;
     border-radius:10px;
+
     text-decoration:none;
-    font-size:12px;
+    font-size:11px;
     font-weight:700;
 }
 
-/* MAIN CARD */
+/* =========================
+   MAIN CARD
+========================= */
 
 .account-card{
     position:relative;
     overflow:hidden;
 
-    border-radius:28px;
+    width:100%;
 
-    padding:30px 22px 25px;
+    border-radius:24px;
+
+    padding:19px 18px 14px;
 
     background:
         linear-gradient(
@@ -91,47 +113,76 @@ body{
     border:1px solid rgba(255,215,0,.28);
 
     box-shadow:
-        0 30px 80px rgba(0,0,0,.65),
+        0 20px 55px rgba(0,0,0,.65),
         inset 0 1px rgba(255,255,255,.08);
 }
 
 .account-card:before{
     content:"";
+
     position:absolute;
-    width:260px;
-    height:260px;
+
+    width:220px;
+    height:220px;
+
     border-radius:50%;
+
     background:rgba(255,215,0,.08);
-    filter:blur(60px);
-    top:-150px;
-    right:-100px;
+
+    filter:blur(55px);
+
+    top:-140px;
+    right:-80px;
+
+    pointer-events:none;
 }
+
+/* =========================
+   TITLE
+========================= */
 
 .badge{
     position:relative;
+
     display:inline-block;
 
-    padding:7px 13px;
+    padding:5px 11px;
+
     border-radius:30px;
 
-    background:linear-gradient(135deg,#ffe27a,#c99600);
+    background:
+        linear-gradient(
+            135deg,
+            #ffe27a,
+            #c99600
+        );
+
     color:#211700;
 
-    font-size:11px;
+    font-size:9px;
     font-weight:900;
     letter-spacing:1px;
     text-transform:uppercase;
 
-    margin-bottom:17px;
+    margin-bottom:9px;
 }
 
 h1{
     position:relative;
-    font-size:30px;
-    line-height:1.1;
-    margin-bottom:8px;
 
-    background:linear-gradient(90deg,#fff,#ffe27a,#c99716);
+    font-size:25px;
+    line-height:1.05;
+
+    margin-bottom:5px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #fff,
+            #ffe27a,
+            #c99716
+        );
+
     -webkit-background-clip:text;
     background-clip:text;
     color:transparent;
@@ -139,54 +190,68 @@ h1{
 
 .welcome{
     position:relative;
+
     color:#bdb7a5;
-    font-size:14px;
-    margin-bottom:25px;
+
+    font-size:11px;
+
+    margin-bottom:13px;
 }
 
-/* PACKAGE */
+/* =========================
+   PACKAGE
+========================= */
 
 .package-box{
     position:relative;
 
-    padding:20px;
+    padding:12px 15px;
 
-    border-radius:20px;
+    border-radius:16px;
 
     background:rgba(0,0,0,.35);
+
     border:1px solid rgba(255,215,0,.18);
 
-    margin-bottom:18px;
+    margin-bottom:10px;
 }
 
 .package-title{
     color:#918b7c;
-    font-size:11px;
+
+    font-size:9px;
+
     text-transform:uppercase;
-    letter-spacing:1.5px;
-    margin-bottom:6px;
+    letter-spacing:1.3px;
+
+    margin-bottom:3px;
 }
 
 .package-name{
-    font-size:24px;
+    font-size:19px;
     font-weight:900;
+
     color:#ffe06b;
 }
 
 .status{
-    margin-top:7px;
-    font-size:13px;
+    margin-top:3px;
+
+    font-size:10px;
+
     color:#aaa;
 }
 
-/* EXPIRY */
+/* =========================
+   EXPIRY
+========================= */
 
 .expiry-box{
     position:relative;
 
-    padding:20px;
+    padding:12px 15px;
 
-    border-radius:20px;
+    border-radius:16px;
 
     background:
         linear-gradient(
@@ -197,60 +262,76 @@ h1{
 
     border:1px solid rgba(255,215,0,.2);
 
-    margin-bottom:25px;
+    margin-bottom:11px;
 }
 
 .expiry-label{
     color:#9e9888;
-    font-size:11px;
+
+    font-size:9px;
+
     text-transform:uppercase;
-    letter-spacing:1.4px;
-    margin-bottom:9px;
+    letter-spacing:1.2px;
+
+    margin-bottom:5px;
 }
 
 .expiry-date{
     color:#fff;
-    font-size:14px;
-    margin-bottom:14px;
+
+    font-size:11px;
+
+    margin-bottom:6px;
 }
 
 .countdown{
-    font-size:22px;
-    font-weight:900;
+    font-size:12px;
+    font-weight:700;
+
     color:#ffd84d;
+
     line-height:1.2;
+
+    text-transform:lowercase;
 }
 
 .countdown.expired{
     color:#ff6b6b;
 }
 
-/* BIG BUTTONS */
+/* =========================
+   BIG BUTTONS
+========================= */
 
 .big-actions{
     position:relative;
 
     display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
 
-    margin-bottom:14px;
+    grid-template-columns:1fr 1fr;
+
+    gap:9px;
+
+    margin-bottom:9px;
 }
 
 .big-btn{
-    min-height:82px;
+    min-height:60px;
 
-    border-radius:18px;
+    border-radius:15px;
 
     display:flex;
+
     align-items:center;
     justify-content:center;
+
     flex-direction:column;
-    gap:7px;
+
+    gap:3px;
 
     text-decoration:none;
 
-    font-size:14px;
+    font-size:11px;
     font-weight:900;
 
     color:#1b1400;
@@ -264,10 +345,11 @@ h1{
         );
 
     box-shadow:
-        0 10px 30px rgba(0,0,0,.35),
+        0 7px 20px rgba(0,0,0,.35),
         inset 0 1px rgba(255,255,255,.7);
 
-    transition:transform .15s ease;
+    transition:
+        transform .15s ease;
 }
 
 .big-btn:hover{
@@ -275,30 +357,36 @@ h1{
 }
 
 .big-btn span{
-    font-size:27px;
+    font-size:21px;
 }
 
-/* SMALL BUTTONS */
+/* =========================
+   SMALL BUTTONS
+========================= */
 
 .small-actions{
     position:relative;
 
     display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
 
-    margin-bottom:25px;
+    grid-template-columns:1fr 1fr;
+
+    gap:8px;
+
+    margin-bottom:9px;
 }
 
 .small-btn{
-    min-height:52px;
+    min-height:42px;
 
-    border-radius:14px;
+    border-radius:12px;
 
     display:flex;
+
     align-items:center;
     justify-content:center;
-    gap:8px;
+
+    gap:6px;
 
     text-decoration:none;
 
@@ -308,131 +396,308 @@ h1{
 
     border:1px solid rgba(255,215,0,.15);
 
-    font-size:12px;
+    font-size:10px;
     font-weight:800;
 
-    transition:background .15s ease;
+    text-align:center;
+
+    transition:
+        background .15s ease;
 }
 
 .small-btn:hover{
     background:rgba(255,215,0,.11);
 }
 
-/* SETTINGS */
+/* =========================
+   SETTINGS
+========================= */
 
 .settings-btn{
     position:relative;
 
     width:100%;
-    min-height:48px;
 
-    border-radius:14px;
+    min-height:40px;
+
+    border-radius:12px;
 
     display:flex;
+
     align-items:center;
     justify-content:center;
-    gap:8px;
+
+    gap:7px;
 
     text-decoration:none;
 
     color:#ffd84d;
 
     border:1px solid rgba(255,215,0,.25);
+
     background:rgba(255,215,0,.06);
 
-    font-size:13px;
+    font-size:11px;
     font-weight:800;
 
-    margin-bottom:10px;
+    margin-bottom:2px;
 }
 
-/* HOME */
+/* =========================
+   HOME
+========================= */
 
 .home-btn{
     position:relative;
 
     display:block;
+
     text-align:center;
 
-    padding:13px;
+    padding:6px;
 
     color:#777;
+
     text-decoration:none;
 
-    font-size:12px;
+    font-size:10px;
 }
 
 .home-btn:hover{
     color:#fff;
 }
 
-/* LOADING */
+/* =========================
+   LOADING
+========================= */
 
 .loading{
-    min-height:100vh;
+    width:100%;
+    height:100vh;
 
     display:flex;
+
     align-items:center;
     justify-content:center;
 
     color:#d0c8b5;
-    font-size:14px;
+
+    font-size:13px;
+
+    text-align:center;
 }
 
 .hidden{
     display:none!important;
 }
 
-/* ERROR */
+/* =========================
+   ERROR
+========================= */
 
 .error{
     text-align:center;
-    padding:40px 20px;
+
+    padding:30px 18px;
 }
 
 .error h2{
     color:#ffd84d;
-    margin-bottom:10px;
+
+    margin-bottom:8px;
+
+    font-size:20px;
 }
 
 .error p{
     color:#aaa;
-    font-size:13px;
+
+    font-size:11px;
+
     line-height:1.6;
 }
 
 .error a{
     display:inline-block;
-    margin-top:20px;
+
+    margin-top:15px;
+
     color:#ffd84d;
+
     text-decoration:none;
+
+    font-size:12px;
 }
 
-/* MOBILE */
+/* =========================
+   SMALL DEVICES
+========================= */
 
 @media(max-width:480px){
 
     body{
-        padding:12px;
+        padding:7px;
+    }
+
+    .topbar{
+        height:45px;
+        margin-bottom:5px;
+    }
+
+    .logo{
+        width:42px;
+        height:42px;
     }
 
     .account-card{
-        padding:25px 16px 20px;
-        border-radius:22px;
+        padding:16px 13px 10px;
+        border-radius:20px;
     }
 
     h1{
-        font-size:27px;
+        font-size:22px;
     }
 
-    .big-actions{
-        grid-template-columns:1fr;
+    .welcome{
+        font-size:10px;
+        margin-bottom:10px;
+    }
+
+    .package-box,
+    .expiry-box{
+        padding:10px 12px;
+        margin-bottom:8px;
+    }
+
+    .package-name{
+        font-size:17px;
     }
 
     .big-btn{
-        min-height:76px;
+        min-height:55px;
     }
 
+    .big-btn span{
+        font-size:19px;
+    }
+
+    .small-btn{
+        min-height:38px;
+        font-size:9px;
+    }
+
+    .settings-btn{
+        min-height:37px;
+    }
+
+    .home-btn{
+        padding:4px;
+    }
+}
+
+/* =========================
+   VERY SHORT SCREENS
+========================= */
+
+@media(max-height:650px){
+
+    body{
+        padding:5px;
+    }
+
+    .topbar{
+        height:39px;
+        margin-bottom:3px;
+    }
+
+    .logo{
+        width:36px;
+        height:36px;
+    }
+
+    .top-btn{
+        padding:6px 10px;
+        font-size:10px;
+    }
+
+    .account-card{
+        padding:12px 12px 8px;
+        border-radius:18px;
+    }
+
+    .badge{
+        padding:4px 9px;
+        margin-bottom:6px;
+        font-size:8px;
+    }
+
+    h1{
+        font-size:20px;
+        margin-bottom:3px;
+    }
+
+    .welcome{
+        margin-bottom:7px;
+        font-size:9px;
+    }
+
+    .package-box,
+    .expiry-box{
+        padding:8px 10px;
+        margin-bottom:6px;
+    }
+
+    .package-title,
+    .expiry-label{
+        font-size:8px;
+    }
+
+    .package-name{
+        font-size:15px;
+    }
+
+    .status,
+    .expiry-date{
+        font-size:9px;
+    }
+
+    .countdown{
+        font-size:10px;
+    }
+
+    .big-actions{
+        gap:6px;
+        margin-bottom:6px;
+    }
+
+    .big-btn{
+        min-height:47px;
+        font-size:9px;
+    }
+
+    .big-btn span{
+        font-size:16px;
+    }
+
+    .small-actions{
+        gap:6px;
+        margin-bottom:6px;
+    }
+
+    .small-btn{
+        min-height:34px;
+        font-size:8px;
+    }
+
+    .settings-btn{
+        min-height:33px;
+        font-size:9px;
+    }
+
+    .home-btn{
+        font-size:9px;
+        padding:3px;
+    }
 }
 
 </style>
@@ -445,6 +710,7 @@ h1{
     Loading your BUSANSO account...
 </div>
 
+
 <div id="page" class="page hidden">
 
     <div class="topbar">
@@ -455,7 +721,13 @@ h1{
             alt="BUSANSO">
 
         <div class="top-actions">
-            <a class="top-btn" href="home.html">HOME</a>
+
+            <a
+                class="top-btn"
+                href="home.html">
+                HOME
+            </a>
+
         </div>
 
     </div>
@@ -463,35 +735,48 @@ h1{
 
     <main class="account-card">
 
-        <div class="badge">✦ PREMIUM ACCOUNT</div>
-
-        <h1>Welcome, <span id="userName">User</span></h1>
-
-        <div class="welcome">
-            Your BUSANSO membership is active.
+        <div class="badge">
+            ✦ PREMIUM ACCOUNT
         </div>
 
+
+        <h1>
+            Welcome,
+            <span id="userName">
+                User
+            </span>
+        </h1>
+
+
+        <div class="welcome">
+            Your BUSANSO package is active.
+        </div>
+
+
+        <!-- PACKAGE -->
 
         <section class="package-box">
 
             <div class="package-title">
-                Membership
+                Package
             </div>
 
             <div
                 id="packageName"
                 class="package-name">
-                PREMIUM
+                Loading...
             </div>
 
             <div
                 id="membershipStatus"
                 class="status">
-                Active
+                Loading...
             </div>
 
         </section>
 
+
+        <!-- EXPIRY -->
 
         <section
             id="expiryBox"
@@ -592,13 +877,21 @@ h1{
 </div>
 
 
-<div id="errorPage" class="page hidden">
+<!-- ERROR -->
+
+<div
+    id="errorPage"
+    class="page hidden">
 
     <main class="account-card error">
 
-        <div class="badge">BUSANSO</div>
+        <div class="badge">
+            BUSANSO
+        </div>
 
-        <h2>Account Not Found</h2>
+        <h2>
+            Account Not Found
+        </h2>
 
         <p id="errorMessage">
             We could not identify this account.
@@ -629,20 +922,20 @@ const supabaseClient =
 
 
 let currentProfile = null;
+
 let countdownTimer = null;
 
 
-/*
-==================================================
-HELPERS
-==================================================
-*/
+/* =========================================
+   HELPERS
+========================================= */
 
 function clean(value){
 
-    if(value === null ||
-       value === undefined){
-
+    if(
+        value === null ||
+        value === undefined
+    ){
         return "";
     }
 
@@ -651,61 +944,52 @@ function clean(value){
 }
 
 
-function normalizeMembership(profile){
+/* =========================================
+   PACKAGE TYPE
+   PACKAGE IS NOW DETERMINED ONLY FROM
+   profiles.package_type
+========================================= */
 
-    const membership =
-        clean(profile.membership).toLowerCase();
+function getPackageType(profile){
 
-    const packageType =
-        clean(profile.package_type).toLowerCase();
+    return clean(
+        profile.package_type
+    ).toLowerCase();
 
-    if(
-        membership === "kibanda" ||
-        packageType === "kibanda"
-    ){
-        return "kibanda";
-    }
-
-    if(
-        membership === "premium" ||
-        packageType === "premium" ||
-        profile.paid_status === true
-    ){
-        return "premium";
-    }
-
-    return "free";
 }
 
 
+/* =========================================
+   EXPIRY
+========================================= */
+
 function isExpired(profile){
-
-    const access =
-        normalizeMembership(profile);
-
-    if(access === "free"){
-        return false;
-    }
 
     if(!profile.expires_at){
         return false;
     }
 
-    return new Date(profile.expires_at) <= new Date();
+    return (
+        new Date(profile.expires_at) <=
+        new Date()
+    );
 
 }
 
 
-/*
-==================================================
-SAVE COMPATIBILITY DATA
-==================================================
-*/
+/* =========================================
+   SAVE COMPATIBILITY DATA
+========================================= */
 
-function saveCompatibilityData(profile,user){
+function saveCompatibilityData(
+    profile,
+    user
+){
 
-    if(profile.id !== null &&
-       profile.id !== undefined){
+    if(
+        profile.id !== null &&
+        profile.id !== undefined
+    ){
 
         localStorage.setItem(
             "user_id",
@@ -713,6 +997,7 @@ function saveCompatibilityData(profile,user){
         );
 
     }
+
 
     if(profile.name){
 
@@ -723,27 +1008,54 @@ function saveCompatibilityData(profile,user){
 
     }
 
-    localStorage.setItem(
-        "membership",
-        profile.membership || "free"
-    );
+
+    /*
+     * Keep the actual package_type
+     * in localStorage for older pages.
+     */
 
     localStorage.setItem(
         "package_type",
         profile.package_type || ""
     );
 
+
+    localStorage.setItem(
+        "membership",
+        profile.membership || ""
+    );
+
+
     localStorage.setItem(
         "paid_status",
-        profile.paid_status ? "true" : "false"
+        profile.paid_status
+            ? "true"
+            : "false"
     );
+
 
     localStorage.setItem(
         "expires_at",
         profile.expires_at || ""
     );
 
-    if(user && user.id){
+
+    if(
+        profile.activated_at
+    ){
+
+        localStorage.setItem(
+            "activated_at",
+            profile.activated_at
+        );
+
+    }
+
+
+    if(
+        user &&
+        user.id
+    ){
 
         localStorage.setItem(
             "auth_user_id",
@@ -760,11 +1072,9 @@ function saveCompatibilityData(profile,user){
 }
 
 
-/*
-==================================================
-FIND GOOGLE USER PROFILE
-==================================================
-*/
+/* =========================================
+   GOOGLE USER PROFILE
+========================================= */
 
 async function findGoogleProfile(){
 
@@ -773,6 +1083,7 @@ async function findGoogleProfile(){
         error
     } =
     await supabaseClient.auth.getSession();
+
 
     if(error){
 
@@ -788,8 +1099,10 @@ async function findGoogleProfile(){
 
     }
 
+
     const session =
         data.session;
+
 
     if(!session){
 
@@ -800,15 +1113,21 @@ async function findGoogleProfile(){
 
     }
 
+
     const user =
         session.user;
+
 
     const result =
         await supabaseClient
             .from("profiles")
             .select("*")
-            .eq("auth_user_id",user.id)
+            .eq(
+                "auth_user_id",
+                user.id
+            )
             .maybeSingle();
+
 
     if(result.error){
 
@@ -824,6 +1143,7 @@ async function findGoogleProfile(){
 
     }
 
+
     return {
         user,
         profile:result.data
@@ -832,48 +1152,63 @@ async function findGoogleProfile(){
 }
 
 
-/*
-==================================================
-FIND LEGACY USER
-==================================================
-*/
+/* =========================================
+   LEGACY USER
+========================================= */
 
 async function findLegacyProfile(){
 
     const userId =
         clean(
-            localStorage.getItem("user_id")
+            localStorage.getItem(
+                "user_id"
+            )
         );
+
 
     const name =
         clean(
-            localStorage.getItem("name")
+            localStorage.getItem(
+                "name"
+            )
         );
+
 
     const deviceId =
         clean(
-            localStorage.getItem("device_id")
+            localStorage.getItem(
+                "device_id"
+            )
         );
 
 
     /*
-    FIRST:
-    legacy numeric profile ID
-    */
+     * FIRST:
+     * legacy numeric profile ID
+     */
 
     if(userId){
 
         const numericId =
             Number(userId);
 
-        if(Number.isInteger(numericId)){
+
+        if(
+            Number.isInteger(
+                numericId
+            )
+        ){
 
             const result =
                 await supabaseClient
                     .from("profiles")
                     .select("*")
-                    .eq("id",numericId)
+                    .eq(
+                        "id",
+                        numericId
+                    )
                     .maybeSingle();
+
 
             if(
                 !result.error &&
@@ -890,19 +1225,29 @@ async function findLegacyProfile(){
 
 
     /*
-    SECOND:
-    old name + device_id
-    */
+     * SECOND:
+     * name + device ID
+     */
 
-    if(name && deviceId){
+    if(
+        name &&
+        deviceId
+    ){
 
         const result =
             await supabaseClient
                 .from("profiles")
                 .select("*")
-                .eq("name",name)
-                .eq("device_id",deviceId)
+                .eq(
+                    "name",
+                    name
+                )
+                .eq(
+                    "device_id",
+                    deviceId
+                )
                 .maybeSingle();
+
 
         if(
             !result.error &&
@@ -917,11 +1262,9 @@ async function findLegacyProfile(){
 
 
     /*
-    THIRD:
-    old name-only fallback.
-    This preserves the old system where
-    the profile was already identified by name.
-    */
+     * THIRD:
+     * name only
+     */
 
     if(name){
 
@@ -929,8 +1272,12 @@ async function findLegacyProfile(){
             await supabaseClient
                 .from("profiles")
                 .select("*")
-                .eq("name",name)
+                .eq(
+                    "name",
+                    name
+                )
                 .maybeSingle();
+
 
         if(
             !result.error &&
@@ -949,20 +1296,19 @@ async function findLegacyProfile(){
 }
 
 
-/*
-==================================================
-UNIFIED USER RESOLVER
-==================================================
-*/
+/* =========================================
+   UNIFIED USER RESOLVER
+========================================= */
 
 async function resolveCurrentUser(){
 
     /*
-    NEW SYSTEM FIRST
-    */
+     * NEW GOOGLE SYSTEM FIRST
+     */
 
     const google =
         await findGoogleProfile();
+
 
     if(
         google.user &&
@@ -979,11 +1325,12 @@ async function resolveCurrentUser(){
 
 
     /*
-    OLD SYSTEM SECOND
-    */
+     * OLD SYSTEM SECOND
+     */
 
     const legacy =
         await findLegacyProfile();
+
 
     if(legacy){
 
@@ -1001,23 +1348,31 @@ async function resolveCurrentUser(){
 }
 
 
-/*
-==================================================
-EXPIRY COUNTDOWN
-==================================================
-*/
+/* =========================================
+   EXPIRY COUNTDOWN
+========================================= */
 
-function startCountdown(expiresAt){
+function startCountdown(
+    expiresAt
+){
 
     const countdown =
-        document.getElementById("countdown");
+        document.getElementById(
+            "countdown"
+        );
+
 
     const expiryDate =
-        document.getElementById("expiryDate");
+        document.getElementById(
+            "expiryDate"
+        );
+
 
     if(countdownTimer){
 
-        clearInterval(countdownTimer);
+        clearInterval(
+            countdownTimer
+        );
 
     }
 
@@ -1028,7 +1383,7 @@ function startCountdown(expiresAt){
             "No expiry date set";
 
         countdown.textContent =
-            "Active";
+            "active";
 
         return;
 
@@ -1036,16 +1391,22 @@ function startCountdown(expiresAt){
 
 
     const expiry =
-        new Date(expiresAt);
+        new Date(
+            expiresAt
+        );
 
 
-    if(isNaN(expiry.getTime())){
+    if(
+        isNaN(
+            expiry.getTime()
+        )
+    ){
 
         expiryDate.textContent =
             "Expiry date unavailable";
 
         countdown.textContent =
-            "Please contact BUSANSO";
+            "please contact BUSANSO";
 
         return;
 
@@ -1067,24 +1428,29 @@ function startCountdown(expiresAt){
         const now =
             new Date();
 
+
         let difference =
             expiry.getTime() -
             now.getTime();
 
 
-        if(difference <= 0){
+        if(
+            difference <= 0
+        ){
 
             countdown.textContent =
-                "ACCESS EXPIRED";
+                "access expired";
 
             countdown.classList.add(
                 "expired"
             );
 
+
             document.getElementById(
                 "membershipStatus"
             ).textContent =
                 "Expired";
+
 
             clearInterval(
                 countdownTimer
@@ -1106,33 +1472,49 @@ function startCountdown(expiresAt){
                 totalSeconds / 86400
             );
 
+
         const hours =
             Math.floor(
-                (totalSeconds % 86400) / 3600
+                (totalSeconds % 86400) /
+                3600
             );
+
 
         const minutes =
             Math.floor(
-                (totalSeconds % 3600) / 60
+                (totalSeconds % 3600) /
+                60
             );
+
 
         const seconds =
             totalSeconds % 60;
 
 
+        /*
+         * Lowercase and smaller.
+         */
+
         countdown.textContent =
-            days + " DAYS " +
-            String(hours).padStart(2,"0") +
-            " HOURS " +
-            String(minutes).padStart(2,"0") +
-            " MINUTES " +
-            String(seconds).padStart(2,"0") +
-            " SECONDS";
+            days + " days " +
+            String(hours).padStart(
+                2,
+                "0"
+            ) + " hours " +
+            String(minutes).padStart(
+                2,
+                "0"
+            ) + " minutes " +
+            String(seconds).padStart(
+                2,
+                "0"
+            ) + " seconds";
 
     }
 
 
     update();
+
 
     countdownTimer =
         setInterval(
@@ -1143,16 +1525,15 @@ function startCountdown(expiresAt){
 }
 
 
-/*
-==================================================
-DISPLAY ACCOUNT
-==================================================
-*/
+/* =========================================
+   DISPLAY ACCOUNT
+========================================= */
 
 function displayAccount(result){
 
     const profile =
         result.profile;
+
 
     currentProfile =
         profile;
@@ -1164,13 +1545,20 @@ function displayAccount(result){
     );
 
 
-    const access =
-        normalizeMembership(profile);
+    /*
+     * PACKAGE COMES ONLY FROM
+     * package_type
+     */
+
+    const packageType =
+        getPackageType(
+            profile
+        );
 
 
     /*
-    Name
-    */
+     * Display name
+     */
 
     document.getElementById(
         "userName"
@@ -1179,50 +1567,40 @@ function displayAccount(result){
         (
             result.user &&
             result.user.email
-                ? result.user.email.split("@")[0]
+                ? result.user.email
+                    .split("@")[0]
                 : "BUSANSO User"
         );
 
 
     /*
-    Package
-    */
+     * Display package_type exactly
+     * in a friendly uppercase format.
+     */
 
     let packageLabel =
-        "FREE";
-
-
-    if(access === "premium"){
-
-        packageLabel =
-            "PREMIUM";
-
-    }
-
-    if(access === "kibanda"){
-
-        packageLabel =
-            "KIBANDA";
-
-    }
+        packageType || "free";
 
 
     document.getElementById(
         "packageName"
     ).textContent =
-        packageLabel;
+        packageLabel.toUpperCase();
 
 
     /*
-    Status
-    */
+     * Status is based on expiry,
+     * not membership.
+     */
 
     if(
-        access === "premium" ||
-        access === "kibanda"
+        packageType &&
+        packageType !== "free"
     ){
 
-        if(isExpired(profile)){
+        if(
+            isExpired(profile)
+        ){
 
             document.getElementById(
                 "membershipStatus"
@@ -1243,14 +1621,14 @@ function displayAccount(result){
         document.getElementById(
             "membershipStatus"
         ).textContent =
-            "Free membership";
+            "Free package";
 
     }
 
 
     /*
-    Expiry
-    */
+     * Expiry countdown
+     */
 
     startCountdown(
         profile.expires_at
@@ -1258,25 +1636,28 @@ function displayAccount(result){
 
 
     /*
-    Show page
-    */
+     * Show page
+     */
 
     document.getElementById(
         "loading"
-    ).classList.add("hidden");
+    ).classList.add(
+        "hidden"
+    );
+
 
     document.getElementById(
         "page"
-    ).classList.remove("hidden");
+    ).classList.remove(
+        "hidden"
+    );
 
 }
 
 
-/*
-==================================================
-START
-==================================================
-*/
+/* =========================================
+   START
+========================================= */
 
 async function start(){
 
@@ -1290,21 +1671,30 @@ async function start(){
 
             document.getElementById(
                 "loading"
-            ).classList.add("hidden");
+            ).classList.add(
+                "hidden"
+            );
+
 
             document.getElementById(
                 "errorPage"
-            ).classList.remove("hidden");
+            ).classList.remove(
+                "hidden"
+            );
+
 
             return;
 
         }
 
 
-        displayAccount(result);
+        displayAccount(
+            result
+        );
 
 
-    }catch(error){
+    }
+    catch(error){
 
         console.error(
             "BUSANSO account error:",
@@ -1314,11 +1704,17 @@ async function start(){
 
         document.getElementById(
             "loading"
-        ).classList.add("hidden");
+        ).classList.add(
+            "hidden"
+        );
+
 
         document.getElementById(
             "errorPage"
-        ).classList.remove("hidden");
+        ).classList.remove(
+            "hidden"
+        );
+
 
         document.getElementById(
             "errorMessage"
