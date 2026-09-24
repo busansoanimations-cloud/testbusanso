@@ -44,6 +44,10 @@ button,.btn{
 .msg{display:none;margin:15px 0 0;padding:13px;border-radius:13px;text-align:center;font-size:12px;line-height:1.5}
 .ok{background:rgba(50,180,100,.12);border:1px solid rgba(50,180,100,.25);color:#9ff0ba}
 .err{background:rgba(255,70,70,.10);border:1px solid rgba(255,70,70,.22);color:#ffaaaa}
+.edit-limit{margin:0 0 18px;padding:14px 15px;border-radius:15px;text-align:center;font-size:12px;line-height:1.55;background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.22);color:#e8dba7}
+.edit-limit strong{display:block;color:#fff4b0;font-size:14px;margin-bottom:3px}
+.edit-limit.locked{background:rgba(255,70,70,.08);border-color:rgba(255,70,70,.22);color:#ffb0b0}
+.edit-limit.locked strong{color:#ffd0d0}
 .loading{text-align:center;color:#aaa;padding:25px 0}
 hr{border:0;height:1px;background:linear-gradient(90deg,transparent,#d4af37,transparent);margin:24px 0}
 @media(max-width:400px){.card{padding:24px 16px}h1{font-size:22px}}
@@ -60,6 +64,7 @@ hr{border:0;height:1px;background:linear-gradient(90deg,transparent,#d4af37,tran
     <img class="logo" src="https://i.ibb.co/hxgrLF35/BUSANSO-New.png" alt="BUSANSO NATION">
     <h1>EDIT PROFILE</h1>
     <div class="sub">Keep your BUSANSO profile information up to date.</div>
+    <div id="editLimit" class="edit-limit" style="display:none"></div>
 
     <div id="loading" class="loading">Loading your profile...</div>
 
@@ -99,8 +104,11 @@ hr{border:0;height:1px;background:linear-gradient(90deg,transparent,#d4af37,tran
   const whatsappInput = document.getElementById("whatsapp");
   const saveBtn = document.getElementById("saveBtn");
   const message = document.getElementById("message");
+  const editLimit = document.getElementById("editLimit");
 
   let profile = null;
+  let canEdit = true;
+  let daysRemaining = 0;
   let authUser = null;
   let mode = null;
 
@@ -156,6 +164,46 @@ hr{border:0;height:1px;background:linear-gradient(90deg,transparent,#d4af37,tran
     }
   }
 
+  function getNextEditInfo() {
+    const lastEdit = profile?.updated_at ? new Date(profile.updated_at) : null;
+
+    if (!lastEdit || Number.isNaN(lastEdit.getTime())) {
+      return { canEdit: true, days: 0 };
+    }
+
+    const nextEdit = new Date(lastEdit.getTime() + 30 * 24 * 60 * 60 * 1000);
+    const now = new Date();
+
+    if (now >= nextEdit) {
+      return { canEdit: true, days: 0 };
+    }
+
+    const msRemaining = nextEdit.getTime() - now.getTime();
+    const days = Math.ceil(msRemaining / (24 * 60 * 60 * 1000));
+    return { canEdit: false, days };
+  }
+
+  function renderEditLimit() {
+    const info = getNextEditInfo();
+    canEdit = info.canEdit;
+    daysRemaining = info.days;
+
+    editLimit.style.display = "block";
+
+    if (canEdit) {
+      editLimit.className = "edit-limit";
+      editLimit.innerHTML = "<strong>PROFILE EDIT AVAILABLE</strong>You can edit your profile now.";
+      saveBtn.disabled = false;
+      saveBtn.textContent = "SAVE PROFILE";
+    } else {
+      editLimit.className = "edit-limit locked";
+      editLimit.innerHTML = "<strong>PROFILE EDIT LOCKED</strong>You can edit your profile again in " +
+        info.days + " day" + (info.days === 1 ? "" : "s") + ".";
+      saveBtn.disabled = true;
+      saveBtn.textContent = "EDIT AVAILABLE IN " + info.days + " DAY" + (info.days === 1 ? "" : "S");
+    }
+  }
+
   async function init() {
     try {
       await findProfile();
@@ -177,6 +225,7 @@ hr{border:0;height:1px;background:linear-gradient(90deg,transparent,#d4af37,tran
 
       loading.style.display = "none";
       form.style.display = "block";
+      renderEditLimit();
     } catch (e) {
       console.error(e);
       loading.textContent = "Unable to load your profile. Please try again.";
@@ -186,6 +235,11 @@ hr{border:0;height:1px;background:linear-gradient(90deg,transparent,#d4af37,tran
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     message.style.display = "none";
+
+    if (!canEdit) {
+      showMessage("Your profile can only be edited once every 30 days. Please wait " + daysRemaining + " day" + (daysRemaining === 1 ? "" : "s") + ".");
+      return;
+    }
 
     const newName = nameInput.value.trim();
     const newWhatsapp = whatsappInput.value.trim();
@@ -211,7 +265,7 @@ hr{border:0;height:1px;background:linear-gradient(90deg,transparent,#d4af37,tran
         .maybeSingle();
 
       if (r.error) throw r.error;
-      if (!r.data) throw new Error("The profile could not be updated. Check your Supabase UPDATE policy.");
+      if (!r.data) throw new Error("The profile could not be updated. Check your Supabase UPDATE policy and the 30-day edit rule.");
 
       profile = r.data;
       localStorage.setItem("user_id", String(profile.id));
