@@ -1,1261 +1,167 @@
-<!DOCTYPE html>
 
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>BUSANSO – Movies</title>
-
-<link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
+<!DOCTYPE html> 
+<html lang="en"> <head> <meta charset="UTF-8"> 
+<title>BUSANSO – Movies</title> 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"> <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-*{
-  box-sizing:border-box;
-}
-
-html,
+*{box-sizing:border-box}
 body{
-  margin:0;
-  padding:0;
-  min-height:100%;
+ margin:0;min-height:100vh;
+ background:radial-gradient(circle at 50% -10%,rgba(212,175,55,.20),transparent 35%),linear-gradient(180deg,#120d04 0%,#070604 45%,#020201 100%);
+ color:#f5ead0;font-family:'Poppins',sans-serif;overflow-x:hidden
 }
-
-body{
-  background:radial-gradient(circle at top,#0f172a,#020617);
-  color:#e5e7eb;
-  font-family:Arial,Helvetica,sans-serif;
-  overflow-x:hidden;
-}
-
-/* =========================
-   LOGO
-========================= */
-
-.logo{
-  display:flex;
-  justify-content:center;
-  padding:18px 10px 10px;
-}
-
-.logo img{
-  height:52px;
-  max-width:90%;
-  object-fit:contain;
-  border-radius:14px;
-  box-shadow:0 0 25px rgba(56,189,248,.35);
-}
-
-/* =========================
-   NAVIGATION
-========================= */
-
-.nav{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-  padding:14px;
-
-  position:sticky;
-  top:0;
-  z-index:100;
-
-  background:rgba(15,23,42,.88);
-  backdrop-filter:blur(18px);
-
-  border-bottom:1px solid rgba(255,255,255,.06);
-}
-
-.nav button{
-  height:60px;
-
-  border:none;
-  border-radius:18px;
-
-  cursor:pointer;
-
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  gap:5px;
-
-  font-size:13px;
-  font-weight:600;
-
-  color:#d1d5db;
-  background:rgba(255,255,255,.05);
-
-  transition:.25s;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.06),
-    0 10px 25px rgba(0,0,0,.35);
-}
-
-.nav button i{
-  font-size:20px;
-}
-
-.nav button:hover{
-  transform:translateY(-3px);
-  background:rgba(255,255,255,.09);
-}
-
-.nav button.active{
-  background:linear-gradient(135deg,#f59e0b,#fbbf24);
-  color:#111827;
-
-  box-shadow:
-    0 0 18px rgba(251,191,36,.45),
-    0 12px 30px rgba(0,0,0,.45);
-}
-
-/* =========================
-   SEARCH
-========================= */
-
-.search{
-  padding:16px;
-}
-
-.search input,
-.search select{
-  width:100%;
-
-  padding:13px;
-  margin-bottom:10px;
-
-  border:none;
-  border-radius:14px;
-
-  background:#0f172a;
-  color:#fff;
-
-  font-size:14px;
-
-  box-shadow:0 4px 12px rgba(0,0,0,.4);
-
-  outline:none;
-}
-
-.search input:focus,
-.search select:focus{
-  box-shadow:
-    0 0 0 2px rgba(251,191,36,.35),
-    0 4px 12px rgba(0,0,0,.4);
-}
-
-/* =========================
-   MOVIE GRID
-========================= */
-
-.movies{
-  display:grid;
-
-  grid-template-columns:repeat(3,1fr);
-
-  gap:12px;
-
-  padding:12px;
-}
-
-/* =========================
-   MOVIE CARD
-========================= */
-
-.card{
-  position:relative;
-
-  background:rgba(255,255,255,.03);
-
-  border:1px solid rgba(255,255,255,.05);
-
-  border-radius:16px;
-
-  overflow:hidden;
-
-  cursor:pointer;
-
-  transition:.25s;
-
-  min-width:0;
-}
-
-.card:hover{
-  transform:translateY(-6px);
-
-  box-shadow:
-    0 16px 35px rgba(0,0,0,.55);
-}
-
-.poster-wrap{
-  position:relative;
-
-  width:100%;
-
-  background:#111827;
-
-  overflow:hidden;
-}
-
-.card img{
-  width:100%;
-
-  aspect-ratio:2/3;
-
-  object-fit:cover;
-
-  display:block;
-
-  transition:.35s;
-}
-
-.card:hover img{
-  transform:scale(1.05);
-}
-
-/* =========================
-   BADGES
-========================= */
-
-.badge{
-  position:absolute;
-
-  top:8px;
-  left:8px;
-
-  padding:5px 8px;
-
-  font-size:10px;
-  font-weight:bold;
-
-  border-radius:6px;
-
-  text-transform:uppercase;
-
-  z-index:2;
-}
-
-.badge.free{
-  background:#22c55e;
-  color:#fff;
-}
-
-.badge.premium{
-  background:#ef4444;
-  color:#fff;
-}
-
-.badge.kibanda{
-  background:#f59e0b;
-  color:#111827;
-}
-
-/* =========================
-   CARD INFORMATION
-========================= */
-
-.info{
-  padding:10px;
-}
-
-.title{
-  color:#fbbf24;
-
-  font-weight:700;
-
-  font-size:14px;
-
-  margin-bottom:4px;
-
-  line-height:1.3;
-}
-
-.meta{
-  font-size:11px;
-
-  color:#cbd5e1;
-
-  line-height:1.45;
-}
-
-/* =========================
-   EMPTY / LOADING
-========================= */
-
-.message{
-  grid-column:1 / -1;
-
-  text-align:center;
-
-  padding:45px 20px;
-
-  color:#cbd5e1;
-
-  font-size:14px;
-}
-
-.loading{
-  color:#fbbf24;
-}
-
-.error{
-  color:#f87171;
-}
-
-/* =========================
-   DESKTOP
-========================= */
-
-@media(min-width:768px){
-
-  .movies{
-    grid-template-columns:
-      repeat(auto-fill,minmax(180px,1fr));
-
-    gap:18px;
-
-    padding:18px;
-  }
-
-  .search{
-    max-width:900px;
-
-    margin:auto;
-
-    display:grid;
-
-    grid-template-columns:2fr 1fr;
-
-    gap:12px;
-  }
-
-  .search input,
-  .search select{
-    margin-bottom:0;
-  }
-
-}
-
-/* =========================
-   SMALL PHONES
-========================= */
-
-@media(max-width:360px){
-
-  .movies{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .nav{
-    gap:7px;
-    padding:10px;
-  }
-
-  .nav button{
-    height:55px;
-    font-size:11px;
-  }
-
-  .nav button i{
-    font-size:18px;
-  }
-
-  .title{
-    font-size:13px;
-  }
-
-}
-</style>
-
-</head>
+.logo{display:flex;justify-content:center;padding:20px 10px 12px}
+.logo img{height:58px;max-width:190px;object-fit:contain;border-radius:14px;box-shadow:0 0 28px rgba(212,175,55,.30),0 8px 25px rgba(0,0,0,.55);border:1px solid rgba(212,175,55,.35)}
+.nav{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:14px;position:sticky;top:0;z-index:100;background:rgba(12,9,4,.88);backdrop-filter:blur(18px);border-bottom:1px solid rgba(212,175,55,.20)}
+.nav button{height:58px;border:1px solid rgba(212,175,55,.18);border-radius:16px;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;font-size:13px;font-weight:600;color:#d8c89d;background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(212,175,55,.025));transition:.25s;box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 24px rgba(0,0,0,.38)}
+.nav button i{font-size:20px;color:#d4af37}
+.nav button:hover{transform:translateY(-2px);border-color:rgba(212,175,55,.45)}
+.nav button.active{background:linear-gradient(135deg,#8f6b16,#d4af37 48%,#f4d76e);color:#1b1304;border-color:#f0cf61;box-shadow:0 0 20px rgba(212,175,55,.30),0 10px 28px rgba(0,0,0,.5)}
+.nav button.active i{color:#1b1304}
+.search{padding:18px 14px 12px}
+.search input,.search select{width:100%;padding:14px 15px;margin-bottom:10px;border:1px solid rgba(212,175,55,.22);border-radius:13px;background:rgba(18,13,5,.92);color:#f8edcf;font-size:14px;outline:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 5px 16px rgba(0,0,0,.4)}
+.search input:focus,.search select:focus{border-color:#d4af37;box-shadow:0 0 0 2px rgba(212,175,55,.10)}
+.search select option{background:#120d04;color:#f8edcf}
+.movies{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:12px}
+.card{background:linear-gradient(145deg,rgba(212,175,55,.075),rgba(255,255,255,.025));border:1px solid rgba(212,175,55,.16);border-radius:15px;overflow:hidden;cursor:pointer;transition:.25s;box-shadow:0 8px 25px rgba(0,0,0,.42)}
+.card:hover{transform:translateY(-5px);border-color:rgba(212,175,55,.55);box-shadow:0 16px 35px rgba(0,0,0,.62),0 0 20px rgba(212,175,55,.10)}
+.card img{width:100%;aspect-ratio:2/3;object-fit:cover;display:block;transition:.35s}
+.card:hover img{transform:scale(1.04)}
+.badge{position:absolute;top:8px;left:8px;padding:4px 8px;font-size:10px;font-weight:bold;border-radius:6px;text-transform:uppercase}
+.badge.free{background:#22c55e}.badge.premium{background:#d4af37;color:#160f02}
+.info{padding:10px}.title{color:#e2bd4b;font-weight:700;font-size:14px;margin-bottom:4px}.meta{font-size:11px;color:#cfc19e;line-height:1.45}
+.watch{width:100%;padding:10px;margin-top:8px;border:none;border-radius:10px;background:linear-gradient(135deg,#9b761b,#d4af37,#f0ce65);color:#160f02;font-weight:700;cursor:pointer;transition:.25s}
+.watch:hover{transform:scale(1.03);box-shadow:0 0 15px rgba(212,175,55,.3)}
+@media(min-width:768px){.movies{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}}
+</style></head>
 
 <body>
 
-<!-- =========================
-     LOGO
-========================= -->
 
 <div class="logo">
-  <img
-    src="https://i.ibb.co/1GMMrMmS/logo.png"
-    alt="BUSANSO">
-</div>
-
-<!-- =========================
-     NAVIGATION
-========================= -->
-
-<div class="nav">
-
+  <img src="https://i.ibb.co/4wLHfntq/busanso-logo-source.png" alt="BUSANSO">
+</div><div class="nav">
   <button class="active">
-    <i class="fas fa-film"></i>
-    <span>Movies</span>
+    <i class="fas fa-film"></i><span>Movies</span>
   </button>
 
   <button onclick="location.href='series.html'">
-    <i class="fas fa-tv"></i>
-    <span>Series</span>
+    <i class="fas fa-tv"></i><span>Series</span>
   </button>
 
   <button onclick="location.href='account.html'">
-    <i class="fas fa-user-circle"></i>
-    <span>Account</span>
+    <i class="fas fa-user-circle"></i><span>Account</span>
   </button>
-
 </div>
 
-<!-- =========================
-     SEARCH / FILTER
-========================= -->
 
 <div class="search">
-
-<input
- id="search"
- type="search"
- placeholder="🔍 Search movies......"
- autocomplete="off">
-
+  <input id="search" placeholder="🔍 Search movies......">
   <select id="genreFilter">
-
-```
-<option value="ALL">
-  All Genres
-</option>
-
-<option value="ACTION">
-  Action
-</option>
-
-<option value="COMEDY">
-  Comedy
-</option>
-
-<option value="DRAMA">
-  Drama
-</option>
-
-<option value="HORROR">
-  Horror
-</option>
-
-<option value="ROMANCE">
-  Romance
-</option>
-
-<option value="SCI-FI">
-  SCI-FI
-</option>
-```
-
-  </select>
-
+    <option value="ALL">All Genres</option>
+    <option value="ACTION">Action</option>
+    <option value="COMEDY">Comedy</option>
+    <option value="DRAMA">Drama</option>
+    <option value="HORROR">Horror</option>
+    <option value="ROMANCE">Romance</option>
+    <option value="SCI-FI">SCI-FI</option>
+ 
+ </select>
 </div>
 
-<!-- =========================
-     MOVIE LIST
-========================= -->
-
-<div
-  class="movies"
-  id="list">
-
-  <div class="message loading">
-    Loading movies...
-  </div>
-
-</div>
-
-<!-- ==========================================================
-     SUPABASE
-========================================================== -->
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<!-- ==========================================================
-     BUSANSO AUTH COMPATIBILITY BRIDGE
-
-     This connects:
-
-     Google
-        ↓
-     Supabase Auth
-        ↓
-     profiles.auth_user_id
-        ↓
-     BusansoAuth
-        ↓
-     Movies page
-
-     It also keeps legacy users working.
-========================================================== -->
-
-<script src="busanso-auth.js"></script>
-
-<!-- ==========================================================
-     MOVIES APPLICATION
-========================================================== -->
+<div class="movies" id="list"></div>
 
 <script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-import {
-  createClient
-} from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-
-
-/* ==========================================================
-   SUPABASE CONFIGURATION
-========================================================== */
-
-const SUPABASE_URL =
-  "https://dhkfhhybzcxdeoalcfqx.supabase.co";
-
-const SUPABASE_KEY =
-  "sb_publishable_Rjm3T44VKTeuOF2yJS5rMw_xDfwPjuG";
+const supabaseUrl = 'https://dhkfhhybzcxdeoalcfqx.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRoa2ZoaHliemN4ZGVvYWxjZnF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1MzQxNTEsImV4cCI6MjA4ODExMDE1MX0.jZ4NDNPJmO0Ji05TxDqCnzgLIIzKf9uCx3WrSgk2DaY';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 
-const supabase =
-  createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
-
-
-/* ==========================================================
-   PAGE ELEMENTS
-========================================================== */
-
-const box =
-  document.getElementById("list");
-
-const search =
-  document.getElementById("search");
-
-const genreSelect =
-  document.getElementById("genreFilter");
-
-
-/* ==========================================================
-   MOVIE DATA
-========================================================== */
-
+const box = document.getElementById("list");
+const search = document.getElementById("search");
+const genreSelect = document.getElementById("genreFilter");
+let activeGenre = null;
 let MOVIES = [];
 
-let activeGenre = null;
 
-
-/* ==========================================================
-   SHOW MESSAGE
-========================================================== */
-
-function showMessage(
-  message,
-  className = ""
-){
-
-  box.innerHTML = "";
-
-  const div =
-    document.createElement("div");
-
-  div.className =
-    `message ${className}`;
-
-  div.textContent =
-    message;
-
-  box.appendChild(div);
-
-}
-
-
-/* ==========================================================
-   SAFE TEXT
-========================================================== */
-
-function safeText(value){
-
-  if(
-    value === null ||
-    value === undefined
-  ){
-
-    return "";
-
-  }
-
-  return String(value);
-
-}
-
-
-/* ==========================================================
-   RENDER MOVIE CARDS
-========================================================== */
 
 function render(data){
 
   box.innerHTML = "";
 
-
-  /* --------------------------
-     No movies
-  -------------------------- */
-
-  if(
-    !Array.isArray(data) ||
-    data.length === 0
-  ){
-
-    showMessage(
-      "No movies available."
-    );
-
+  if(!data || data.length===0){
+    box.innerHTML="<p>No movies available.</p>";
     return;
-
   }
 
-
-  /* --------------------------
-     Create cards
-  -------------------------- */
-
-  data.forEach(movie => {
-
-    const card =
-      document.createElement("div");
-
-    card.className =
-      "card";
-
-
-    /* --------------------------
-       Open movie page
-    -------------------------- */
-
-    card.addEventListener(
-      "click",
-      () => {
-
-        if(
-          movie.id === null ||
-          movie.id === undefined
-        ){
-
-          return;
-
-        }
-
-        location.href =
-          `movie.html?id=${encodeURIComponent(movie.id)}`;
-
-      }
-    );
-
-
-    /* --------------------------
-       Poster wrapper
-    -------------------------- */
-
-    const posterWrap =
-      document.createElement("div");
-
-    posterWrap.className =
-      "poster-wrap";
-
-
-    /* --------------------------
-       Access badge
-    -------------------------- */
-
-    const accessType =
-      safeText(
-        movie.access_type
-      )
-      .trim()
-      .toLowerCase();
-
-
-    if(accessType){
-
-      const badge =
-        document.createElement("div");
-
-
-      if(
-        accessType === "premium"
-      ){
-
-        badge.className =
-          "badge premium";
-
-        badge.textContent =
-          "Premium";
-
-      }
-      else if(
-        accessType === "kibanda"
-      ){
-
-        badge.className =
-          "badge kibanda";
-
-        badge.textContent =
-          "Kibanda";
-
-      }
-      else if(
-        accessType === "free"
-      ){
-
-        badge.className =
-          "badge free";
-
-        badge.textContent =
-          "Free";
-
-      }
-      else{
-
-        badge.className =
-          "badge";
-
-        badge.textContent =
-          accessType;
-
-      }
-
-
-      posterWrap.appendChild(
-        badge
-      );
-
-    }
-
-
-    /* --------------------------
-       Poster
-    -------------------------- */
-
-    const img =
-      document.createElement("img");
-
-
-    const poster =
-      safeText(movie.poster).trim();
-
-
-    if(poster){
-
-      img.src =
-        poster;
-
-    }
-    else{
-
-      img.src =
-        "https://i.ibb.co/hxgrLF35/BUSANSO-New.png";
-
-    }
-
-
-    img.alt =
-      safeText(movie.title) ||
-      "BUSANSO Movie";
-
-
-    img.loading =
-      "lazy";
-
-
-    img.onerror =
-      () => {
-
-        if(
-          img.dataset.fallback !== "true"
-        ){
-
-          img.dataset.fallback =
-            "true";
-
-          img.src =
-            "https://i.ibb.co/hxgrLF35/BUSANSO-New.png";
-
-        }
-
-      };
-
-
-    posterWrap.appendChild(
-      img
-    );
-
-
-    /* --------------------------
-       Information
-    -------------------------- */
-
-    const info =
-      document.createElement("div");
-
-    info.className =
-      "info";
-
-
-    const title =
-      document.createElement("div");
-
-    title.className =
-      "title";
-
-    title.textContent =
-      safeText(movie.title) ||
-      "Untitled";
-
-
-    const meta =
-      document.createElement("div");
-
-    meta.className =
-      "meta";
-
-
-    const country =
-      safeText(
-        movie.country
-      );
-
-    const year =
-      safeText(
-        movie.year
-      );
-
-    const genre =
-      safeText(
-        movie.genre
-      );
-
-    const views =
-      movie.views ||
-      0;
-
-
-    const firstLine =
-      [
-        country,
-        year,
-        genre
-      ]
-      .filter(Boolean)
-      .join(" • ");
-
-
-    meta.textContent =
-      firstLine
-        ? `${firstLine}\n👁 ${views} views`
-        : `👁 ${views} views`;
-
-
-    info.appendChild(
-      title
-    );
-
-    info.appendChild(
-      meta
-    );
-
-
-    /* --------------------------
-       Assemble card
-    -------------------------- */
-
-    card.appendChild(
-      posterWrap
-    );
-
-    card.appendChild(
-      info
-    );
-
-
-    box.appendChild(
-      card
-    );
+  data.forEach(m=>{
+
+    const c = document.createElement("div");
+    c.className = "card";
+
+    c.onclick = () => {
+      location.href = `movie.html?id=${m.id}`;
+    };
+
+   let badge = "";  c.innerHTML = `
+      <div style="position:relative">
+        ${badge}
+        <img src="${m.poster}" alt="${m.title}">
+      </div>
+
+      <div class="info">
+        <div class="title">${m.title}</div>
+
+        <div class="meta">
+          ${m.country || ''} • ${m.year || ''} • ${m.genre || ''}
+          <br>👁 ${m.views || 0} views
+        </div>
+      </div>
+    `;
+
+    box.appendChild(c);
 
   });
 
 }
 
-
-/* ==========================================================
-   FILTER MOVIES
-========================================================== */
-
 function applyFilters(){
-
-  let filtered =
-    [...MOVIES];
-
-
-  /* --------------------------
-     Genre
-  -------------------------- */
-
+  let filtered = [...MOVIES];
   if(activeGenre){
-
-    filtered =
-      filtered.filter(movie => {
-
-        const genre =
-          safeText(
-            movie.genre
-          )
-          .trim()
-          .toLowerCase();
-
-        return (
-          genre ===
-          activeGenre
-            .toLowerCase()
-        );
-
-      });
-
+    filtered = filtered.filter(m => m.genre && m.genre.toLowerCase() === activeGenre.toLowerCase());
   }
-
-
-  /* --------------------------
-     Search
-  -------------------------- */
-
-  const query =
-    search.value
-      .trim()
-      .toLowerCase();
-
-
-  if(query){
-
-    filtered =
-      filtered.filter(movie => {
-
-        const title =
-          safeText(
-            movie.title
-          )
-          .toLowerCase();
-
-
-        return title.includes(
-          query
-        );
-
-      });
-
+  const q = search.value.trim().toLowerCase();
+  if(q){
+    filtered = filtered.filter(m => m.title.toLowerCase().includes(q));
   }
-
-
-  render(
-    filtered
-  );
-
+  render(filtered);
 }
 
-
-/* ==========================================================
-   SEARCH EVENT
-========================================================== */
-
-search.addEventListener(
-  "input",
-  applyFilters
-);
-
-
-/* ==========================================================
-   GENRE EVENT
-========================================================== */
-
-genreSelect.addEventListener(
-  "change",
-  () => {
-
-    const value =
-      genreSelect.value;
-
-
-    activeGenre =
-      value === "ALL"
-        ? null
-        : value;
-
-
-    applyFilters();
-
-  }
-);
-
-
-/* ==========================================================
-   LOAD MOVIES FROM SUPABASE
-========================================================== */
+search.oninput = applyFilters;
+genreSelect.onchange = () => {
+  const val = genreSelect.value;
+  activeGenre = val==="ALL"?null:val;
+  applyFilters();
+}
 
 async function loadMovies(){
-
-  showMessage(
-    "Loading movies...",
-    "loading"
-  );
-
-
-  try{
-
-    console.log(
-      "BUSANSO: Loading movies..."
-    );
-
-
-    const result =
-      await supabase
-
-        .from("movies")
-
-        .select("*")
-
-        .order(
-          "created_at",
-          {
-            ascending:false
-          }
-        );
-
-
-    const data =
-      result.data;
-
-    const error =
-      result.error;
-
-
-    /* --------------------------
-       Supabase error
-    -------------------------- */
-
-    if(error){
-
-      console.error(
-        "BUSANSO MOVIES ERROR:",
-        error
-      );
-
-
-      showMessage(
-        "Failed to load movies. Please try again.",
-        "error"
-      );
-
-
-      return;
-
-    }
-
-
-    /* --------------------------
-       Empty result
-    -------------------------- */
-
-    if(
-      !Array.isArray(data) ||
-      data.length === 0
-    ){
-
-      console.log(
-        "BUSANSO: Movies query returned 0 rows."
-      );
-
-
-      showMessage(
-        "No movies available."
-      );
-
-
-      return;
-
-    }
-
-
-    /* --------------------------
-       Success
-    -------------------------- */
-
-    console.log(
-      "BUSANSO: Movies loaded:",
-      data.length
-    );
-
-
-    MOVIES =
-      data;
-
-
-    render(
-      MOVIES
-    );
-
-  }
-  catch(error){
-
-    console.error(
-      "BUSANSO MOVIES UNEXPECTED ERROR:",
-      error
-    );
-
-
-    showMessage(
-      "Unable to load movies.",
-      "error"
-    );
-
-  }
-
+  const { data, error } = await supabase
+    .from('movies')
+    .select('*')
+    .order('created_at',{ascending:false}); // newest first
+  if(error){ console.error(error); box.innerHTML="<p>Failed to load movies.</p>"; return; }
+  if(!data || data.length===0){ box.innerHTML="<p>No movies available.</p>"; return; }
+  MOVIES = data;
+  render(MOVIES);
 }
 
-
-/* ==========================================================
-   AUTHENTICATION
-========================================================== */
-
-async function startPage(){
-
-  try{
-
-    /*
-      Wait for the compatibility
-      bridge to finish checking:
-
-      1. Supabase Google session
-      2. Legacy identity
-    */
-
-    if(
-      window.BusansoAuth &&
-      window.BusansoAuth.ready
-    ){
-
-      const auth =
-        await window.BusansoAuth.ready;
-
-
-      console.log(
-        "BUSANSO AUTH:",
-        auth
-      );
-
-
-      /*
-        No authenticated user.
-
-        Only in this case do we
-        send the visitor back to
-        auth.html.
-      */
-
-      if(
-        !auth ||
-        auth.authenticated !== true
-      ){
-
-        location.replace(
-          "auth.html"
-        );
-
-        return;
-
-      }
-
-    }
-    else{
-
-      /*
-        Safety fallback if the
-        bridge did not load.
-      */
-
-      const {
-        data
-      } =
-        await supabase
-          .auth
-          .getSession();
-
-
-      if(
-        !data ||
-        !data.session
-      ){
-
-        location.replace(
-          "auth.html"
-        );
-
-        return;
-
-      }
-
-    }
-
-
-    /*
-      IMPORTANT:
-
-      We deliberately do NOT check:
-
-      localStorage.loggedIn
-      localStorage.user_id
-      activePIN
-      expires_at
-
-      here.
-
-      Authentication belongs to
-      Supabase/BusansoAuth.
-
-      Movie access itself can be
-      handled by movie.html.
-    */
-
-
-    await loadMovies();
-
-  }
-  catch(error){
-
-    console.error(
-      "BUSANSO PAGE AUTH ERROR:",
-      error
-    );
-
-
-    showMessage(
-      "Unable to verify your account.",
-      "error"
-    );
-
-  }
-
-}
-
-
-/* ==========================================================
-   START
-========================================================== */
-
-startPage();
-
+loadMovies();
 </script>
 
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1,"spa":2}' crossorigin="anonymous"></script>
 </body>
 </html>
