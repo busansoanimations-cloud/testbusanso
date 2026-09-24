@@ -1,1136 +1,1735 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Happy Birthday King VJ - BUSANSO NATION</title>
+
+<title>BUSANSO Premium</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
 *{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
 }
 
 body{
-  min-height:100vh;
-  font-family:Arial,Helvetica,sans-serif;
-  color:#fff;
-  padding:18px;
-  background:
-    radial-gradient(circle at 50% 0%,rgba(255,196,65,.25),transparent 35%),
-    radial-gradient(circle at 0% 100%,rgba(255,70,130,.13),transparent 35%),
-    linear-gradient(180deg,#180c08,#070404 58%,#000);
+    min-height:100vh;
+    font-family:Poppins,Arial,sans-serif;
+    color:#fff;
+
+    background:
+        radial-gradient(
+            circle at top,
+            #3b2a00 0%,
+            #15110a 35%,
+            #050505 75%,
+            #000 100%
+        );
+
+    padding:10px;
 }
 
-.wrap{
-  max-width:560px;
-  margin:auto;
+.page{
+    width:100%;
+    max-width:620px;
+    height:100%;
+    max-height:100vh;
+    margin:0 auto;
 }
 
-.top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:16px;
-}
+/* =========================
+   HEADER
+========================= */
 
-.back{
-  color:#ffd75a;
-  text-decoration:none;
-  font-weight:900;
-  font-size:13px;
-}
+.topbar{
+    height:54px;
 
-.brand{
-  color:#e9bd3c;
-  font-size:12px;
-  font-weight:900;
-  letter-spacing:2px;
-}
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
 
-.card{
-  border:1px solid rgba(255,211,92,.42);
-  border-radius:30px;
-  padding:28px 19px;
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255,255,255,.09),
-      rgba(255,255,255,.025)
-    );
-  box-shadow:0 30px 80px rgba(0,0,0,.7);
-  overflow:hidden;
-}
-
-.crown{
-  text-align:center;
-  font-size:42px;
-  margin-bottom:5px;
+    margin-bottom:8px;
 }
 
 .logo{
-  width:88px;
-  height:88px;
-  object-fit:contain;
-  display:block;
-  margin:0 auto 10px;
-  filter:drop-shadow(0 8px 25px rgba(255,198,50,.4));
+    width:48px;
+    height:48px;
+    object-fit:contain;
+    border-radius:13px;
 }
 
-.kicker{
-  text-align:center;
-  color:#ffd65a;
-  font-size:11px;
-  font-weight:900;
-  letter-spacing:2px;
-  text-transform:uppercase;
+.top-actions{
+    display:flex;
+    gap:8px;
+}
+
+.top-btn{
+    border:1px solid rgba(255,215,0,.25);
+    background:rgba(255,215,0,.08);
+    color:#ffd84d;
+
+    padding:8px 13px;
+    border-radius:10px;
+
+    text-decoration:none;
+    font-size:11px;
+    font-weight:700;
+}
+
+/* =========================
+   MAIN CARD
+========================= */
+
+.account-card{
+    position:relative;
+    overflow:hidden;
+
+    width:100%;
+
+    border-radius:24px;
+
+    padding:19px 18px 14px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,215,0,.14),
+            rgba(255,255,255,.045) 35%,
+            rgba(255,255,255,.025)
+        );
+
+    border:1px solid rgba(255,215,0,.28);
+
+    box-shadow:
+        0 20px 55px rgba(0,0,0,.65),
+        inset 0 1px rgba(255,255,255,.08);
+}
+
+.account-card:before{
+    content:"";
+
+    position:absolute;
+
+    width:220px;
+    height:220px;
+
+    border-radius:50%;
+
+    background:rgba(255,215,0,.08);
+
+    filter:blur(55px);
+
+    top:-140px;
+    right:-80px;
+
+    pointer-events:none;
+}
+
+/* =========================
+   TITLE
+========================= */
+
+.badge{
+    position:relative;
+
+    display:inline-block;
+
+    padding:5px 11px;
+
+    border-radius:30px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffe27a,
+            #c99600
+        );
+
+    color:#211700;
+
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:1px;
+    text-transform:uppercase;
+
+    margin-bottom:9px;
 }
 
 h1{
-  text-align:center;
-  font-size:28px;
-  line-height:1.1;
-  margin-top:8px;
-  background:linear-gradient(
-    90deg,
-    #fff7bd,
-    #ffc72f,
-    #fff0a0
-  );
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
+    position:relative;
+
+    font-size:25px;
+    line-height:1.05;
+
+    margin-bottom:5px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #fff,
+            #ffe27a,
+            #c99716
+        );
+
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
 }
 
-.hero{
-  text-align:center;
-  color:#ddd;
-  font-size:14px;
-  line-height:1.7;
-  margin:13px auto 0;
-  max-width:470px;
+.welcome{
+    position:relative;
+
+    color:#bdb7a5;
+
+    font-size:11px;
+
+    margin-bottom:13px;
 }
 
-.date{
-  margin:20px auto;
-  padding:15px;
-  border-radius:18px;
-  text-align:center;
-  background:rgba(255,196,55,.10);
-  border:1px solid rgba(255,210,75,.25);
+/* =========================
+   PACKAGE
+========================= */
+
+.package-box{
+    position:relative;
+
+    padding:12px 15px;
+
+    border-radius:16px;
+
+    background:rgba(0,0,0,.35);
+
+    border:1px solid rgba(255,215,0,.18);
+
+    margin-bottom:10px;
 }
 
-.date strong{
-  display:block;
-  color:#ffe27a;
-  font-size:22px;
+.package-title{
+    color:#918b7c;
+
+    font-size:9px;
+
+    text-transform:uppercase;
+    letter-spacing:1.3px;
+
+    margin-bottom:3px;
 }
 
-.date span{
-  color:#aaa;
-  font-size:11px;
+.package-name{
+    font-size:19px;
+    font-weight:900;
+
+    color:#ffe06b;
+}
+
+.status{
+    margin-top:3px;
+
+    font-size:10px;
+
+    color:#aaa;
+}
+
+/* =========================
+   EXPIRY
+========================= */
+
+.expiry-box{
+    position:relative;
+
+    padding:12px 15px;
+
+    border-radius:16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,215,0,.12),
+            rgba(255,255,255,.035)
+        );
+
+    border:1px solid rgba(255,215,0,.2);
+
+    margin-bottom:11px;
+}
+
+.expiry-label{
+    color:#9e9888;
+
+    font-size:9px;
+
+    text-transform:uppercase;
+    letter-spacing:1.2px;
+
+    margin-bottom:5px;
+}
+
+.expiry-date{
+    color:#fff;
+
+    font-size:11px;
+
+    margin-bottom:6px;
 }
 
 .countdown{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:7px;
-  margin:18px 0;
+    font-size:12px;
+    font-weight:700;
+
+    color:#ffd84d;
+
+    line-height:1.2;
+
+    text-transform:lowercase;
 }
 
-.time{
-  background:rgba(0,0,0,.3);
-  border:1px solid rgba(255,210,75,.15);
-  border-radius:14px;
-  padding:11px 5px;
-  text-align:center;
+.countdown.expired{
+    color:#ff6b6b;
 }
 
-.time b{
-  display:block;
-  color:#ffd75a;
-  font-size:22px;
+/* =========================
+   BIG BUTTONS
+========================= */
+
+.big-actions{
+    position:relative;
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:9px;
+
+    margin-bottom:9px;
 }
 
-.time small{
-  color:#888;
-  font-size:9px;
-  text-transform:uppercase;
+.big-btn{
+    min-height:60px;
+
+    border-radius:15px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    flex-direction:column;
+
+    gap:3px;
+
+    text-decoration:none;
+
+    font-size:11px;
+    font-weight:900;
+
+    color:#1b1400;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff0a3,
+            #ffd43b 45%,
+            #b77d00
+        );
+
+    box-shadow:
+        0 7px 20px rgba(0,0,0,.35),
+        inset 0 1px rgba(255,255,255,.7);
+
+    transition:
+        transform .15s ease;
 }
 
-.section{
-  margin-top:20px;
-  padding:18px;
-  border-radius:20px;
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.07);
+.big-btn:hover{
+    transform:translateY(-2px);
 }
 
-.section h2{
-  font-size:16px;
-  color:#ffe17a;
-  margin-bottom:8px;
+.big-btn span{
+    font-size:21px;
 }
 
-.section p{
-  color:#bbb;
-  font-size:12px;
-  line-height:1.65;
+/* =========================
+   SMALL BUTTONS
+========================= */
+
+.small-actions{
+    position:relative;
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:8px;
+
+    margin-bottom:9px;
 }
 
-textarea{
-  width:100%;
-  border:1px solid rgba(255,210,75,.20);
-  background:rgba(0,0,0,.3);
-  color:#fff;
-  border-radius:14px;
-  padding:13px;
-  font:inherit;
-  font-size:13px;
-  outline:none;
-  min-height:115px;
-  resize:vertical;
-  margin-top:12px;
+.small-btn{
+    min-height:42px;
+
+    border-radius:12px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    gap:6px;
+
+    text-decoration:none;
+
+    color:#ddd5bd;
+
+    background:rgba(255,255,255,.055);
+
+    border:1px solid rgba(255,215,0,.15);
+
+    font-size:10px;
+    font-weight:800;
+
+    text-align:center;
+
+    transition:
+        background .15s ease;
 }
 
-textarea:focus{
-  border-color:#d4af37;
-  box-shadow:0 0 0 3px rgba(212,175,55,.08);
+.small-btn:hover{
+    background:rgba(255,215,0,.11);
 }
 
-button{
-  width:100%;
-  border:0;
-  border-radius:15px;
-  padding:14px;
-  margin-top:12px;
-  font-size:13px;
-  font-weight:900;
-  cursor:pointer;
-  background:
-    linear-gradient(
-      135deg,
-      #9c7116,
-      #d4af37,
-      #f5df7a
-    );
-  color:#160f00;
+/* =========================
+   SETTINGS
+========================= */
+
+.settings-btn{
+    position:relative;
+
+    width:100%;
+
+    min-height:40px;
+
+    border-radius:12px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    gap:7px;
+
+    text-decoration:none;
+
+    color:#ffd84d;
+
+    border:1px solid rgba(255,215,0,.25);
+
+    background:rgba(255,215,0,.06);
+
+    font-size:11px;
+    font-weight:800;
+
+    margin-bottom:2px;
 }
 
-button:disabled{
-  opacity:.55;
-  cursor:not-allowed;
+/* =========================
+   HOME
+========================= */
+
+.home-btn{
+    position:relative;
+
+    display:block;
+
+    text-align:center;
+
+    padding:6px;
+
+    color:#777;
+
+    text-decoration:none;
+
+    font-size:10px;
 }
 
-.gift{
-  margin-top:15px;
-  padding:15px;
-  border-radius:15px;
-  background:rgba(255,180,50,.07);
-  border-left:3px solid #d4af37;
+.home-btn:hover{
+    color:#fff;
 }
 
-.gift b{
-  color:#ffe17a;
-}
-
-.gift p{
-  margin-top:5px;
-  color:#bbb;
-  font-size:12px;
-  line-height:1.6;
-}
-
-.notice{
-  display:none;
-  margin-top:12px;
-  padding:11px;
-  border-radius:12px;
-  text-align:center;
-  font-size:12px;
-}
-
-.success{
-  background:rgba(60,190,100,.12);
-  color:#9cf1b4;
-  border:1px solid rgba(60,190,100,.2);
-}
-
-.error{
-  background:rgba(255,70,70,.1);
-  color:#ffaaaa;
-  border:1px solid rgba(255,70,70,.2);
-}
-
-.wishes{
-  margin-top:20px;
-}
-
-.wish{
-  padding:13px;
-  border-bottom:1px solid rgba(255,255,255,.07);
-}
-
-.wish:last-child{
-  border-bottom:0;
-}
-
-.wish b{
-  color:#f3d36b;
-  font-size:12px;
-}
-
-.wish p{
-  color:#ddd;
-  font-size:12px;
-  line-height:1.55;
-  margin-top:4px;
-  white-space:pre-wrap;
-  overflow-wrap:anywhere;
-}
-
-.wish-date{
-  display:block;
-  color:#777;
-  font-size:9px;
-  margin-top:6px;
-}
-
-.empty{
-  text-align:center;
-  color:#777;
-  font-size:12px;
-  padding:15px;
-}
+/* =========================
+   LOADING
+========================= */
 
 .loading{
-  opacity:.7;
+    width:100%;
+    height:100vh;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    color:#d0c8b5;
+
+    font-size:13px;
+
+    text-align:center;
 }
 
-@media(max-width:420px){
-  .countdown{
-    gap:4px;
-  }
-
-  .time b{
-    font-size:18px;
-  }
-
-  h1{
-    font-size:24px;
-  }
+.hidden{
+    display:none!important;
 }
+
+/* =========================
+   ERROR
+========================= */
+
+.error{
+    text-align:center;
+
+    padding:30px 18px;
+}
+
+.error h2{
+    color:#ffd84d;
+
+    margin-bottom:8px;
+
+    font-size:20px;
+}
+
+.error p{
+    color:#aaa;
+
+    font-size:11px;
+
+    line-height:1.6;
+}
+
+.error a{
+    display:inline-block;
+
+    margin-top:15px;
+
+    color:#ffd84d;
+
+    text-decoration:none;
+
+    font-size:12px;
+}
+
+/* =========================
+   SMALL DEVICES
+========================= */
+
+@media(max-width:480px){
+
+    body{
+        padding:7px;
+    }
+
+    .topbar{
+        height:45px;
+        margin-bottom:5px;
+    }
+
+    .logo{
+        width:42px;
+        height:42px;
+    }
+
+    .account-card{
+        padding:16px 13px 10px;
+        border-radius:20px;
+    }
+
+    h1{
+        font-size:22px;
+    }
+
+    .welcome{
+        font-size:10px;
+        margin-bottom:10px;
+    }
+
+    .package-box,
+    .expiry-box{
+        padding:10px 12px;
+        margin-bottom:8px;
+    }
+
+    .package-name{
+        font-size:17px;
+    }
+
+    .big-btn{
+        min-height:55px;
+    }
+
+    .big-btn span{
+        font-size:19px;
+    }
+
+    .small-btn{
+        min-height:38px;
+        font-size:9px;
+    }
+
+    .settings-btn{
+        min-height:37px;
+    }
+
+    .home-btn{
+        padding:4px;
+    }
+}
+
+/* =========================
+   VERY SHORT SCREENS
+========================= */
+
+@media(max-height:650px){
+
+    body{
+        padding:5px;
+    }
+
+    .topbar{
+        height:39px;
+        margin-bottom:3px;
+    }
+
+    .logo{
+        width:36px;
+        height:36px;
+    }
+
+    .top-btn{
+        padding:6px 10px;
+        font-size:10px;
+    }
+
+    .account-card{
+        padding:12px 12px 8px;
+        border-radius:18px;
+    }
+
+    .badge{
+        padding:4px 9px;
+        margin-bottom:6px;
+        font-size:8px;
+    }
+
+    h1{
+        font-size:20px;
+        margin-bottom:3px;
+    }
+
+    .welcome{
+        margin-bottom:7px;
+        font-size:9px;
+    }
+
+    .package-box,
+    .expiry-box{
+        padding:8px 10px;
+        margin-bottom:6px;
+    }
+
+    .package-title,
+    .expiry-label{
+        font-size:8px;
+    }
+
+    .package-name{
+        font-size:15px;
+    }
+
+    .status,
+    .expiry-date{
+        font-size:9px;
+    }
+
+    .countdown{
+        font-size:10px;
+    }
+
+    .big-actions{
+        gap:6px;
+        margin-bottom:6px;
+    }
+
+    .big-btn{
+        min-height:47px;
+        font-size:9px;
+    }
+
+    .big-btn span{
+        font-size:16px;
+    }
+
+    .small-actions{
+        gap:6px;
+        margin-bottom:6px;
+    }
+
+    .small-btn{
+        min-height:34px;
+        font-size:8px;
+    }
+
+    .settings-btn{
+        min-height:33px;
+        font-size:9px;
+    }
+
+    .home-btn{
+        font-size:9px;
+        padding:3px;
+    }
+}
+
 </style>
+
 </head>
 
 <body>
 
-<div class="wrap">
+<div id="loading" class="loading">
+    Loading your BUSANSO account...
+</div>
 
-  <div class="top">
-    <a class="back" href="home.html">← HOME</a>
-    <div class="brand">BUSANSO NATION</div>
-  </div>
 
-  <div class="card">
+<div id="page" class="page hidden">
 
-    <div class="crown">👑</div>
+    <div class="topbar">
 
-    <img
-      class="logo"
-      src="https://i.ibb.co/hxgrLF35/BUSANSO-New.png"
-      alt="BUSANSO NATION"
-    >
+        <img
+            class="logo"
+            src="https://i.ibb.co/hxgrLF35/BUSANSO-New.png"
+            alt="BUSANSO">
 
-    <div class="kicker">
-      BUSANSO NATION CELEBRATES
-    </div>
+        <div class="top-actions">
 
-    <h1>
-      HAPPY BIRTHDAY<br>
-      KING VJ
-    </h1>
+            <a
+                class="top-btn"
+                href="home.html">
+                HOME
+            </a>
 
-    <p class="hero">
-      The Busanso Master &amp; CEO of BUSANSO NATION is celebrating another year.
-      Join the BUSANSO family in making 1st October a special day with your
-      birthday message, love and gifts.
-    </p>
-
-    <div class="date">
-      <strong>1ST OCTOBER</strong>
-      <span>THE KING VJ BIRTHDAY CELEBRATION</span>
-    </div>
-
-    <div class="countdown">
-      <div class="time">
-        <b id="days">0</b>
-        <small>Days</small>
-      </div>
-
-      <div class="time">
-        <b id="hours">0</b>
-        <small>Hours</small>
-      </div>
-
-      <div class="time">
-        <b id="mins">0</b>
-        <small>Minutes</small>
-      </div>
-
-      <div class="time">
-        <b id="secs">0</b>
-        <small>Seconds</small>
-      </div>
-    </div>
-
-    <!-- BIRTHDAY WISH FORM -->
-    <div class="section">
-
-      <h2>🎂 Leave Your Birthday Wish</h2>
-
-      <p>
-        Write your personal birthday message to King VJ.
-        Your BUSANSO profile name will automatically appear with your wish.
-      </p>
-
-      <textarea
-        id="wish"
-        maxlength="500"
-        placeholder="Write your birthday message..."
-      ></textarea>
-
-      <button id="sendWish">
-        SEND HAPPY BIRTHDAY WISH 🎉
-      </button>
-
-      <div id="notice" class="notice"></div>
-
-    </div>
-
-    <!-- PHYSICAL GIFTS -->
-    <div class="section">
-
-      <h2>🎁 Physical Flowers &amp; Gifts</h2>
-
-      <p>
-        If you would like to bring physical flowers or a physical gift,
-        please contact the official BUSANSO number first to receive the
-        venue and delivery information.
-      </p>
-
-      <div class="gift">
-        <b>Official contact: 0703888884</b>
-
-        <p>
-          Please contact BUSANSO through this number to know the venue
-          and arrangements for physical gifts.
-        </p>
-      </div>
-
-    </div>
-
-    <!-- MONEY GIFTS -->
-    <div class="section">
-
-      <h2>💰 Money Gifts</h2>
-
-      <p>
-        If you would like to send a money gift for the birthday celebration:
-      </p>
-
-      <div class="gift">
-
-        <b>Mobile Money: 0703888884</b>
-
-        <p>
-          Send in the names of <strong>DAVID</strong>.
-        </p>
-
-      </div>
-
-    </div>
-
-    <!-- BIRTHDAY WISHES -->
-    <div class="section wishes">
-
-      <h2>💛 Birthday Wishes</h2>
-
-      <div id="wishList" class="loading">
-        <div class="empty">
-          Loading birthday wishes...
         </div>
-      </div>
 
     </div>
 
-  </div>
+
+    <main class="account-card">
+
+        <div class="badge">
+            ✦ PREMIUM ACCOUNT
+        </div>
+
+
+        <h1>
+            Welcome,
+            <span id="userName">
+                User
+            </span>
+        </h1>
+
+
+        <div class="welcome">
+            Your BUSANSO package is active.
+        </div>
+
+
+        <!-- PACKAGE -->
+
+        <section class="package-box">
+
+            <div class="package-title">
+                Package
+            </div>
+
+            <div
+                id="packageName"
+                class="package-name">
+                Loading...
+            </div>
+
+            <div
+                id="membershipStatus"
+                class="status">
+                Loading...
+            </div>
+
+        </section>
+
+
+        <!-- EXPIRY -->
+
+        <section
+            id="expiryBox"
+            class="expiry-box">
+
+            <div class="expiry-label">
+                Access expires
+            </div>
+
+            <div
+                id="expiryDate"
+                class="expiry-date">
+                Loading...
+            </div>
+
+            <div
+                id="countdown"
+                class="countdown">
+                Loading countdown...
+            </div>
+
+        </section>
+
+
+        <!-- BIG ACTION BUTTONS -->
+
+        <div class="big-actions">
+
+            <a
+                href="movies.html"
+                class="big-btn">
+
+                <span>🎬</span>
+
+                WATCH MOVIES
+
+            </a>
+
+
+            <a
+                href="series.html"
+                class="big-btn">
+
+                <span>📺</span>
+
+                WATCH SERIES
+
+            </a>
+
+        </div>
+
+
+        <!-- SMALL ACTION BUTTONS -->
+
+        <div class="small-actions">
+
+            <a
+                href="happy-birthday.html"
+                class="small-btn">
+
+                🎂 HAPPY BIRTHDAY WISHES
+
+            </a>
+
+
+            <a
+                href="donate.html"
+                class="small-btn">
+
+                ❤️ DONATE
+
+            </a>
+
+        </div>
+
+
+        <!-- SETTINGS -->
+
+        <a
+            href="edit-profile.html"
+            class="settings-btn">
+
+            ⚙️ SETTINGS
+
+        </a>
+
+
+        <a
+            href="home.html"
+            class="home-btn">
+
+            ← Back to BUSANSO
+
+        </a>
+
+    </main>
 
 </div>
 
+
+<!-- ERROR -->
+
+<div
+    id="errorPage"
+    class="page hidden">
+
+    <main class="account-card error">
+
+        <div class="badge">
+            BUSANSO
+        </div>
+
+        <h2>
+            Account Not Found
+        </h2>
+
+        <p id="errorMessage">
+            We could not identify this account.
+        </p>
+
+        <a href="auth.html">
+            Sign in with Google
+        </a>
+
+    </main>
+
+</div>
+
+
 <script>
-(() => {
 
-  "use strict";
-
-  /*
-   * BUSANSO SUPABASE
-   */
-  const SUPABASE_URL =
+const SUPABASE_URL =
     "https://dhkfhhybzcxdeoalcfqx.supabase.co";
 
-  const SUPABASE_KEY =
+const SUPABASE_KEY =
     "sb_publishable_Rjm3T44VKTeuOF2yJS5rMw_xDfwPjuG";
 
-  /*
-   * Special identifier used only for King VJ birthday wishes.
-   *
-   * This keeps birthday wishes separate from normal
-   * movie/series comments inside movies_comments.
-   */
-  const BIRTHDAY_ID = "KING_VJ_BIRTHDAY";
-
-  const supabase =
+const supabaseClient =
     window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY
+        SUPABASE_URL,
+        SUPABASE_KEY
     );
 
 
-  /*
-   * ==========================================
-   * COUNTDOWN
-   * ==========================================
-   */
+let currentProfile = null;
 
-  const target =
-    new Date(
-      "2026-10-01T00:00:00+03:00"
-    ).getTime();
+let countdownTimer = null;
 
 
-  function countdown(){
+/* =========================================
+   HELPERS
+========================================= */
 
-    let diff =
-      target - Date.now();
+function clean(value){
 
-    if(diff < 0){
-      diff = 0;
+    if(
+        value === null ||
+        value === undefined
+    ){
+        return "";
     }
 
-    const days =
-      Math.floor(
-        diff / 86400000
-      );
+    return String(value).trim();
 
-    diff %= 86400000;
-
-    const hours =
-      Math.floor(
-        diff / 3600000
-      );
-
-    diff %= 3600000;
-
-    const minutes =
-      Math.floor(
-        diff / 60000
-      );
-
-    diff %= 60000;
-
-    const seconds =
-      Math.floor(
-        diff / 1000
-      );
+}
 
 
-    document.getElementById("days")
-      .textContent = days;
+/* =========================================
+   PACKAGE TYPE
+   PACKAGE IS NOW DETERMINED ONLY FROM
+   profiles.package_type
+========================================= */
 
-    document.getElementById("hours")
-      .textContent = hours;
+function getPackageType(profile){
 
-    document.getElementById("mins")
-      .textContent = minutes;
+    return clean(
+        profile.package_type
+    ).toLowerCase();
 
-    document.getElementById("secs")
-      .textContent = seconds;
-
-  }
-
-
-  countdown();
-
-  setInterval(
-    countdown,
-    1000
-  );
+}
 
 
-  /*
-   * ==========================================
-   * NOTIFICATIONS
-   * ==========================================
-   */
+/* =========================================
+   EXPIRY
+========================================= */
 
-  function notice(
-    message,
-    success = false
-  ){
+function isExpired(profile){
 
-    const element =
-      document.getElementById("notice");
+    if(!profile.expires_at){
+        return false;
+    }
 
-    element.textContent =
-      message;
-
-    element.className =
-      "notice " +
-      (
-        success
-          ? "success"
-          : "error"
-      );
-
-    element.style.display =
-      "block";
-  }
-
-
-  /*
-   * ==========================================
-   * HTML SAFETY
-   * ==========================================
-   */
-
-  function escapeHtml(value){
-
-    return String(
-      value ?? ""
-    ).replace(
-      /[&<>"']/g,
-      character => ({
-        "&":"&amp;",
-        "<":"&lt;",
-        ">":"&gt;",
-        '"':"&quot;",
-        "'":"&#039;"
-      }[character])
+    return (
+        new Date(profile.expires_at) <=
+        new Date()
     );
 
-  }
+}
 
 
-  /*
-   * ==========================================
-   * AUTOMATIC USER NAME
-   * ==========================================
-   *
-   * Priority:
-   *
-   * 1. Google/Supabase authenticated user
-   * 2. profiles.auth_user_id
-   * 3. Google account metadata
-   * 4. Legacy localStorage name
-   * 5. Legacy user_name
-   *
-   * The user NEVER types their name
-   * on this page.
-   */
+/* =========================================
+   SAVE COMPATIBILITY DATA
+========================================= */
 
-  async function getUserName(){
+function saveCompatibilityData(
+    profile,
+    user
+){
+
+    if(
+        profile.id !== null &&
+        profile.id !== undefined
+    ){
+
+        localStorage.setItem(
+            "user_id",
+            String(profile.id)
+        );
+
+    }
+
+
+    if(profile.name){
+
+        localStorage.setItem(
+            "name",
+            profile.name
+        );
+
+    }
+
 
     /*
-     * FIRST:
-     * Check current Supabase session.
+     * Keep the actual package_type
+     * in localStorage for older pages.
      */
 
-    try{
-
-      const {
-        data: sessionData,
-        error: sessionError
-      } =
-        await supabase.auth.getSession();
+    localStorage.setItem(
+        "package_type",
+        profile.package_type || ""
+    );
 
 
-      if(
-        !sessionError &&
-        sessionData &&
-        sessionData.session &&
-        sessionData.session.user
-      ){
-
-        const user =
-          sessionData.session.user;
+    localStorage.setItem(
+        "membership",
+        profile.membership || ""
+    );
 
 
-        /*
-         * Find the user's BUSANSO profile
-         * through auth_user_id.
-         */
+    localStorage.setItem(
+        "paid_status",
+        profile.paid_status
+            ? "true"
+            : "false"
+    );
 
-        const {
-          data: profile,
-          error: profileError
-        } =
-          await supabase
+
+    localStorage.setItem(
+        "expires_at",
+        profile.expires_at || ""
+    );
+
+
+    if(
+        profile.activated_at
+    ){
+
+        localStorage.setItem(
+            "activated_at",
+            profile.activated_at
+        );
+
+    }
+
+
+    if(
+        user &&
+        user.id
+    ){
+
+        localStorage.setItem(
+            "auth_user_id",
+            user.id
+        );
+
+        localStorage.setItem(
+            "supabase_auth_user_id",
+            user.id
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   GOOGLE USER PROFILE
+========================================= */
+
+async function findGoogleProfile(){
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient.auth.getSession();
+
+
+    if(error){
+
+        console.error(
+            "Supabase session error:",
+            error
+        );
+
+        return {
+            user:null,
+            profile:null
+        };
+
+    }
+
+
+    const session =
+        data.session;
+
+
+    if(!session){
+
+        return {
+            user:null,
+            profile:null
+        };
+
+    }
+
+
+    const user =
+        session.user;
+
+
+    const result =
+        await supabaseClient
             .from("profiles")
-            .select("name")
+            .select("*")
             .eq(
-              "auth_user_id",
-              user.id
+                "auth_user_id",
+                user.id
             )
             .maybeSingle();
 
 
-        if(
-          !profileError &&
-          profile &&
-          profile.name &&
-          profile.name.trim()
-        ){
+    if(result.error){
 
-          return profile.name.trim();
+        console.error(
+            "Google profile lookup error:",
+            result.error
+        );
 
-        }
-
-
-        /*
-         * If profile name isn't available,
-         * use Google's account name.
-         */
-
-        const metadataName =
-          user.user_metadata?.full_name ||
-          user.user_metadata?.name;
-
-
-        if(
-          metadataName &&
-          metadataName.trim()
-        ){
-
-          return metadataName.trim();
-
-        }
-
-
-        /*
-         * Last Google fallback:
-         * email username.
-         */
-
-        if(
-          user.email &&
-          user.email.includes("@")
-        ){
-
-          return user.email
-            .split("@")[0]
-            .trim();
-
-        }
-
-      }
+        return {
+            user,
+            profile:null
+        };
 
     }
-    catch(error){
 
-      console.warn(
-        "Supabase identity lookup failed:",
-        error
-      );
+
+    return {
+        user,
+        profile:result.data
+    };
+
+}
+
+
+/* =========================================
+   LEGACY USER
+========================================= */
+
+async function findLegacyProfile(){
+
+    const userId =
+        clean(
+            localStorage.getItem(
+                "user_id"
+            )
+        );
+
+
+    const name =
+        clean(
+            localStorage.getItem(
+                "name"
+            )
+        );
+
+
+    const deviceId =
+        clean(
+            localStorage.getItem(
+                "device_id"
+            )
+        );
+
+
+    /*
+     * FIRST:
+     * legacy numeric profile ID
+     */
+
+    if(userId){
+
+        const numericId =
+            Number(userId);
+
+
+        if(
+            Number.isInteger(
+                numericId
+            )
+        ){
+
+            const result =
+                await supabaseClient
+                    .from("profiles")
+                    .select("*")
+                    .eq(
+                        "id",
+                        numericId
+                    )
+                    .maybeSingle();
+
+
+            if(
+                !result.error &&
+                result.data
+            ){
+
+                return result.data;
+
+            }
+
+        }
 
     }
 
 
     /*
      * SECOND:
-     * Legacy BUSANSO identity.
+     * name + device ID
      */
 
-    const legacyName =
-      localStorage.getItem("name");
-
-
     if(
-      legacyName &&
-      legacyName.trim()
+        name &&
+        deviceId
     ){
 
-      return legacyName.trim();
+        const result =
+            await supabaseClient
+                .from("profiles")
+                .select("*")
+                .eq(
+                    "name",
+                    name
+                )
+                .eq(
+                    "device_id",
+                    deviceId
+                )
+                .maybeSingle();
+
+
+        if(
+            !result.error &&
+            result.data
+        ){
+
+            return result.data;
+
+        }
 
     }
 
 
     /*
      * THIRD:
-     * Compatibility name.
+     * name only
      */
 
-    const storedName =
-      localStorage.getItem("user_name");
+    if(name){
+
+        const result =
+            await supabaseClient
+                .from("profiles")
+                .select("*")
+                .eq(
+                    "name",
+                    name
+                )
+                .maybeSingle();
+
+
+        if(
+            !result.error &&
+            result.data
+        ){
+
+            return result.data;
+
+        }
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =========================================
+   UNIFIED USER RESOLVER
+========================================= */
+
+async function resolveCurrentUser(){
+
+    /*
+     * NEW GOOGLE SYSTEM FIRST
+     */
+
+    const google =
+        await findGoogleProfile();
 
 
     if(
-      storedName &&
-      storedName.trim()
+        google.user &&
+        google.profile
     ){
 
-      return storedName.trim();
+        return {
+            type:"google",
+            user:google.user,
+            profile:google.profile
+        };
 
     }
 
 
     /*
-     * No recognized user.
+     * OLD SYSTEM SECOND
      */
+
+    const legacy =
+        await findLegacyProfile();
+
+
+    if(legacy){
+
+        return {
+            type:"legacy",
+            user:null,
+            profile:legacy
+        };
+
+    }
+
 
     return null;
 
-  }
+}
 
 
-  /*
-   * ==========================================
-   * LOAD BIRTHDAY WISHES
-   * ==========================================
-   *
-   * Source:
-   *
-   * movies_comments
-   *
-   * Only rows with:
-   *
-   * movie_id = KING_VJ_BIRTHDAY
-   *
-   * are shown.
-   */
+/* =========================================
+   EXPIRY COUNTDOWN
+========================================= */
 
-  async function loadWishes(){
+function startCountdown(
+    expiresAt
+){
 
-    const list =
-      document.getElementById(
-        "wishList"
-      );
+    const countdown =
+        document.getElementById(
+            "countdown"
+        );
 
 
-    const {
-      data,
-      error
-    } =
-      await supabase
-        .from("movies_comments")
-        .select(
-          "user_name,comment,created_at"
-        )
-        .eq(
-          "movie_id",
-          BIRTHDAY_ID
-        )
-        .order(
-          "created_at",
-          {
-            ascending:false
-          }
-        )
-        .limit(100);
+    const expiryDate =
+        document.getElementById(
+            "expiryDate"
+        );
 
 
-    if(error){
+    if(countdownTimer){
 
-      console.error(
-        "Could not load birthday wishes:",
-        error
-      );
-
-      list.classList.remove(
-        "loading"
-      );
-
-      list.innerHTML =
-        '<div class="empty">' +
-        'Birthday wishes could not be loaded right now.' +
-        '</div>';
-
-      return;
+        clearInterval(
+            countdownTimer
+        );
 
     }
+
+
+    if(!expiresAt){
+
+        expiryDate.textContent =
+            "No expiry date set";
+
+        countdown.textContent =
+            "active";
+
+        return;
+
+    }
+
+
+    const expiry =
+        new Date(
+            expiresAt
+        );
 
 
     if(
-      !data ||
-      data.length === 0
+        isNaN(
+            expiry.getTime()
+        )
     ){
 
-      list.classList.remove(
-        "loading"
-      );
+        expiryDate.textContent =
+            "Expiry date unavailable";
 
-      list.innerHTML =
-        '<div class="empty">' +
-        'Be the first to leave a birthday wish! 🎉' +
-        '</div>';
+        countdown.textContent =
+            "please contact BUSANSO";
 
-      return;
+        return;
 
     }
 
 
-    list.classList.remove(
-      "loading"
-    );
+    expiryDate.textContent =
+        expiry.toLocaleString(
+            undefined,
+            {
+                dateStyle:"medium",
+                timeStyle:"short"
+            }
+        );
 
 
-    list.innerHTML =
-      data.map(item => {
+    function update(){
 
-        const name =
-          item.user_name &&
-          item.user_name.trim()
-            ? item.user_name.trim()
-            : "BUSANSO FAMILY";
+        const now =
+            new Date();
 
 
-        const wish =
-          item.comment &&
-          item.comment.trim()
-            ? item.comment.trim()
-            : "";
+        let difference =
+            expiry.getTime() -
+            now.getTime();
 
 
-        let dateText = "";
+        if(
+            difference <= 0
+        ){
 
+            countdown.textContent =
+                "access expired";
 
-        if(item.created_at){
-
-          const date =
-            new Date(
-              item.created_at
+            countdown.classList.add(
+                "expired"
             );
 
-          if(
-            !isNaN(
-              date.getTime()
-            )
-          ){
 
-            dateText =
-              date.toLocaleDateString(
-                undefined,
-                {
-                  day:"numeric",
-                  month:"short",
-                  year:"numeric"
-                }
-              );
+            document.getElementById(
+                "membershipStatus"
+            ).textContent =
+                "Expired";
 
-          }
+
+            clearInterval(
+                countdownTimer
+            );
+
+            return;
 
         }
 
 
-        return `
-          <div class="wish">
-
-            <b>
-              ${escapeHtml(name)}
-            </b>
-
-            <p>
-              ${escapeHtml(wish)}
-            </p>
-
-            ${
-              dateText
-                ? `<span class="wish-date">${escapeHtml(dateText)}</span>`
-                : ""
-            }
-
-          </div>
-        `;
-
-      }).join("");
-
-  }
+        const totalSeconds =
+            Math.floor(
+                difference / 1000
+            );
 
 
-  /*
-   * ==========================================
-   * SEND BIRTHDAY WISH
-   * ==========================================
-   */
+        const days =
+            Math.floor(
+                totalSeconds / 86400
+            );
 
-  document
-    .getElementById("sendWish")
-    .addEventListener(
-      "click",
-      async () => {
 
-        const wish =
-          document
-            .getElementById("wish")
-            .value
-            .trim();
+        const hours =
+            Math.floor(
+                (totalSeconds % 86400) /
+                3600
+            );
+
+
+        const minutes =
+            Math.floor(
+                (totalSeconds % 3600) /
+                60
+            );
+
+
+        const seconds =
+            totalSeconds % 60;
 
 
         /*
-         * A message is required.
+         * Lowercase and smaller.
          */
 
-        if(!wish){
+        countdown.textContent =
+            days + " days " +
+            String(hours).padStart(
+                2,
+                "0"
+            ) + " hours " +
+            String(minutes).padStart(
+                2,
+                "0"
+            ) + " minutes " +
+            String(seconds).padStart(
+                2,
+                "0"
+            ) + " seconds";
 
-          notice(
-            "Please write your birthday wish first."
-          );
-
-          return;
-
-        }
-
-
-        /*
-         * Automatically determine
-         * the user's name.
-         */
-
-        const userName =
-          await getUserName();
+    }
 
 
-        /*
-         * User must have a recognized
-         * BUSANSO identity.
-         */
-
-        if(!userName){
-
-          notice(
-            "We could not find your BUSANSO profile name. Please sign in first."
-          );
-
-          return;
-
-        }
+    update();
 
 
-        const button =
-          document.getElementById(
-            "sendWish"
-          );
+    countdownTimer =
+        setInterval(
+            update,
+            1000
+        );
+
+}
 
 
-        button.disabled = true;
+/* =========================================
+   DISPLAY ACCOUNT
+========================================= */
 
-        button.textContent =
-          "SENDING...";
+function displayAccount(result){
 
-
-        try{
-
-          /*
-           * Insert directly into the
-           * existing movies_comments table.
-           */
-
-          const {
-            error
-          } =
-            await supabase
-              .from("movies_comments")
-              .insert({
-
-                movie_id:
-                  BIRTHDAY_ID,
-
-                user_name:
-                  userName,
-
-                comment:
-                  wish,
-
-                parent_id:
-                  null,
-
-                likes:
-                  0
-
-              });
+    const profile =
+        result.profile;
 
 
-          if(error){
-
-            throw error;
-
-          }
+    currentProfile =
+        profile;
 
 
-          /*
-           * Clear message box.
-           */
-
-          document
-            .getElementById("wish")
-            .value = "";
-
-
-          /*
-           * Tell the user it worked.
-           */
-
-          notice(
-            `Thank you, ${userName}! Your birthday wish has been posted. 🎉`,
-            true
-          );
-
-
-          /*
-           * Immediately reload the
-           * birthday wishes so the new
-           * message appears on the page.
-           */
-
-          await loadWishes();
-
-        }
-        catch(error){
-
-          console.error(
-            "Birthday wish submission failed:",
-            error
-          );
-
-
-          notice(
-            "Your birthday wish could not be posted. Please try again."
-          );
-
-        }
-        finally{
-
-          button.disabled =
-            false;
-
-          button.textContent =
-            "SEND HAPPY BIRTHDAY WISH 🎉";
-
-        }
-
-      }
+    saveCompatibilityData(
+        profile,
+        result.user
     );
 
 
-  /*
-   * ==========================================
-   * INITIAL LOAD
-   * ==========================================
-   */
+    /*
+     * PACKAGE COMES ONLY FROM
+     * package_type
+     */
 
-  loadWishes();
+    const packageType =
+        getPackageType(
+            profile
+        );
 
-})();
+
+    /*
+     * Display name
+     */
+
+    document.getElementById(
+        "userName"
+    ).textContent =
+        profile.name ||
+        (
+            result.user &&
+            result.user.email
+                ? result.user.email
+                    .split("@")[0]
+                : "BUSANSO User"
+        );
+
+
+    /*
+     * Display package_type exactly
+     * in a friendly uppercase format.
+     */
+
+    let packageLabel =
+        packageType || "free";
+
+
+    document.getElementById(
+        "packageName"
+    ).textContent =
+        packageLabel.toUpperCase();
+
+
+    /*
+     * Status is based on expiry,
+     * not membership.
+     */
+
+    if(
+        packageType &&
+        packageType !== "free"
+    ){
+
+        if(
+            isExpired(profile)
+        ){
+
+            document.getElementById(
+                "membershipStatus"
+            ).textContent =
+                "Expired";
+
+        }else{
+
+            document.getElementById(
+                "membershipStatus"
+            ).textContent =
+                "Active";
+
+        }
+
+    }else{
+
+        document.getElementById(
+            "membershipStatus"
+        ).textContent =
+            "Free package";
+
+    }
+
+
+    /*
+     * Expiry countdown
+     */
+
+    startCountdown(
+        profile.expires_at
+    );
+
+
+    /*
+     * Show page
+     */
+
+    document.getElementById(
+        "loading"
+    ).classList.add(
+        "hidden"
+    );
+
+
+    document.getElementById(
+        "page"
+    ).classList.remove(
+        "hidden"
+    );
+
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+async function start(){
+
+    try{
+
+        const result =
+            await resolveCurrentUser();
+
+
+        if(!result){
+
+            document.getElementById(
+                "loading"
+            ).classList.add(
+                "hidden"
+            );
+
+
+            document.getElementById(
+                "errorPage"
+            ).classList.remove(
+                "hidden"
+            );
+
+
+            return;
+
+        }
+
+
+        displayAccount(
+            result
+        );
+
+
+    }
+    catch(error){
+
+        console.error(
+            "BUSANSO account error:",
+            error
+        );
+
+
+        document.getElementById(
+            "loading"
+        ).classList.add(
+            "hidden"
+        );
+
+
+        document.getElementById(
+            "errorPage"
+        ).classList.remove(
+            "hidden"
+        );
+
+
+        document.getElementById(
+            "errorMessage"
+        ).textContent =
+            error.message ||
+            "Unable to load your account.";
+
+    }
+
+}
+
+
+start();
+
 </script>
+
+</body>
+</html>
