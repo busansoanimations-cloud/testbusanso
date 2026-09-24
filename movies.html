@@ -1,22 +1,37 @@
+<!DOCTYPE html>
 
-<!DOCTYPE html> 
-<html lang="en"> <head> <meta charset="UTF-8"> 
-<title>BUSANSO – Movies</title> 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"> <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>BUSANSO – Movies</title>
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
 <style>
 *{
   box-sizing:border-box;
 }
 
+html,
 body{
   margin:0;
+  padding:0;
+  min-height:100%;
+}
+
+body{
   background:radial-gradient(circle at top,#0f172a,#020617);
   color:#e5e7eb;
-  font-family:'Poppins',sans-serif;
+  font-family:Arial,Helvetica,sans-serif;
   overflow-x:hidden;
 }
 
-/* LOGO */
+/* =========================
+   LOGO
+========================= */
 
 .logo{
   display:flex;
@@ -26,43 +41,57 @@ body{
 
 .logo img{
   height:52px;
+  max-width:90%;
+  object-fit:contain;
   border-radius:14px;
   box-shadow:0 0 25px rgba(56,189,248,.35);
 }
 
-/* PREMIUM NAVIGATION */
+/* =========================
+   NAVIGATION
+========================= */
 
 .nav{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:12px;
   padding:14px;
+
   position:sticky;
   top:0;
   z-index:100;
-  background:rgba(15,23,42,.78);
+
+  background:rgba(15,23,42,.88);
   backdrop-filter:blur(18px);
+
   border-bottom:1px solid rgba(255,255,255,.06);
 }
 
 .nav button{
   height:60px;
+
   border:none;
   border-radius:18px;
+
   cursor:pointer;
+
   display:flex;
   flex-direction:column;
   justify-content:center;
   align-items:center;
   gap:5px;
+
   font-size:13px;
   font-weight:600;
+
   color:#d1d5db;
   background:rgba(255,255,255,.05);
+
   transition:.25s;
+
   box-shadow:
-      inset 0 1px 0 rgba(255,255,255,.06),
-      0 10px 25px rgba(0,0,0,.35);
+    inset 0 1px 0 rgba(255,255,255,.06),
+    0 10px 25px rgba(0,0,0,.35);
 }
 
 .nav button i{
@@ -77,12 +106,15 @@ body{
 .nav button.active{
   background:linear-gradient(135deg,#f59e0b,#fbbf24);
   color:#111827;
+
   box-shadow:
-      0 0 18px rgba(251,191,36,.45),
-      0 12px 30px rgba(0,0,0,.45);
+    0 0 18px rgba(251,191,36,.45),
+    0 12px 30px rgba(0,0,0,.45);
 }
 
-/* SEARCH */
+/* =========================
+   SEARCH
+========================= */
 
 .search{
   padding:16px;
@@ -91,44 +123,92 @@ body{
 .search input,
 .search select{
   width:100%;
+
   padding:13px;
   margin-bottom:10px;
+
   border:none;
   border-radius:14px;
+
   background:#0f172a;
   color:#fff;
+
   font-size:14px;
+
   box-shadow:0 4px 12px rgba(0,0,0,.4);
+
+  outline:none;
 }
 
-/* MOVIES */
+.search input:focus,
+.search select:focus{
+  box-shadow:
+    0 0 0 2px rgba(251,191,36,.35),
+    0 4px 12px rgba(0,0,0,.4);
+}
+
+/* =========================
+   MOVIE GRID
+========================= */
 
 .movies{
   display:grid;
+
   grid-template-columns:repeat(3,1fr);
+
   gap:12px;
+
   padding:12px;
 }
 
+/* =========================
+   MOVIE CARD
+========================= */
+
 .card{
+  position:relative;
+
   background:rgba(255,255,255,.03);
+
   border:1px solid rgba(255,255,255,.05);
+
   border-radius:16px;
+
   overflow:hidden;
+
   cursor:pointer;
+
   transition:.25s;
+
+  min-width:0;
 }
 
 .card:hover{
   transform:translateY(-6px);
-  box-shadow:0 16px 35px rgba(0,0,0,.55);
+
+  box-shadow:
+    0 16px 35px rgba(0,0,0,.55);
+}
+
+.poster-wrap{
+  position:relative;
+
+  width:100%;
+
+  background:#111827;
+
+  overflow:hidden;
 }
 
 .card img{
   width:100%;
+
   aspect-ratio:2/3;
+
   object-fit:cover;
+
   display:block;
+
   transition:.35s;
 }
 
@@ -136,24 +216,46 @@ body{
   transform:scale(1.05);
 }
 
+/* =========================
+   BADGES
+========================= */
+
 .badge{
   position:absolute;
+
   top:8px;
   left:8px;
-  padding:4px 8px;
+
+  padding:5px 8px;
+
   font-size:10px;
   font-weight:bold;
+
   border-radius:6px;
+
   text-transform:uppercase;
+
+  z-index:2;
 }
 
 .badge.free{
   background:#22c55e;
+  color:#fff;
 }
 
 .badge.premium{
   background:#ef4444;
+  color:#fff;
 }
+
+.badge.kibanda{
+  background:#f59e0b;
+  color:#111827;
+}
+
+/* =========================
+   CARD INFORMATION
+========================= */
 
 .info{
   padding:10px;
@@ -161,332 +263,998 @@ body{
 
 .title{
   color:#fbbf24;
+
   font-weight:700;
+
   font-size:14px;
+
   margin-bottom:4px;
+
+  line-height:1.3;
 }
 
 .meta{
   font-size:11px;
+
   color:#cbd5e1;
+
   line-height:1.45;
 }
 
-.watch{
-  width:100%;
-  padding:10px;
-  margin-top:8px;
-  border:none;
-  border-radius:10px;
-  background:linear-gradient(135deg,#22c55e,#16a34a);
-  color:#fff;
-  font-weight:600;
-  cursor:pointer;
-  transition:.25s;
+/* =========================
+   EMPTY / LOADING
+========================= */
+
+.message{
+  grid-column:1 / -1;
+
+  text-align:center;
+
+  padding:45px 20px;
+
+  color:#cbd5e1;
+
+  font-size:14px;
 }
 
-.watch:hover{
-  transform:scale(1.03);
+.loading{
+  color:#fbbf24;
 }
 
-.footer-categories{
-  display:none;
+.error{
+  color:#f87171;
 }
+
+/* =========================
+   DESKTOP
+========================= */
 
 @media(min-width:768px){
 
-.movies{
-    grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-}
+  .movies{
+    grid-template-columns:
+      repeat(auto-fill,minmax(180px,1fr));
+
+    gap:18px;
+
+    padding:18px;
+  }
+
+  .search{
+    max-width:900px;
+
+    margin:auto;
+
+    display:grid;
+
+    grid-template-columns:2fr 1fr;
+
+    gap:12px;
+  }
+
+  .search input,
+  .search select{
+    margin-bottom:0;
+  }
 
 }
-</style></head>
+
+/* =========================
+   SMALL PHONES
+========================= */
+
+@media(max-width:360px){
+
+  .movies{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .nav{
+    gap:7px;
+    padding:10px;
+  }
+
+  .nav button{
+    height:55px;
+    font-size:11px;
+  }
+
+  .nav button i{
+    font-size:18px;
+  }
+
+  .title{
+    font-size:13px;
+  }
+
+}
+</style>
+
+</head>
 
 <body>
 
+<!-- =========================
+     LOGO
+========================= -->
 
 <div class="logo">
-  <img src="https://i.ibb.co/1GMMrMmS/logo.png" alt="BUSANSO">
-</div><div class="nav">
+  <img
+    src="https://i.ibb.co/1GMMrMmS/logo.png"
+    alt="BUSANSO">
+</div>
+
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<div class="nav">
+
   <button class="active">
-    <i class="fas fa-film"></i><span>Movies</span>
+    <i class="fas fa-film"></i>
+    <span>Movies</span>
   </button>
 
   <button onclick="location.href='series.html'">
-    <i class="fas fa-tv"></i><span>Series</span>
+    <i class="fas fa-tv"></i>
+    <span>Series</span>
   </button>
 
   <button onclick="location.href='account.html'">
-    <i class="fas fa-user-circle"></i><span>Account</span>
+    <i class="fas fa-user-circle"></i>
+    <span>Account</span>
   </button>
+
 </div>
 
+<!-- =========================
+     SEARCH / FILTER
+========================= -->
 
 <div class="search">
-  <input id="search" placeholder="🔍 Search movies......">
+
+<input
+ id="search"
+ type="search"
+ placeholder="🔍 Search movies......"
+ autocomplete="off">
+
   <select id="genreFilter">
-    <option value="ALL">All Genres</option>
-    <option value="ACTION">Action</option>
-    <option value="COMEDY">Comedy</option>
-    <option value="DRAMA">Drama</option>
-    <option value="HORROR">Horror</option>
-    <option value="ROMANCE">Romance</option>
-    <option value="SCI-FI">SCI-FI</option>
- 
- </select>
+
+```
+<option value="ALL">
+  All Genres
+</option>
+
+<option value="ACTION">
+  Action
+</option>
+
+<option value="COMEDY">
+  Comedy
+</option>
+
+<option value="DRAMA">
+  Drama
+</option>
+
+<option value="HORROR">
+  Horror
+</option>
+
+<option value="ROMANCE">
+  Romance
+</option>
+
+<option value="SCI-FI">
+  SCI-FI
+</option>
+```
+
+  </select>
+
 </div>
 
-<div class="movies" id="list"></div>
+<!-- =========================
+     MOVIE LIST
+========================= -->
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="busanso-auth.js"></script>
+<div
+  class="movies"
+  id="list">
+
+  <div class="message loading">
+    Loading movies...
+  </div>
+
+</div>
+
+<!-- ==========================================================
+     SUPABASE
+========================================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- ==========================================================
+     BUSANSO AUTH COMPATIBILITY BRIDGE
+
+     This connects:
+
+     Google
+        ↓
+     Supabase Auth
+        ↓
+     profiles.auth_user_id
+        ↓
+     BusansoAuth
+        ↓
+     Movies page
+
+     It also keeps legacy users working.
+========================================================== -->
+
+<script src="busanso-auth.js"></script>
+
+<!-- ==========================================================
+     MOVIES APPLICATION
+========================================================== -->
+
 <script type="module">
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-const supabaseUrl = 'https://dhkfhhybzcxdeoalcfqx.supabase.co';
-const supabaseKey = 'sb_publishable_Rjm3T44VKTeuOF2yJS5rMw_xDfwPjuG';
-const supabase = createClient(supabaseUrl, supabaseKey);
+import {
+  createClient
+} from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-/* Wait for the BUSANSO compatibility bridge before guarding the page. */
-async function waitForBusansoAuth() {
-  if (window.BusansoAuth && window.BusansoAuth.ready) {
-    return await window.BusansoAuth.ready;
-  }
 
-  /* Safe fallback for existing legacy users. */
-  const loggedIn =
-    localStorage.getItem("loggedIn") === "true" ||
-    localStorage.getItem("isLoggedIn") === "true";
+/* ==========================================================
+   SUPABASE CONFIGURATION
+========================================================== */
 
-  const userId =
-    localStorage.getItem("user_id") ||
-    localStorage.getItem("profile_id");
+const SUPABASE_URL =
+  "https://dhkfhhybzcxdeoalcfqx.supabase.co";
 
-  const name = localStorage.getItem("name");
+const SUPABASE_KEY =
+  "sb_publishable_Rjm3T44VKTeuOF2yJS5rMw_xDfwPjuG";
 
-  if (loggedIn || userId || name) {
-    return { authenticated: true, type: "legacy", profile: null };
-  }
 
-  return { authenticated: false, type: "none", profile: null };
-}
+const supabase =
+  createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
-/* -------------------------------------------------
-   AUTHENTICATION
-------------------------------------------------- */
-const authResult = await waitForBusansoAuth();
 
-if (!authResult.authenticated) {
-  window.location.href = "auth.html";
-  throw new Error("BUSANSO: user is not authenticated");
-}
+/* ==========================================================
+   PAGE ELEMENTS
+========================================================== */
 
-/*
-  Both systems are accepted:
-  - Legacy users keep their existing localStorage identity.
-  - Google users use the Supabase session.
-  - busanso-auth.js copies the Google profile into
-    compatibility localStorage when a profile exists.
-*/
+const box =
+  document.getElementById("list");
 
-/* -------------------------------------------------
-   LEGACY PROFILE / PREMIUM COMPATIBILITY
-------------------------------------------------- */
-const userId =
-  localStorage.getItem("user_id") ||
-  localStorage.getItem("profile_id");
+const search =
+  document.getElementById("search");
 
-const activePIN = localStorage.getItem("activePIN");
+const genreSelect =
+  document.getElementById("genreFilter");
 
-if (authResult.type === "legacy" && userId) {
 
-  const { data: profile, error } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", userId)
-    .maybeSingle();
+/* ==========================================================
+   MOVIE DATA
+========================================================== */
 
-  /*
-    Never log a user out merely because Supabase is
-    temporarily unavailable or the old profile cannot
-    be refreshed.
-  */
-  if (!error && profile) {
-
-    localStorage.setItem("name", profile.name || "");
-    localStorage.setItem(
-      "whatsapp_number",
-      profile.whatsapp_number || ""
-    );
-    localStorage.setItem(
-      "account_status",
-      profile.account_status || "active"
-    );
-    localStorage.setItem(
-      "paid_status",
-      profile.paid_status === true ? "true" : "false"
-    );
-    localStorage.setItem(
-      "expires_at",
-      profile.expires_at || ""
-    );
-    localStorage.setItem(
-      "package_type",
-      profile.package_type || ""
-    );
-    localStorage.setItem(
-      "membership",
-      profile.membership || ""
-    );
-    localStorage.setItem(
-      "activated_at",
-      profile.activated_at || ""
-    );
-
-    if (!profile.expires_at) {
-
-      if (!activePIN) {
-        window.location.href = "packages.html";
-        throw new Error("No premium");
-      }
-
-    } else {
-
-      const expiry = new Date(profile.expires_at);
-      const now = new Date();
-
-      if (expiry <= now) {
-
-        localStorage.removeItem("activePIN");
-        localStorage.setItem("paid_status", "false");
-        localStorage.setItem("account_status", "expired");
-
-        window.location.href = "packages.html";
-        throw new Error("Premium expired");
-      }
-
-      localStorage.setItem(
-        "activePIN",
-        "PROFILE_PREMIUM"
-      );
-    }
-  }
-}
-
-/* -------------------------------------------------
-   MOVIES
-------------------------------------------------- */
-const box = document.getElementById("list");
-const search = document.getElementById("search");
-const genreSelect = document.getElementById("genreFilter");
-
-let activeGenre = null;
 let MOVIES = [];
 
-function render(data) {
+let activeGenre = null;
+
+
+/* ==========================================================
+   SHOW MESSAGE
+========================================================== */
+
+function showMessage(
+  message,
+  className = ""
+){
 
   box.innerHTML = "";
 
-  if (!data || data.length === 0) {
-    box.innerHTML = "<p>No movies available.</p>";
-    return;
+  const div =
+    document.createElement("div");
+
+  div.className =
+    `message ${className}`;
+
+  div.textContent =
+    message;
+
+  box.appendChild(div);
+
+}
+
+
+/* ==========================================================
+   SAFE TEXT
+========================================================== */
+
+function safeText(value){
+
+  if(
+    value === null ||
+    value === undefined
+  ){
+
+    return "";
+
   }
 
-  data.forEach(m => {
+  return String(value);
 
-    const c = document.createElement("div");
-    c.className = "card";
+}
 
-    c.onclick = () => {
-      location.href = `movie.html?id=${m.id}`;
-    };
 
-    let badge = "";
+/* ==========================================================
+   RENDER MOVIE CARDS
+========================================================== */
 
-    c.innerHTML = `
-      <div style="position:relative">
-        ${badge}
-        <img src="${m.poster}" alt="${m.title}">
-      </div>
+function render(data){
 
-      <div class="info">
-        <div class="title">${m.title}</div>
+  box.innerHTML = "";
 
-        <div class="meta">
-          ${m.country || ''} • ${m.year || ''} • ${m.genre || ''}
-          <br>👁 ${m.views || 0} views
-        </div>
-      </div>
-    `;
 
-    box.appendChild(c);
+  /* --------------------------
+     No movies
+  -------------------------- */
+
+  if(
+    !Array.isArray(data) ||
+    data.length === 0
+  ){
+
+    showMessage(
+      "No movies available."
+    );
+
+    return;
+
+  }
+
+
+  /* --------------------------
+     Create cards
+  -------------------------- */
+
+  data.forEach(movie => {
+
+    const card =
+      document.createElement("div");
+
+    card.className =
+      "card";
+
+
+    /* --------------------------
+       Open movie page
+    -------------------------- */
+
+    card.addEventListener(
+      "click",
+      () => {
+
+        if(
+          movie.id === null ||
+          movie.id === undefined
+        ){
+
+          return;
+
+        }
+
+        location.href =
+          `movie.html?id=${encodeURIComponent(movie.id)}`;
+
+      }
+    );
+
+
+    /* --------------------------
+       Poster wrapper
+    -------------------------- */
+
+    const posterWrap =
+      document.createElement("div");
+
+    posterWrap.className =
+      "poster-wrap";
+
+
+    /* --------------------------
+       Access badge
+    -------------------------- */
+
+    const accessType =
+      safeText(
+        movie.access_type
+      )
+      .trim()
+      .toLowerCase();
+
+
+    if(accessType){
+
+      const badge =
+        document.createElement("div");
+
+
+      if(
+        accessType === "premium"
+      ){
+
+        badge.className =
+          "badge premium";
+
+        badge.textContent =
+          "Premium";
+
+      }
+      else if(
+        accessType === "kibanda"
+      ){
+
+        badge.className =
+          "badge kibanda";
+
+        badge.textContent =
+          "Kibanda";
+
+      }
+      else if(
+        accessType === "free"
+      ){
+
+        badge.className =
+          "badge free";
+
+        badge.textContent =
+          "Free";
+
+      }
+      else{
+
+        badge.className =
+          "badge";
+
+        badge.textContent =
+          accessType;
+
+      }
+
+
+      posterWrap.appendChild(
+        badge
+      );
+
+    }
+
+
+    /* --------------------------
+       Poster
+    -------------------------- */
+
+    const img =
+      document.createElement("img");
+
+
+    const poster =
+      safeText(movie.poster).trim();
+
+
+    if(poster){
+
+      img.src =
+        poster;
+
+    }
+    else{
+
+      img.src =
+        "https://i.ibb.co/hxgrLF35/BUSANSO-New.png";
+
+    }
+
+
+    img.alt =
+      safeText(movie.title) ||
+      "BUSANSO Movie";
+
+
+    img.loading =
+      "lazy";
+
+
+    img.onerror =
+      () => {
+
+        if(
+          img.dataset.fallback !== "true"
+        ){
+
+          img.dataset.fallback =
+            "true";
+
+          img.src =
+            "https://i.ibb.co/hxgrLF35/BUSANSO-New.png";
+
+        }
+
+      };
+
+
+    posterWrap.appendChild(
+      img
+    );
+
+
+    /* --------------------------
+       Information
+    -------------------------- */
+
+    const info =
+      document.createElement("div");
+
+    info.className =
+      "info";
+
+
+    const title =
+      document.createElement("div");
+
+    title.className =
+      "title";
+
+    title.textContent =
+      safeText(movie.title) ||
+      "Untitled";
+
+
+    const meta =
+      document.createElement("div");
+
+    meta.className =
+      "meta";
+
+
+    const country =
+      safeText(
+        movie.country
+      );
+
+    const year =
+      safeText(
+        movie.year
+      );
+
+    const genre =
+      safeText(
+        movie.genre
+      );
+
+    const views =
+      movie.views ||
+      0;
+
+
+    const firstLine =
+      [
+        country,
+        year,
+        genre
+      ]
+      .filter(Boolean)
+      .join(" • ");
+
+
+    meta.textContent =
+      firstLine
+        ? `${firstLine}\n👁 ${views} views`
+        : `👁 ${views} views`;
+
+
+    info.appendChild(
+      title
+    );
+
+    info.appendChild(
+      meta
+    );
+
+
+    /* --------------------------
+       Assemble card
+    -------------------------- */
+
+    card.appendChild(
+      posterWrap
+    );
+
+    card.appendChild(
+      info
+    );
+
+
+    box.appendChild(
+      card
+    );
+
   });
+
 }
 
-function applyFilters() {
 
-  let filtered = [...MOVIES];
+/* ==========================================================
+   FILTER MOVIES
+========================================================== */
 
-  if (activeGenre) {
-    filtered = filtered.filter(
-      m =>
-        m.genre &&
-        m.genre.toLowerCase() === activeGenre.toLowerCase()
+function applyFilters(){
+
+  let filtered =
+    [...MOVIES];
+
+
+  /* --------------------------
+     Genre
+  -------------------------- */
+
+  if(activeGenre){
+
+    filtered =
+      filtered.filter(movie => {
+
+        const genre =
+          safeText(
+            movie.genre
+          )
+          .trim()
+          .toLowerCase();
+
+        return (
+          genre ===
+          activeGenre
+            .toLowerCase()
+        );
+
+      });
+
+  }
+
+
+  /* --------------------------
+     Search
+  -------------------------- */
+
+  const query =
+    search.value
+      .trim()
+      .toLowerCase();
+
+
+  if(query){
+
+    filtered =
+      filtered.filter(movie => {
+
+        const title =
+          safeText(
+            movie.title
+          )
+          .toLowerCase();
+
+
+        return title.includes(
+          query
+        );
+
+      });
+
+  }
+
+
+  render(
+    filtered
+  );
+
+}
+
+
+/* ==========================================================
+   SEARCH EVENT
+========================================================== */
+
+search.addEventListener(
+  "input",
+  applyFilters
+);
+
+
+/* ==========================================================
+   GENRE EVENT
+========================================================== */
+
+genreSelect.addEventListener(
+  "change",
+  () => {
+
+    const value =
+      genreSelect.value;
+
+
+    activeGenre =
+      value === "ALL"
+        ? null
+        : value;
+
+
+    applyFilters();
+
+  }
+);
+
+
+/* ==========================================================
+   LOAD MOVIES FROM SUPABASE
+========================================================== */
+
+async function loadMovies(){
+
+  showMessage(
+    "Loading movies...",
+    "loading"
+  );
+
+
+  try{
+
+    console.log(
+      "BUSANSO: Loading movies..."
     );
-  }
 
-  const q = search.value.trim().toLowerCase();
 
-  if (q) {
-    filtered = filtered.filter(
-      m =>
-        m.title &&
-        m.title.toLowerCase().includes(q)
+    const result =
+      await supabase
+
+        .from("movies")
+
+        .select("*")
+
+        .order(
+          "created_at",
+          {
+            ascending:false
+          }
+        );
+
+
+    const data =
+      result.data;
+
+    const error =
+      result.error;
+
+
+    /* --------------------------
+       Supabase error
+    -------------------------- */
+
+    if(error){
+
+      console.error(
+        "BUSANSO MOVIES ERROR:",
+        error
+      );
+
+
+      showMessage(
+        "Failed to load movies. Please try again.",
+        "error"
+      );
+
+
+      return;
+
+    }
+
+
+    /* --------------------------
+       Empty result
+    -------------------------- */
+
+    if(
+      !Array.isArray(data) ||
+      data.length === 0
+    ){
+
+      console.log(
+        "BUSANSO: Movies query returned 0 rows."
+      );
+
+
+      showMessage(
+        "No movies available."
+      );
+
+
+      return;
+
+    }
+
+
+    /* --------------------------
+       Success
+    -------------------------- */
+
+    console.log(
+      "BUSANSO: Movies loaded:",
+      data.length
     );
+
+
+    MOVIES =
+      data;
+
+
+    render(
+      MOVIES
+    );
+
+  }
+  catch(error){
+
+    console.error(
+      "BUSANSO MOVIES UNEXPECTED ERROR:",
+      error
+    );
+
+
+    showMessage(
+      "Unable to load movies.",
+      "error"
+    );
+
   }
 
-  render(filtered);
 }
 
-search.oninput = applyFilters;
 
-genreSelect.onchange = () => {
+/* ==========================================================
+   AUTHENTICATION
+========================================================== */
 
-  const val = genreSelect.value;
+async function startPage(){
 
-  activeGenre =
-    val === "ALL"
-      ? null
-      : val;
+  try{
 
-  applyFilters();
-};
+    /*
+      Wait for the compatibility
+      bridge to finish checking:
 
-async function loadMovies() {
+      1. Supabase Google session
+      2. Legacy identity
+    */
 
-  const { data, error } = await supabase
-    .from("movies")
-    .select("*")
-    .order("created_at", { ascending: false });
+    if(
+      window.BusansoAuth &&
+      window.BusansoAuth.ready
+    ){
 
-  if (error) {
+      const auth =
+        await window.BusansoAuth.ready;
 
-    console.error("BUSANSO movies error:", error);
-    box.innerHTML = "<p>Failed to load movies.</p>";
-    return;
+
+      console.log(
+        "BUSANSO AUTH:",
+        auth
+      );
+
+
+      /*
+        No authenticated user.
+
+        Only in this case do we
+        send the visitor back to
+        auth.html.
+      */
+
+      if(
+        !auth ||
+        auth.authenticated !== true
+      ){
+
+        location.replace(
+          "auth.html"
+        );
+
+        return;
+
+      }
+
+    }
+    else{
+
+      /*
+        Safety fallback if the
+        bridge did not load.
+      */
+
+      const {
+        data
+      } =
+        await supabase
+          .auth
+          .getSession();
+
+
+      if(
+        !data ||
+        !data.session
+      ){
+
+        location.replace(
+          "auth.html"
+        );
+
+        return;
+
+      }
+
+    }
+
+
+    /*
+      IMPORTANT:
+
+      We deliberately do NOT check:
+
+      localStorage.loggedIn
+      localStorage.user_id
+      activePIN
+      expires_at
+
+      here.
+
+      Authentication belongs to
+      Supabase/BusansoAuth.
+
+      Movie access itself can be
+      handled by movie.html.
+    */
+
+
+    await loadMovies();
+
+  }
+  catch(error){
+
+    console.error(
+      "BUSANSO PAGE AUTH ERROR:",
+      error
+    );
+
+
+    showMessage(
+      "Unable to verify your account.",
+      "error"
+    );
+
   }
 
-  if (!data || data.length === 0) {
-
-    box.innerHTML = "<p>No movies available.</p>";
-    return;
-  }
-
-  MOVIES = data;
-  render(MOVIES);
 }
 
-loadMovies();
+
+/* ==========================================================
+   START
+========================================================== */
+
+startPage();
+
 </script>
 
 </body>
