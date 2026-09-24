@@ -12,8 +12,8 @@
 
 body{
   margin:0;
-  background:radial-gradient(circle at top,#241b08,#070604 58%,#020201);
-  color:#f5f0df;
+  background:radial-gradient(circle at top,#0f172a,#020617);
+  color:#e5e7eb;
   font-family:'Poppins',sans-serif;
   overflow-x:hidden;
 }
@@ -29,7 +29,7 @@ body{
 .logo img{
   height:52px;
   border-radius:14px;
-  box-shadow:0 0 25px rgba(251,191,36,.35);
+  box-shadow:0 0 25px rgba(56,189,248,.35);
 }
 
 /* PREMIUM NAVIGATION */
@@ -42,9 +42,9 @@ body{
   position:sticky;
   top:0;
   z-index:100;
-  background:rgba(18,14,6,.88);
+  background:rgba(15,23,42,.78);
   backdrop-filter:blur(18px);
-  border-bottom:1px solid rgba(251,191,36,.16);
+  border-bottom:1px solid rgba(255,255,255,.06);
 }
 
 .nav button{
@@ -97,7 +97,7 @@ body{
   margin-bottom:10px;
   border:none;
   border-radius:14px;
-  background:#171208;
+  background:#0f172a;
   color:#fff;
   font-size:14px;
   box-shadow:0 4px 12px rgba(0,0,0,.4);
@@ -113,8 +113,8 @@ body{
 }
 
 .card{
-  background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(251,191,36,.025));
-  border:1px solid rgba(251,191,36,.12);
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.05);
   border-radius:16px;
   overflow:hidden;
   cursor:pointer;
@@ -208,7 +208,7 @@ body{
 
 
 <div class="logo">
-  <img src="https://i.ibb.co/4wLHfntq/busanso-logo-source.png" alt="BUSANSO">
+  <img src="https://i.ibb.co/1GMMrMmS/logo.png" alt="BUSANSO">
 </div><div class="nav">
   <button class="active">
     <i class="fas fa-film"></i><span>Movies</span>
@@ -249,6 +249,116 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 
 // ===============================
+// VERIFY USER (PROFILE + LEGACY PIN)
+// ===============================
+
+const loggedIn = localStorage.getItem("loggedIn") === "true";
+const userId = localStorage.getItem("user_id");
+const activePIN = localStorage.getItem("activePIN");
+
+// -------------------------------
+// Not logged in
+// -------------------------------
+if (!loggedIn) {
+
+    // Legacy premium user
+    if (activePIN) {
+        // Allow access
+    } else {
+        window.location.href = "auth.html";
+        throw new Error("Not logged in");
+    }
+
+}
+// -------------------------------
+// Logged in
+// -------------------------------
+else {
+
+    // Missing user_id
+    if (!userId) {
+
+        if (activePIN) {
+            // Legacy premium user
+        } else {
+            window.location.href = "auth.html";
+            throw new Error("Missing user_id");
+        }
+
+    } else {
+
+        // Fetch latest profile
+        const { data: profile, error } = await supabase
+            .from("profiles")
+            .select("*")
+            .eq("id", userId)
+            .single();
+
+        // ------------------------------------
+        // Profile not found
+        // ------------------------------------
+        if (error || !profile) {
+
+            if (activePIN) {
+                // Legacy premium user
+            } else {
+
+                localStorage.removeItem("loggedIn");
+                localStorage.removeItem("user_id");
+                localStorage.removeItem("name");
+                localStorage.removeItem("whatsapp_number");
+                localStorage.removeItem("account_status");
+                localStorage.removeItem("paid_status");
+
+                window.location.href = "auth.html";
+                throw new Error("Profile not found");
+            }
+
+        } else {
+
+            // ------------------------------------
+            // Save latest profile locally
+            // ------------------------------------
+            localStorage.setItem("name", profile.name || "");
+            localStorage.setItem("whatsapp_number", profile.whatsapp_number || "");
+            localStorage.setItem("account_status", profile.account_status || "");
+            localStorage.setItem("paid_status", profile.paid_status || "");
+            localStorage.setItem("expires_at", profile.expires_at || "");
+
+            // ------------------------------------
+            // Premium check
+            // ------------------------------------
+            if (!profile.expires_at) {
+
+                localStorage.removeItem("activePIN");
+                window.location.href = "packages.html";
+                throw new Error("No premium");
+
+            }
+
+            const now = new Date();
+            const expiry = new Date(profile.expires_at);
+
+            if (expiry <= now) {
+
+                localStorage.removeItem("activePIN");
+                localStorage.removeItem("paid_status");
+                localStorage.setItem("account_status", "expired");
+
+                window.location.href = "packages.html";
+                throw new Error("Premium expired");
+
+            }
+
+            // Premium is valid
+            localStorage.setItem("activePIN", "PROFILE_PREMIUM");
+
+        }
+
+    }
+
+}
+
 const box = document.getElementById("list");
 const search = document.getElementById("search");
 const genreSelect = document.getElementById("genreFilter");
@@ -321,11 +431,7 @@ async function loadMovies(){
     .from('movies')
     .select('*')
     .order('created_at',{ascending:false}); // newest first
-  if(error){
-    console.error("MOVIES FETCH ERROR:", error);
-    box.innerHTML="<p>Failed to load movies.</p>";
-    return;
-  }
+  if(error){ console.error(error); box.innerHTML="<p>Failed to load movies.</p>"; return; }
   if(!data || data.length===0){ box.innerHTML="<p>No movies available.</p>"; return; }
   MOVIES = data;
   render(MOVIES);
@@ -334,6 +440,8 @@ async function loadMovies(){
 loadMovies();
 </script>
 
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1}' crossorigin="anonymous"></script>
 <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1,"spa":2}' crossorigin="anonymous"></script>
 </body>
 </html>
