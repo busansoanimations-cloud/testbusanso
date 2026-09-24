@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Busanso Movie Agents</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to right, #f8f9fb, #eef1f5);
+    color: #222;
+  }
+
+  header {
+    background: linear-gradient(135deg, #ff7a18, #ffb347);
+    color: #fff;
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  header h1 {
+    margin: 0;
+    font-size: 2rem;
+    letter-spacing: 1px;
+  }
+
+  header p {
+    margin-top: 8px;
+    font-size: 0.95rem;
+    opacity: 0.9;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+
+  .agent-card {
+    display: flex;
+    align-items: flex-start;
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 18px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    transition: all 0.25s ease;
+    border-left: 5px solid #ff7a18;
+  }
+
+  .agent-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+  }
+
+  .agent-number {
+    min-width: 40px;
+    height: 40px;
+    background: #ff7a18;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    margin-right: 15px;
+    font-size: 0.95rem;
+  }
+
+  .agent-info {
+    flex: 1;
+  }
+
+  .agent-name {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+  }
+
+  .agent-address {
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.5;
+  }
+
+  footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 0.85rem;
+    color: #888;
+    margin-top: 40px;
+  }
+
+  @media (max-width: 500px) {
+    header h1 {
+      font-size: 1.5rem;
+    }
+
+    .agent-name {
+      font-size: 1rem;
+    }
+
+    .agent-address {
+      font-size: 0.9rem;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Busanso Movie Agents</h1>
+  <p>Your trusted distribution partners across Uganda</p>
+</header>
+
+<div class="container">
+
+  <div class="agent-card">
+    <div class="agent-number">01</div>
+    <div class="agent-info">
+      <div class="agent-name">Down Town Videos</div>
+      <div class="agent-address">Located in Iganga.</div>
+    </div>
+  </div>
+
+  <div class="agent-card">
+    <div class="agent-number">02</div>
+    <div class="agent-info">
+      <div class="agent-name">EK Music</div>
+      <div class="agent-address">Kanyanya, after Gaz Petrol Station.</div>
+    </div>
+  </div>
+
+  <div class="agent-card">
+    <div class="agent-number">03</div>
+    <div class="agent-info">
+      <div class="agent-name">Nick Movie World</div>
+      <div class="agent-address">Mayangayanga, a few kilometers off Nakifuma Town.</div>
+    </div>
+  </div>
+
+  <div class="agent-card">
+    <div class="agent-number">04</div>
+    <div class="agent-info">
+      <div class="agent-name">Nasaji Movie Library</div>
+      <div class="agent-address">Kayunga Town, after Atlanta Hotel.</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  &copy; 2026 Busanso Nation. All rights reserved.
+</footer>
+
+</body>
+</html>

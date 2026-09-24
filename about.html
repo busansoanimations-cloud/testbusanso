@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Busanso – introduction Video</title>
+
+<style>
+body {
+  margin:0;
+  background:#000;
+  color:#fff;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+}
+
+.logo {
+  text-align:center;
+  margin-bottom:12px;
+}
+
+.logo img {
+  max-height:50px;
+}
+
+.player {
+  width:100%;
+  max-width:800px;
+  margin: 16px 0;
+}
+
+.player iframe {
+  width:100%;
+  height:56vw;
+  max-height:500px;
+  border:none;
+  border-radius:10px;
+}
+
+.buttons {
+  display:flex;
+  gap:12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.buttons button {
+  padding:14px 20px;
+  border:none;
+  border-radius:10px;
+  font-weight:bold;
+  cursor:pointer;
+  font-size:16px;
+  flex:1;
+  max-width:180px;
+  background:#e50914;
+  color:#fff;
+  transition: background .3s;
+}
+
+.buttons button:hover {
+  background:#ff7a18;
+}
+
+/* Sections below buttons */
+.section {
+  max-width:800px;
+  margin:16px auto;
+  padding:16px;
+  background:#111;
+  border-radius:12px;
+}
+
+.section h1, .section h2 {
+  margin-top:0;
+  margin-bottom:8px;
+}
+
+.section p, .section small {
+  color:#ccc;
+  line-height:1.5;
+  margin-bottom:8px;
+}
+</style>
+</head>
+<body>
+
+<div class="logo">
+  <img src="https://i.ibb.co/hxgrLF35/BUSANSO-New.png" alt="Busanso Logo">
+</div>
+
+<div class="player">
+  <!-- Google Drive Video Embed -->
+  <iframe id="drivePlayer" 
+          src="https://drive.google.com/file/d/14cjaECDhTqSd7oU76FCDGwT4YL5P1Ds0/preview" 
+          allowfullscreen 
+          allow="autoplay">
+  </iframe>
+</div>
+
+<div class="buttons">
+  <button onclick="location.href='packages.html'">💳 Pay to Watch</button>
+  <button onclick="location.href='login.html'">🔐 Login</button>
+  <button onclick="location.href='home.html'">⬅ Back</button>
+   <button onclick="location.href='install.html'">🔐 Install App</button>
+</div>
+
+<!-- Info Sections -->
+<div class="section">
+  <h1>About Busanso Nation</h1>
+  <small>Giving you a stress-free ride</small>
+</div>
+
+<div class="section">
+  <h2>Our Mission</h2>
+  <p>Busanso Nation aims to bring the best Luganda-translated movies, series, and exclusive VJ content directly to your screens. We celebrate local culture, storytelling, and entertainment, making it accessible to everyone, everywhere.</p>
+</div>
+
+<div class="section">
+  <h2>What We Offer</h2>
+  <p>Enjoy a wide range of movies, series, and VJ-exclusive shows with flexible subscription packages. You can watch anytime, anywhere, on any device.</p>
+</div>
+
+</body>
+</html>
+

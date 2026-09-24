@@ -1,0 +1,395 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Download Busanso App</title>
+
+<meta name="theme-color" content="#d00000">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+background:#0d0d0d;
+color:#fff;
+overflow-x:hidden;
+}
+
+#splash{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#000;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:9999;
+transition:.7s;
+}
+
+.logo{
+
+width:120px;
+height:120px;
+border-radius:30px;
+background:#d00000;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:45px;
+font-weight:bold;
+animation:pulse 1.2s infinite;
+
+}
+
+@keyframes pulse{
+
+0%{transform:scale(.9);}
+50%{transform:scale(1.08);}
+100%{transform:scale(.9);}
+
+}
+
+.loader{
+
+margin-top:30px;
+width:220px;
+height:8px;
+background:#222;
+border-radius:20px;
+overflow:hidden;
+
+}
+
+.loader span{
+
+display:block;
+height:100%;
+width:0;
+background:#ff0000;
+animation:load 3s linear forwards;
+
+}
+
+@keyframes load{
+
+from{width:0;}
+to{width:100%;}
+
+}
+
+.container{
+
+display:none;
+max-width:700px;
+margin:auto;
+padding:30px 20px;
+text-align:center;
+
+}
+
+h1{
+
+font-size:34px;
+margin-bottom:10px;
+
+}
+
+.version{
+
+color:#bbb;
+margin-bottom:30px;
+
+}
+
+.card{
+
+background:#171717;
+border-radius:20px;
+padding:25px;
+margin-bottom:20px;
+box-shadow:0 0 20px rgba(255,0,0,.2);
+
+}
+
+button{
+
+width:100%;
+padding:18px;
+border:none;
+border-radius:14px;
+font-size:18px;
+font-weight:bold;
+margin-top:15px;
+cursor:pointer;
+transition:.3s;
+
+}
+
+.download{
+
+background:#d00000;
+color:#fff;
+
+}
+
+.download:hover{
+
+transform:scale(1.03);
+
+}
+
+.share{
+
+background:#222;
+color:white;
+
+}
+
+.home{
+
+background:#444;
+color:white;
+
+}
+
+.notice{
+
+margin-top:20px;
+font-size:15px;
+color:#ccc;
+line-height:1.7;
+
+}
+
+.steps{
+
+text-align:left;
+margin-top:20px;
+line-height:2;
+
+}
+
+.success{
+
+background:#103510;
+padding:15px;
+border-radius:12px;
+margin-bottom:20px;
+display:none;
+
+}
+
+.footer{
+
+margin-top:40px;
+color:#777;
+font-size:13px;
+
+}
+
+.androidOnly{
+
+display:none;
+
+}
+
+.otherDevice{
+
+display:none;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="splash">
+
+<div class="logo">
+B
+</div>
+
+<h2 style="margin-top:20px;">BUSANSO NATION</h2>
+
+<div class="loader">
+<span></span>
+</div>
+
+<p style="margin-top:20px;color:#888;">
+Preparing download...
+</p>
+
+</div>
+
+<div class="container" id="app">
+
+<h1>Busanso App</h1>
+
+<div class="version">
+Fast • Secure • Free
+</div>
+
+<div class="success" id="success">
+✅ Your download should begin automatically.
+</div>
+
+<div class="card">
+
+<div class="androidOnly">
+
+<h2>Android Detected</h2>
+
+<p class="notice">
+
+Your download will start automatically.
+
+If it doesn't, tap the button below.
+
+</p>
+
+<button class="download" onclick="downloadAPK()">
+⬇ DOWNLOAD AGAIN
+</button>
+
+<button class="share" onclick="shareApp()">
+📤 SHARE APP
+</button>
+
+<div class="steps">
+
+<h3 style="margin-top:25px;">
+Installation
+</h3>
+
+1. Wait for the APK to finish downloading.<br>
+
+2. Tap the downloaded file.<br>
+
+3. If Android asks, allow installation from your browser or file manager.<br>
+
+4. Tap <b>Install</b>.<br>
+
+5. Open Busanso and enjoy.
+
+</div>
+
+</div>
+
+<div class="otherDevice">
+
+<h2>Android App</h2>
+
+<p class="notice">
+
+This download is only for Android devices.
+
+Visit this page on your Android phone to install the app.
+
+</p>
+
+<button class="home"
+onclick="location.href='https://busanso.com'">
+
+🏠 GO TO HOMEPAGE
+
+</button>
+
+</div>
+
+</div>
+
+<div class="footer">
+
+© 2026 Busanso Nation
+
+</div>
+
+</div>
+
+<script>
+
+const APK="https://app.busanso.com/Busanso%20Nation%202026.apk";
+
+function downloadAPK(){
+
+window.location.href=APK;
+
+document.getElementById("success").style.display="block";
+
+}
+
+function shareApp(){
+
+if(navigator.share){
+
+navigator.share({
+
+title:"Busanso App",
+
+text:"Download Busanso App",
+
+url:window.location.href
+
+});
+
+}else{
+
+navigator.clipboard.writeText(window.location.href);
+
+alert("Download page copied.");
+
+}
+
+}
+
+setTimeout(()=>{
+
+document.getElementById("splash").style.opacity="0";
+
+setTimeout(()=>{
+
+document.getElementById("splash").style.display="none";
+
+document.getElementById("app").style.display="block";
+
+const ua=navigator.userAgent.toLowerCase();
+
+const android=/android/.test(ua);
+
+if(android){
+
+document.querySelector(".androidOnly").style.display="block";
+
+setTimeout(downloadAPK,1200);
+
+}else{
+
+document.querySelector(".otherDevice").style.display="block";
+
+}
+
+},700);
+
+},3000);
+
+</script>
+
+</body>
+</html>
+
+

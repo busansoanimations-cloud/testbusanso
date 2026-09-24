@@ -1,0 +1,1153 @@
+﻿
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>BUSANSO ADMIN - MEMBERSHIP MANAGER</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+
+background:
+linear-gradient(
+135deg,
+#020617,
+#071726,
+#0f172a
+);
+
+color:white;
+min-height:100vh;
+
+}
+
+header{
+padding:15px 20px;
+}
+
+background:
+linear-gradient(
+90deg,
+#15803d,
+#16a34a
+);
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+box-shadow:
+0 10px 30px rgba(0,0,0,.35);
+
+}
+
+header h1{
+
+font-size:28px;
+font-weight:800;
+letter-spacing:1px;
+
+}
+
+header span{
+
+font-size:14px;
+opacity:.9;
+
+}
+
+.wrapper{
+
+width:100%;
+max-width:1400px;
+
+margin:auto;
+
+padding:15px;
+
+}
+
+
+
+.layout{
+
+display:grid;
+
+grid-template-columns:
+
+280px
+1fr;
+
+gap:20px;
+
+}
+
+@media(max-width:900px){
+
+.layout{
+
+grid-template-columns:1fr;
+
+}
+
+}
+
+.sidebar{
+
+background:#111827;
+
+border-radius:22px;
+
+padding:20px;
+
+border:1px solid rgba(255,255,255,.08);
+
+}
+
+.sidebar h2{
+
+margin-bottom:15px;
+
+font-size:22px;
+
+}
+
+.search{
+
+width:100%;
+
+padding:15px;
+
+border:none;
+
+outline:none;
+
+border-radius:15px;
+
+background:#1f2937;
+
+color:white;
+
+margin-bottom:18px;
+
+font-size:15px;
+
+}
+
+.user-count{
+
+font-size:13px;
+
+color:#94a3b8;
+
+margin-bottom:12px;
+
+}
+
+.user-list{
+
+max-height:650px;
+
+overflow:auto;
+
+display:flex;
+
+flex-direction:column;
+
+gap:10px;
+
+}
+
+.user{
+
+background:#1f2937;
+
+border-radius:16px;
+
+padding:10px;
+
+cursor:pointer;
+
+transition:.25s;
+
+border:1px solid transparent;
+
+}
+
+.user:hover{
+
+transform:translateY(-2px);
+
+border-color:#22c55e;
+
+}
+
+.user.active{
+
+border-color:#22c55e;
+
+background:#14532d;
+
+}
+
+.user-name{
+
+font-weight:700;
+
+font-size:16px;
+
+}
+
+.user-phone{
+
+font-size:13px;
+
+color:#cbd5e1;
+
+margin-top:4px;
+
+}
+
+.user-membership{
+
+margin-top:8px;
+
+display:inline-block;
+
+padding:4px 10px;
+
+border-radius:999px;
+
+font-size:12px;
+
+font-weight:700;
+
+}
+
+.badge-free{
+
+background:#374151;
+
+color:#e5e7eb;
+
+}
+
+.badge-premium{
+
+background:#fbbf24;
+
+color:#111827;
+
+}
+
+.content{
+
+background:#111827;
+
+border-radius:22px;
+
+padding:18px;
+
+border:1px solid rgba(255,255,255,.08);
+
+}
+
+.section-title{
+
+font-size:24px;
+
+font-weight:700;
+
+margin-bottom:20px;
+
+}
+
+
+.form{
+
+display:grid;
+
+grid-template-columns:
+
+repeat(auto-fit,minmax(250px,1fr));
+
+gap:18px;
+
+margin-top:10px;
+
+}
+
+.form-group{
+
+display:flex;
+
+flex-direction:column;
+
+}
+
+.form-group label{
+
+margin-bottom:8px;
+
+font-size:14px;
+
+font-weight:600;
+
+}
+
+.form-group input,
+.form-group select{
+
+padding:10px;
+
+border:none;
+
+outline:none;
+
+border-radius:14px;
+
+background:#1f2937;
+
+color:white;
+
+font-size:14px;
+
+}
+
+.actions{
+
+margin-top:30px;
+
+display:flex;
+
+gap:15px;
+
+flex-wrap:wrap;
+
+}
+
+button{
+
+padding:10px 22px;
+
+border:none;
+
+border-radius:15px;
+
+font-size:16px;
+
+font-weight:700;
+
+cursor:pointer;
+
+transition:.25s;
+
+}
+
+#loadBtn{
+
+background:#3b82f6;
+
+color:white;
+
+}
+
+#loadBtn:hover{
+
+background:#2563eb;
+
+}
+
+#updateBtn{
+
+background:#22c55e;
+
+color:white;
+
+}
+
+#updateBtn:hover{
+
+background:#16a34a;
+
+}
+
+button:disabled{
+
+opacity:.45;
+
+cursor:not-allowed;
+
+}
+
+.notice{
+
+margin-top:20px;
+
+padding:15px;
+
+border-radius:15px;
+
+background:#172554;
+
+color:#bfdbfe;
+
+display:none;
+
+}
+
+.loading{
+
+text-align:center;
+
+padding:50px;
+
+color:#94a3b8;
+
+font-size:18px;
+
+}
+
+.recent-box{
+
+margin-top:35px;
+
+background:#1f2937;
+
+border-radius:18px;
+
+padding:20px;
+
+}
+
+.recent-title{
+
+font-size:20px;
+
+font-weight:700;
+
+margin-bottom:15px;
+
+}
+
+.recent-table{
+
+width:100%;
+
+border-collapse:collapse;
+
+}
+
+.recent-table th{
+
+text-align:left;
+
+padding:12px;
+
+background:#0f172a;
+
+font-size:14px;
+
+}
+
+.recent-table td{
+
+padding:12px;
+
+border-top:1px solid rgba(255,255,255,.06);
+
+font-size:14px;
+
+}
+
+.recent-table tr:hover{
+
+background:#263244;
+
+}
+
+.green{
+
+color:#22c55e;
+
+font-weight:700;
+
+}
+
+.red{
+
+color:#ef4444;
+
+font-weight:700;
+
+}
+
+.orange{
+
+color:#f59e0b;
+
+font-weight:700;
+
+}
+
+::-webkit-scrollbar{
+
+width:8px;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+background:#334155;
+border-radius:10px;
+
+}
+@media(max-width:900px){
+
+header h1{
+font-size:20px;
+}
+
+.layout{
+grid-template-columns:1fr;
+}
+
+.stat-value{
+font-size:22px;
+}
+
+.content{
+padding:15px;
+}
+
+.section-title{
+font-size:20px;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div>
+<h1>👑 BUSANSO ADMIN</h1>
+<span>Premium Membership Manager</span>
+</div>
+
+</header>
+
+<div class="wrapper">
+
+<!-- ========================= -->
+<!-- MAIN LAYOUT -->
+<!-- ========================= -->
+
+<div class="layout">
+
+<!-- LEFT PANEL -->
+
+<div class="sidebar">
+
+<h2>Users</h2>
+
+<input
+type="text"
+id="searchBox"
+class="search"
+placeholder="Search name or WhatsApp...">
+
+<div class="user-count">
+<span id="userCount">0</span> Users Found
+</div>
+
+<div
+id="userList"
+class="user-list">
+
+<div class="loading">
+Loading users...
+</div>
+
+</div>
+
+</div>
+
+<!-- RIGHT PANEL -->
+
+<div class="content">
+
+<div class="section-title">
+
+👤 User Details
+
+</div>
+
+
+
+<h2 style="margin-bottom:20px;">
+Update Membership
+</h2>
+
+<div class="form">
+
+<div class="form-group">
+<label>Name</label>
+<input
+type="text"
+id="userName"
+readonly>
+</div>
+
+<div class="form-group">
+<label>WhatsApp</label>
+<input
+type="text"
+id="userPhone"
+readonly>
+</div>
+<div class="form-group">
+<label>Membership</label>
+
+<select id="membership">
+
+<option value="free">Free</option>
+
+<option value="premium">Premium</option>
+
+<option value="kibanda">Kibanda</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+<label>Package Type</label>
+
+<select id="packageType">
+
+<option value="Starter">
+Starter
+</option>
+
+<option value="Weekly">
+Weekly
+</option>
+
+<option value="Kabeja">
+Kabeja
+</option>
+
+<option value="Kabeje">
+Kabeje
+</option>
+
+<option value="Kabejest" selected>
+Kabejest
+</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+<label>Expiry Date</label>
+
+<input
+type="datetime-local"
+id="expiry">
+
+</div>
+
+<div class="form-group">
+<label>Account Status</label>
+
+<select id="status">
+
+<option value="active">
+Active
+</option>
+
+<option value="inactive">
+Inactive
+</option>
+
+<option value="blocked">
+Blocked
+</option>
+
+</select>
+
+</div>
+
+
+
+</div>
+
+<div class="actions">
+
+<div class="field">
+
+<label>
+Amount Paid (UGX)
+</label>
+
+<input
+type="number"
+id="amountPaid"
+placeholder="e.g. 50000"
+min="0">
+
+</div>
+<button
+id="updateBtn"
+disabled>
+
+Update User
+
+</button>
+
+</div>
+
+<div
+id="notice"
+class="notice">
+
+</div>
+
+<!-- ========================= -->
+<!-- RECENT USERS -->
+<!-- ========================= -->
+
+<div class="recent-box">
+
+<h2 style="margin-bottom:18px;">
+📝 Updated User Logs
+</h2>
+
+<div id="analyticsBox"><table class="recent-table"><thead><tr><th>Name</th><th>Membership</th><th>Updated</th></tr></thead><tbody id="recentTable"></tbody></table></div></div>
+
+</div>
+<script>
+
+const WORKER_URL =
+"https://busanso-admin.busansotrailers.workers.dev";
+
+let USERS = [];
+let selectedUser = null;
+// =========================
+// CHECK ADMIN
+// =========================
+
+async function checkAdmin(){
+
+    const userId = localStorage.getItem("user_id");
+
+    if(!userId){
+
+        location.href="auth.html";
+        return;
+
+    }
+
+    const response = await fetch(
+
+        WORKER_URL + "/check-admin?id=" + userId
+
+    );
+
+    const result = await response.json();
+console.log("ADMIN RESPONSE:", result);
+
+if(
+
+    !result.success ||
+
+    !result.user ||
+
+    result.user.role !== "admin"
+
+){
+
+    alert("Access denied.");
+
+    location.href="account.html";
+
+    return;
+
+}
+
+    loadUsers();
+
+}
+
+// =========================
+// LOAD USERS
+// =========================
+
+async function loadUsers(){
+
+    try{
+
+        const response = await fetch(
+
+            WORKER_URL + "/users"
+
+        );
+
+        const result = await response.json();
+
+        if(!result.success){
+
+            document.getElementById("userList").innerHTML =
+            "Failed to load users";
+
+            console.log(result.error);
+
+            return;
+
+        }
+
+        USERS = result.users || [];
+
+        updateStats();
+
+        renderUsers(USERS);
+
+        loadRecentUsers();
+
+    }
+
+    catch(err){
+
+        document.getElementById("userList").innerHTML =
+        "Failed to load users";
+
+        console.log(err);
+
+    }
+
+}
+
+// =========================
+// STATISTICS
+// =========================
+
+function updateStats(){
+
+    const total = USERS.length;
+
+    const premium = USERS.filter(u =>
+        (u.membership || "").toLowerCase() === "premium"
+    ).length;
+
+    const free = USERS.filter(u =>
+        (u.membership || "").toLowerCase() !== "premium"
+    ).length;
+
+    const now = new Date();
+
+    const sevenDays = new Date();
+
+    sevenDays.setDate(sevenDays.getDate() + 7);
+
+    let active = 0;
+
+    let expired = 0;
+
+    let expiringSoon = 0;
+
+    USERS.forEach(user=>{
+
+        if((user.membership || "").toLowerCase() !== "premium")
+            return;
+
+        if(!user.expires_at)
+            return;
+
+        const expiry = new Date(user.expires_at);
+
+        if(expiry < now){
+
+            expired++;
+
+        }
+
+        else{
+
+            active++;
+
+            if(expiry <= sevenDays){
+
+                expiringSoon++;
+
+            }
+
+        }
+
+    });
+
+    document.getElementById("aTotal").textContent = total;
+
+    document.getElementById("aPremium").textContent = premium;
+
+    document.getElementById("aFree").textContent = free;
+
+    document.getElementById("aActive").textContent = active;
+
+    document.getElementById("aSoon").textContent = expiringSoon;
+
+    document.getElementById("aExpired").textContent = expired;
+
+}
+
+// =========================
+// USER LIST
+// =========================
+
+function renderUsers(list){
+
+document.getElementById("userCount").textContent=list.length;
+
+const box=document.getElementById("userList");
+
+box.innerHTML="";
+
+list.forEach(user=>{
+
+const div=document.createElement("div");
+
+div.className="user";
+
+div.innerHTML=`
+<div class="user-name">${user.name||"Unnamed"}</div>
+<div class="user-phone">${user.whatsapp_number||""}</div>
+<div class="user-membership ${(user.membership||"free").toLowerCase()=="premium"?"badge-premium":"badge-free"}">
+${user.membership||"free"}
+</div>
+`;
+
+div.onclick = () => {
+
+    document.querySelectorAll(".user")
+        .forEach(x => x.classList.remove("active"));
+
+    div.classList.add("active");
+
+    selectedUser = user;
+
+    fillUserForm();
+
+    document.getElementById("updateBtn").disabled = false;
+
+};
+
+box.appendChild(div);
+
+});
+
+}
+function formatDateTimeLocal(dateString){
+
+    const d = new Date(dateString);
+
+    const pad = n => String(n).padStart(2,"0");
+
+    return `${d.getFullYear()}-${
+        pad(d.getMonth()+1)
+    }-${
+        pad(d.getDate())
+    }T${
+        pad(d.getHours())
+    }:${
+        pad(d.getMinutes())
+    }`;
+
+}
+function fillUserForm(){
+
+    if(!selectedUser) return;
+
+document.getElementById("userName").value =
+    selectedUser.name || "";
+
+document.getElementById("userPhone").value =
+    selectedUser.whatsapp_number || "";
+
+    membership.value =
+        selectedUser.membership || "free";
+
+    packageType.value =
+        selectedUser.package_type || "Monthly";
+
+    status.value =
+        selectedUser.account_status || "active";
+
+
+expiry.value =
+    selectedUser.expires_at
+    ? formatDateTimeLocal(selectedUser.expires_at)
+    : "";
+
+}
+// =========================
+// SEARCH
+// =========================
+
+document.getElementById("searchBox").oninput=function(){
+
+const q=this.value.toLowerCase();
+
+renderUsers(
+
+USERS.filter(u=>
+
+(u.name||"").toLowerCase().includes(q) ||
+
+(u.whatsapp_number||"").toLowerCase().includes(q)
+
+)
+
+);
+
+};
+
+// =========================
+// LOAD SELECTED USER
+// =========================
+
+
+
+// =========================
+// UPDATE USER
+// =========================
+
+document.getElementById("updateBtn").onclick = async () => {
+
+    const notice = document.getElementById("notice");
+
+    if(!selectedUser) return;
+
+    const adminPin = prompt("Enter Admin PIN");
+
+    if(!adminPin) return;
+
+    const response = await fetch(
+
+        WORKER_URL + "/update-user",
+
+        {
+
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            body:JSON.stringify({
+
+                adminPin: adminPin,
+
+                id: selectedUser.id,
+
+                membership: document.getElementById("membership").value,
+
+                package_type: document.getElementById("packageType").value,
+
+                expires_at: document.getElementById("expiry").value,
+amount_paid:Number(
+document.getElementById("amountPaid").value
+)||0,
+
+            account_status: document.getElementById("status").value
+
+            })
+
+        }
+
+    );
+
+    const result = await response.json();
+
+    notice.style.display = "block";
+
+    if(!result.success){
+
+        notice.style.background = "#7f1d1d";
+        notice.innerHTML = "❌ " + result.error;
+
+        return;
+
+    }
+
+    notice.style.background = "#14532d";
+    notice.innerHTML = "✅ User updated successfully.";
+
+    selectedUser = result.user;
+
+    fillUserForm();
+
+    loadUsers();
+
+};
+
+
+// =========================
+// RECENT USERS
+// =========================
+
+function loadRecentUsers(){
+
+const rows=[...USERS]
+.slice(0,10)
+.map(u=>`
+
+<tr>
+
+<td>${u.name||"-"}</td>
+
+<td>${u.membership||"free"}</td>
+
+<td>${
+u.expires_at
+?
+new Date(u.expires_at).toLocaleDateString()
+:
+"-"
+}</td>
+
+<td>${u.account_status||"-"}</td>
+
+</tr>
+
+`).join("");
+
+document.getElementById("recentTable").innerHTML=rows;
+
+}
+
+// =========================
+
+checkAdmin();
+
+</script>
+
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1}' crossorigin="anonymous"></script>
+</body>
+</html>

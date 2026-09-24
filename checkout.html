@@ -1,0 +1,690 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Busanso Checkout</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,Helvetica,sans-serif;
+}
+
+
+body{
+
+background:
+radial-gradient(circle at top,#292929,#050505 60%);
+
+color:white;
+
+min-height:100vh;
+
+padding:15px;
+
+}
+
+
+
+.header{
+
+text-align:center;
+
+padding:20px 0;
+
+}
+
+
+
+.logo{
+
+font-size:34px;
+
+font-weight:900;
+
+letter-spacing:2px;
+
+color:#e50914;
+
+}
+
+
+
+.header h1{
+
+font-size:24px;
+
+margin-top:15px;
+
+}
+
+
+
+.header p{
+
+font-size:14px;
+
+color:#aaa;
+
+margin-top:8px;
+
+}
+
+
+
+#welcome{
+
+margin-top:12px;
+
+color:#ddd;
+
+font-size:15px;
+
+}
+
+
+
+
+.checkout-card{
+
+background:#171717;
+
+border-radius:14px;
+
+max-width:420px;
+
+margin:auto;
+
+padding:25px 20px;
+
+border:1px solid #333;
+
+box-shadow:
+0 10px 35px rgba(0,0,0,.5);
+
+text-align:center;
+
+}
+
+
+
+
+.checkout-card h2{
+
+color:#e50914;
+
+font-size:25px;
+
+margin-bottom:15px;
+
+}
+
+
+
+
+.price{
+
+font-size:28px;
+
+font-weight:900;
+
+margin-bottom:8px;
+
+}
+
+
+
+
+.duration{
+
+color:#bbb;
+
+margin-bottom:20px;
+
+}
+
+
+
+
+ul{
+
+text-align:left;
+
+list-style:none;
+
+margin-bottom:25px;
+
+}
+
+
+
+li{
+
+background:#222;
+
+padding:10px;
+
+border-radius:6px;
+
+margin-bottom:8px;
+
+font-size:14px;
+
+}
+
+
+
+
+li:before{
+
+content:"✓ ";
+
+color:#e50914;
+
+font-weight:bold;
+
+}
+
+
+
+
+button,
+.back{
+
+
+display:block;
+
+width:100%;
+
+padding:13px;
+
+border-radius:6px;
+
+border:none;
+
+font-weight:bold;
+
+font-size:15px;
+
+cursor:pointer;
+
+text-decoration:none;
+
+text-align:center;
+
+margin-top:10px;
+
+}
+
+
+
+
+button{
+
+background:#e50914;
+
+color:white;
+
+}
+
+
+
+
+button:hover{
+
+background:#ff1f2a;
+
+}
+
+
+
+
+.back{
+
+background:#333;
+
+color:white;
+
+}
+
+
+
+.footer{
+
+text-align:center;
+
+color:#777;
+
+font-size:12px;
+
+margin-top:35px;
+
+}
+
+
+
+
+</style>
+
+
+</head>
+
+
+
+<body>
+
+
+
+<div class="header">
+
+
+<div class="logo">
+BUSANSO
+</div>
+
+
+<h1>
+Complete Your Membership
+</h1>
+
+
+<p>
+Send payment to <b>0703888884</b><br>
+Names: <b>David Bakamize</b>
+</p>
+
+
+<div id="welcome"></div>
+
+
+</div>
+
+
+
+
+
+<div class="checkout-card" id="checkoutCard">
+
+
+<h2 id="packageName">
+Loading...
+</h2>
+
+
+<div class="price" id="packagePrice"></div>
+
+
+<div class="duration" id="packageDuration"></div>
+
+
+
+<ul id="packageAdvantages"></ul>
+
+
+
+<button id="payBtn">
+💳 Proceed To Pay
+</button>
+
+
+
+<a class="back" href="packages.html">
+← Change Package
+</a>
+
+
+
+</div>
+
+
+
+
+<div class="footer">
+
+© 2026 Busanso Nation
+
+</div>
+
+
+
+
+
+
+<script>
+
+
+const { createClient } = supabase;
+
+
+
+const supabaseClient = createClient(
+
+"https://dhkfhhybzcxdeoalcfqx.supabase.co",
+
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkaGtraGh5YnpjeGRlb2FsY2Z4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1MzQxNTEsImV4cCI6MjA4ODExMDE1MX0.jZ4NDNPJmO0Ji05TxDqCnzgLIIzKf9uCx3WrSgk2DaY"
+
+);
+
+
+
+
+
+async function checkUser(){
+
+
+const {
+
+data:{user},
+
+error
+
+}=await supabaseClient.auth.getUser();
+
+
+
+
+if(error || !user){
+
+window.location.href="auth.html";
+
+return;
+
+}
+
+
+
+
+
+const {
+
+data:profile,
+
+error:profileError
+
+}=await supabaseClient
+
+.from("profiles")
+
+.select("*")
+
+.eq("id",user.id)
+
+.single();
+
+
+
+
+
+if(profileError || !profile){
+
+window.location.href="auth.html";
+
+return;
+
+}
+
+
+
+
+
+document.getElementById("welcome").innerHTML=
+
+`
+Welcome, <b>${profile.name || "Member"}</b>
+`;
+
+
+
+}
+
+
+
+checkUser();
+
+
+
+
+
+
+
+const packages = {
+
+
+daily:{
+
+name:"Daily",
+
+price:"UGX 5,000",
+
+duration:"24 Hours",
+
+advantages:[
+
+"All movies access",
+
+"Series access",
+
+"Instant activation"
+
+]
+
+},
+
+
+
+weekly:{
+
+name:"Weekly",
+
+price:"UGX 10,000",
+
+duration:"7 Days",
+
+advantages:[
+
+"Movies & series",
+
+"No interruptions",
+
+"HD streaming"
+
+]
+
+},
+
+
+
+monthly:{
+
+name:"Kabeja",
+
+price:"UGX 13,000",
+
+duration:"30 Days",
+
+advantages:[
+
+"Premium movies",
+
+"Premium series",
+
+"Ad-free experience"
+
+]
+
+},
+
+
+
+halfyear:{
+
+name:"Kabeje",
+
+price:"UGX 70,000",
+
+duration:"6 Months",
+
+advantages:[
+
+"Full Busanso access",
+
+"HD quality",
+
+"Premium content"
+
+]
+
+},
+
+
+
+annual:{
+
+name:"Kabejest",
+
+price:"UGX 120,000",
+
+duration:"12 Months",
+
+advantages:[
+
+"1 year access",
+
+"Exclusive releases",
+
+"Everything unlocked"
+
+]
+
+},
+
+
+
+library:{
+
+name:"Kibanda Library",
+
+price:"UGX 25,000",
+
+duration:"30 Days",
+
+advantages:[
+
+"Special library access",
+
+"Download option",
+
+"High quality content"
+
+]
+
+}
+
+
+};
+
+
+
+
+
+const params =
+new URLSearchParams(window.location.search);
+
+
+
+const selected =
+params.get("package");
+
+
+
+
+if(packages[selected]){
+
+
+const pkg=packages[selected];
+
+
+
+document.getElementById("packageName")
+.textContent=pkg.name;
+
+
+
+document.getElementById("packagePrice")
+.textContent=pkg.price;
+
+
+
+document.getElementById("packageDuration")
+.textContent=pkg.duration;
+
+
+
+
+const list=document.getElementById("packageAdvantages");
+
+
+
+pkg.advantages.forEach(item=>{
+
+
+let li=document.createElement("li");
+
+li.textContent=item;
+
+list.appendChild(li);
+
+
+});
+
+
+
+}
+
+else{
+
+
+document.getElementById("checkoutCard").innerHTML=
+
+`
+
+<h2>Invalid Package</h2>
+
+<a class="back" href="packages.html">
+
+Return
+
+</a>
+
+`;
+
+}
+
+
+
+
+document.getElementById("payBtn").onclick=function(){
+
+
+window.location.href="tel:*185*1#";
+
+
+};
+
+
+
+</script>
+
+
+
+</body>
+</html>

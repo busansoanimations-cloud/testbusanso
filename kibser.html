@@ -19,8 +19,8 @@ const supabase = createClient(
 body{
 margin:0;
 font-family:Arial,sans-serif;
-background:#000;
-color:#fff;
+background:#0b1020;
+color:#f4f7ff;
 display:flex;
 flex-direction:column;
 align-items:center;
@@ -32,19 +32,19 @@ padding:12px;
 .player iframe{width:100%;height:100%;border:none;border-radius:12px;}
 .player-nav{display:flex;gap:6px;margin:12px 0;justify-content:center;flex-wrap:wrap;width:100%;max-width:960px;}
 .player-nav button{flex:1 1 45%;padding:14px;font-size:16px;border:none;border-radius:12px;font-weight:bold;cursor:pointer;}
-#prevBtn,#nextBtn{background:#222;color:#fff;box-shadow:0 0 10px #e50914;}
-#downloadBtn{width:100%;padding:16px;font-size:17px;background:linear-gradient(135deg,#00c853,#00e676);color:#000;border:none;border-radius:14px;font-weight:bold;cursor:pointer;margin-top:10px;box-shadow:0 0 12px #00e676;transition:0.25s;}
-#downloadBtn:hover{transform:scale(1.03);box-shadow:0 0 25px #00ff88;}
+#prevBtn,#nextBtn{background:#202a44;color:#fff;box-shadow:none;border:1px solid #34466f;}
+#downloadBtn{width:100%;padding:12px;font-size:15px;background:#26324f;color:#dbe7ff;border:1px solid #3d5485;border-radius:10px;font-weight:bold;cursor:pointer;margin-top:10px;box-shadow:none;transition:.2s;}
+#downloadBtn:hover{background:#304064;transform:none;box-shadow:0 4px 12px rgba(0,0,0,.25);}
 #downloadProgress{width:100%;max-width:960px;height:8px;background:#222;border-radius:10px;overflow:hidden;margin-top:8px;display:none;}
-#downloadBar{height:100%;width:0%;background:#00e676;transition:width 0.3s;}
+#downloadBar{height:100%;width:0%;background:#6f8cff;transition:width 0.3s;}
 #progressText{font-size:13px;color:#aaa;margin-top:4px;display:none;}
-.details{max-width:960px;width:100%;background:#111;border-radius:12px;padding:16px;margin-bottom:16px;}
+.details{max-width:960px;width:100%;background:#151d31;border:1px solid #263556;border-radius:12px;padding:16px;margin-bottom:16px;}
 .details h1{margin:0 0 8px 0;font-size:1.6rem;}
 .cast span{display:inline-block;margin:4px;padding:6px 12px;border-radius:20px;background:#222;font-size:13px;}
-#episodesBtn{width:100%;padding:16px;font-size:18px;background:#e50914;color:#fff;border:none;border-radius:12px;font-weight:bold;cursor:pointer;margin-top:8px;}
+#episodesBtn{width:100%;padding:14px;font-size:17px;background:#344d86;color:#fff;border:none;border-radius:10px;font-weight:bold;cursor:pointer;margin-top:8px;}
 .episodes{display:grid;gap:8px;margin-top:12px;}
-.episode{background:#181818;padding:12px;border-radius:8px;cursor:pointer;}
-.episode.active{background:#e50914;font-weight:bold;}
+.episode{background:#1b253c;border:1px solid #2d3d61;padding:12px;border-radius:8px;cursor:pointer;}
+.episode.active{background:#4b62b5;border-color:#7188df;font-weight:bold;}
 </style>
 </head>
 
@@ -180,6 +180,17 @@ return
 }
 
 serie=data
+
+// Arrange episodes by episode_number (lowest to highest).
+if (Array.isArray(serie.episodes)) {
+  serie.episodes = serie.episodes.map((ep, originalIndex) => ({...ep, __originalIndex: originalIndex})).sort((a,b) => {
+    const an = Number(a.episode_number), bn = Number(b.episode_number);
+    if (Number.isFinite(an) && Number.isFinite(bn)) return an - bn;
+    if (Number.isFinite(an)) return -1;
+    if (Number.isFinite(bn)) return 1;
+    return a.__originalIndex - b.__originalIndex;
+  });
+}
 populateSeries()
 
 }
@@ -201,7 +212,8 @@ episodeList.innerHTML=""
 serie.episodes.forEach((ep,i)=>{
 const div=document.createElement("div")
 div.className="episode"
-div.textContent=`Episode ${i+1}`
+const episodeNumber = Number.isFinite(Number(ep.episode_number)) ? ep.episode_number : i+1;
+div.textContent=`Episode ${episodeNumber}`
 div.onclick=()=>playEpisode(i)
 episodeList.appendChild(div)
 })
@@ -346,7 +358,8 @@ const ep=serie.episodes[i]
 const videoURL=normalizeVideo(ep.video)
 player.innerHTML=`<iframe src="${videoURL}" allowfullscreen></iframe>`
 
-downloadBtn.textContent=`⬇ Download Episode ${i+1}`
+const episodeNumber = Number.isFinite(Number(ep.episode_number)) ? ep.episode_number : i+1;
+downloadBtn.textContent=`Download Episode ${episodeNumber}`
 
 /* ✅ AUTO HIDE FOR YOUTUBE */
 if(isYouTube(ep.video)){
@@ -380,7 +393,7 @@ episodeList.style.display==="none"?"grid":"none"
 fetchSerie()
 
 </script>
-<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1,"spa":2}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1}' crossorigin="anonymous"></script>
 </body>
 </html>
 

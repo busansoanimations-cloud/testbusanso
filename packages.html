@@ -1,0 +1,567 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Busanso Plans</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+
+body{
+
+background:#050505;
+
+color:white;
+
+min-height:100vh;
+
+padding:15px;
+
+}
+
+
+
+.header{
+
+text-align:center;
+
+padding:20px 5px 25px;
+
+}
+
+
+
+.logo{
+
+font-size:32px;
+
+font-weight:900;
+
+color:#e50914;
+
+letter-spacing:2px;
+
+}
+
+
+
+.header h1{
+
+font-size:22px;
+
+margin-top:12px;
+
+}
+
+
+
+.header p{
+
+font-size:14px;
+
+color:#aaa;
+
+margin-top:6px;
+
+}
+
+
+
+#welcome{
+
+margin-top:15px;
+
+font-size:15px;
+
+color:#ddd;
+
+}
+
+
+
+.top-buttons{
+
+display:flex;
+
+justify-content:center;
+
+gap:10px;
+
+margin-top:15px;
+
+}
+
+
+
+.top-buttons button{
+
+padding:9px 18px;
+
+border:0;
+
+border-radius:5px;
+
+font-size:14px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+color:white;
+
+background:#e50914;
+
+}
+
+
+
+.home-btn{
+
+background:#333 !important;
+
+}
+
+
+
+
+
+.container{
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:12px;
+
+max-width:600px;
+
+margin:auto;
+
+}
+
+
+
+
+.card{
+
+background:#171717;
+
+border-radius:10px;
+
+padding:18px 10px;
+
+text-align:center;
+
+border:1px solid #292929;
+
+}
+
+
+
+
+.card h2{
+
+font-size:17px;
+
+margin-bottom:10px;
+
+}
+
+
+
+
+.price{
+
+font-size:19px;
+
+font-weight:bold;
+
+color:#e50914;
+
+margin-bottom:14px;
+
+}
+
+
+
+
+.card a{
+
+display:block;
+
+background:#e50914;
+
+color:white;
+
+text-decoration:none;
+
+font-size:12px;
+
+font-weight:bold;
+
+padding:9px 5px;
+
+border-radius:5px;
+
+}
+
+
+
+
+.card:active{
+
+transform:scale(.97);
+
+}
+
+
+
+
+.footer{
+
+text-align:center;
+
+font-size:12px;
+
+color:#777;
+
+margin-top:35px;
+
+}
+
+
+
+
+
+@media(max-width:350px){
+
+.container{
+
+grid-template-columns:1fr;
+
+}
+
+
+.logo{
+
+font-size:28px;
+
+}
+
+}
+
+
+
+</style>
+
+</head>
+
+
+
+<body>
+
+
+
+<div class="header">
+
+
+<div class="logo">
+BUSANSO
+</div>
+
+
+<h1>
+Choose Your Plan
+</h1>
+
+
+<p>
+Unlimited movies & series
+</p>
+
+
+<div id="welcome"></div>
+
+
+
+<div class="top-buttons">
+
+
+<button 
+onclick="goHome()"
+class="home-btn">
+
+🏠 Home
+
+</button>
+
+
+
+<button 
+id="accountBtn"
+onclick="goAccount()"
+style="display:none;">
+
+👤 My Account
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<div class="container">
+
+
+
+<div class="card">
+
+<h2>Daily</h2>
+
+<div class="price">
+5,000
+</div>
+
+<a href="checkout.html?package=daily">
+PAY
+</a>
+
+</div>
+
+
+
+
+<div class="card">
+
+<h2>Weekly</h2>
+
+<div class="price">
+10,000
+</div>
+
+<a href="checkout.html?package=weekly">
+PAY
+</a>
+
+</div>
+
+
+
+
+<div class="card">
+
+<h2>Kabeja</h2>
+
+<div class="price">
+13,000
+</div>
+
+<a href="checkout.html?package=monthly">
+PAY
+</a>
+
+</div>
+
+
+
+
+<div class="card">
+
+<h2>Kabeje</h2>
+
+<div class="price">
+70,000
+</div>
+
+<a href="checkout.html?package=halfyear">
+PAY
+</a>
+
+</div>
+
+
+
+
+<div class="card">
+
+<h2>Kabejest</h2>
+
+<div class="price">
+120,000
+</div>
+
+<a href="checkout.html?package=annual">
+PAY
+</a>
+
+</div>
+
+
+
+
+<div class="card">
+
+<h2>Kibanda</h2>
+
+<div class="price">
+25,000
+</div>
+
+<a href="checkout.html?package=library">
+ENTER
+</a>
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+<div class="footer">
+
+© 2026 Busanso Nation
+
+</div>
+
+
+
+
+
+
+
+<script>
+
+
+const SUPABASE_URL =
+"https://dhkfhhybzcxdeoalcfqx.supabase.co";
+
+
+const SUPABASE_ANON_KEY =
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRoa2ZoaHliemN4ZGVvYWxjZnF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1MzQxNTEsImV4cCI6MjA4ODExMDE1MX0.jZ4NDNPJmO0Ji05TxDqCnzgLIIzKf9uCx3WrSgk2DaY";
+
+
+
+const supabaseClient =
+supabase.createClient(
+SUPABASE_URL,
+SUPABASE_ANON_KEY
+);
+
+
+
+
+
+async function verifyProfile(){
+
+const userID =
+localStorage.getItem("user_id");
+
+
+if(!userID){
+
+window.location.href="auth.html";
+return;
+
+}
+
+
+
+const {
+data:profile,
+error:profileError
+
+}=await supabaseClient
+
+.from("profiles")
+
+.select("*")
+
+.eq("id", Number(userID))
+
+.single();
+
+
+
+if(profileError || !profile){
+
+console.log("PROFILE ERROR:",profileError);
+
+window.location.href="auth.html";
+
+return;
+
+}
+
+
+
+document.getElementById("welcome").innerHTML =
+
+`
+Welcome, <b>${profile.name || "Member"}</b>
+`;
+
+
+
+document.getElementById("accountBtn")
+.style.display="inline-block";
+
+
+
+}
+
+
+
+
+
+function goAccount(){
+
+window.location.href="account.html";
+
+}
+
+
+
+
+function goHome(){
+
+window.location.href="home.html";
+
+}
+
+
+
+
+verifyProfile();
+
+
+</script>
+
+
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1}' crossorigin="anonymous"></script>
+</body>
+</html>

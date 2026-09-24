@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Notifications</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:Poppins,sans-serif;
+  background:linear-gradient(180deg,#0f172a,#000);
+  color:white;
+  padding:18px;
+}
+
+h1{
+  margin-bottom:10px;
+}
+
+.card{
+  background:#111827;
+  border:1px solid rgba(255,255,255,.08);
+  padding:14px;
+  border-radius:14px;
+  margin-bottom:10px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.card:hover{
+  transform:translateY(-2px);
+  background:#1f2937;
+}
+
+.title{
+  font-weight:700;
+}
+
+.msg{
+  font-size:.85rem;
+  color:#9ca3af;
+  margin-top:4px;
+}
+
+.badge{
+  float:right;
+  background:#22c55e;
+  color:#000;
+  font-size:10px;
+  padding:3px 8px;
+  border-radius:999px;
+}
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.7);
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
+
+.box{
+  width:min(90%,420px);
+  background:#111827;
+  padding:18px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.08);
+}
+
+button{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border:none;
+  border-radius:10px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.open{
+  background:linear-gradient(135deg,#ef4444,#f97316);
+  color:white;
+}
+
+.close{
+  background:#1f2937;
+  color:white;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🔔 Notifications</h1>
+<div id="list"></div>
+
+<div id="modal" class="modal">
+  <div class="box">
+    <h2 id="mTitle"></h2>
+    <p id="mMsg"></p>
+
+    <button class="open" id="openBtn">Open</button>
+    <button class="close" onclick="closeModal()">Close</button>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyBGGV9F3Nv13nRJ8t4QCP5Y0IosmKfYz1s",
+  authDomain: "busanso-pins.firebaseapp.com",
+  databaseURL: "https://busanso-pins-default-rtdb.firebaseio.com",
+  projectId: "busanso-pins"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+const list = document.getElementById("list");
+
+let all = [];
+
+function load(){
+  db.ref("notifications").limitToLast(30).on("value",snap=>{
+    all = [];
+    list.innerHTML = "";
+
+    snap.forEach(s=>{
+      const n = s.val();
+      n.id = s.key;
+      all.push(n);
+    });
+
+    all.reverse().forEach(n=>{
+      const seen = localStorage.getItem("seen_"+n.id);
+
+      const div = document.createElement("div");
+      div.className = "card";
+
+      div.innerHTML = `
+        ${!seen ? '<span class="badge">NEW</span>' : ''}
+        <div class="title">${n.title || "Notification"}</div>
+        <div class="msg">${n.message || ""}</div>
+      `;
+
+      div.onclick = ()=>openNotif(n);
+      list.appendChild(div);
+    });
+  });
+}
+
+function openNotif(n){
+  document.getElementById("mTitle").textContent = n.title;
+  document.getElementById("mMsg").textContent = n.message;
+
+  document.getElementById("openBtn").onclick = ()=>{
+
+    localStorage.setItem("seen_"+n.id,"1");
+
+    if(n.button_url){
+      location.href = n.button_url;
+    }else{
+      closeModal();
+    }
+  };
+
+  document.getElementById("modal").style.display = "flex";
+}
+
+function closeModal(){
+  document.getElementById("modal").style.display = "none";
+}
+
+load();
+</script>
+
+</body>
+</html>

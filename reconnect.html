@@ -1,0 +1,1518 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>BUSANSO - Connecting Account</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+
+    margin:0;
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #020617,
+            #0f172a,
+            #052e1b
+        );
+
+    color:white;
+
+    font-family:Poppins,Arial,sans-serif;
+
+}
+
+
+.card{
+
+    width:100%;
+
+    max-width:420px;
+
+    background:
+        rgba(15,23,42,.96);
+
+    border:
+        1px solid
+        rgba(255,255,255,.10);
+
+    border-radius:24px;
+
+    padding:32px 25px;
+
+    text-align:center;
+
+    box-shadow:
+        0 25px 70px
+        rgba(0,0,0,.55);
+
+}
+
+
+.logo{
+
+    width:110px;
+
+    max-width:45%;
+
+    margin-bottom:18px;
+
+}
+
+
+.spinner{
+
+    width:48px;
+
+    height:48px;
+
+    margin:15px auto 20px;
+
+    border:
+        4px solid
+        rgba(255,255,255,.15);
+
+    border-top-color:#22c55e;
+
+    border-radius:50%;
+
+    animation:
+        spin .9s linear infinite;
+
+}
+
+
+@keyframes spin{
+
+    to{
+        transform:rotate(360deg);
+    }
+
+}
+
+
+h1{
+
+    margin:0 0 8px;
+
+    font-size:21px;
+
+}
+
+
+#message{
+
+    color:#a9b7c8;
+
+    font-size:13px;
+
+    line-height:1.7;
+
+}
+
+
+.success{
+
+    color:#86efac !important;
+
+}
+
+
+.error{
+
+    color:#fca5a5 !important;
+
+}
+
+
+.warning{
+
+    color:#fde68a !important;
+
+}
+
+
+.details{
+
+    display:none;
+
+    margin-top:20px;
+
+    text-align:left;
+
+    background:
+        rgba(255,255,255,.04);
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    border-radius:15px;
+
+    padding:15px;
+
+    font-size:12px;
+
+    line-height:1.8;
+
+}
+
+
+.details b{
+
+    color:#fff;
+
+}
+
+
+#continueButton{
+
+    display:none;
+
+    width:100%;
+
+    margin-top:20px;
+
+    padding:14px;
+
+    border:0;
+
+    border-radius:12px;
+
+    background:#16a34a;
+
+    color:white;
+
+    font-family:inherit;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+}
+
+
+#continueButton:hover{
+
+    background:#15803d;
+
+}
+
+
+.footer{
+
+    margin-top:22px;
+
+    font-size:10px;
+
+    color:#64748b;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="card">
+
+
+    <img
+        class="logo"
+        src="https://i.ibb.co/hxgrLF35/BUSANSO-New.png"
+        alt="BUSANSO"
+    >
+
+
+    <div
+        id="spinner"
+        class="spinner"
+    ></div>
+
+
+    <h1 id="title">
+        Connecting Your Account
+    </h1>
+
+
+    <div id="message">
+
+        Checking your BUSANSO account...
+
+    </div>
+
+
+    <div
+        id="details"
+        class="details"
+    ></div>
+
+
+    <button
+        id="continueButton"
+        onclick="continueToHome()"
+    >
+        CONTINUE TO BUSANSO
+    </button>
+
+
+    <div class="footer">
+
+        BUSANSO NATION
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+/* =========================================================
+   SUPABASE
+   ========================================================= */
+
+const SUPABASE_URL =
+    "https://dhkfhhybzcxdeoalcfqx.supabase.co";
+
+
+const SUPABASE_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsImFub24iLCJpYXQiOjE3NzI1MzQxNTEsImV4cCI6MjA4ODExMDE1MX0.jZ4NDNPJmO0Ji05TxDqCnzgLIIzKf9uCx3WrSgk2DaY";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+
+/* =========================================================
+   UI
+   ========================================================= */
+
+function setMessage(
+    text,
+    type = ""
+){
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+    message.innerHTML =
+        text;
+
+    message.className =
+        type;
+
+}
+
+
+function setTitle(text){
+
+    document.getElementById(
+        "title"
+    ).textContent = text;
+
+}
+
+
+function showDetails(html){
+
+    const box =
+        document.getElementById(
+            "details"
+        );
+
+    box.innerHTML =
+        html;
+
+    box.style.display =
+        "block";
+
+}
+
+
+function stopSpinner(){
+
+    const spinner =
+        document.getElementById(
+            "spinner"
+        );
+
+    spinner.style.display =
+        "none";
+
+}
+
+
+function showContinueButton(){
+
+    document.getElementById(
+        "continueButton"
+    ).style.display =
+        "block";
+
+}
+
+
+function continueToHome(){
+
+    window.location.replace(
+        "home.html"
+    );
+
+}
+
+
+
+/* =========================================================
+   SAFE LOCAL STORAGE READER
+
+   IMPORTANT:
+   NOTHING IS REMOVED.
+   ========================================================= */
+
+function getLocal(key){
+
+    try{
+
+        const value =
+            localStorage.getItem(key);
+
+        if(
+            value === null ||
+            value === undefined ||
+            value === "null" ||
+            value === "undefined"
+        ){
+
+            return "";
+
+        }
+
+        return value;
+
+    }catch(error){
+
+        console.error(
+            "localStorage error:",
+            error
+        );
+
+        return "";
+
+    }
+
+}
+
+
+
+/* =========================================================
+   GENERATE NEW DEVICE ID
+
+   WE DO NOT TRUST THE OLD DEVICE ID.
+
+   A NEW DEVICE ID represents the CURRENT DEVICE.
+   ========================================================= */
+
+function createNewDeviceID(){
+
+    let newDeviceID = "";
+
+    try{
+
+        if(
+            window.crypto &&
+            typeof crypto.randomUUID === "function"
+        ){
+
+            newDeviceID =
+                crypto.randomUUID();
+
+        }
+
+    }catch(error){
+
+        console.warn(
+            "crypto.randomUUID unavailable",
+            error
+        );
+
+    }
+
+
+    /*
+        Fallback
+    */
+
+    if(!newDeviceID){
+
+        newDeviceID =
+
+            Date.now().toString(36) +
+
+            "-" +
+
+            Math.random()
+                .toString(36)
+                .substring(2) +
+
+            "-" +
+
+            Math.random()
+                .toString(36)
+                .substring(2);
+
+    }
+
+
+    return newDeviceID;
+
+}
+
+
+
+/* =========================================================
+   ESCAPE HTML
+   ========================================================= */
+
+function escapeHTML(value){
+
+    return String(value || "")
+
+        .replace(/&/g,"&amp;")
+
+        .replace(/</g,"&lt;")
+
+        .replace(/>/g,"&gt;")
+
+        .replace(/"/g,"&quot;")
+
+        .replace(/'/g,"&#039;");
+
+}
+
+
+
+/* =========================================================
+   SAVE LOCAL CONNECTION
+
+   IMPORTANT:
+
+   WE ONLY SET VALUES.
+
+   WE NEVER REMOVE ANYTHING.
+   ========================================================= */
+
+function saveLocalProfile(
+    profile,
+    newDeviceID
+){
+
+    try{
+
+        localStorage.setItem(
+            "loggedIn",
+            "true"
+        );
+
+
+        if(profile.id){
+
+            localStorage.setItem(
+                "user_id",
+                profile.id
+            );
+
+        }
+
+
+        localStorage.setItem(
+            "name",
+            profile.name || ""
+        );
+
+
+        localStorage.setItem(
+            "whatsapp_number",
+            profile.whatsapp_number || ""
+        );
+
+
+        localStorage.setItem(
+            "membership",
+            profile.membership || "free"
+        );
+
+
+        localStorage.setItem(
+            "package_type",
+            profile.package_type || ""
+        );
+
+
+        localStorage.setItem(
+            "expires_at",
+            profile.expires_at || ""
+        );
+
+
+        localStorage.setItem(
+            "activated_at",
+            profile.activated_at || ""
+        );
+
+
+        localStorage.setItem(
+            "paid_status",
+            profile.paid_status ?? ""
+        );
+
+
+        localStorage.setItem(
+            "account_status",
+            profile.account_status || "active"
+        );
+
+
+        localStorage.setItem(
+            "role",
+            profile.role || "user"
+        );
+
+
+        /*
+            IMPORTANT:
+
+            Replace the OLD device ID
+            with the NEW current-device ID.
+        */
+
+        localStorage.setItem(
+            "device_id",
+            newDeviceID
+        );
+
+
+        localStorage.setItem(
+            "lastProfileSync",
+            Date.now()
+        );
+
+
+        /*
+            Migration marker.
+        */
+
+        localStorage.setItem(
+            "busanso_supabase_connected",
+            "true"
+        );
+
+
+        localStorage.setItem(
+            "busanso_reconnected_at",
+            new Date().toISOString()
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "Could not save local profile:",
+            error
+        );
+
+        throw error;
+
+    }
+
+}
+
+
+
+/* =========================================================
+   AUTOMATIC RECONNECT
+   ========================================================= */
+
+async function reconnectAccount(){
+
+    try{
+
+        /* -------------------------------------------------
+           READ EXISTING LOCAL ACCOUNT
+           ------------------------------------------------- */
+
+        const localUserID =
+            getLocal("user_id");
+
+        const localName =
+            getLocal("name");
+
+        const localWhatsapp =
+            getLocal("whatsapp_number");
+
+        const localMembership =
+            getLocal("membership");
+
+        const localPackage =
+            getLocal("package_type");
+
+        const localExpiry =
+            getLocal("expires_at");
+
+        const localActivated =
+            getLocal("activated_at");
+
+        const localPaidStatus =
+            getLocal("paid_status");
+
+        const localAccountStatus =
+            getLocal("account_status");
+
+        const localRole =
+            getLocal("role");
+
+
+
+        /* -------------------------------------------------
+           CHECK WHETHER WE HAVE ENOUGH INFORMATION
+           ------------------------------------------------- */
+
+        if(
+            !localName &&
+            !localWhatsapp &&
+            !localUserID
+        ){
+
+            stopSpinner();
+
+            setTitle(
+                "Account Not Found"
+            );
+
+            setMessage(
+
+                "We could not find your existing BUSANSO account information on this device.",
+
+                "error"
+
+            );
+
+            return;
+
+        }
+
+
+
+        /* -------------------------------------------------
+           NORMALIZE PHONE
+           ------------------------------------------------- */
+
+        let phone =
+            localWhatsapp
+                .replace(/\D/g,"");
+
+
+        /*
+            If local number is:
+
+            0703888884
+
+            Supabase gets:
+
+            0703888884
+
+            because that is how your
+            current registration code stores it.
+        */
+
+        if(phone){
+
+            localStorage.setItem(
+                "whatsapp_number",
+                phone
+            );
+
+        }
+
+
+
+        /* -------------------------------------------------
+           GENERATE NEW DEVICE ID
+           ------------------------------------------------- */
+
+        const oldDeviceID =
+            getLocal("device_id");
+
+
+        const newDeviceID =
+            createNewDeviceID();
+
+
+
+        setMessage(
+            "Detecting your existing BUSANSO account..."
+        );
+
+
+
+        /* =================================================
+           FIRST: TRY BY WHATSAPP
+           ================================================= */
+
+        let existingProfile = null;
+
+
+        if(phone){
+
+            const {
+
+                data,
+                error
+
+            } = await supabaseClient
+
+                .from("profiles")
+
+                .select("*")
+
+                .eq(
+                    "whatsapp_number",
+                    phone
+                )
+
+                .limit(1);
+
+
+            if(error){
+
+                throw error;
+
+            }
+
+
+            if(
+                data &&
+                data.length > 0
+            ){
+
+                existingProfile =
+                    data[0];
+
+            }
+
+        }
+
+
+
+        /* =================================================
+           SECOND: TRY BY NAME
+           ================================================= */
+
+        if(
+            !existingProfile &&
+            localName
+        ){
+
+            const {
+
+                data,
+                error
+
+            } = await supabaseClient
+
+                .from("profiles")
+
+                .select("*")
+
+                .eq(
+                    "name",
+                    localName
+                )
+
+                .limit(1);
+
+
+            if(error){
+
+                throw error;
+
+            }
+
+
+            if(
+                data &&
+                data.length > 0
+            ){
+
+                existingProfile =
+                    data[0];
+
+            }
+
+        }
+
+
+
+        /* =================================================
+           EXISTING PROFILE FOUND
+           ================================================= */
+
+        if(existingProfile){
+
+            setMessage(
+                "Your account was found. Reconnecting this device..."
+            );
+
+
+            /*
+                IMPORTANT:
+
+                We DO NOT overwrite expiry here.
+
+                We use the existing Supabase
+                expiry if the profile already exists.
+
+                This protects an administrator's
+                current membership/expiry data.
+            */
+
+
+            const updateData = {
+
+                /*
+                    Keep the customer's known
+                    current identity information.
+                */
+
+                name:
+                    existingProfile.name ||
+                    localName ||
+                    "",
+
+
+                whatsapp_number:
+                    existingProfile.whatsapp_number ||
+                    phone ||
+                    "",
+
+
+                /*
+                    NEW DEVICE ID
+
+                    The old device ID is replaced.
+                */
+
+                device_id:
+                    newDeviceID,
+
+
+                account_status:
+                    existingProfile.account_status ||
+                    "active",
+
+
+                updated_at:
+                    new Date().toISOString()
+
+            };
+
+
+
+            const {
+
+                data: updatedProfile,
+                error: updateError
+
+            } = await supabaseClient
+
+                .from("profiles")
+
+                .update(updateData)
+
+                .eq(
+                    "id",
+                    existingProfile.id
+                )
+
+                .select("*")
+
+                .single();
+
+
+            if(updateError){
+
+                throw updateError;
+
+            }
+
+
+
+            /*
+                Save profile back to device.
+            */
+
+            saveLocalProfile(
+                updatedProfile,
+                newDeviceID
+            );
+
+
+
+            stopSpinner();
+
+
+            setTitle(
+                "Account Reconnected"
+            );
+
+
+            setMessage(
+
+                "Your BUSANSO account is connected again.",
+
+                "success"
+
+            );
+
+
+            showDetails(
+
+                "<b>Name:</b> " +
+
+                escapeHTML(
+                    updatedProfile.name
+                ) +
+
+                "<br>" +
+
+                "<b>WhatsApp:</b> " +
+
+                escapeHTML(
+                    updatedProfile.whatsapp_number
+                ) +
+
+                "<br>" +
+
+                "<b>Membership:</b> " +
+
+                escapeHTML(
+                    updatedProfile.membership ||
+                    "free"
+                ) +
+
+                "<br>" +
+
+                "<b>Expiry:</b> " +
+
+                escapeHTML(
+                    updatedProfile.expires_at ||
+                    "Not set"
+                ) +
+
+                "<br><br>" +
+
+                "<b>Device:</b> New device connected"
+
+            );
+
+
+            showContinueButton();
+
+
+            return;
+
+        }
+
+
+
+        /* =================================================
+           NO PROFILE FOUND
+
+           REBUILD PROFILE
+           ================================================= */
+
+        setMessage(
+
+            "Your old profile was not found. Rebuilding your BUSANSO account..."
+
+        );
+
+
+
+        /*
+            We rebuild the profile from the local
+            account information.
+
+            NO EXPIRY INPUT IS REQUIRED.
+
+            If expires_at exists locally,
+            it is automatically carried over.
+        */
+
+        const rebuiltProfile = {
+
+            name:
+                localName || "",
+
+
+            whatsapp_number:
+                phone || "",
+
+
+            membership:
+                localMembership ||
+                "free",
+
+
+            package_type:
+                localPackage ||
+                "",
+
+
+            expires_at:
+                localExpiry ||
+                null,
+
+
+            activated_at:
+                localActivated ||
+                null,
+
+
+            paid_status:
+                localPaidStatus ||
+                true,
+
+
+            account_status:
+                localAccountStatus ||
+                "active",
+
+
+            role:
+                localRole ||
+                "user",
+
+
+            /*
+                VERY IMPORTANT:
+
+                NEW DEVICE ID
+            */
+
+            device_id:
+                newDeviceID,
+
+
+            updated_at:
+                new Date().toISOString()
+
+        };
+
+
+
+        /*
+            DO NOT insert an old user_id as id.
+
+            Supabase should generate a new profile UUID.
+
+            The old local user_id might refer to a
+            profile row that no longer exists.
+        */
+
+        const {
+
+            data: newProfile,
+            error: insertError
+
+        } = await supabaseClient
+
+            .from("profiles")
+
+            .insert(
+                rebuiltProfile
+            )
+
+            .select("*")
+
+            .single();
+
+
+        if(insertError){
+
+            /*
+                There may be a unique-name/phone
+                conflict that wasn't caught by the
+                initial search.
+
+                Try one more lookup by phone.
+            */
+
+            if(phone){
+
+                const {
+
+                    data: retryProfile,
+                    error: retryError
+
+                } = await supabaseClient
+
+                    .from("profiles")
+
+                    .select("*")
+
+                    .eq(
+                        "whatsapp_number",
+                        phone
+                    )
+
+                    .limit(1);
+
+
+                if(
+                    !retryError &&
+                    retryProfile &&
+                    retryProfile.length
+                ){
+
+                    const profile =
+                        retryProfile[0];
+
+
+                    const {
+
+                        data: updated,
+                        error: retryUpdateError
+
+                    } = await supabaseClient
+
+                        .from("profiles")
+
+                        .update({
+
+                            device_id:
+                                newDeviceID,
+
+                            updated_at:
+                                new Date().toISOString()
+
+                        })
+
+                        .eq(
+                            "id",
+                            profile.id
+                        )
+
+                        .select("*")
+
+                        .single();
+
+
+                    if(retryUpdateError){
+
+                        throw retryUpdateError;
+
+                    }
+
+
+                    saveLocalProfile(
+                        updated,
+                        newDeviceID
+                    );
+
+
+                    stopSpinner();
+
+
+                    setTitle(
+                        "Account Reconnected"
+                    );
+
+
+                    setMessage(
+
+                        "Your BUSANSO account has been reconnected successfully.",
+
+                        "success"
+
+                    );
+
+
+                    showDetails(
+
+                        "<b>Name:</b> " +
+
+                        escapeHTML(
+                            updated.name
+                        ) +
+
+                        "<br>" +
+
+                        "<b>WhatsApp:</b> " +
+
+                        escapeHTML(
+                            updated.whatsapp_number
+                        ) +
+
+                        "<br>" +
+
+                        "<b>Membership:</b> " +
+
+                        escapeHTML(
+                            updated.membership ||
+                            "free"
+                        ) +
+
+                        "<br><br>" +
+
+                        "<b>Device ID:</b> Updated for this device"
+
+                    );
+
+
+                    showContinueButton();
+
+
+                    return;
+
+                }
+
+            }
+
+
+            throw insertError;
+
+        }
+
+
+
+        /* =================================================
+           NEW PROFILE CREATED
+           ================================================= */
+
+        saveLocalProfile(
+            newProfile,
+            newDeviceID
+        );
+
+
+        stopSpinner();
+
+
+        setTitle(
+            "Account Restored"
+        );
+
+
+        setMessage(
+
+            "Your BUSANSO account has been restored successfully.",
+
+            "success"
+
+        );
+
+
+        showDetails(
+
+            "<b>Name:</b> " +
+
+            escapeHTML(
+                newProfile.name
+            ) +
+
+            "<br>" +
+
+            "<b>WhatsApp:</b> " +
+
+            escapeHTML(
+                newProfile.whatsapp_number
+            ) +
+
+            "<br>" +
+
+            "<b>Membership:</b> " +
+
+            escapeHTML(
+                newProfile.membership ||
+                "free"
+            ) +
+
+            "<br>" +
+
+            "<b>Expiry:</b> " +
+
+            escapeHTML(
+                newProfile.expires_at ||
+                "Not set"
+            ) +
+
+            "<br><br>" +
+
+            "<b>Profile:</b> Rebuilt in Supabase" +
+
+            "<br>" +
+
+            "<b>Device:</b> New device connected"
+
+        );
+
+
+        showContinueButton();
+
+
+    }catch(error){
+
+        console.error(
+            "BUSANSO RECONNECT ERROR:",
+            error
+        );
+
+
+        stopSpinner();
+
+
+        setTitle(
+            "Connection Failed"
+        );
+
+
+        let message =
+            error &&
+            error.message
+
+                ? error.message
+
+                : "Unknown error";
+
+
+        /*
+            Explain RLS problems clearly.
+        */
+
+        if(
+            message
+                .toLowerCase()
+                .includes(
+                    "row-level security"
+                )
+
+            ||
+
+            message
+                .toLowerCase()
+                .includes(
+                    "permission"
+                )
+
+            ||
+
+            message
+                .toLowerCase()
+                .includes(
+                    "policy"
+                )
+        ){
+
+            message =
+
+                "Supabase is blocking the account rebuild because of the profiles table security policy.";
+
+        }
+
+
+        setMessage(
+
+            escapeHTML(message),
+
+            "error"
+
+        );
+
+
+        showDetails(
+
+            "Your existing local account information was NOT deleted.<br><br>" +
+
+            "Nothing was logged out or cleared from this device."
+
+        );
+
+    }
+
+}
+
+
+
+/* =========================================================
+   START AUTOMATICALLY
+
+   No button.
+   No input.
+   No user action.
+   ========================================================= */
+
+window.addEventListener(
+    "load",
+    function(){
+
+        setTimeout(
+            reconnectAccount,
+            500
+        );
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>
+

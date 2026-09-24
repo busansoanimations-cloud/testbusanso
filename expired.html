@@ -1,0 +1,526 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Renew Subscription • BUSANSO</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+
+min-height:100vh;
+
+background:
+radial-gradient(circle at top left,#2563eb33,transparent 35%),
+radial-gradient(circle at bottom right,#22c55e22,transparent 45%),
+linear-gradient(180deg,#020617,#000);
+
+color:#fff;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+padding:25px;
+
+overflow-x:hidden;
+
+}
+
+.container{
+
+width:100%;
+max-width:700px;
+
+background:rgba(255,255,255,.04);
+
+border:1px solid rgba(255,255,255,.08);
+
+backdrop-filter:blur(18px);
+
+border-radius:28px;
+
+padding:35px 28px;
+
+box-shadow:
+0 20px 60px rgba(0,0,0,.55);
+
+animation:fadeUp .6s ease;
+
+}
+
+.logo{
+
+text-align:center;
+margin-bottom:25px;
+
+}
+
+.logo img{
+
+height:70px;
+
+}
+
+h1{
+
+font-size:34px;
+
+font-weight:800;
+
+text-align:center;
+
+margin-bottom:12px;
+
+background:
+linear-gradient(90deg,#38bdf8,#22c55e);
+
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
+}
+
+.subtitle{
+
+text-align:center;
+
+font-size:17px;
+
+color:#cbd5e1;
+
+margin-bottom:30px;
+
+line-height:1.7;
+
+}
+
+.notice{
+
+background:rgba(255,255,255,.05);
+
+border-left:5px solid #f59e0b;
+
+border-radius:18px;
+
+padding:20px;
+
+margin-bottom:28px;
+
+line-height:1.8;
+
+color:#e2e8f0;
+
+}
+
+.notice strong{
+
+color:#fff;
+
+}
+
+.package-box{
+
+background:#0f172a;
+
+border:1px solid rgba(255,255,255,.08);
+
+border-radius:22px;
+
+padding:22px;
+
+margin-bottom:28px;
+
+}
+
+.package-title{
+
+font-size:20px;
+
+font-weight:700;
+
+margin-bottom:18px;
+
+text-align:center;
+
+color:#38bdf8;
+
+}
+
+.package{
+
+display:flex;
+
+justify-content:space-between;
+
+padding:14px 0;
+
+border-bottom:1px solid rgba(255,255,255,.06);
+
+font-size:15px;
+
+}
+
+.package:last-child{
+
+border:none;
+
+}
+
+.package b{
+
+color:#22c55e;
+
+}
+
+.payment{
+
+margin-top:22px;
+
+background:rgba(255,255,255,.04);
+
+padding:18px;
+
+border-radius:18px;
+
+line-height:1.9;
+
+font-size:15px;
+
+}
+
+.payment h3{
+
+margin-bottom:12px;
+
+color:#facc15;
+
+}
+
+.buttons{
+
+display:flex;
+
+flex-direction:column;
+
+gap:16px;
+
+margin-top:30px;
+
+}
+
+.btn{
+
+display:block;
+
+text-decoration:none;
+
+text-align:center;
+
+padding:16px;
+
+border-radius:18px;
+
+font-size:16px;
+
+font-weight:700;
+
+transition:.3s;
+
+}
+
+.btn-renew{
+
+background:
+linear-gradient(135deg,#2563eb,#38bdf8);
+
+color:white;
+
+animation:pulse 2s infinite;
+
+}
+
+.btn-home{
+
+background:#22c55e;
+
+color:white;
+
+}
+
+.btn:hover{
+
+transform:translateY(-3px);
+
+}
+
+.status{
+
+margin-top:28px;
+
+text-align:center;
+
+font-size:13px;
+
+color:#94a3b8;
+
+}
+
+@keyframes pulse{
+
+0%{transform:scale(1);}
+50%{transform:scale(1.03);}
+100%{transform:scale(1);}
+
+}
+
+@keyframes fadeUp{
+
+from{
+
+opacity:0;
+transform:translateY(25px);
+
+}
+
+to{
+
+opacity:1;
+transform:none;
+
+}
+
+}
+
+@media(max-width:600px){
+
+.container{
+
+padding:24px;
+
+}
+
+h1{
+
+font-size:28px;
+
+}
+
+.package{
+
+font-size:14px;
+
+}
+
+}
+</style>
+<body>
+
+<div class="container">
+
+    <div class="logo">
+        <img src="https://i.ibb.co/hxgrLF35/BUSANSO-New.png" alt="BUSANSO">
+    </div>
+
+    <h1>Subscription Expired</h1>
+
+    <div class="subtitle">
+        Your Premium package has expired.<br>
+        Don't worry — your account is still active.
+    </div>
+
+    <div class="notice">
+
+        <strong>You can still enjoy FREE movies and series.</strong>
+
+        <br><br>
+
+        To unlock Premium content again, simply renew your subscription.
+        Once payment is confirmed, this page will automatically detect your new membership and take you to your account. No refresh is needed.
+
+    </div>
+
+    <div class="package-box">
+
+        <div class="package-title">
+            Choose Your Package
+        </div>
+
+        <div class="package">
+            <span>🔥 KABEJA</span>
+            <b>UGX 13,000 / Month</b>
+        </div>
+
+        <div class="package">
+            <span>🔥 KABEJE</span>
+            <b>UGX 70,000 / 6 Months</b>
+        </div>
+
+        <div class="package">
+            <span>🔥 KABEJEST</span>
+            <b>UGX 120,000 / Year</b>
+        </div>
+
+        <div class="payment">
+
+            <h3>Pay Via Mobile Money</h3>
+
+            <strong>MTN</strong><br>
+            0703888884<br>
+            David Bakamize
+
+            <br><br>
+
+            <strong>Airtel</strong><br>
+            0792172818<br>
+            Senyonjo Geofrey
+
+        </div>
+
+    </div>
+
+    <div class="buttons">
+
+        <a href="packages.html" class="btn btn-renew">
+            💳 Renew Subscription
+        </a>
+
+        <a href="home.html" class="btn btn-home">
+            🎬 Continue With Free Movies
+        </a>
+
+    </div>
+
+    <div class="status" id="statusText">
+        Checking your subscription automatically...
+    </div>
+
+</div>
+<script type="module">
+
+import { createClient }
+from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+//==============================
+// SUPABASE
+//==============================
+
+const supabase = createClient(
+"https://dhkfhhybzcxdeoalcfqx.supabase.co",
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRoa2ZoaHliemN4ZGVvYWxjZnF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1MzQxNTEsImV4cCI6MjA4ODExMDE1MX0.jZ4NDNPJmO0Ji05TxDqCnzgLIIzKf9uCx3WrSgk2DaY";
+);
+
+const statusText = document.getElementById("statusText");
+
+//==============================
+// GET LOGGED USER
+//==============================
+
+const name = localStorage.getItem("name");
+
+if(!name){
+
+    location.replace("home.html");
+
+}
+
+//==============================
+// CHECK MEMBERSHIP
+//==============================
+
+async function checkMembership(){
+
+    const { data, error } = await supabase
+    .from("profiles")
+    .select("membership,expires_at")
+    .eq("name", name)
+    .single();
+
+    if(error || !data){
+        return;
+    }
+
+    // Keep localStorage updated
+    localStorage.setItem(
+        "membership",
+        data.membership || "free"
+    );
+
+    localStorage.setItem(
+        "expires_at",
+        data.expires_at || ""
+    );
+
+    statusText.textContent =
+    "Checking your subscription automatically...";
+
+    const expires =
+        data.expires_at
+        ? new Date(data.expires_at)
+        : null;
+
+    const active =
+        expires &&
+        expires > new Date();
+
+    // PREMIUM ACTIVE
+    if(
+        data.membership === "premium" &&
+        active
+    ){
+
+        statusText.textContent =
+        "Payment Recieved, taking you back to Busanso...";
+
+        setTimeout(()=>{
+            location.replace("account.html");
+        },500);
+
+        return;
+
+    }
+
+    // KIBANDA ACTIVE
+    if(
+        data.membership === "kibanda" &&
+        active
+    ){
+
+        statusText.textContent =
+        "Kibanda access detected. Redirecting...";
+
+        setTimeout(()=>{
+            location.replace("kibwatch.html");
+        },500);
+
+        return;
+
+    }
+
+}
+
+//==============================
+// START
+//==============================
+
+// First check immediately
+checkMembership();
+
+// Then every 5 seconds
+setInterval(checkMembership,5000);
+
+</script>
+
+</body>
+</html>

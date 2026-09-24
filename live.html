@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Busanso Nation – Live TV</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  background:#0b0b0b;
+  color:#fff;
+  font-family:'Poppins',sans-serif;
+}
+
+/* LOGO */
+.logo{
+  text-align:center;
+  padding:20px 10px 10px;
+}
+.logo img{
+  max-height:65px;
+}
+
+/* TOP BUTTONS */
+.top-actions{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:14px;
+  margin:10px 0 20px;
+}
+
+.btn{
+  padding:12px 24px;
+  border-radius:999px;
+  font-weight:700;
+  text-decoration:none;
+  font-size:14px;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  box-shadow:0 6px 16px rgba(0,0,0,.4);
+  transition:.2s;
+}
+.btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 24px rgba(0,0,0,.6);
+}
+
+.subscribe{
+  background:linear-gradient(135deg,#e50914,#ff3b3b);
+}
+.login{
+  background:linear-gradient(135deg,#2563eb,#1e40af);
+}
+.live{
+  background:linear-gradient(135deg,#16a34a,#22c55e);
+}
+.about{
+  background:#111;
+  border:1px solid #333;
+  color:#ddd;
+}
+
+/* LIVE PLAYER */
+.live-wrap{
+  max-width:900px;
+  margin:0 auto;
+  padding:0 15px 30px;
+}
+
+.live-badge{
+  text-align:center;
+  margin-bottom:10px;
+  font-weight:700;
+  color:#22c55e;
+  letter-spacing:1px;
+}
+
+.player{
+  position:relative;
+  padding-top:56.25%;
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 12px 30px rgba(0,0,0,.7);
+}
+
+.player iframe{
+  position:absolute;
+  top:0;left:0;
+  width:100%;
+  height:100%;
+  border:none;
+}
+
+.ad-box{
+  margin:20px auto;
+  text-align:center;
+  max-width:100%;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- LOGO -->
+<div class="logo">
+  <img src="https://i.ibb.co/hxgrLF35/BUSANSO-New.png" alt="Busanso Nation">
+</div>
+
+<!-- BUTTONS -->
+<div class="top-actions">
+  <a href="packages.html" class="btn subscribe">⭐ Subscribe</a>
+  <a href="about.html" class="btn about"> About Us</a>
+</div>
+
+<!-- LIVE STREAM -->
+<div class="live-wrap">
+  <div class="live-badge">🔴 LIVE STREAM</div>
+
+  <div class="player">
+    <iframe 
+      src="https://www.youtube.com/embed/live_stream?channel=UCU_pWN5D0fBXeRscQVuvlJw&autoplay=1&mute=1"
+      allow="autoplay; encrypted-media; fullscreen"
+      allowfullscreen>
+    </iframe>
+  </div>
+</div>
+
+<!-- MONETAG BANNER AD -->
+<div class="ad-box">
+  <script>
+    (function(s){
+      s.dataset.zone='10536867',
+      s.src='https://nap5k.com/tag.min.js'
+    })([document.documentElement, document.body]
+      .filter(Boolean)
+      .pop()
+      .appendChild(document.createElement('script')))
+  </script>
+</div>
+
+</body>
+</html>
+

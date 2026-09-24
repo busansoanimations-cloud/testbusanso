@@ -1,0 +1,224 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"<title>
+Movie Name - Download Luganda Translated Movie | BUSANSO Nation
+</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body { margin:0; background:#111; color:#fff; font-family:Arial,sans-serif; display:flex; flex-direction:column; align-items:center; }
+.banner { position:relative; width:100%; height:55vh; max-height:450px; overflow:hidden; display:flex; align-items:flex-end; justify-content:center; }
+.banner img { width:100%; height:100%; object-fit:cover; object-position:center; transform:scale(1.1); pointer-events:none; }
+.banner::after{ content:""; position:absolute; top:0; left:0; width:100%; height:100%; background:linear-gradient(to top, rgba(0,0,0,0.85) 30%, rgba(0,0,0,0.3) 60%, transparent 100%); }
+.banner .buttons{ position:absolute; bottom:30px; left:0; right:0; display:flex; gap:12px; justify-content:center; z-index:10; }
+button{ padding:14px 28px; font-size:16px; border:none; border-radius:8px; cursor:pointer; font-weight:bold; }
+#watchBtn{ background:#e50914; color:#fff; }
+#downloadBtn{ background:#2563eb; color:#fff; }
+.details{ max-width:900px; margin:20px auto; padding:0 16px; }
+.player{ margin:20px auto; width:90%; max-width:1200px; aspect-ratio:16/9; display:none; border:none; border-radius:12px; }
+@media(max-width:768px){
+  .banner{ height:40vh; }
+}
+</style>
+</head>
+<body>
+
+
+<!-- KIBANDA MEMBERSHIP CHECK -->
+<script type="module">
+
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+
+const supabase = createClient(
+'https://dhkfhhybzcxdeoalcfqx.supabase.co',
+'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRoa2ZoaHliemN4ZGVvYWxjZnF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1MzQxNTEsImV4cCI6MjA4ODExMDE1MX0.jZ4NDNPJmO0Ji05TxDqCnzgLIIzKf9uCx3WrSgk2DaY'
+);
+
+
+(async()=>{
+
+
+const user_id = localStorage.getItem("user_id");
+
+
+if(!user_id){
+    location.href="home.html";
+    return;
+}
+
+
+
+const { data, error } = await supabase
+.from("profiles")
+.select("membership, expires_at")
+.eq("id", user_id)
+.single();
+
+
+
+if(error || !data){
+    location.href="home.html";
+    return;
+}
+
+const now = new Date();
+
+if (
+    data.membership !== "kibanda" ||
+    !data.expires_at ||
+    new Date(data.expires_at) <= now
+) {
+    location.href = "home.html";
+    return;
+}
+
+console.log("MOVIE PLAYER ACCESS:",data.membership);
+
+
+
+if(data.membership !== "kibanda"){
+    location.href="home.html";
+    return;
+}
+
+
+
+})();
+
+</script>
+
+
+<div class="banner">
+  <img id="posterImg" src="">
+  <div class="buttons">
+    <button id="watchBtn">▶ Watch Now</button>
+    <button id="downloadBtn">⬇ Download</button>
+  </div>
+</div>
+
+<div class="details">
+  <h1 id="title">Movie is Loading...</h1>
+  <p id="synopsis"></p>
+  <p id="meta"></p>
+</div>
+
+<iframe id="player"
+allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+allowfullscreen
+class="player"></iframe>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+const supabase = createClient(
+'https://dhkfhhybzcxdeoalcfqx.supabase.co',
+'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRoa2ZoaHliemN4ZGVvYWxjZnF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1MzQxNTEsImV4cCI6MjA4ODExMDE1MX0.jZ4NDNPJmO0Ji05TxDqCnzgLIIzKf9uCx3WrSgk2DaY'
+);
+
+const params = new URLSearchParams(location.search);
+const id = params.get("id");
+if(!id){ location.href="kibmovies.html"; }
+
+const player = document.getElementById("player");
+const watchBtn = document.getElementById("watchBtn");
+const downloadBtn = document.getElementById("downloadBtn");
+const posterImg = document.getElementById("posterImg");
+
+/* ===== FETCH MOVIE ===== */
+const { data: movie } = await supabase
+  .from('movies')
+  .select('*')
+  .eq('id', id)
+  .single();
+
+document.getElementById("title").textContent = movie.title;
+posterImg.src = movie.poster;
+document.getElementById("synopsis").textContent = movie.synopsis || "";
+document.getElementById("meta").textContent =
+`${movie.year || ""} • ${movie.duration || ""} • ${movie.type || ""}`;
+
+/* ===== HIDE DOWNLOAD FOR YOUTUBE ===== */
+function isYouTube(url){
+  return /youtube\.com|youtu\.be/.test(url);
+}
+
+if(isYouTube(movie.video)){
+  downloadBtn.style.display = "none";
+}
+
+/* ===== VIDEO NORMALIZER ===== */
+function getVideoUrl(url){
+  if(!url) return "";
+
+  if(url.includes("youtube.com")){
+    const ytId = new URL(url).searchParams.get("v");
+    return `https://www.youtube.com/embed/${ytId}?autoplay=1&controls=1&rel=0`;
+  }
+
+  if(url.includes("youtu.be")){
+    const ytId = url.split("youtu.be/")[1].split("?")[0];
+    return `https://www.youtube.com/embed/${ytId}?autoplay=1&controls=1&rel=0`;
+  }
+
+  if(url.includes("vimeo.com")){
+    const vid = url.split("/").pop();
+    return `https://player.vimeo.com/video/${vid}?autoplay=1`;
+  }
+
+  // ✅ Robust Google Drive preview
+  if(url.includes("drive.google.com")){
+    let match = url.match(/\/d\/(.*?)\//);
+    let id = match ? match[1] : new URL(url).searchParams.get("id");
+
+    if(id){
+      return `https://drive.google.com/file/d/${id}/preview`;
+    }
+  }
+
+  return url;
+}
+
+/* ===== GOOGLE DRIVE DOWNLOAD FIX ===== */
+function getDownloadUrl(url){
+  if(!url) return "";
+
+  if(url.includes("drive.google.com")){
+    let match = url.match(/\/d\/(.*?)\//);
+    let id = match ? match[1] : new URL(url).searchParams.get("id");
+
+    if(id){
+      return `https://drive.google.com/uc?export=download&id=${id}`;
+    }
+  }
+
+  return url;
+}
+
+/* ===== PLAY ===== */
+function playMovie(){
+  player.src = getVideoUrl(movie.video);
+  player.style.display = "block";
+  posterImg.style.display = "none";
+  watchBtn.style.display = "none";
+  downloadBtn.style.display = "none";
+}
+
+/* ===== DOWNLOAD ===== */
+function downloadMovie(){
+  const url = getDownloadUrl(movie.video);
+  if(!url) return;
+  window.open(url, "_blank");
+}
+
+watchBtn.onclick = playMovie;
+posterImg.onclick = playMovie;
+downloadBtn.onclick = downloadMovie;
+
+</script>
+
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1}' crossorigin="anonymous"></script>
+</body>
+</html>

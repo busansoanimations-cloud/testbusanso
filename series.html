@@ -1,4 +1,4 @@
-
+﻿
 
 
 <!DOCTYPE html>
@@ -23,21 +23,21 @@ if(
 </script>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:linear-gradient(180deg,#120d05 0%,#1b1206 45%,#080604 100%);color:#fff5d6;font-family:Arial,sans-serif;}
-.logo{display:flex;justify-content:center;padding:18px 10px 10px;background:linear-gradient(180deg,#171006,#0b0804);border-bottom:1px solid rgba(212,175,55,.28);}
-.logo img{height:66px;filter:drop-shadow(0 0 10px rgba(212,175,55,.28));}
-.nav{display:flex;gap:12px;padding:14px;background:rgba(11,8,4,.97);position:sticky;top:0;z-index:10;border-bottom:1px solid rgba(212,175,55,.22);}
-.nav button{flex:1;padding:8px;border:none;border-radius:38px;background:linear-gradient(135deg,#f7d774,#b8860b 55%,#ffe9a3);color:#211603;font-weight:bold;font-size:14px;cursor:pointer;transition:.25s;box-shadow:0 4px 14px rgba(212,175,55,.18);}
+body{margin:0;background:linear-gradient(180deg,#0b1c24,#0a0f1a);color:#eaf6ff;font-family:Arial,sans-serif;}
+.logo{display:flex;justify-content:center;padding:18px 10px 10px;background:#07141c;}
+.logo img{height:66px;}
+.nav{display:flex;gap:12px;padding:14px;background:#07141c;position:sticky;top:0;z-index:10;}
+.nav button{flex:1;padding:8px;border:none;border-radius:38px;background:linear-gradient(135deg,#1f6cff,#29ffd8);color:#001018;font-weight:bold;font-size:14px;cursor:pointer;transition:.25s;}
 .nav button:hover{transform:translateY(-2px) scale(1.02);filter:brightness(1.1);}
-.search{padding:16px;background:linear-gradient(180deg,#0e0a05,#120d06);}
-.search input{width:100%;padding:16px;border-radius:20px;border:1px solid rgba(212,175,55,.35);background:#211708;color:#fff5d6;font-size:15px;box-shadow:inset 0 1px 8px rgba(0,0,0,.25);}
-.search input::placeholder{color:#c9ad67;}
+.search{padding:16px;background:#07141c;}
+.search input{width:100%;padding:16px;border-radius:20px;border:none;background:#102a38;color:#eaf6ff;font-size:15px;}
+.search input::placeholder{color:#9fc6d9;}
 .filters{display:flex;gap:12px;margin:12px 0;}
-.filters select{flex:1;padding:12px;border-radius:16px;border:1px solid rgba(212,175,55,.3);background:#211708;color:#fff5d6;font-size:14px;}
+.filters select{flex:1;padding:12px;border-radius:16px;border:none;background:#102a38;color:#eaf6ff;font-size:14px;}
 .series{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:16px;margin-bottom:80px;}
 @media(min-width:768px){.series{grid-template-columns:repeat(4,1fr);gap:16px;}}
 @media(min-width:1200px){.series{grid-template-columns:repeat(5,1fr);gap:18px;}}
-.card{background:linear-gradient(180deg,#241909,#0f0a04);border-radius:22px;overflow:hidden;box-shadow:0 14px 35px rgba(0,0,0,.65),0 0 0 1px rgba(212,175,55,.16);opacity:0;transform:translateY(20px);animation:fade .4s forwards;transition:.25s;}
+.card{background:linear-gradient(180deg,#102a38,#0b1c24);border-radius:22px;overflow:hidden;box-shadow:0 14px 35px rgba(0,0,0,.5);opacity:0;transform:translateY(20px);animation:fade .4s forwards;transition:.25s;}
 .card:hover{transform:translateY(-6px);}
 @keyframes fade{to{opacity:1;transform:none}}
 .card img{width:100%;aspect-ratio:2/3;object-fit:cover;}
@@ -78,17 +78,17 @@ body{margin:0;background:linear-gradient(180deg,#120d05 0%,#1b1206 45%,#080604 1
   background:rgba(239,68,68,.92);
 }
 .info{padding:12px}
-.title{font-weight:bold;font-size:14px;color:#ffe7a0;}
+.title{font-weight:bold;font-size:14px;}
 .meta{
 
-    color:#c9ad67;
+    color:#9ca3af;
 
     font-size:12px;
 
     line-height:1.5;
 
 }
-.watch{width:100%;padding:12px;border:none;border-radius:20px;background:linear-gradient(135deg,#f7d774,#b8860b 55%,#ffe9a3);color:#211603;font-weight:bold;font-size:13px;cursor:pointer;transition:.25s;box-shadow:0 5px 15px rgba(212,175,55,.18);}
+.watch{width:100%;padding:12px;border:none;border-radius:20px;background:linear-gradient(135deg,#29ffd8,#1f6cff);color:#001018;font-weight:bold;font-size:13px;cursor:pointer;transition:.25s;}
 .watch:hover{transform:scale(1.03);filter:brightness(1.1);}
  
 </style>
@@ -98,14 +98,14 @@ body{margin:0;background:linear-gradient(180deg,#120d05 0%,#1b1206 45%,#080604 1
 
 <!-- LOGO -->
 <div class="logo">
-  <img src="https://i.ibb.co/qL8vn3jS/busanso-logo-source.png" alt="BUSANSO">
+  <img src="https://i.ibb.co/1GMMrMmS/logo.png" alt="BUSANSO">
 </div>
 
 <!-- NAV -->
 <div class="nav">
   <button onclick="location.href='account.html'">👤 My Account</button>
   <button onclick="location.href='movies.html'">🎬 Movies</button>
-  <button onclick="location.href='happy-birthday.html'">🎂 Happy Birthday</button>
+  <button onclick="location.href='donate.html'">❤️ Donate</button>
 </div>
 
 <!-- SEARCH & FILTERS -->
