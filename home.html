@@ -121,8 +121,10 @@ top:0;
 left:0;
 width:100%;
 z-index:9999;
-background:rgba(2,6,23,.92);
+background:linear-gradient(180deg,rgba(8,10,18,.98),rgba(2,6,23,.94));
 backdrop-filter:blur(20px);
+border-bottom:1px solid rgba(212,175,55,.22);
+box-shadow:0 8px 30px rgba(0,0,0,.35),0 0 22px rgba(212,175,55,.06);
 }
 
 .header{
@@ -150,25 +152,34 @@ width:auto;
 
 
 .search-box{
-
-flex:1;
-
-height:40px;
-
-border-radius:25px;
-
-border:none;
-
+flex:0 1 230px;
+width:230px;
+height:34px;
+border-radius:18px;
+border:1px solid rgba(212,175,55,.45);
 outline:none;
+padding:0 12px;
+background:rgba(15,23,42,.9);
+color:#fff;
+font-size:12px;
+box-shadow:inset 0 0 12px rgba(212,175,55,.06),0 0 10px rgba(212,175,55,.08);
+transition:.25s ease;
+}
 
-padding:0 15px;
+.search-box:focus{
+border-color:#f6d365;
+box-shadow:0 0 0 2px rgba(212,175,55,.12),0 0 18px rgba(212,175,55,.18);
+}
 
-background:#1e293b;
-
-color:white;
-
-font-size:13px;
-
+@media(max-width:600px){
+.search-box{
+flex:1 1 auto;
+width:auto;
+max-width:145px;
+height:32px;
+font-size:11px;
+padding:0 10px;
+}
 }
 
 
@@ -181,26 +192,49 @@ color:#94a3b8;
 
 
 .login-main{
-
-width:80px;
-
-padding:9px 8px;
-
+width:82px;
+padding:8px 6px;
 border-radius:20px;
-
-background:
-linear-gradient(135deg,#2563eb,#38bdf8);
-
-color:white;
-
+background:linear-gradient(135deg,#b8860b,#f6d365,#b8860b);
+color:#120d02;
 text-decoration:none;
-
-font-size:11px;
-
-font-weight:700;
-
+font-size:10px;
+font-weight:800;
 text-align:center;
+border:1px solid rgba(255,230,140,.75);
+box-shadow:0 0 14px rgba(212,175,55,.22),inset 0 1px rgba(255,255,255,.5);
+white-space:nowrap;
+transition:.2s ease;
+}
 
+.login-main:hover{
+transform:translateY(-1px);
+box-shadow:0 0 22px rgba(212,175,55,.35);
+}
+
+.birthday-main{
+width:82px;
+padding:8px 5px;
+border-radius:20px;
+background:linear-gradient(135deg,#4c1d95,#9333ea,#f59e0b);
+color:#fff;
+text-decoration:none;
+font-size:10px;
+font-weight:800;
+text-align:center;
+border:1px solid rgba(255,255,255,.25);
+box-shadow:0 0 14px rgba(147,51,234,.25);
+white-space:nowrap;
+transition:.2s ease;
+}
+
+.birthday-main:hover{
+transform:translateY(-1px);
+box-shadow:0 0 22px rgba(147,51,234,.4);
+}
+
+@media(max-width:600px){
+.login-main,.birthday-main{width:70px;font-size:9px;padding:8px 3px;}
 }
 
 .top-action{
@@ -873,6 +907,15 @@ opacity:.8;
 
 
 .locked
+.premium-gold-line{
+height:2px;
+width:92%;
+max-width:900px;
+margin:0 auto;
+background:linear-gradient(90deg,transparent,#d4af37,#f6d365,#d4af37,transparent);
+box-shadow:0 0 12px rgba(212,175,55,.28);
+}
+
 /* ==============================
 END STYLE
 ============================== */
@@ -905,9 +948,11 @@ placeholder="🔍 Search movies & series..."
 <a href="auth.html"
 id="loginButton"
 class="login-main">
-
 📝 CREATE ACCOUNT
+</a>
 
+<a href="happy-birthday.html" class="birthday-main">
+🎂 BIRTHDAY
 </a>
 
 
@@ -1353,11 +1398,31 @@ async function refreshMembershipForAction(){
     }
 
     try{
-        const {data,error} = await supabase
-            .from("profiles")
-            .select("membership,package_type,expires_at,name")
-            .eq("name",name)
-            .single();
+        let data = null;
+        let error = null;
+
+        const authId = localStorage.getItem("auth_user_id") || "";
+
+        if(authId){
+            const result = await supabase
+                .from("profiles")
+                .select("membership,package_type,expires_at,name,auth_user_id")
+                .eq("auth_user_id",authId)
+                .maybeSingle();
+            data = result.data;
+            error = result.error;
+        }
+
+        // Keep old accounts working if they have no auth_user_id yet.
+        if(!data && name){
+            const result = await supabase
+                .from("profiles")
+                .select("membership,package_type,expires_at,name,auth_user_id")
+                .eq("name",name)
+                .maybeSingle();
+            data = result.data;
+            error = result.error;
+        }
 
         if(!error && data){
             localStorage.setItem("membership", String(data.membership || "free").toLowerCase());
@@ -1434,111 +1499,145 @@ let currentUser = null;
 
 async function verifyUser(){
 
+    // NEW AUTH: read the real Supabase Auth session first.
+    // This is what Google Sign-In creates; the old page only checked localStorage.
+    let session = null;
+    try{
+        const { data, error } = await supabase.auth.getSession();
+        if(error) console.warn("Supabase session check:", error);
+        session = data?.session || null;
+    }catch(error){
+        console.warn("Unable to read Supabase session:", error);
+    }
 
-const name =
-localStorage.getItem("name");
+    const authUser = session?.user || null;
+    const authId = authUser?.id || localStorage.getItem("auth_user_id") || "";
+    const authEmail = authUser?.email || localStorage.getItem("email") || "";
+    const metadata = authUser?.user_metadata || {};
+    const metadataName =
+        metadata.full_name ||
+        metadata.name ||
+        metadata.display_name ||
+        (authEmail ? authEmail.split("@")[0] : "");
 
-// A stored name is enough to identify the existing local session.
-// Do not require loggedIn just to keep a user on the site.
-if(!name){
-    showGuest();
-    return null;
-}
+    // Existing users still have the old localStorage identity.
+    const localName = localStorage.getItem("name") || "";
 
+    // If Google/Supabase is signed in, persist enough identity locally so the
+    // older Busanso page logic can continue working without forcing a logout.
+    if(authUser){
+        localStorage.setItem("loggedIn","true");
+        localStorage.setItem("auth_user_id",authUser.id);
+        if(authEmail) localStorage.setItem("email",authEmail);
+        if(!localName && metadataName){
+            localStorage.setItem("name",metadataName);
+        }
+    }
 
+    const name = localStorage.getItem("name") || metadataName;
 
+    // 1. Preferred path: match a Google Auth user to profiles.auth_user_id.
+    if(authId){
+        try{
+            const {data,error}=await supabase
+                .from("profiles")
+                .select("*")
+                .eq("auth_user_id",authId)
+                .maybeSingle();
 
+            if(!error && data){
+                localStorage.setItem("name", data.name || name || metadataName || "User");
+                localStorage.setItem("loggedIn","true");
+                localStorage.setItem("auth_user_id",authId);
+                localStorage.setItem("membership",String(data.membership || "free").toLowerCase());
+                localStorage.setItem("package_type",data.package_type || "");
+                localStorage.setItem("expires_at",data.expires_at || "");
+                currentUser={...data, auth_user_id:authId, email:authEmail};
+                showLoggedUser(currentUser);
+                return currentUser;
+            }
+        }catch(error){
+            console.warn("auth_user_id profile lookup failed:",error);
+        }
+    }
 
+    // 2. Legacy path: existing localStorage users are still supported.
+    if(name){
+        try{
+            const {data,error}=await supabase
+                .from("profiles")
+                .select("*")
+                .eq("name",name)
+                .maybeSingle();
 
+            if(!error && data){
+                localStorage.setItem("name",data.name || name);
+                localStorage.setItem("loggedIn","true");
+                localStorage.setItem("membership",String(data.membership || "free").toLowerCase());
+                localStorage.setItem("package_type",data.package_type || "");
+                localStorage.setItem("expires_at",data.expires_at || "");
+                if(authId) localStorage.setItem("auth_user_id",authId);
+                currentUser={...data, auth_user_id:authId || data.auth_user_id || "", email:authEmail};
+                showLoggedUser(currentUser);
+                return currentUser;
+            }
+        }catch(error){
+            console.warn("Legacy profile lookup failed:",error);
+        }
+    }
 
-const {data,error}=
+    // 3. A brand-new Google user may not have a profiles row yet.
+    // They are still a real authenticated user; treat them as FREE until a
+    // profile/membership is linked. Do not falsely grant premium access.
+    if(authUser){
+        const guestName = name || "BUSANSO USER";
+        localStorage.setItem("name",guestName);
+        localStorage.setItem("loggedIn","true");
+        localStorage.setItem("membership","free");
+        localStorage.setItem("package_type","");
+        localStorage.setItem("expires_at","");
+        currentUser={
+            id:authUser.id,
+            auth_user_id:authUser.id,
+            email:authEmail,
+            name:guestName,
+            membership:"free",
+            package_type:"",
+            expires_at:""
+        };
+        showLoggedUser(currentUser);
+        return currentUser;
+    }
 
-await supabase
+    // 4. No Auth session and no legacy identity = guest.
+    if(!name){
+        showGuest();
+        return null;
+    }
 
-.from("profiles")
-
-.select("*")
-
-.eq("name",name)
-
-.single();
-
-
-
-
-
-
-if (error) {
-    console.warn("Unable to verify user:", error);
-
-    // Network failure: keep using the locally stored session/membership.
-    // Never log the user out or send them to auth.html because of a
-    // temporary connection failure.
-    currentUser = {
+    currentUser={
         name,
-        membership: normalizeLocalMembership(),
-        package_type: localStorage.getItem("package_type") || "",
-        expires_at: localStorage.getItem("expires_at") || ""
+        membership:normalizeLocalMembership(),
+        package_type:localStorage.getItem("package_type") || "",
+        expires_at:localStorage.getItem("expires_at") || ""
     };
-
     showLoggedUser(currentUser);
     return currentUser;
 }
 
-if (!data) {
-    // Profile genuinely doesn't exist anymore.
-return null;
-}
-
-// Update localStorage with latest membership from Supabase
-localStorage.setItem("membership", data.membership || "free");
-localStorage.setItem("package_type", data.package_type || "");
-localStorage.setItem("expires_at", data.expires_at || "");
-
-
-
-// Save latest data
-
-
-localStorage.setItem(
-"membership",
-data.membership || "free"
-);
-
-
-localStorage.setItem(
-"package_type",
-data.package_type || ""
-);
-
-
-localStorage.setItem(
-"expires_at",
-data.expires_at || ""
-);
-
-
-
-
-currentUser=data;
-
-
-showLoggedUser(data);
-
-
-
-return data;
-
-
-
-}
-
-
-
-
-
-
-
+// Keep the page synchronized if Google/Supabase changes the session.
+supabase.auth.onAuthStateChange((event, session)=>{
+    if(event === "SIGNED_IN" && session?.user){
+        setTimeout(()=>verifyUser(),0);
+    }
+    if(event === "SIGNED_OUT"){
+        currentUser=null;
+        localStorage.removeItem("loggedIn");
+        localStorage.removeItem("auth_user_id");
+        localStorage.removeItem("email");
+        showGuest();
+    }
+});
 
 
 // ==============================
@@ -2661,4 +2760,3 @@ OK
 
 </body>
 </html>
-
