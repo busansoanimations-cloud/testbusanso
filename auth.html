@@ -34,6 +34,7 @@ body {
         );
 
     color: #fff;
+
     font-family:
         Arial,
         Helvetica,
@@ -257,7 +258,6 @@ h1 {
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
 <script>
 
 /*
@@ -265,41 +265,32 @@ h1 {
 BUSANSO TEST AUTHENTICATION
 ==============================================================
 
-THIS FILE IS SELF-CONTAINED.
+Supports:
 
-It does NOT use:
-
-    auth.js
-    supabase.js
-    config.js
-    device_id
-    old login logic
-    old localStorage authentication
-
-The purpose of this test is simply:
-
-    Google
+1. NORMAL WEB BROWSER
        ↓
-    Supabase Auth
+   Google
        ↓
-    authenticated session
+   Supabase
        ↓
-    testbusanso GitHub Pages
+   GitHub Pages auth.html
        ↓
-    home.html
+   home.html
 
 
-IMPORTANT:
-
-The redirect URL is intentionally HARD-CODED.
-
-We do NOT use:
-
-    window.location.origin
-
-because GitHub Pages is hosting this repository inside:
-
-    /testbusanso/
+2. BUSANSO ANDROID APP
+       ↓
+   Google
+       ↓
+   Supabase
+       ↓
+   busanso://auth-callback
+       ↓
+   BUSANSO Android app
+       ↓
+   auth.html
+       ↓
+   home.html
 
 ==============================================================
 */
@@ -320,26 +311,76 @@ const SUPABASE_ANON_KEY =
 
 /*
 ==============================================================
-EXACT TEST REDIRECT URL
+REDIRECT URLS
 ==============================================================
-
-This is the URL Supabase must return to after Google login.
 */
 
-const TEST_REDIRECT_URL =
+/*
+Normal browser callback.
+*/
+const WEB_REDIRECT_URL =
     "https://busansoanimations-cloud.github.io/testbusanso/auth.html";
+
+
+/*
+Android APK callback.
+
+The AndroidManifest.xml listens for:
+
+busanso://auth-callback
+*/
+const APP_REDIRECT_URL =
+    "busanso://auth-callback";
+
+
+/*
+==============================================================
+DETECT APP MODE
+==============================================================
+
+The Android app will eventually load the authentication page
+with:
+
+?app=1
+
+Normal browsers do not use that parameter.
+*/
+
+const urlParams =
+    new URLSearchParams(window.location.search);
+
+const isAppMode =
+    urlParams.get("app") === "1";
 
 
 /*
 ==============================================================
 CREATE SUPABASE CLIENT
 ==============================================================
+
+The APK uses the implicit authentication flow so the OAuth
+tokens can return through the Android deep link.
+
+The normal browser continues using the normal PKCE flow.
 */
 
 const supabaseClient =
     window.supabase.createClient(
         SUPABASE_URL,
-        SUPABASE_ANON_KEY
+        SUPABASE_ANON_KEY,
+        {
+            auth: {
+                flowType: isAppMode
+                    ? "implicit"
+                    : "pkce",
+
+                detectSessionInUrl: true,
+
+                persistSession: true,
+
+                autoRefreshToken: true
+            }
+        }
     );
 
 
@@ -394,15 +435,6 @@ function setLoading(isLoading) {
 ==============================================================
 GO TO HOME
 ==============================================================
-
-For this test, once Supabase confirms that the user has a
-valid session, we simply open the real Busanso home page
-inside the test repository.
-
-If home.html is later copied into this repository, it will
-continue from here.
-
-==============================================================
 */
 
 function goToHome() {
@@ -426,15 +458,6 @@ function goToHome() {
 ==============================================================
 CHECK EXISTING SESSION
 ==============================================================
-
-If the browser already has a valid Supabase session,
-don't ask the user to sign in again.
-
-IMPORTANT:
-
-We do NOT sign the user out if a check fails.
-
-==============================================================
 */
 
 async function checkExistingSession() {
@@ -443,7 +466,6 @@ async function checkExistingSession() {
 
         const result =
             await supabaseClient.auth.getSession();
-
 
         if (result.error) {
 
@@ -455,10 +477,8 @@ async function checkExistingSession() {
             return;
         }
 
-
         const session =
             result.data.session;
-
 
         if (
             session &&
@@ -473,14 +493,12 @@ async function checkExistingSession() {
             goToHome();
         }
 
-
     } catch (error) {
 
         console.error(
             "Unexpected session error:",
             error
         );
-
     }
 }
 
@@ -501,8 +519,19 @@ googleButton.addEventListener(
             "Connecting to Google..."
         );
 
-
         try {
+
+            /*
+            Select the correct callback depending
+            on whether BUSANSO is running inside
+            the Android APK.
+            */
+
+            const redirectTo =
+                isAppMode
+                    ? APP_REDIRECT_URL
+                    : WEB_REDIRECT_URL;
+
 
             const result =
                 await supabaseClient.auth.signInWithOAuth({
@@ -512,16 +541,16 @@ googleButton.addEventListener(
                     options: {
 
                         /*
-                        ======================================
-                        CRITICAL
-                        ======================================
+                        Android:
 
-                        This is the exact GitHub Pages
-                        authentication return URL.
+                            busanso://auth-callback
+
+                        Browser:
+
+                            GitHub Pages auth.html
                         */
 
-                        redirectTo:
-                            TEST_REDIRECT_URL,
+                        redirectTo: redirectTo,
 
 
                         /*
@@ -580,23 +609,7 @@ googleButton.addEventListener(
 /*
 ==============================================================
 AUTH STATE LISTENER
-==============================================================
-
-Supabase will report SIGNED_IN when authentication succeeds.
-
-We do NOT:
-
-    signOut()
-    clear localStorage
-    delete anything
-    create a profile
-    modify an existing profile
-
-This test is ONLY checking whether the Google session survives
-the transition to the Busanso pages.
-
-==============================================================
-*/
+==============================================================*/
 
 supabaseClient.auth.onAuthStateChange(
     function (event, session) {
@@ -610,7 +623,10 @@ supabaseClient.auth.onAuthStateChange(
         if (
             session &&
             session.user &&
-            event === "SIGNED_IN"
+            (
+                event === "SIGNED_IN" ||
+                event === "INITIAL_SESSION"
+            )
         ) {
 
             goToHome();
