@@ -1,236 +1,380 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<title>BUSANSO NATION</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Edit Profile - BUSANSO NATION</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<meta name="monetag" content="6d418a15bef62e99f15abae082c777e0">
+
+<!-- PWA REQUIRED -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#000000">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<!-- END PWA -->
+
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-  min-height:100vh;font-family:Arial,Helvetica,sans-serif;color:#fff;
-  background:
-    radial-gradient(circle at 15% 0%,rgba(212,175,55,.22),transparent 32%),
-    radial-gradient(circle at 100% 100%,rgba(255,180,60,.10),transparent 35%),
-    linear-gradient(180deg,#120e05,#050505 58%,#000);
-  padding:18px;
-}
-.wrap{max-width:520px;margin:auto}
-.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-.back{color:#e4bd4f;text-decoration:none;font-weight:800;font-size:13px}
-.brand{color:#d4af37;font-size:12px;font-weight:900;letter-spacing:2px}
-.card{
-  background:linear-gradient(145deg,rgba(255,255,255,.09),rgba(255,255,255,.025));
-  border:1px solid rgba(212,175,55,.35);border-radius:28px;padding:28px 20px;
-  box-shadow:0 28px 70px rgba(0,0,0,.65);
-}
-.logo{width:92px;height:92px;display:block;object-fit:contain;margin:0 auto 14px;filter:drop-shadow(0 8px 25px rgba(212,175,55,.35))}
-h1{text-align:center;font-size:25px;background:linear-gradient(90deg,#fff4b0,#d4af37,#fff4b0);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.sub{text-align:center;color:#aaa;font-size:12px;margin:8px 0 24px}
-.field{margin-bottom:16px}
-label{display:block;color:#c9b875;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.3px;margin-bottom:8px}
-input{
-  width:100%;padding:15px;border-radius:15px;border:1px solid rgba(212,175,55,.24);
-  background:rgba(0,0,0,.35);color:#fff;font-size:14px;outline:none;
-}
-input:focus{border-color:#d4af37;box-shadow:0 0 0 3px rgba(212,175,55,.10)}
-.note{font-size:11px;color:#888;line-height:1.6;margin-top:7px}
-button,.btn{
-  width:100%;border:0;border-radius:16px;padding:15px;text-align:center;text-decoration:none;
-  font-size:13px;font-weight:900;cursor:pointer;display:block;
-}
-.save{background:linear-gradient(135deg,#8f6b18,#d4af37,#f5df7a);color:#160f00;box-shadow:0 10px 28px rgba(212,175,55,.2)}
-.home{margin-top:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);color:#fff}
-.msg{display:none;margin:15px 0 0;padding:13px;border-radius:13px;text-align:center;font-size:12px;line-height:1.5}
-.ok{background:rgba(50,180,100,.12);border:1px solid rgba(50,180,100,.25);color:#9ff0ba}
-.err{background:rgba(255,70,70,.10);border:1px solid rgba(255,70,70,.22);color:#ffaaaa}
-.loading{text-align:center;color:#aaa;padding:25px 0}
-hr{border:0;height:1px;background:linear-gradient(90deg,transparent,#d4af37,transparent);margin:24px 0}
-@media(max-width:400px){.card{padding:24px 16px}h1{font-size:22px}}
+*{box-sizing:border-box;margin:0;padding:0;font-family:"Segoe UI",Arial,sans-serif}
+html,body{min-height:100%;background:#080604;color:#fff}
+body{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;overflow:auto;background:
+ radial-gradient(circle at 50% -10%,rgba(212,175,55,.22),transparent 36%),
+ radial-gradient(circle at 0 100%,rgba(212,175,55,.10),transparent 38%),
+ linear-gradient(145deg,#050403,#120e07 52%,#050403)}
+.onboarding{width:min(100%,520px);position:relative;z-index:2}
+.step{display:block;background:linear-gradient(145deg,rgba(35,28,15,.96),rgba(13,11,7,.98));border:1px solid rgba(226,190,72,.42);border-radius:26px;padding:30px 28px 26px;box-shadow:0 28px 90px rgba(0,0,0,.62),0 0 0 1px rgba(255,215,90,.05) inset}
+.step-number{color:#e7c45a;font-size:.75rem;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:10px;text-align:center}
+h1{text-align:center;font-family:Georgia,"Times New Roman",serif;font-size:clamp(2rem,7vw,2.55rem);line-height:1.1;margin-bottom:9px;color:#ffe7a0;text-shadow:0 2px 18px rgba(218,176,55,.18)}
+.prompt{text-align:center;color:#c9bea4;line-height:1.5;margin-bottom:18px;font-size:14px}
+.warning{display:flex;gap:11px;align-items:flex-start;margin:0 0 22px;padding:13px 14px;border-radius:15px;background:linear-gradient(135deg,rgba(212,175,55,.14),rgba(255,255,255,.035));border:1px solid rgba(231,196,90,.35);color:#f4df9a;font-size:13px;line-height:1.45}
+.warning .icon{font-size:18px;line-height:1}
+.field{margin-top:16px}.field label{display:block;margin:0 0 8px;color:#e7d6a5;font-size:13px;font-weight:800;letter-spacing:.5px}
+input{width:100%;padding:16px 17px;border-radius:14px;border:1px solid rgba(255,255,255,.14);outline:none;background:rgba(0,0,0,.38);color:#fff;font-size:17px;transition:.2s;box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
+input:focus{border-color:#e0b83f;box-shadow:0 0 0 4px rgba(224,184,63,.10),0 0 20px rgba(224,184,63,.08)}
+input::placeholder{color:#776f60}
+.save-btn{width:100%;padding:16px;margin-top:22px;border:1px solid rgba(255,235,157,.45);border-radius:15px;background:linear-gradient(135deg,#f4d76a,#c99522 55%,#e4bb43);color:#201604;font-size:17px;font-weight:900;letter-spacing:.3px;cursor:pointer;transition:.2s;box-shadow:0 12px 28px rgba(174,123,20,.25),inset 0 1px 0 rgba(255,255,255,.55)}
+.save-btn:hover{transform:translateY(-1px);filter:brightness(1.06)}
+.save-btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.cancel-btn{width:100%;margin-top:10px;padding:11px;border:0;background:transparent;color:#d9bd67;cursor:pointer;font-size:14px}
+.error{min-height:18px;margin-top:9px;color:#ffaaa5;font-size:13px}.success{min-height:18px;margin-top:11px;color:#d8f0a0;font-size:13px;text-align:center}
+.profile-status{display:flex;justify-content:center;gap:8px;align-items:center;margin-top:18px;color:#9f957f;font-size:12px}.dot{width:7px;height:7px;border-radius:50%;background:#d7b33f;box-shadow:0 0 10px rgba(215,179,63,.65)}
+@media(max-width:480px){body{padding:14px}.step{padding:24px 18px 20px;border-radius:22px}.warning{font-size:12.5px}input{font-size:16px}.save-btn{font-size:16px}}
 </style>
 </head>
+
 <body>
-<div class="wrap">
-  <div class="top">
-    <a class="back" href="account.html">← ACCOUNT</a>
-    <div class="brand">BUSANSO NATION</div>
-  </div>
+<main class="onboarding">
+  <section class="step active" id="profileStep">
+    <div class="step-number">BUSANSO NATION • EDIT PROFILE</div>
+    <h1>Your Profile</h1>
+    <p class="prompt">Review your details below and make any changes you need.</p>
 
-  <div class="card">
-    <img class="logo" src="https://i.ibb.co/hxgrLF35/BUSANSO-New.png" alt="BUSANSO NATION">
-    <h1>EDIT PROFILE</h1>
-    <div class="sub">Keep your BUSANSO profile information up to date.</div>
+    <div class="warning">
+      <div class="icon">⚠️</div>
+      <div><strong>Important:</strong> Once you save your changes, your profile will be locked for <strong>30 days</strong>. You will not be able to change your name or WhatsApp number again until the lock period ends.</div>
+    </div>
 
-    <div id="loading" class="loading">Loading your profile...</div>
+    <div class="field">
+      <label for="userName">YOUR NAME</label>
+      <input id="userName" type="text" maxlength="80" placeholder="Your name" autocomplete="name">
+      <div id="nameError" class="error"></div>
+    </div>
 
-    <form id="profileForm" style="display:none">
-      <div class="field">
-        <label for="name">Your Name</label>
-        <input id="name" maxlength="80" required autocomplete="name" placeholder="Enter your name">
-      </div>
+    <div class="field">
+      <label for="userPhone">WHATSAPP NUMBER</label>
+      <input id="userPhone" type="tel" inputmode="numeric" maxlength="10" placeholder="0700000000" autocomplete="tel">
+      <div id="phoneError" class="error"></div>
+    </div>
 
-      <div class="field">
-        <label for="whatsapp">WhatsApp / Phone Number</label>
-        <input id="whatsapp" maxlength="30" autocomplete="tel" placeholder="Optional">
-        <div class="note">This is optional. It is only saved to your BUSANSO profile.</div>
-      </div>
+    <div id="saveMessage" class="success"></div>
+    <button class="save-btn" id="finishBtn">SAVE CHANGES</button>
+    <button class="cancel-btn" id="backBtn" type="button">Cancel</button>
+    <div class="profile-status"><span class="dot"></span> Securely connected to your Busanso account</div>
+  </section>
+</main>
 
-      <hr>
-
-      <button id="saveBtn" class="save" type="submit">SAVE PROFILE</button>
-      <a class="btn home" href="account.html">CANCEL</a>
-
-      <div id="message" class="msg"></div>
-    </form>
-  </div>
-</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-(() => {
-  "use strict";
+const SUPABASE_URL = "https://dhkfhhybzcxdeoalcfqx.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRoa2ZoaHliemN4ZGVvYWxjZnF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1MzQxNTEsImV4cCI6MjA4ODExMDE1MX0.jZ4NDNPJmO0Ji05TxDqCnzgLIIzKf9uCx3WrSgk2DaY";
 
-  const SUPABASE_URL = "https://dhkfhhybzcxdeoalcfqx.supabase.co";
-  const SUPABASE_KEY = "sb_publishable_Rjm3T44VKTeuOF2yJS5rMw_xDfwPjuG";
-  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true
+  }
+});
 
-  const loading = document.getElementById("loading");
-  const form = document.getElementById("profileForm");
-  const nameInput = document.getElementById("name");
-  const whatsappInput = document.getElementById("whatsapp");
-  const saveBtn = document.getElementById("saveBtn");
-  const message = document.getElementById("message");
+const userName = document.getElementById("userName");
+const userPhone = document.getElementById("userPhone");
+const nameError = document.getElementById("nameError");
+const phoneError = document.getElementById("phoneError");
+const saveMessage = document.getElementById("saveMessage");
+const finishBtn = document.getElementById("finishBtn");
+const backBtn = document.getElementById("backBtn");
 
-  let profile = null;
-  let authUser = null;
-  let mode = null;
+let currentAuthUser = null;
+let currentProfile = null;
+let initialName = "";
+let initialPhone = "";
 
-  function showMessage(text, ok=false) {
-    message.textContent = text;
-    message.className = "msg " + (ok ? "ok" : "err");
-    message.style.display = "block";
+function goHome(){
+  location.replace("home.html");
+}
+
+function saveLocalProfile(profile){
+  if(!profile) return;
+  if(profile.id != null) localStorage.setItem("user_id", String(profile.id));
+  if(profile.name != null) localStorage.setItem("name", profile.name);
+  if(profile.whatsapp_number != null) localStorage.setItem("whatsapp_number", profile.whatsapp_number);
+  if(profile.device_id) localStorage.setItem("device_id", profile.device_id);
+  if(profile.account_status != null) localStorage.setItem("account_status", profile.account_status);
+  localStorage.setItem("isLoggedIn","true");
+  localStorage.setItem("loggedIn","true");
+  localStorage.setItem("profile",JSON.stringify(profile));
+  if(profile.plan != null) localStorage.setItem("plan",profile.plan);
+  if(profile.membership != null) localStorage.setItem("membership",profile.membership);
+}
+
+function buildNameSuggestions(name){
+  const base=name.trim().replace(/\s+/g," ");
+  const clean=base.replace(/\s+\d+$/g,"").trim()||"User";
+  const cap=clean.charAt(0).toUpperCase()+clean.slice(1);
+  return [cap,`${cap} 2`,`${cap} 3`,`${cap} 4`];
+}
+
+async function checkNameAvailable(name){
+  const normalized=name.trim();
+  const {data,error}=await supabaseClient.from("profiles").select("id,name").ilike("name",normalized).limit(10);
+  if(error) throw error;
+  return !(data||[]).some(row=>String(row.id)!==String(currentProfile?.id));
+}
+
+async function getAvailableNameSuggestions(name){
+  const candidates=buildNameSuggestions(name);
+  const checks=await Promise.all(candidates.map(async candidate=>({name:candidate,available:await checkNameAvailable(candidate)})));
+  return checks.filter(x=>x.available).map(x=>x.name).slice(0,4);
+}
+
+function showNameSuggestions(suggestions){
+  let box=document.getElementById("nameSuggestions");
+  if(!box){box=document.createElement("div");box.id="nameSuggestions";box.style.cssText="margin-top:10px;display:flex;flex-direction:column;gap:7px;";nameError.parentNode.insertBefore(box,nameError.nextSibling)}
+  box.innerHTML="";
+  if(!suggestions.length)return;
+  const label=document.createElement("div");label.textContent="Try one of these:";label.style.cssText="color:#e5c65f;font-size:12px;font-weight:800;margin-bottom:2px;";box.appendChild(label);
+  suggestions.forEach(suggestion=>{const btn=document.createElement("button");btn.type="button";btn.textContent=suggestion;btn.style.cssText="width:100%;padding:9px 11px;border:1px solid rgba(231,196,90,.25);border-radius:11px;background:rgba(212,175,55,.08);color:#fff;font-size:14px;font-weight:700;cursor:pointer;text-align:left;";btn.onclick=()=>{userName.value=suggestion;nameError.textContent="";box.innerHTML="";userName.focus()};box.appendChild(btn)});
+}
+
+function explainError(error){
+  const msg = String(error?.message || error || "").toLowerCase();
+  if(msg.includes("profile_edit_locked")){
+    const raw = String(error?.message || "");
+    return raw.replace(/^.*profile_edit_locked:\s*/i,"Profile editing is temporarily locked. You can edit again after ");
+  }
+  if(msg.includes("row-level security") || msg.includes("rls"))
+    return "Your account is signed in, but Supabase is blocking profile updates. Please apply the SQL security policies provided with this page.";
+  if(msg.includes("unique") || msg.includes("duplicate"))
+    return "That name is already in use. Please choose another name.";
+  return "We couldn't save your profile right now. Your account has not been logged out.";
+}
+
+async function loadCurrentUser(){
+  saveMessage.textContent = "";
+  phoneError.textContent = "";
+  nameError.textContent = "";
+
+  // Never use device_id to identify an authenticated user.
+  const { data: sessionData, error: sessionError } = await supabaseClient.auth.getSession();
+  if(sessionError) throw sessionError;
+
+  let session = sessionData?.session || null;
+
+  // Give the SDK one chance to restore/refresh a persisted session.
+  if(!session){
+    const { data: refreshed, error: refreshError } = await supabaseClient.auth.refreshSession();
+    if(!refreshError) session = refreshed?.session || null;
   }
 
-  async function findProfile() {
-    const sessionResult = await supabase.auth.getSession();
-    if (!sessionResult.error && sessionResult.data?.session?.user) {
-      authUser = sessionResult.data.session.user;
+  if(!session?.user){
+    // This is an authentication problem, not a profile problem.
+    location.replace("auth.html?return=edit-profile.html");
+    return false;
+  }
 
-      const r = await supabase.from("profiles")
-        .select("*")
-        .eq("auth_user_id", authUser.id)
-        .maybeSingle();
+  currentAuthUser = session.user;
 
-      if (r.error) throw r.error;
-      if (r.data) {
-        profile = r.data;
-        mode = "google";
+  // Primary lookup: the authenticated user's Supabase Auth UUID.
+  let { data: profile, error } = await supabaseClient
+    .from("profiles")
+    .select("*")
+    .eq("auth_user_id", currentAuthUser.id)
+    .maybeSingle();
+
+  if(error) throw error;
+
+  // Safe legacy fallback: match the authenticated email only if auth_user_id
+  // has not yet been attached to the profile. We then attach it during save.
+  if(!profile && currentAuthUser.email){
+    const result = await supabaseClient
+      .from("profiles")
+      .select("*")
+      .eq("email", currentAuthUser.email)
+      .maybeSingle();
+
+    if(result.error) throw result.error;
+    if(result.data) profile = result.data;
+  }
+
+  if(!profile){
+    // Do NOT create a second profile here. That can split membership/account data.
+    phoneError.textContent = "We found your Google account, but no Busanso profile is linked to it. Please contact support instead of creating a new account.";
+    finishBtn.disabled = true;
+    return false;
+  }
+
+  if(String(profile.account_status || "active").toLowerCase() === "blocked"){
+    phoneError.textContent = "This profile is blocked. No changes were made.";
+    finishBtn.disabled = true;
+    return false;
+  }
+
+  currentProfile = profile;
+  initialName = profile.name || "";
+  initialPhone = profile.whatsapp_number || "";
+
+  userName.value = initialName;
+  userPhone.value = initialPhone;
+
+  // Keep the local cache synchronized, including membership/premium fields.
+  // This never changes or downgrades membership.
+  saveLocalProfile(profile);
+
+  return true;
+}
+
+userPhone.addEventListener("input",()=>{
+  userPhone.value=userPhone.value.replace(/\D/g,"").slice(0,10);
+  phoneError.textContent="";
+  saveMessage.textContent="";
+});
+
+backBtn.addEventListener("click",()=>{
+  goHome();
+});
+
+finishBtn.addEventListener("click", async () => {
+  if(!currentAuthUser || !currentProfile) return;
+
+  const name = userName.value.trim();
+  const phone = userPhone.value.trim();
+
+  phoneError.textContent = "";
+  saveMessage.textContent = "";
+
+  if(name.length < 2){
+    nameError.textContent = "Please enter at least 2 characters.";
+    userName.focus();
+    return;
+  }
+
+  if(!/^0\d{9}$/.test(phone)){
+    phoneError.textContent = "Enter exactly 10 digits and make sure the number starts with 0.";
+    userPhone.focus();
+    return;
+  }
+
+  finishBtn.disabled = true;
+  finishBtn.textContent = "SAVING...";
+
+  try{
+    // Re-check the session immediately before writing. This prevents an
+    // expired/stale page from updating another user's profile.
+    const { data: sessionData, error: sessionError } = await supabaseClient.auth.getSession();
+    if(sessionError) throw sessionError;
+    const authUser = sessionData?.session?.user;
+
+    if(!authUser || authUser.id !== currentAuthUser.id){
+      throw new Error("AUTH_SESSION_CHANGED");
+    }
+
+    // Name uniqueness is enforced while excluding this user's own row.
+    if(name !== initialName.trim()){
+      const available = await checkNameAvailable(name);
+      if(!available){
+        nameError.textContent = `"${name}" is already in use. Please choose another name.`;
+        showNameSuggestions(await getAvailableNameSuggestions(name));
+        finishBtn.disabled = false;
+        finishBtn.textContent = "SAVE CHANGES";
         return;
       }
     }
 
-    const storedId = localStorage.getItem("user_id");
-    if (storedId && Number.isFinite(Number(storedId))) {
-      const r = await supabase.from("profiles")
-        .select("*")
-        .eq("id", Number(storedId))
-        .maybeSingle();
+    // Update ONLY editable profile fields. Membership, plan, account_status,
+    // expiry dates, roles and other account fields are deliberately untouched.
+    const updates = {
+      name,
+      whatsapp_number: phone
+    };
 
-      if (!r.error && r.data) {
-        profile = r.data;
-        mode = "legacy";
-        return;
-      }
+    // If this is a legacy profile matched by email, safely attach the Auth UUID.
+    // Do not create a second profile.
+    if(!currentProfile.auth_user_id){
+      updates.auth_user_id = authUser.id;
     }
 
-    const storedName = localStorage.getItem("name");
-    if (storedName) {
-      const r = await supabase.from("profiles")
-        .select("*")
-        .eq("name", storedName)
-        .limit(1);
+    const { data: updated, error } = await supabaseClient
+      .from("profiles")
+      .update(updates)
+      .eq("id", currentProfile.id)
+      .select("*")
+      .single();
 
-      if (!r.error && r.data?.length) {
-        profile = r.data[0];
-        mode = "legacy";
-      }
+    if(error) throw error;
+
+    currentProfile = updated;
+    initialName = updated.name || "";
+    initialPhone = updated.whatsapp_number || "";
+    saveLocalProfile(updated);
+
+    saveMessage.textContent = "Profile updated successfully. Your membership and account remain unchanged.";
+    finishBtn.textContent = "DONE";
+
+    setTimeout(goHome, 700);
+  }catch(error){
+    console.error(error);
+
+    if(String(error?.message || "") === "AUTH_SESSION_CHANGED"){
+      phoneError.textContent = "Your secure login session changed or expired. No profile changes were made. Please sign in again.";
+    }else{
+      phoneError.textContent = explainError(error);
     }
+
+    finishBtn.disabled = false;
+    finishBtn.textContent = "SAVE CHANGES";
+  }
+});
+
+// If the Auth session changes while the page is open, never sign the user out
+// or overwrite their profile. Re-load the current profile only for the same user.
+supabaseClient.auth.onAuthStateChange(async (event, session) => {
+  if(event === "SIGNED_OUT"){
+    location.replace("auth.html?return=edit-profile.html");
+    return;
   }
 
-  async function init() {
-    try {
-      await findProfile();
-
-      if (!profile) {
-        loading.innerHTML = 'No BUSANSO profile was found.<br><br><a href="auth.html" style="color:#d4af37;font-weight:800">GO TO SIGN IN</a>';
-        return;
-      }
-
-      nameInput.value = profile.name || "";
-      whatsappInput.value = profile.whatsapp_number || "";
-
-      localStorage.setItem("user_id", String(profile.id));
-      localStorage.setItem("name", profile.name || "");
-      if (authUser?.id) {
-        localStorage.setItem("auth_user_id", authUser.id);
-        localStorage.setItem("supabase_auth_user_id", authUser.id);
-      }
-
-      loading.style.display = "none";
-      form.style.display = "block";
-    } catch (e) {
-      console.error(e);
-      loading.textContent = "Unable to load your profile. Please try again.";
+  if(["SIGNED_IN","TOKEN_REFRESHED","USER_UPDATED"].includes(event) && session?.user){
+    if(currentAuthUser && session.user.id !== currentAuthUser.id){
+      currentAuthUser = session.user;
+      try { await loadCurrentUser(); } catch(e){ console.error(e); }
     }
   }
+});
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    message.style.display = "none";
-
-    const newName = nameInput.value.trim();
-    const newWhatsapp = whatsappInput.value.trim();
-
-    if (!newName) {
-      showMessage("Please enter your name.");
-      return;
+window.addEventListener("load", async () => {
+  try{
+    const ok = await loadCurrentUser();
+    if(ok){
+      userName.focus();
     }
-
-    saveBtn.disabled = true;
-    saveBtn.textContent = "SAVING...";
-
-    try {
-      const updates = {
-        name: newName,
-        whatsapp_number: newWhatsapp || null
-      };
-
-      const r = await supabase.from("profiles")
-        .update(updates)
-        .eq("id", profile.id)
-        .select("*")
-        .maybeSingle();
-
-      if (r.error) throw r.error;
-      if (!r.data) throw new Error("The profile could not be updated. Check your Supabase UPDATE policy.");
-
-      profile = r.data;
-      localStorage.setItem("user_id", String(profile.id));
-      localStorage.setItem("name", profile.name || "");
-      localStorage.setItem("whatsapp_number", profile.whatsapp_number || "");
-
-      showMessage("Profile updated successfully.", true);
-      setTimeout(() => location.href = "account.html", 900);
-    } catch (e) {
-      console.error(e);
-      showMessage("Could not save the profile. " + (e.message || "Please try again."));
-    } finally {
-      saveBtn.disabled = false;
-      saveBtn.textContent = "SAVE PROFILE";
-    }
-  });
-
-  init();
-})();
+  }catch(error){
+    console.error(error);
+    phoneError.textContent = "We couldn't securely load your profile. Your account has not been logged out. Please refresh and try again.";
+    finishBtn.disabled = true;
+  }
+});
 </script>
+<script>
+/* Register service worker */
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js");
+}
+</script>
+
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1,"spa":2}' crossorigin="anonymous"></script>
 </body>
 </html>
