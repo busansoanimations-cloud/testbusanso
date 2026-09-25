@@ -1209,21 +1209,29 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRoa2ZoaHliemN4ZGVvYWxjZnF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1MzQxNTEsImV4cCI6MjA4ODExMDE1MX0.jZ4NDNPJmO0Ji05TxDqCnzgLIIzKf9uCx3WrSgk2DaY";
 
-const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY,
+    {
+        auth:{
+            persistSession:true,
+            autoRefreshToken:true,
+            detectSessionInUrl:true,
+            flowType:"pkce",
+            storageKey:"busanso-auth"
+        }
+    }
+);
 
 let countdownTimer = null;
-
+let currentProfileId = null;
+let profileChannel = null;
 
 /* =========================================
-   ACCOUNT (2) LOGIN/PROFILE LOGIC
-   IMPORTANT: use the existing user_id session
-   exactly like account (2).html.
+   ACCOUNT LOADING
+   Google/Auth session is the primary identity.
+   Legacy localStorage remains supported.
 ========================================= */
-
 async function loadAccount(){
 
     const loading = document.getElementById("loading");
@@ -1231,176 +1239,165 @@ async function loadAccount(){
     const errorPage = document.getElementById("errorPage");
     const errorMessage = document.getElementById("errorMessage");
 
-    /*
-     * IMPORTANT:
-     * This page never signs the user out and never clears localStorage
-     * merely because a profile lookup fails.
-     *
-     * We first use the existing Busanso user_id contract. This preserves
-     * compatibility with existing accounts. If that lookup is blocked by
-     * newer RLS rules, we then try the authenticated Supabase user.
-     */
-    const cachedId = localStorage.getItem("user_id");
     let data = null;
-    let error = null;
+    let lookupError = null;
+    let authUser = null;
 
-    if(cachedId){
-        const result = await supabaseClient
-            .from("profiles")
-            .select("*")
-            .eq("id", Number(cachedId))
-            .maybeSingle();
-
-        data = result.data;
-        error = result.error;
+    /* 1. Read the current Supabase Auth session first. */
+    try{
+        const sessionResult = await supabaseClient.auth.getSession();
+        authUser = sessionResult?.data?.session?.user || null;
+    }catch(error){
+        lookupError = error;
     }
 
-    /*
-     * Authenticated fallback for Google/OAuth users.
-     * This does NOT trigger Google sign-in. getSession/getUser only reads
-     * the existing session already stored by Supabase.
-     */
-    if(!data){
-        const {data: sessionData} =
-            await supabaseClient.auth.getSession();
-
-        const authUser = sessionData?.session?.user || null;
-
-        if(authUser){
-            const byAuth = await supabaseClient
+    /* 2. New Google users: match the profile by auth_user_id. */
+    if(authUser?.id){
+        try{
+            const result = await supabaseClient
                 .from("profiles")
                 .select("*")
                 .eq("auth_user_id", authUser.id)
                 .maybeSingle();
 
-            if(!byAuth.error && byAuth.data){
-                data = byAuth.data;
-                error = null;
-            }else if(authUser.email){
-                const byEmail = await supabaseClient
+            if(result.data){
+                data = result.data;
+                lookupError = null;
+            }else if(result.error){
+                lookupError = result.error;
+            }
+        }catch(error){
+            lookupError = error;
+        }
+    }
+
+    /* 3. Some newly-created profiles may not have auth_user_id yet.
+          Match the authenticated Google email instead. */
+    if(!data && authUser?.email){
+        try{
+            const result = await supabaseClient
+                .from("profiles")
+                .select("*")
+                .eq("email", authUser.email)
+                .maybeSingle();
+
+            if(result.data){
+                data = result.data;
+                lookupError = null;
+            }else if(result.error){
+                lookupError = result.error;
+            }
+        }catch(error){
+            lookupError = error;
+        }
+    }
+
+    /* 4. Legacy accounts: use the old user_id only when there is
+          no usable authenticated Google profile. */
+    if(!data){
+        const cachedId = localStorage.getItem("user_id");
+
+        if(cachedId){
+            try{
+                const result = await supabaseClient
                     .from("profiles")
                     .select("*")
-                    .eq("email", authUser.email)
+                    .eq("id", Number(cachedId))
                     .maybeSingle();
 
-                if(!byEmail.error && byEmail.data){
-                    data = byEmail.data;
-                    error = null;
+                if(result.data){
+                    data = result.data;
+                    lookupError = null;
+                }else if(result.error){
+                    lookupError = result.error;
                 }
+            }catch(error){
+                lookupError = error;
             }
         }
     }
 
-    /*
-     * Last-resort display cache.
-     * This prevents a temporary RLS/network problem from making a real
-     * member appear to have lost their account. It does NOT grant access
-     * to protected content; content pages/database policies remain the
-     * authority for actual access.
-     */
+    /* 5. Last-resort cached profile. This is display-only fallback and
+          never grants access by itself. */
     if(!data){
         const cached = localStorage.getItem("profile");
-
         if(cached){
             try{
                 const cachedProfile = JSON.parse(cached);
-                if(cachedProfile && cachedProfile.id){
+                if(cachedProfile?.id){
                     data = cachedProfile;
                 }
-            }catch(_){}
+            }catch(_){ }
         }
     }
 
     if(!data){
-
-        console.error(
-            "BUSANSO profile could not be loaded:",
-            error
-        );
+        console.error("BUSANSO profile could not be loaded:", lookupError);
 
         loading.classList.add("hidden");
         page.classList.add("hidden");
+        errorPage.classList.remove("hidden");
 
-        if(errorPage){
-            errorPage.classList.remove("hidden");
+        if(authUser){
             errorMessage.textContent =
-                "We could not refresh your account right now. Your login and membership have not been deleted. Please refresh the page.";
+                "Google sign-in succeeded, but the BUSANSO profile could not be loaded. Please refresh once.";
+        }else{
+            errorMessage.textContent =
+                "We could not identify your BUSANSO account. Please sign in with Google.";
         }
-
         return false;
     }
 
-    /*
-     * NEVER clear localStorage here.
-     * An account lookup problem must never destroy the user's local
-     * account information or membership cache.
-     */
-    if(
-        (data.account_status || "active").toLowerCase() !== "active"
-    ){
+    if(String(data.account_status || "active").toLowerCase() !== "active"){
         loading.classList.add("hidden");
         page.classList.add("hidden");
-
-        if(errorPage){
-            errorPage.classList.remove("hidden");
-            errorMessage.textContent =
-                "This account is currently blocked. No account information was deleted.";
-        }
-
+        errorPage.classList.remove("hidden");
+        errorMessage.textContent =
+            "This account is currently blocked. No account information was deleted.";
         return false;
     }
 
-    const membership =
-        (data.membership || "free").toLowerCase();
+    currentProfileId = data.id;
 
-    document.getElementById("userName").textContent =
-        data.name || "Member";
-
-    document.getElementById("packageName").textContent =
-        (data.package_type || "free").toUpperCase();
-
-    const status = document.getElementById("membershipStatus");
-    const expiryBox = document.getElementById("expiryBox");
-    const moviesBtn = document.getElementById("moviesBtn");
-    const seriesBtn = document.getElementById("seriesBtn");
-
+    const membership = String(data.membership || "free").toLowerCase();
     const premiumActive =
         membership === "premium" &&
         data.expires_at &&
         new Date(data.expires_at) > new Date();
 
+    document.getElementById("userName").textContent =
+        data.name || authUser?.user_metadata?.full_name || "Member";
+
+    document.getElementById("packageName").textContent =
+        String(data.package_type || "free").toUpperCase();
+
+    const status = document.getElementById("membershipStatus");
+    const expiryBox = document.getElementById("expiryBox");
+    const moviesBtn = document.getElementById("moviesBtn");
+    const seriesBtn = document.getElementById("seriesBtn");
     const payBtn = document.getElementById("payBtn");
 
     if(payBtn){
-        payBtn.style.display =
-            membership === "free" ? "flex" : "none";
+        payBtn.style.display = membership === "free" ? "flex" : "none";
     }
 
     if(premiumActive){
-
-        status.textContent = "Active";
+        status.textContent = "Premium Active";
 
         moviesBtn.classList.remove("locked");
         seriesBtn.classList.remove("locked");
-
         moviesBtn.classList.add("premium-active");
         seriesBtn.classList.add("premium-active");
 
         moviesBtn.href = "movies.html";
         seriesBtn.href = "series.html";
-
         moviesBtn.onclick = null;
         seriesBtn.onclick = null;
 
         expiryBox.style.display = "block";
         startExpiryCountdown(data.expires_at);
-
     }else{
-
-        status.textContent =
-            membership === "premium"
-                ? "Expired"
-                : "Free package";
+        status.textContent = membership === "premium" ? "Expired" : "Free package";
 
         if(data.expires_at){
             expiryBox.style.display = "block";
@@ -1411,7 +1408,6 @@ async function loadAccount(){
 
         moviesBtn.classList.add("locked");
         seriesBtn.classList.add("locked");
-
         moviesBtn.classList.remove("premium-active");
         seriesBtn.classList.remove("premium-active");
 
@@ -1422,19 +1418,15 @@ async function loadAccount(){
             e.preventDefault();
             location.href = "packages.html";
         };
-
         seriesBtn.onclick = function(e){
             e.preventDefault();
             location.href = "packages.html";
         };
     }
 
-    /*
-     * Keep the existing local account cache synchronized.
-     * Nothing here removes membership or logs the user out.
-     */
+    /* Keep both the new Auth session and the old Busanso cache usable. */
     localStorage.setItem("user_id", String(data.id));
-    localStorage.setItem("name", data.name || "");
+    localStorage.setItem("name", data.name || authUser?.user_metadata?.full_name || "");
     localStorage.setItem("whatsapp_number", data.whatsapp_number || "");
     localStorage.setItem("membership", data.membership || "free");
     localStorage.setItem("package_type", data.package_type || "");
@@ -1443,12 +1435,14 @@ async function loadAccount(){
     localStorage.setItem("isLoggedIn", "true");
     localStorage.setItem("loggedIn", "true");
 
-    loading.classList.add("hidden");
-
-    if(errorPage){
-        errorPage.classList.add("hidden");
+    /* Store the Auth identity too, without replacing the legacy user_id. */
+    if(authUser?.id){
+        localStorage.setItem("auth_user_id", authUser.id);
+        localStorage.setItem("auth_email", authUser.email || "");
     }
 
+    loading.classList.add("hidden");
+    errorPage.classList.add("hidden");
     page.classList.remove("hidden");
 
     return true;
@@ -1457,140 +1451,107 @@ async function loadAccount(){
 /* =========================================
    EXPIRY COUNTDOWN
 ========================================= */
-
 function startExpiryCountdown(expiryDate){
 
-    const expiryDateEl =
-        document.getElementById("expiryDate");
-
-    const countdown =
-        document.getElementById("countdown");
+    const expiryDateEl = document.getElementById("expiryDate");
+    const countdown = document.getElementById("countdown");
 
     function update(){
-
-        const diff =
-            new Date(expiryDate).getTime() -
-            new Date().getTime();
-
+        const diff = new Date(expiryDate).getTime() - Date.now();
 
         if(diff <= 0){
-
-            expiryDateEl.textContent =
-                new Date(expiryDate).toLocaleString();
-
-            countdown.textContent =
-                "access expired";
-
+            expiryDateEl.textContent = new Date(expiryDate).toLocaleString();
+            countdown.textContent = "access expired";
             countdown.classList.add("expired");
-
-            document.getElementById(
-                "membershipStatus"
-            ).textContent = "Expired";
-
+            document.getElementById("membershipStatus").textContent = "Expired";
             return;
         }
 
+        countdown.classList.remove("expired");
+        expiryDateEl.textContent = new Date(expiryDate).toLocaleString(
+            undefined,
+            {dateStyle:"medium",timeStyle:"short"}
+        );
 
-        expiryDateEl.textContent =
-            new Date(expiryDate).toLocaleString(
-                undefined,
-                {
-                    dateStyle:"medium",
-                    timeStyle:"short"
-                }
-            );
-
-
-        const days =
-            Math.floor(diff / 86400000);
-
-        const hours =
-            Math.floor(
-                (diff % 86400000) / 3600000
-            );
-
-        const minutes =
-            Math.floor(
-                (diff % 3600000) / 60000
-            );
-
-        const seconds =
-            Math.floor(
-                (diff % 60000) / 1000
-            );
-
+        const days = Math.floor(diff / 86400000);
+        const hours = Math.floor((diff % 86400000) / 3600000);
+        const minutes = Math.floor((diff % 3600000) / 60000);
+        const seconds = Math.floor((diff % 60000) / 1000);
 
         countdown.textContent =
             days + " days " +
-            String(hours).padStart(2,"0") +
-            " hours " +
-            String(minutes).padStart(2,"0") +
-            " minutes " +
-            String(seconds).padStart(2,"0") +
-            " seconds";
+            String(hours).padStart(2,"0") + " hours " +
+            String(minutes).padStart(2,"0") + " minutes " +
+            String(seconds).padStart(2,"0") + " seconds";
     }
-
 
     update();
-
-
-    if(countdownTimer){
-        clearInterval(countdownTimer);
-    }
-
-    countdownTimer =
-        setInterval(update,1000);
+    if(countdownTimer) clearInterval(countdownTimer);
+    countdownTimer = setInterval(update,1000);
 }
-
 
 /* =========================================
    ADMIN BUTTON
 ========================================= */
-
 async function checkAdminAccess(){
-
-    const userID = localStorage.getItem("user_id");
     const adminBtn = document.getElementById("adminBtn");
+    if(adminBtn) adminBtn.style.display = "none";
 
-    if(adminBtn){
-        adminBtn.style.display = "none";
-    }
+    if(!currentProfileId) return;
 
-    if(!userID) return;
+    try{
+        const {data,error} = await supabaseClient
+            .from("profiles")
+            .select("role")
+            .eq("id", Number(currentProfileId))
+            .maybeSingle();
 
-    const {data,error} = await supabaseClient
-        .from("profiles")
-        .select("role")
-        .eq("id",Number(userID))
-        .maybeSingle();
-
-    if(error || !data) return;
-
-    if(
-        String(data.role || "").trim().toLowerCase() === "admin"
-    ){
-        if(adminBtn){
-            adminBtn.style.display = "block";
+        if(!error && String(data?.role || "").trim().toLowerCase() === "admin"){
+            if(adminBtn) adminBtn.style.display = "flex";
         }
+    }catch(error){
+        console.warn("Admin check:",error);
     }
+}
+
+/* =========================================
+   REALTIME PROFILE REFRESH
+========================================= */
+function subscribeToProfile(){
+    if(!currentProfileId) return;
+
+    if(profileChannel){
+        try{ supabaseClient.removeChannel(profileChannel); }catch(_){ }
+    }
+
+    profileChannel = supabaseClient
+        .channel("profile-" + currentProfileId)
+        .on(
+            "postgres_changes",
+            {
+                event:"*",
+                schema:"public",
+                table:"profiles",
+                filter:`id=eq.${currentProfileId}`
+            },
+            async function(){
+                await loadAccount();
+                await checkAdminAccess();
+            }
+        )
+        .subscribe();
 }
 
 /* =========================================
    LOGOUT
 ========================================= */
-
 async function logout(){
-
     try{
         await supabaseClient.auth.signOut();
     }catch(error){
         console.warn("Supabase signout:",error);
     }
 
-    /*
-     * Clearing the local session is appropriate ONLY because the user
-     * explicitly pressed LOGOUT.
-     */
     localStorage.removeItem("user_id");
     localStorage.removeItem("name");
     localStorage.removeItem("whatsapp_number");
@@ -1600,101 +1561,47 @@ async function logout(){
     localStorage.removeItem("profile");
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("loggedIn");
+    localStorage.removeItem("auth_user_id");
+    localStorage.removeItem("auth_email");
 
     location.href = "auth.html";
 }
 
-
 /* =========================================
    START
 ========================================= */
-
 async function startPage(){
-
     try{
-
-        const loaded =
-            await loadAccount();
-
-        if(!loaded){
-            return;
-        }
+        const loaded = await loadAccount();
+        if(!loaded) return;
 
         await checkAdminAccess();
-
-
-        /*
-         * Keep realtime profile updates from account (2),
-         * without changing the user's login identity.
-         */
-        const userID =
-            localStorage.getItem("user_id");
-
-        if(userID){
-
-            supabaseClient
-                .channel(
-                    "profile-" + userID
-                )
-                .on(
-                    "postgres_changes",
-                    {
-                        event:"*",
-                        schema:"public",
-                        table:"profiles",
-                        filter:
-                            `id=eq.${userID}`
-                    },
-                    function(){
-
-                        loadAccount();
-                        checkAdminAccess();
-
-                    }
-                )
-                .subscribe();
-        }
-
+        subscribeToProfile();
     }catch(error){
+        console.error("BUSANSO account error:",error);
 
-        console.error(
-            "BUSANSO account error:",
-            error
-        );
+        document.getElementById("loading")?.classList.add("hidden");
+        document.getElementById("page")?.classList.add("hidden");
+        document.getElementById("errorPage")?.classList.remove("hidden");
 
-        const loading =
-            document.getElementById("loading");
-
-        const page =
-            document.getElementById("page");
-
-        const errorPage =
-            document.getElementById("errorPage");
-
-        const errorMessage =
-            document.getElementById("errorMessage");
-
-
-        if(loading){
-            loading.classList.add("hidden");
-        }
-
-        if(page){
-            page.classList.add("hidden");
-        }
-
-        if(errorPage){
-            errorPage.classList.remove("hidden");
-        }
-
+        const errorMessage = document.getElementById("errorMessage");
         if(errorMessage){
             errorMessage.textContent =
-                error.message ||
-                "Unable to load your BUSANSO account.";
+                error.message || "Unable to load your BUSANSO account.";
         }
     }
 }
 
+/* If Google Auth finishes while this page is open, reload the account. */
+supabaseClient.auth.onAuthStateChange(function(event){
+    if(event === "SIGNED_IN" || event === "TOKEN_REFRESHED"){
+        setTimeout(async function(){
+            await loadAccount();
+            await checkAdminAccess();
+            subscribeToProfile();
+        },0);
+    }
+});
 
 startPage();
 
