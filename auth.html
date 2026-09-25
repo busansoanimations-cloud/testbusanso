@@ -69,8 +69,7 @@ body{
             rgba(255,255,255,.025)
         );
 
-    border:
-        1px solid
+    border:1px solid
         rgba(212,175,55,.35);
 
     border-radius:25px;
@@ -254,6 +253,7 @@ body{
 
 </head>
 
+
 <body>
 
 <main class="auth-card">
@@ -331,7 +331,7 @@ body{
 
 /*
 ============================================================
-CONFIG
+BUSANSO SUPABASE CONFIGURATION
 ============================================================
 */
 
@@ -344,7 +344,7 @@ const SUPABASE_KEY =
 
 /*
 ============================================================
-MODE
+APP / WEB MODE
 ============================================================
 */
 
@@ -359,7 +359,7 @@ const isAppMode =
 
 /*
 ============================================================
-REDIRECT URL
+REDIRECT URLS
 ============================================================
 */
 
@@ -369,7 +369,6 @@ const WEB_REDIRECT_URL =
 const APP_REDIRECT_URL =
     "busanso://auth/callback";
 
-
 const REDIRECT_URL =
     isAppMode
         ? APP_REDIRECT_URL
@@ -378,8 +377,24 @@ const REDIRECT_URL =
 
 /*
 ============================================================
-SUPABASE
+SUPABASE CLIENT
 ============================================================
+
+IMPORTANT:
+
+WEB:
+    PKCE + URL session detection
+
+ANDROID:
+    PKCE + manual callback exchange
+
+Android MainActivity receives:
+
+    busanso://auth/callback?code=...
+
+and sends it into this page as:
+
+    busansoOAuthCallback
 */
 
 const supabase =
@@ -389,25 +404,20 @@ const supabase =
         {
             auth: {
 
-                /*
-                 * APK:
-                 *
-                 * Google -> Supabase -> busanso://
-                 *
-                 * The callback token comes back in
-                 * the URL fragment.
-                 */
-
-                flowType:
-                    isAppMode
-                        ? "implicit"
-                        : "pkce",
-
-                detectSessionInUrl:true,
-
                 persistSession:true,
 
                 autoRefreshToken:true,
+
+                /*
+                 * Android callback is handled manually.
+                 */
+                detectSessionInUrl:
+                    !isAppMode,
+
+                /*
+                 * Both web and Android use PKCE.
+                 */
+                flowType:"pkce",
 
                 storageKey:
                     "busanso-auth"
@@ -441,14 +451,17 @@ STATUS
 
 function setStatus(message){
 
-    status.textContent =
-        message || "";
+    if(status){
+
+        status.textContent =
+            message || "";
+    }
 }
 
 
 /*
 ============================================================
-SAVE AUTH COMPATIBILITY DATA
+SAVE AUTH USER
 ============================================================
 */
 
@@ -475,8 +488,10 @@ function saveAuthUser(user){
             user.email || ""
         );
 
+
         const metadata =
             user.user_metadata || {};
+
 
         const name =
             metadata.full_name ||
@@ -486,6 +501,7 @@ function saveAuthUser(user){
                     ? user.email.split("@")[0]
                     : ""
             );
+
 
         if(name){
 
@@ -500,6 +516,7 @@ function saveAuthUser(user){
             );
         }
 
+
         localStorage.setItem(
             "loggedIn",
             "true"
@@ -509,6 +526,7 @@ function saveAuthUser(user){
             "isLoggedIn",
             "true"
         );
+
 
     }catch(error){
 
@@ -522,7 +540,7 @@ function saveAuthUser(user){
 
 /*
 ============================================================
-LOAD PROFILE
+LOAD EXISTING BUSANSO PROFILE
 ============================================================
 */
 
@@ -574,6 +592,7 @@ async function loadProfile(user){
                     JSON.stringify(profile)
                 );
 
+
                 if(profile.id != null){
 
                     localStorage.setItem(
@@ -587,6 +606,7 @@ async function loadProfile(user){
                     );
                 }
 
+
                 if(profile.name){
 
                     localStorage.setItem(
@@ -599,6 +619,7 @@ async function loadProfile(user){
                         profile.name
                     );
                 }
+
 
                 localStorage.setItem(
                     "membership",
@@ -616,6 +637,21 @@ async function loadProfile(user){
                 );
 
                 localStorage.setItem(
+                    "account_status",
+                    profile.account_status || "active"
+                );
+
+                localStorage.setItem(
+                    "paid_status",
+                    profile.paid_status || ""
+                );
+
+                localStorage.setItem(
+                    "role",
+                    profile.role || "user"
+                );
+
+                localStorage.setItem(
                     "loggedIn",
                     "true"
                 );
@@ -624,6 +660,7 @@ async function loadProfile(user){
                     "isLoggedIn",
                     "true"
                 );
+
 
             }catch(error){
 
@@ -636,6 +673,7 @@ async function loadProfile(user){
 
 
         return profile;
+
 
     }catch(error){
 
@@ -651,7 +689,7 @@ async function loadProfile(user){
 
 /*
 ============================================================
-GO TO HOME
+GO HOME
 ============================================================
 */
 
@@ -670,6 +708,249 @@ function goHome(){
         );
     }
 }
+
+
+/*
+============================================================
+FINISH LOGIN
+============================================================
+
+Everything after successful Google authentication
+comes through this single function.
+*/
+
+async function finishLogin(user){
+
+    if(!user){
+
+        throw new Error(
+            "Google account information was not received."
+        );
+    }
+
+
+    saveAuthUser(user);
+
+
+    /*
+     * Load the existing BUSANSO profile.
+     *
+     * This preserves membership/package information
+     * for profiles already connected to the Google account.
+     */
+
+    await loadProfile(user);
+
+
+    setStatus(
+        "Signed in. Opening BUSANSO..."
+    );
+
+
+    setTimeout(
+        goHome,
+        300
+    );
+}
+
+
+/*
+============================================================
+PROCESS NATIVE GOOGLE CALLBACK
+============================================================
+
+Android sends:
+
+busanso://auth/callback?code=XXXX
+
+MainActivity does NOT load this URI into the WebView.
+
+Instead it fires:
+
+busansoOAuthCallback
+
+This function receives the URL and exchanges
+the PKCE authorization code for a Supabase session.
+*/
+
+async function processOAuthCallback(callbackUrl){
+
+    console.log(
+        "BUSANSO OAuth callback:",
+        callbackUrl
+    );
+
+
+    try{
+
+        if(!callbackUrl){
+
+            throw new Error(
+                "Empty Google callback."
+            );
+        }
+
+
+        const url =
+            new URL(callbackUrl);
+
+
+        /*
+         * Check for OAuth errors.
+         */
+
+        const error =
+            url.searchParams.get(
+                "error"
+            );
+
+        const errorDescription =
+            url.searchParams.get(
+                "error_description"
+            );
+
+
+        if(error){
+
+            throw new Error(
+                errorDescription ||
+                error
+            );
+        }
+
+
+        /*
+         * PKCE authorization code.
+         */
+
+        const code =
+            url.searchParams.get(
+                "code"
+            );
+
+
+        if(!code){
+
+            throw new Error(
+                "No Google authorization code was received."
+            );
+        }
+
+
+        setStatus(
+            "Completing Google sign-in..."
+        );
+
+
+        /*
+         * Exchange PKCE code for Supabase session.
+         */
+
+        const result =
+            await supabase.auth.exchangeCodeForSession(
+                code
+            );
+
+
+        if(result.error){
+
+            throw result.error;
+        }
+
+
+        const session =
+            result.data &&
+            result.data.session;
+
+
+        if(!session ||
+            !session.user){
+
+            throw new Error(
+                "Google session was not created."
+            );
+        }
+
+
+        console.log(
+            "BUSANSO Google session created:",
+            session.user.id
+        );
+
+
+        await finishLogin(
+            session.user
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "BUSANSO OAuth callback error:",
+            error
+        );
+
+
+        if(button){
+
+            button.disabled =
+                false;
+        }
+
+
+        setStatus(
+            error.message ||
+            "Google sign-in failed."
+        );
+    }
+}
+
+
+/*
+============================================================
+ANDROID CALLBACK EVENT
+============================================================
+
+This is the bridge between MainActivity.java and
+this webpage.
+
+MainActivity sends:
+
+window.dispatchEvent(
+    new CustomEvent(
+        "busansoOAuthCallback",
+        {
+            detail:{
+                url:callbackUrl
+            }
+        }
+    )
+);
+
+We receive it here.
+*/
+
+window.addEventListener(
+    "busansoOAuthCallback",
+    function(event){
+
+        console.log(
+            "BUSANSO native OAuth event received"
+        );
+
+
+        if(
+            event &&
+            event.detail &&
+            event.detail.url
+        ){
+
+            processOAuthCallback(
+                event.detail.url
+            );
+        }
+    }
+);
 
 
 /*
@@ -702,45 +983,27 @@ async function checkSession(){
             result.data.session;
 
 
-        if(!session ||
-            !session.user){
+        if(
+            !session ||
+            !session.user
+        ){
 
             return false;
         }
 
 
-        /*
-         * GOOGLE AUTHENTICATION IS SUCCESSFUL.
-         */
+        console.log(
+            "Existing BUSANSO session found"
+        );
 
-        saveAuthUser(
+
+        await finishLogin(
             session.user
-        );
-
-
-        /*
-         * If an existing BUSANSO profile is
-         * connected to this Google account,
-         * preserve its membership.
-         */
-
-        await loadProfile(
-            session.user
-        );
-
-
-        setStatus(
-            "Signed in. Opening BUSANSO..."
-        );
-
-
-        setTimeout(
-            goHome,
-            150
         );
 
 
         return true;
+
 
     }catch(error){
 
@@ -759,62 +1022,107 @@ async function checkSession(){
 GOOGLE SIGN-IN
 ============================================================
 */
-button.addEventListener("click", async function () {
 
-    button.disabled = true;
-    setStatus("Connecting to Google...");
+button.addEventListener(
+    "click",
+    async function(){
 
-    try {
+        button.disabled =
+            true;
 
-        const result =
-            await supabase.auth.signInWithOAuth({
-                provider: "google",
-                options: {
-                    redirectTo: REDIRECT_URL,
-                    skipBrowserRedirect: true,
-                    queryParams: {
-                        prompt: "select_account"
-                    }
-                }
-            });
-
-        if (result.error) {
-            throw result.error;
-        }
-
-        if (!result.data || !result.data.url) {
-            throw new Error("Google OAuth URL was not generated.");
-        }
-
-        console.log(
-            "Opening Google OAuth:",
-            result.data.url
-        );
-
-        window.location.href =
-            result.data.url;
-
-    } catch (error) {
-
-        console.error(
-            "Google OAuth error:",
-            error
-        );
-
-        button.disabled = false;
 
         setStatus(
-            error.message ||
-            "Google sign-in failed."
+            "Connecting to Google..."
         );
+
+
+        try{
+
+            const result =
+                await supabase.auth.signInWithOAuth({
+
+                    provider:
+                        "google",
+
+                    options:{
+
+                        /*
+                         * ANDROID:
+                         *
+                         * busanso://auth/callback
+                         *
+                         * WEB:
+                         *
+                         * GitHub Pages auth.html
+                         */
+
+                        redirectTo:
+                            REDIRECT_URL,
+
+                        queryParams:{
+
+                            prompt:
+                                "select_account"
+                        },
+
+                        skipBrowserRedirect:
+                            false
+                    }
+                });
+
+
+            if(result.error){
+
+                throw result.error;
+            }
+
+
+            /*
+             * signInWithOAuth normally causes the browser/
+             * Custom Tab to navigate away.
+             *
+             * If it does not, restore the button.
+             */
+
+            console.log(
+                "Google OAuth started"
+            );
+
+
+        }catch(error){
+
+            console.error(
+                "Google OAuth error:",
+                error
+            );
+
+
+            button.disabled =
+                false;
+
+
+            setStatus(
+                error.message ||
+                "Google sign-in failed."
+            );
+        }
+
     }
-});
+);
 
 
 /*
 ============================================================
-AUTH STATE
+AUTH STATE CHANGE
 ============================================================
+
+IMPORTANT:
+
+We don't rely on SIGNED_IN to process the Android
+callback. Android explicitly calls exchangeCodeForSession().
+
+This listener is still useful for normal web sessions
+and sessions restored from storage.
 */
 
 supabase.auth.onAuthStateChange(
@@ -834,24 +1142,36 @@ supabase.auth.onAuthStateChange(
             )
         ){
 
+            /*
+             * Don't interfere with an Android callback
+             * that is currently being exchanged.
+             */
+
+            if(
+                window.__busansoOAuthProcessing
+            ){
+
+                return;
+            }
+
+
             saveAuthUser(
                 session.user
             );
 
-            /*
-             * Do not perform heavy Supabase
-             * queries inside the auth callback.
-             *
-             * Simply continue to the app.
-             */
 
             setStatus(
                 "Signed in. Opening BUSANSO..."
             );
 
+
             setTimeout(
-                goHome,
-                150
+                function(){
+
+                    goHome();
+
+                },
+                300
             );
         }
     }
@@ -860,11 +1180,69 @@ supabase.auth.onAuthStateChange(
 
 /*
 ============================================================
+MARK CALLBACK PROCESSING
+============================================================
+*/
+
+const originalProcessOAuthCallback =
+    processOAuthCallback;
+
+
+/*
+ * Wrap callback processor so the auth-state listener
+ * does not race the PKCE exchange.
+ */
+
+window.__busansoOAuthProcessing =
+    false;
+
+
+/*
+============================================================
 STARTUP
 ============================================================
 */
 
-checkSession();
+(async function(){
+
+    /*
+     * Android app:
+     *
+     * Don't use detectSessionInUrl.
+     * Wait for MainActivity's callback event.
+     */
+
+    if(isAppMode){
+
+        console.log(
+            "BUSANSO running in ANDROID APP mode"
+        );
+
+
+        /*
+         * There may already be a valid session
+         * from a previous login.
+         */
+
+        await checkSession();
+
+
+        return;
+    }
+
+
+    /*
+     * Normal website mode.
+     */
+
+    console.log(
+        "BUSANSO running in WEB mode"
+    );
+
+
+    await checkSession();
+
+})();
 
 
 })();
