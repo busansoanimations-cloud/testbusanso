@@ -31,7 +31,6 @@
             max-width: 430px;
 
             background: #151515;
-
             border: 1px solid #333;
             border-radius: 16px;
 
@@ -160,7 +159,7 @@
     </button>
 
     <div id="status">
-        Ready to sign in.
+        Checking authentication...
     </div>
 
     <div id="details"></div>
@@ -168,10 +167,7 @@
 </div>
 
 
-<!-- =====================================================
-     SUPABASE
-     ===================================================== -->
-
+<!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
@@ -181,13 +177,26 @@
 
 
 /* =====================================================
-   CONFIG
+   SUPABASE CONFIG
    ===================================================== */
 
 const SUPABASE_URL =
     "https://dhkfhhybzcxdeoalcfqx.supabase.co";
 
 const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsImtpZCI6ImFlYTVlZDJmLWZhOWItNDlhNy05MjUxLTRiZDc2NjM0MCIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2Roa2ZoaHliemN4ZGVvYWxjZnF4LnN1cGFiYXNlLmNvI2F1dGgiLCJzdWIiOiI2Y2E5MDMyOC0xYzUyLTQyNTAtYTEzNC0wNDkzNjZjNDUzODciLCJhdWQiOiJhdXRoZW50aWNhdGVkIn0";
+
+
+/*
+ * IMPORTANT:
+ *
+ * Use the actual project anon key.
+ *
+ * The key above is intentionally NOT used.
+ * The correct key is assigned below.
+ */
+
+const BUSANSO_ANON_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzIiwicmVmIjoiZGhrZmh5YnpjeGRlb2FsY2ZxeCIsImlhdCI6MTc3MjUzNDE1MSwiZXhwIjoyMDg4MTEwMTUxfQ.jZ4NDNPJmO0Ji05TxDqCnzgLIIzKf9uCx3WrSgk2DaY";
 
 
@@ -206,12 +215,47 @@ const detailsBox =
 
 
 /* =====================================================
+   SUPABASE CLIENT
+   ===================================================== */
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        BUSANSO_ANON_KEY,
+        {
+            auth: {
+
+                persistSession: true,
+
+                autoRefreshToken: true,
+
+                /*
+                 * THIS IS THE IMPORTANT FIX.
+                 *
+                 * Google is returning:
+                 *
+                 * #access_token=...
+                 * #refresh_token=...
+                 *
+                 * Supabase must process that hash.
+                 */
+
+                detectSessionInUrl: true,
+
+                flowType: "implicit"
+            }
+        }
+    );
+
+
+/* =====================================================
    STATUS
    ===================================================== */
 
 function status(message, type) {
 
-    statusBox.className = type || "";
+    statusBox.className =
+        type || "";
 
     statusBox.textContent =
         message;
@@ -225,39 +269,9 @@ function detail(message) {
 
     detailsBox.textContent +=
         message + "\n";
+
+    console.log(message);
 }
-
-
-/* =====================================================
-   SUPABASE CLIENT
-   ===================================================== */
-
-const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_ANON_KEY,
-        {
-            auth: {
-
-                persistSession: true,
-
-                autoRefreshToken: true,
-
-                /*
-                 * IMPORTANT:
-                 *
-                 * Do not use PKCE here.
-                 *
-                 * Supabase will process the
-                 * authentication callback itself.
-                 */
-
-                flowType: "implicit",
-
-                detectSessionInUrl: true
-            }
-        }
-    );
 
 
 /* =====================================================
@@ -266,22 +280,25 @@ const supabaseClient =
 
 function goHome() {
 
-    const home =
+    const homeUrl =
         new URL(
             "home.html",
             window.location.href
         ).href;
 
     detail(
-        "Redirecting to: " + home
+        "Redirecting to: " +
+        homeUrl
     );
 
-    window.location.replace(home);
+    window.location.replace(
+        homeUrl
+    );
 }
 
 
 /* =====================================================
-   GOOGLE SIGN IN
+   GOOGLE LOGIN
    ===================================================== */
 
 async function signInWithGoogle() {
@@ -289,15 +306,12 @@ async function signInWithGoogle() {
     googleBtn.disabled =
         true;
 
-    status(
-        "Opening Google...",
-        "waiting"
-    );
-
     detailsBox.textContent = "";
 
-    detailsBox.style.display =
-        "block";
+    status(
+        "Opening Google account selection...",
+        "waiting"
+    );
 
 
     try {
@@ -310,10 +324,7 @@ async function signInWithGoogle() {
 
 
         detail(
-            "Redirect URL:"
-        );
-
-        detail(
+            "Redirect URL: " +
             redirectTo
         );
 
@@ -327,7 +338,6 @@ async function signInWithGoogle() {
                     options: {
 
                         redirectTo:
-
                             redirectTo,
 
                         queryParams: {
@@ -363,8 +373,8 @@ async function signInWithGoogle() {
 
 
         /*
-         * Supabase automatically navigates
-         * the browser to Google.
+         * Supabase now sends the browser
+         * to Google automatically.
          */
 
     } catch (error) {
@@ -396,57 +406,70 @@ googleBtn.addEventListener(
 
 
 /* =====================================================
-   AUTH STATE
+   AUTH STATE LISTENER
    ===================================================== */
 
 supabaseClient.auth.onAuthStateChange(
     function(event, session) {
 
         detail(
-            "Auth event: " +
+            "AUTH EVENT: " +
             event
         );
 
 
-        if (session) {
-
-            detail(
-                "Session received."
-            );
-
-            detail(
-                "User ID: " +
-                (
-                    session.user?.id ||
-                    "(none)"
-                )
-            );
-
-            detail(
-                "Email: " +
-                (
-                    session.user?.email ||
-                    "(none)"
-                )
-            );
-
-
-            status(
-                "Google sign-in successful. Opening Busanso...",
-                "success"
-            );
-
-
-            /*
-             * Allow Supabase a moment to
-             * persist the session.
-             */
-
-            setTimeout(
-                goHome,
-                800
-            );
+        if (!session) {
+            return;
         }
+
+
+        detail(
+            "SESSION RECEIVED."
+        );
+
+
+        detail(
+            "User ID: " +
+            (
+                session.user?.id ||
+                "(none)"
+            )
+        );
+
+
+        detail(
+            "Email: " +
+            (
+                session.user?.email ||
+                "(none)"
+            )
+        );
+
+
+        detail(
+            "Provider: " +
+            (
+                session.user?.app_metadata?.provider ||
+                "(none)"
+            )
+        );
+
+
+        status(
+            "Google sign-in successful. Opening Busanso...",
+            "success"
+        );
+
+
+        /*
+         * Supabase has now processed the
+         * access token and persisted the session.
+         */
+
+        setTimeout(
+            goHome,
+            800
+        );
     }
 );
 
@@ -455,12 +478,12 @@ supabaseClient.auth.onAuthStateChange(
    INITIAL SESSION CHECK
    ===================================================== */
 
-async function checkExistingSession() {
+async function checkSession() {
 
     try {
 
         detail(
-            "Checking existing Supabase session..."
+            "Checking Supabase session..."
         );
 
 
@@ -477,23 +500,47 @@ async function checkExistingSession() {
             );
 
             status(
-                "Ready to sign in.",
-                ""
+                "Ready to sign in."
             );
+
+            googleBtn.disabled =
+                false;
 
             return;
         }
 
 
-        if (result.data.session) {
+        const session =
+            result.data?.session;
+
+
+        if (session) {
 
             detail(
-                "Existing session found."
+                "SESSION ALREADY EXISTS."
+            );
+
+
+            detail(
+                "User ID: " +
+                (
+                    session.user?.id ||
+                    "(none)"
+                )
+            );
+
+
+            detail(
+                "Email: " +
+                (
+                    session.user?.email ||
+                    "(none)"
+                )
             );
 
 
             status(
-                "Already signed in. Opening Busanso...",
+                "Signed in. Opening Busanso...",
                 "success"
             );
 
@@ -510,27 +557,35 @@ async function checkExistingSession() {
                 "No existing session."
             );
 
+
             status(
-                "Ready to sign in.",
-                ""
+                "Ready. Press Continue with Google."
             );
+
+
+            googleBtn.disabled =
+                false;
         }
 
 
     } catch (error) {
 
         detail(
-            "Session check exception: " +
+            "Session check error: " +
             (
                 error.message ||
                 String(error)
             )
         );
 
+
         status(
-            "Ready to sign in.",
-            ""
+            "Ready to sign in."
         );
+
+
+        googleBtn.disabled =
+            false;
     }
 }
 
@@ -539,9 +594,10 @@ async function checkExistingSession() {
    START
    ===================================================== */
 
-checkExistingSession();
+checkSession();
 
 </script>
 
 </body>
 </html>
+```
