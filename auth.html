@@ -1,11 +1,11 @@
-
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Busanso - Google Sign In</title>
+    <title>Busanso - Sign In</title>
 
     <style>
         * {
@@ -15,73 +15,95 @@
         body {
             margin: 0;
             min-height: 100vh;
-            font-family: Arial, sans-serif;
             background: #080808;
             color: #fff;
+            font-family: Arial, sans-serif;
+
             display: flex;
             align-items: center;
             justify-content: center;
+
             padding: 20px;
         }
 
         .box {
             width: 100%;
-            max-width: 520px;
+            max-width: 430px;
+
             background: #151515;
+
             border: 1px solid #333;
             border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 0 30px rgba(255, 193, 7, 0.08);
+
+            padding: 28px;
+
+            text-align: center;
+
+            box-shadow:
+                0 0 30px rgba(255,193,7,.08);
         }
 
         h1 {
             margin: 0 0 8px;
-            text-align: center;
+
             color: #ffc107;
-            font-size: 25px;
+
+            font-size: 28px;
         }
 
         .subtitle {
-            text-align: center;
             color: #aaa;
+
             font-size: 14px;
-            margin-bottom: 22px;
+
+            margin-bottom: 25px;
         }
 
         #googleBtn {
             width: 100%;
-            border: 0;
-            border-radius: 10px;
+
             padding: 15px;
+
+            border: 0;
+
+            border-radius: 10px;
+
             background: #fff;
+
             color: #222;
+
             font-size: 16px;
+
             font-weight: bold;
+
             cursor: pointer;
-            margin-bottom: 20px;
         }
 
         #googleBtn:disabled {
-            opacity: 0.6;
+            opacity: .6;
+
             cursor: wait;
         }
 
         #status {
-            padding: 14px;
-            border-radius: 10px;
+            margin-top: 20px;
+
+            padding: 13px;
+
+            border-radius: 9px;
+
             background: #0d0d0d;
+
             border: 1px solid #333;
-            margin-bottom: 15px;
+
+            font-size: 14px;
+
             line-height: 1.5;
+
             word-break: break-word;
         }
 
-        .label {
-            color: #ffc107;
-            font-weight: bold;
-        }
-
-        .ok {
+        .success {
             color: #65d66f;
         }
 
@@ -89,43 +111,34 @@
             color: #ff6565;
         }
 
-        .warning {
-            color: #ffca5c;
+        .waiting {
+            color: #ffc107;
         }
 
-        #diagnostic {
+        #details {
             display: none;
+
+            margin-top: 15px;
+
+            padding: 12px;
+
             background: #050505;
+
             border: 1px solid #333;
-            border-radius: 10px;
-            padding: 14px;
+
+            border-radius: 8px;
+
+            color: #aaa;
+
             font-family: monospace;
-            font-size: 12px;
-            line-height: 1.55;
+
+            font-size: 11px;
+
+            text-align: left;
+
             white-space: pre-wrap;
+
             word-break: break-word;
-            max-height: 500px;
-            overflow-y: auto;
-        }
-
-        .small {
-            color: #888;
-            font-size: 12px;
-            margin-top: 15px;
-            text-align: center;
-        }
-
-        .homeBtn {
-            display: none;
-            width: 100%;
-            margin-top: 15px;
-            padding: 13px;
-            border: 0;
-            border-radius: 9px;
-            background: #ffc107;
-            color: #111;
-            font-weight: bold;
-            cursor: pointer;
         }
     </style>
 </head>
@@ -137,32 +150,28 @@
     <h1>BUSANSO</h1>
 
     <div class="subtitle">
-        Google Sign-In Diagnostic
+        Sign in with your Google account
     </div>
 
-    <button id="googleBtn" type="button">
+    <button
+        id="googleBtn"
+        type="button">
         Continue with Google
     </button>
 
     <div id="status">
-        <span class="label">Status:</span>
-        Starting...
+        Ready to sign in.
     </div>
 
-    <div id="diagnostic"></div>
-
-    <button id="homeBtn" class="homeBtn" type="button">
-        Continue to Home
-    </button>
-
-    <div class="small">
-        Diagnostic mode — no profile changes are made.
-    </div>
+    <div id="details"></div>
 
 </div>
 
 
-<!-- Supabase -->
+<!-- =====================================================
+     SUPABASE
+     ===================================================== -->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
@@ -171,9 +180,9 @@
 "use strict";
 
 
-/* =========================================================
-   BUSANSO SUPABASE CONFIG
-   ========================================================= */
+/* =====================================================
+   CONFIG
+   ===================================================== */
 
 const SUPABASE_URL =
     "https://dhkfhhybzcxdeoalcfqx.supabase.co";
@@ -182,9 +191,9 @@ const SUPABASE_ANON_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzIiwicmVmIjoiZGhrZmh5YnpjeGRlb2FsY2ZxeCIsImlhdCI6MTc3MjUzNDE1MSwiZXhwIjoyMDg4MTEwMTUxfQ.jZ4NDNPJmO0Ji05TxDqCnzgLIIzKf9uCx3WrSgk2DaY";
 
 
-/* =========================================================
+/* =====================================================
    ELEMENTS
-   ========================================================= */
+   ===================================================== */
 
 const googleBtn =
     document.getElementById("googleBtn");
@@ -192,184 +201,106 @@ const googleBtn =
 const statusBox =
     document.getElementById("status");
 
-const diagnosticBox =
-    document.getElementById("diagnostic");
-
-const homeBtn =
-    document.getElementById("homeBtn");
+const detailsBox =
+    document.getElementById("details");
 
 
-/* =========================================================
-   DIAGNOSTIC LOG
-   ========================================================= */
+/* =====================================================
+   STATUS
+   ===================================================== */
 
-const diagnosticLines = [];
+function status(message, type) {
+
+    statusBox.className = type || "";
+
+    statusBox.textContent =
+        message;
+}
 
 
-function log(message) {
+function detail(message) {
 
-    const time =
-        new Date().toLocaleTimeString();
-
-    diagnosticLines.push(
-        "[" + time + "] " + message
-    );
-
-    diagnosticBox.textContent =
-        diagnosticLines.join("\n");
-
-    diagnosticBox.style.display =
+    detailsBox.style.display =
         "block";
 
-    console.log(message);
+    detailsBox.textContent +=
+        message + "\n";
 }
 
 
-function setStatus(message, type) {
-
-    type = type || "";
-
-    statusBox.innerHTML =
-        '<span class="label">Status:</span> ' +
-        '<span class="' + type + '">' +
-        message +
-        '</span>';
-
-    log("STATUS: " + message);
-}
-
-
-/* =========================================================
+/* =====================================================
    SUPABASE CLIENT
-   IMPORTANT:
-   We use "supabaseClient", NOT "supabase".
-   This avoids collision with the CDN global.
-   ========================================================= */
+   ===================================================== */
 
-let supabaseClient = null;
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY,
+        {
+            auth: {
 
+                persistSession: true,
 
-try {
+                autoRefreshToken: true,
 
-    if (
-        !window.supabase ||
-        typeof window.supabase.createClient !== "function"
-    ) {
+                /*
+                 * IMPORTANT:
+                 *
+                 * Do not use PKCE here.
+                 *
+                 * Supabase will process the
+                 * authentication callback itself.
+                 */
 
-        throw new Error(
-            "Supabase JavaScript library did not load."
-        );
-    }
+                flowType: "implicit",
 
-
-    supabaseClient =
-        window.supabase.createClient(
-            SUPABASE_URL,
-            SUPABASE_ANON_KEY,
-            {
-                auth: {
-
-                    persistSession: true,
-
-                    autoRefreshToken: true,
-
-                    /*
-                     * We manually inspect the callback.
-                     * This prevents Supabase from consuming
-                     * the callback before our diagnostics see it.
-                     */
-                    detectSessionInUrl: false,
-
-                    flowType: "pkce"
-                }
+                detectSessionInUrl: true
             }
-        );
-
-
-    log(
-        "Supabase client created successfully."
+        }
     );
 
 
-} catch (error) {
-
-    log(
-        "FATAL: Could not create Supabase client."
-    );
-
-    log(
-        error.message || String(error)
-    );
-
-    setStatus(
-        "Supabase initialization failed.",
-        "error"
-    );
-}
-
-
-/* =========================================================
-   HOME REDIRECT
-   ========================================================= */
+/* =====================================================
+   HOME
+   ===================================================== */
 
 function goHome() {
 
-    const homeUrl =
+    const home =
         new URL(
             "home.html",
             window.location.href
         ).href;
 
-    log(
-        "Redirecting to:"
+    detail(
+        "Redirecting to: " + home
     );
 
-    log(
-        homeUrl
-    );
-
-    window.location.replace(homeUrl);
+    window.location.replace(home);
 }
 
 
-/* =========================================================
-   GOOGLE LOGIN
-   ========================================================= */
+/* =====================================================
+   GOOGLE SIGN IN
+   ===================================================== */
 
 async function signInWithGoogle() {
 
-    if (!supabaseClient) {
+    googleBtn.disabled =
+        true;
 
-        setStatus(
-            "Supabase client is not available.",
-            "error"
-        );
+    status(
+        "Opening Google...",
+        "waiting"
+    );
 
-        return;
-    }
+    detailsBox.textContent = "";
+
+    detailsBox.style.display =
+        "block";
 
 
     try {
-
-        googleBtn.disabled = true;
-
-        setStatus(
-            "Opening Google account selection...",
-            "warning"
-        );
-
-
-        /*
-         * IMPORTANT:
-         *
-         * This produces:
-         *
-         * https://busanso.com/auth.html
-         *
-         * when this file is hosted at busanso.com.
-         *
-         * It also works automatically on GitHub Pages.
-         */
 
         const redirectTo =
             new URL(
@@ -378,17 +309,12 @@ async function signInWithGoogle() {
             ).href;
 
 
-        log(
-            "OAuth redirect URL:"
+        detail(
+            "Redirect URL:"
         );
 
-        log(
+        detail(
             redirectTo
-        );
-
-
-        log(
-            "Calling Supabase signInWithOAuth()..."
         );
 
 
@@ -400,11 +326,14 @@ async function signInWithGoogle() {
 
                     options: {
 
-                        redirectTo: redirectTo,
+                        redirectTo:
+
+                            redirectTo,
 
                         queryParams: {
 
-                            prompt: "select_account"
+                            prompt:
+                                "select_account"
                         }
                     }
                 });
@@ -412,477 +341,126 @@ async function signInWithGoogle() {
 
         if (result.error) {
 
-            log(
-                "signInWithOAuth ERROR:"
-            );
-
-            log(
-                JSON.stringify(
-                    result.error,
-                    null,
-                    2
-                )
-            );
-
-
-            setStatus(
-                "Google sign-in failed to start: " +
-                result.error.message,
+            status(
+                "Google sign-in could not start.",
                 "error"
             );
 
-            googleBtn.disabled = false;
+            detail(
+                result.error.message
+            );
+
+            googleBtn.disabled =
+                false;
 
             return;
         }
 
 
-        log(
-            "Supabase accepted the Google OAuth request."
+        detail(
+            "Supabase accepted Google OAuth."
         );
 
 
-        if (
-            result.data &&
-            result.data.url
-        ) {
-
-            log(
-                "Google OAuth URL was generated."
-            );
-
-            log(
-                "Leaving auth.html for Google..."
-            );
-
-        } else {
-
-            log(
-                "WARNING: Supabase returned no OAuth URL."
-            );
-        }
-
+        /*
+         * Supabase automatically navigates
+         * the browser to Google.
+         */
 
     } catch (error) {
 
-        log(
-            "EXCEPTION while starting Google:"
+        status(
+            "Google sign-in error.",
+            "error"
         );
 
-        log(
-            error.stack ||
+        detail(
             error.message ||
             String(error)
         );
 
-
-        setStatus(
-            "Google sign-in could not start: " +
-            (error.message || String(error)),
-            "error"
-        );
-
-
-        googleBtn.disabled = false;
+        googleBtn.disabled =
+            false;
     }
 }
 
 
-/* =========================================================
-   CALLBACK DIAGNOSTICS
-   ========================================================= */
+/* =====================================================
+   BUTTON
+   ===================================================== */
 
-async function checkAuthCallback() {
-
-    if (!supabaseClient) {
-        return;
-    }
-
-
-    log(
-        "========================================"
-    );
-
-    log(
-        "AUTH CALLBACK CHECK"
-    );
-
-    log(
-        "========================================"
-    );
+googleBtn.addEventListener(
+    "click",
+    signInWithGoogle
+);
 
 
-    const currentUrl =
-        window.location.href;
+/* =====================================================
+   AUTH STATE
+   ===================================================== */
 
+supabaseClient.auth.onAuthStateChange(
+    function(event, session) {
 
-    log(
-        "Current URL:"
-    );
-
-    log(
-        currentUrl
-    );
-
-
-    const url =
-        new URL(currentUrl);
-
-
-    log(
-        "Protocol: " +
-        url.protocol
-    );
-
-    log(
-        "Host: " +
-        url.host
-    );
-
-    log(
-        "Path: " +
-        url.pathname
-    );
-
-    log(
-        "Query string: " +
-        (url.search || "(none)")
-    );
-
-    log(
-        "Hash: " +
-        (url.hash || "(none)")
-    );
-
-
-    /* -----------------------------------------
-       ERROR PARAMETERS
-       ----------------------------------------- */
-
-    const errorParam =
-        url.searchParams.get("error");
-
-    const errorDescription =
-        url.searchParams.get(
-            "error_description"
+        detail(
+            "Auth event: " +
+            event
         );
 
 
-    if (errorParam) {
+        if (session) {
 
-        log(
-            "OAUTH ERROR FOUND"
-        );
-
-        log(
-            "error = " +
-            errorParam
-        );
-
-        log(
-            "error_description = " +
-            (errorDescription || "(none)")
-        );
-
-
-        setStatus(
-            "OAuth error: " +
-            errorParam +
-            " " +
-            (errorDescription || ""),
-            "error"
-        );
-
-
-        googleBtn.disabled = false;
-
-        return;
-    }
-
-
-    /* -----------------------------------------
-       PKCE CODE
-       ----------------------------------------- */
-
-    const code =
-        url.searchParams.get("code");
-
-
-    if (code) {
-
-        log(
-            "AUTHORIZATION CODE FOUND."
-        );
-
-        log(
-            "Authorization code length: " +
-            code.length
-        );
-
-
-        setStatus(
-            "Google returned the authorization code. Exchanging it with Supabase...",
-            "warning"
-        );
-
-
-        try {
-
-            log(
-                "Calling exchangeCodeForSession()..."
+            detail(
+                "Session received."
             );
 
-
-            const result =
-                await supabaseClient.auth
-                    .exchangeCodeForSession(code);
-
-
-            if (result.error) {
-
-                log(
-                    "========================================"
-                );
-
-                log(
-                    "CODE EXCHANGE FAILED"
-                );
-
-                log(
-                    "========================================"
-                );
-
-
-                log(
-                    "Error message:"
-                );
-
-                log(
-                    result.error.message ||
+            detail(
+                "User ID: " +
+                (
+                    session.user?.id ||
                     "(none)"
-                );
-
-
-                log(
-                    "Error name:"
-                );
-
-                log(
-                    result.error.name ||
-                    "(none)"
-                );
-
-
-                log(
-                    "Error status:"
-                );
-
-                log(
-                    String(
-                        result.error.status ||
-                        "(none)"
-                    )
-                );
-
-
-                log(
-                    "Full error:"
-                );
-
-                log(
-                    JSON.stringify(
-                        result.error,
-                        null,
-                        2
-                    )
-                );
-
-
-                setStatus(
-                    "Google callback arrived, but Supabase rejected the authorization code.",
-                    "error"
-                );
-
-
-                googleBtn.disabled = false;
-
-                return;
-            }
-
-
-            log(
-                "CODE EXCHANGE SUCCESSFUL."
+                )
             );
 
-
-            if (
-                result.data &&
-                result.data.session
-            ) {
-
-                const session =
-                    result.data.session;
-
-                const user =
-                    session.user;
-
-
-                log(
-                    "========================================"
-                );
-
-                log(
-                    "SUPABASE SESSION CREATED"
-                );
-
-                log(
-                    "========================================"
-                );
-
-
-                log(
-                    "User ID:"
-                );
-
-                log(
-                    user?.id ||
+            detail(
+                "Email: " +
+                (
+                    session.user?.email ||
                     "(none)"
-                );
-
-
-                log(
-                    "Email:"
-                );
-
-                log(
-                    user?.email ||
-                    "(none)"
-                );
-
-
-                log(
-                    "Provider:"
-                );
-
-                log(
-                    user?.app_metadata?.provider ||
-                    "(none)"
-                );
-
-
-                log(
-                    "Access token received: YES"
-                );
-
-
-                setStatus(
-                    "SUCCESS — Supabase session created.",
-                    "ok"
-                );
-
-
-                homeBtn.style.display =
-                    "block";
-
-
-                log(
-                    "NO profile was created."
-                );
-
-                log(
-                    "NO profile data was saved to localStorage."
-                );
-
-
-                /*
-                 * Give the browser a moment to persist
-                 * the Supabase session.
-                 */
-
-                log(
-                    "Home redirect in 3 seconds..."
-                );
-
-
-                setTimeout(
-                    goHome,
-                    3000
-                );
-
-
-                return;
-
-            }
-
-
-            log(
-                "CODE EXCHANGE RETURNED NO SESSION."
-            );
-
-
-            log(
-                JSON.stringify(
-                    result.data,
-                    null,
-                    2
                 )
             );
 
 
-            setStatus(
-                "Authorization code exchanged, but no session was returned.",
-                "error"
+            status(
+                "Google sign-in successful. Opening Busanso...",
+                "success"
             );
 
 
-            googleBtn.disabled = false;
+            /*
+             * Allow Supabase a moment to
+             * persist the session.
+             */
 
-
-        } catch (error) {
-
-            log(
-                "EXCEPTION DURING CODE EXCHANGE:"
+            setTimeout(
+                goHome,
+                800
             );
-
-
-            log(
-                error.stack ||
-                error.message ||
-                String(error)
-            );
-
-
-            setStatus(
-                "Exception during Supabase code exchange.",
-                "error"
-            );
-
-
-            googleBtn.disabled = false;
         }
-
-
-        return;
     }
+);
 
 
-    /* -----------------------------------------
-       NO CODE
-       ----------------------------------------- */
+/* =====================================================
+   INITIAL SESSION CHECK
+   ===================================================== */
 
-    log(
-        "No ?code= parameter found."
-    );
-
-
-    /* -----------------------------------------
-       CHECK EXISTING SESSION
-       ----------------------------------------- */
+async function checkExistingSession() {
 
     try {
 
-        log(
-            "Checking getSession()..."
+        detail(
+            "Checking existing Supabase session..."
         );
 
 
@@ -893,182 +471,75 @@ async function checkAuthCallback() {
 
         if (result.error) {
 
-            log(
-                "getSession ERROR:"
-            );
-
-            log(
-                result.error.message ||
-                String(result.error)
-            );
-
-
-            setStatus(
+            detail(
                 "getSession error: " +
-                result.error.message,
-                "error"
+                result.error.message
             );
 
+            status(
+                "Ready to sign in.",
+                ""
+            );
 
             return;
         }
 
 
-        const session =
-            result.data?.session;
+        if (result.data.session) {
 
-
-        if (session) {
-
-            log(
-                "EXISTING SUPABASE SESSION FOUND."
+            detail(
+                "Existing session found."
             );
 
 
-            log(
-                "User ID: " +
-                (session.user?.id || "(none)")
-            );
-
-
-            log(
-                "Email: " +
-                (session.user?.email || "(none)")
-            );
-
-
-            setStatus(
-                "Supabase session already exists.",
-                "ok"
-            );
-
-
-            homeBtn.style.display =
-                "block";
-
-
-            log(
-                "Home redirect in 3 seconds..."
+            status(
+                "Already signed in. Opening Busanso...",
+                "success"
             );
 
 
             setTimeout(
                 goHome,
-                3000
+                800
             );
 
 
         } else {
 
-            log(
-                "NO ACTIVE SUPABASE SESSION."
+            detail(
+                "No existing session."
             );
 
-
-            setStatus(
-                "Ready. Press Continue with Google.",
-                "warning"
+            status(
+                "Ready to sign in.",
+                ""
             );
-
-
-            googleBtn.disabled =
-                false;
         }
 
 
     } catch (error) {
 
-        log(
-            "getSession exception:"
+        detail(
+            "Session check exception: " +
+            (
+                error.message ||
+                String(error)
+            )
         );
 
-        log(
-            error.stack ||
-            error.message ||
-            String(error)
+        status(
+            "Ready to sign in.",
+            ""
         );
-
-
-        setStatus(
-            "Session check failed.",
-            "error"
-        );
-
-
-        googleBtn.disabled =
-            false;
     }
 }
 
 
-/* =========================================================
-   BUTTON EVENTS
-   ========================================================= */
-
-googleBtn.addEventListener(
-    "click",
-    signInWithGoogle
-);
-
-
-homeBtn.addEventListener(
-    "click",
-    goHome
-);
-
-
-/* =========================================================
-   AUTH STATE LISTENER
-   ========================================================= */
-
-if (supabaseClient) {
-
-    supabaseClient.auth.onAuthStateChange(
-        function(event, session) {
-
-            log(
-                "AUTH STATE EVENT: " +
-                event
-            );
-
-
-            if (session) {
-
-                log(
-                    "Auth event contains a session."
-                );
-
-                log(
-                    "User ID: " +
-                    (session.user?.id || "(none)")
-                );
-
-                log(
-                    "Email: " +
-                    (session.user?.email || "(none)")
-                );
-            }
-
-
-            /*
-             * We do not immediately redirect here.
-             * The callback handler above gives us the
-             * diagnostic information first.
-             */
-        }
-    );
-}
-
-
-/* =========================================================
+/* =====================================================
    START
-   ========================================================= */
+   ===================================================== */
 
-if (supabaseClient) {
-
-    checkAuthCallback();
-
-}
+checkExistingSession();
 
 </script>
 
