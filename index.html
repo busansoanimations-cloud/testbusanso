@@ -1,173 +1,311 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BUSANSO NATION</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BUSANSO</title>
+  <style>
+    * { box-sizing: border-box; }
 
-<style>
-* {
-    box-sizing: border-box;
-}
-
-html,
-body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: #050505;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-.splash {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background:
-        radial-gradient(
-            circle at center,
-            #242424 0%,
-            #101010 45%,
-            #050505 100%
-        );
-}
-
-.logo-wrap {
-    position: relative;
-    width: 190px;
-    height: 190px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: zoomIn 1s ease-out;
-}
-
-.glow {
-    position: absolute;
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    background: rgba(255,255,255,.08);
-    filter: blur(25px);
-    animation: pulse 2s ease-in-out infinite;
-}
-
-.logo {
-    position: relative;
-    width: 150px;
-    height: auto;
-}
-
-.title {
-    margin-top: 20px;
-    color: white;
-    font-size: 25px;
-    font-weight: 800;
-    letter-spacing: 4px;
-    animation: fadeUp 1s ease-out .4s both;
-}
-
-.tagline {
-    margin-top: 10px;
-    color: #aaa;
-    font-size: 13px;
-    letter-spacing: 1px;
-    animation: fadeUp 1s ease-out .7s both;
-}
-
-.loader {
-    margin-top: 30px;
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    border: 3px solid rgba(255,255,255,.15);
-    border-top-color: white;
-    animation: spin .8s linear infinite;
-}
-
-@keyframes zoomIn {
-    from {
-        transform: scale(.7);
-        opacity: 0;
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
     }
-    to {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
 
-@keyframes fadeUp {
-    from {
-        opacity: 0;
-        transform: translateY(12px);
+    body {
+      background:
+        radial-gradient(circle at 50% 45%, rgba(255, 206, 84, .16), transparent 30%),
+        radial-gradient(circle at 15% 20%, rgba(255, 75, 216, .12), transparent 28%),
+        radial-gradient(circle at 85% 80%, rgba(77, 220, 255, .10), transparent 28%),
+        #080812;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 
-@keyframes pulse {
-    0%,100% {
-        transform: scale(.9);
-        opacity: .4;
+    .celebration-bg,
+    .bubbles,
+    .confetti {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
     }
-    50% {
-        transform: scale(1.1);
-        opacity: .8;
-    }
-}
 
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
+    .glow {
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: rgba(255, 209, 102, .09);
+      filter: blur(45px);
+      animation: glowMove 6s ease-in-out infinite alternate;
     }
-}
-</style>
+
+    .glow.one { left: -90px; top: -80px; }
+    .glow.two { right: -100px; bottom: -90px; animation-delay: -3s; }
+
+    .birthday {
+      position: relative;
+      z-index: 5;
+      width: min(92vw, 720px);
+      text-align: center;
+      padding: 28px 20px;
+      animation: birthdayIn .8s cubic-bezier(.2,.8,.2,1) forwards;
+    }
+
+    .crown {
+      font-size: clamp(38px, 9vw, 64px);
+      margin-bottom: 4px;
+      animation: crownFloat 1.2s ease-in-out infinite alternate;
+      filter: drop-shadow(0 0 14px rgba(255, 209, 102, .45));
+    }
+
+    .emoji {
+      font-size: clamp(38px, 8vw, 58px);
+      margin-bottom: 13px;
+      letter-spacing: 5px;
+      animation: bounce .85s ease-in-out infinite alternate;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: #ffe49a;
+      font-size: clamp(12px, 2.7vw, 17px);
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(30px, 8vw, 62px);
+      line-height: 1.05;
+      font-weight: 900;
+      letter-spacing: .5px;
+      background: linear-gradient(90deg, #ffd166, #fff3b0, #ffd166, #ff9f43);
+      background-size: 250% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: goldShine 3s linear infinite;
+      filter: drop-shadow(0 5px 18px rgba(255, 209, 102, .18));
+    }
+
+    .message {
+      margin: 15px auto 0;
+      max-width: 620px;
+      font-size: clamp(16px, 3.8vw, 24px);
+      line-height: 1.45;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .date {
+      margin-top: 12px;
+      display: inline-block;
+      padding: 8px 18px;
+      border: 1px solid rgba(255, 209, 102, .55);
+      border-radius: 999px;
+      background: rgba(255, 209, 102, .08);
+      color: #ffd166;
+      font-size: clamp(13px, 3vw, 17px);
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      box-shadow: 0 0 24px rgba(255, 209, 102, .08);
+    }
+
+    .continue {
+      margin-top: 14px;
+      color: #cfd2e8;
+      font-size: clamp(12px, 2.7vw, 15px);
+      opacity: .9;
+    }
+
+    /* Floating bubbles */
+    .bubble {
+      position: absolute;
+      bottom: -80px;
+      width: var(--size);
+      height: var(--size);
+      left: var(--left);
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.28);
+      background: radial-gradient(circle at 30% 25%, rgba(255,255,255,.35), rgba(255,255,255,.03) 55%, transparent 70%);
+      animation: bubbleUp var(--duration) linear infinite;
+      animation-delay: var(--delay);
+    }
+
+    /* Falling confetti */
+    .piece {
+      position: absolute;
+      top: -30px;
+      left: var(--left);
+      width: var(--w);
+      height: var(--h);
+      border-radius: 3px;
+      background: rgba(255, 209, 102, .9);
+      transform: rotate(var(--rotate));
+      animation: confettiFall var(--duration) linear infinite;
+      animation-delay: var(--delay);
+    }
+
+    .piece:nth-child(3n) { background: rgba(255, 95, 180, .9); }
+    .piece:nth-child(3n+1) { background: rgba(77, 220, 255, .9); }
+
+    .fadeOut {
+      animation: fadeOut .65s ease forwards;
+    }
+
+    @keyframes birthdayIn {
+      from { opacity: 0; transform: translateY(22px) scale(.92); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes fadeOut {
+      to { opacity: 0; transform: scale(1.04); }
+    }
+
+    @keyframes bounce {
+      from { transform: translateY(0) rotate(-2deg); }
+      to { transform: translateY(-10px) rotate(2deg); }
+    }
+
+    @keyframes crownFloat {
+      from { transform: translateY(0) rotate(-3deg); }
+      to { transform: translateY(-7px) rotate(3deg); }
+    }
+
+    @keyframes goldShine {
+      to { background-position: 250% center; }
+    }
+
+    @keyframes glowMove {
+      from { transform: translate(0, 0) scale(.9); opacity: .55; }
+      to { transform: translate(80px, 50px) scale(1.25); opacity: 1; }
+    }
+
+    @keyframes bubbleUp {
+      0% { transform: translateY(0) translateX(0) scale(.7); opacity: 0; }
+      10% { opacity: .65; }
+      50% { transform: translateY(-50vh) translateX(25px) scale(1); }
+      100% { transform: translateY(-115vh) translateX(-30px) scale(1.15); opacity: 0; }
+    }
+
+    @keyframes confettiFall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      100% { transform: translateY(115vh) rotate(720deg); opacity: 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+  </style>
+
 </head>
+
 
 <body>
 
-<div class="splash">
+  <div class="celebration-bg" aria-hidden="true">
+    <div class="glow one"></div>
+    <div class="glow two"></div>
+  </div>
 
-    <div class="logo-wrap">
-        <div class="glow"></div>
+  <div class="bubbles" id="bubbles" aria-hidden="true"></div>
+  <div class="confetti" id="confetti" aria-hidden="true"></div>
 
-        <img
-            class="logo"
-            src="https://i.ibb.co/qL8vn3jS/busanso-logo-source.png"
-            alt="BUSANSO NATION"
-        >
-    </div>
+  <main class="birthday" id="birthday">
+    <div class="crown">👑</div>
+    <div class="emoji">🎂 🎉 ✨</div>
+    <p class="eyebrow" id="eyebrow">A Special Celebration</p>
+    <h1 id="title">HAPPY BIRTHDAY TO KING VJ</h1>
+    <p class="message" id="message">May this new year of life be filled with happiness, success, love and beautiful moments.</p>
+    <div class="date" id="dateText">1st OCTOBER 🎈</div>
+    <div class="continue" id="continueText">Celebrating you today and for the days that follow.</div>
+  </main>
 
-    <div class="title">
-        BUSANSO NATION
-    </div>
+  <script>
+    // KING VJ's birthday is October 1.
+    // The celebration remains active through October 5.
+    const now = new Date();
+    const month = now.getMonth(); // October = 9
+    const day = now.getDate();
 
-    <div class="tagline">
-        Giving you a stress-free ride
-    </div>
+    const birthday = document.getElementById("birthday");
+    const eyebrow = document.getElementById("eyebrow");
+    const title = document.getElementById("title");
+    const message = document.getElementById("message");
+    const dateText = document.getElementById("dateText");
+    const continueText = document.getElementById("continueText");
 
-    <div class="loader"></div>
+    // October 1 = main birthday.
+    // October 2-5 = birthday celebration continues.
+    if (month === 9 && day >= 2 && day <= 5) {
+      eyebrow.textContent = "The Celebration Continues 🎊";
+      title.textContent = "HAPPY BIRTHDAY, KING VJ";
+      message.textContent = "The birthday may have passed, but the celebration is still going! Wishing you more joy, success and unforgettable moments in this new chapter.";
+      dateText.textContent = "BIRTHDAY CELEBRATION 🎈";
+      continueText.textContent = "Keep celebrating. Keep smiling. Keep shining. 👑✨";
+    } else if (month === 9 && day === 1) {
+      eyebrow.textContent = "Today Is Your Special Day 🎉";
+      title.textContent = "HAPPY BIRTHDAY TO KING VJ";
+      message.textContent = "May your new year of life bring you happiness, success, good health, love and countless reasons to smile.";
+      dateText.textContent = "1st OCTOBER 🎂";
+      continueText.textContent = "Today we celebrate YOU. Happy Birthday! 👑✨";
+    } else {
+      // Outside the birthday window, retain a tasteful welcome message.
+      eyebrow.textContent = "Welcome to BUSANSO";
+      title.textContent = "HAPPY BIRTHDAY TO KING VJ";
+      message.textContent = "Wishing King VJ a beautiful birthday season filled with happiness, success and unforgettable moments.";
+      dateText.textContent = "1st OCTOBER 🎈";
+      continueText.textContent = "A little celebration before we take you to BUSANSO. ✨";
+    }
 
-</div>
+    // Create lightweight floating birthday bubbles.
+    const bubbles = document.getElementById("bubbles");
+    for (let i = 0; i < 18; i++) {
+      const bubble = document.createElement("span");
+      bubble.className = "bubble";
+      bubble.style.setProperty("--size", (18 + Math.random() * 55) + "px");
+      bubble.style.setProperty("--left", (Math.random() * 100) + "%");
+      bubble.style.setProperty("--duration", (7 + Math.random() * 8) + "s");
+      bubble.style.setProperty("--delay", (-Math.random() * 12) + "s");
+      bubbles.appendChild(bubble);
+    }
 
-<script>
-/*
-    BUSANSO TEST STARTUP
+    // Create falling confetti.
+    const confetti = document.getElementById("confetti");
+    for (let i = 0; i < 55; i++) {
+      const piece = document.createElement("span");
+      piece.className = "piece";
+      piece.style.setProperty("--left", (Math.random() * 100) + "%");
+      piece.style.setProperty("--w", (5 + Math.random() * 6) + "px");
+      piece.style.setProperty("--h", (9 + Math.random() * 13) + "px");
+      piece.style.setProperty("--rotate", (Math.random() * 360) + "deg");
+      piece.style.setProperty("--duration", (4 + Math.random() * 6) + "s");
+      piece.style.setProperty("--delay", (-Math.random() * 9) + "s");
+      confetti.appendChild(piece);
+    }
 
-    Show splash for 2.5 seconds,
-    then continue to authentication.
-*/
+    // Keep the original purpose: this is a short intro before BUSANSO opens.
+    setTimeout(() => {
+      birthday.classList.add("fadeOut");
 
-setTimeout(function () {
-  window.location.href = "auth.html?app=1";
-}, 2500);
-</script>
+      setTimeout(() => {
+        window.location.href = "home.html";
+      }, 650);
+    }, 3000);
+  </script>
 
 </body>
+
 </html>
