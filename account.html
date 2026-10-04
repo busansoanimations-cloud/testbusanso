@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,32 +32,35 @@ body{
 
     background:
         radial-gradient(
-            circle at top,
-            #3b2a00 0%,
-            #15110a 35%,
-            #050505 75%,
-            #000 100%
+            circle at 50% 15%,
+            rgba(212,175,55,.20),
+            transparent 32%
+        ),
+        radial-gradient(
+            circle at 15% 85%,
+            rgba(80,50,150,.10),
+            transparent 30%
+        ),
+        linear-gradient(
+            145deg,
+            #050505,
+            #0c0b08 48%,
+            #020202
         );
 
-    padding:clamp(12px,2vw,28px);
+    padding:clamp(10px,2vw,24px);
 }
 
 .page{
     width:100%;
-    min-height:calc(100dvh - 2 * clamp(12px,2vw,28px));
+    min-height:calc(100dvh - 2 * clamp(10px,2vw,24px));
+
     margin:0 auto;
+
     display:flex;
     flex-direction:column;
-}
 
-.account-card{
-    flex:1;
-    display:flex;
-    flex-direction:column;
-}
-
-.big-actions{
-    align-content:center;
+    justify-content:center;
 }
 
 /* =========================
@@ -66,35 +68,59 @@ body{
 ========================= */
 
 .topbar{
-    height:54px;
+    width:100%;
+    max-width:680px;
+
+    height:58px;
+
+    margin:0 auto 12px;
 
     display:flex;
     align-items:center;
     justify-content:space-between;
-
-    margin-bottom:8px;
 }
 
 .logo{
-    width:48px;
-    height:48px;
-    object-fit:contain;
-    border-radius:13px;
-}
+    width:50px;
+    height:50px;
 
+    object-fit:contain;
+
+    border-radius:14px;
+
+    box-shadow:
+        0 5px 25px rgba(0,0,0,.35);
+}
 
 .top-btn{
-    border:1px solid rgba(255,215,0,.25);
-    background:rgba(255,215,0,.08);
+    border:1px solid rgba(255,215,0,.28);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,215,0,.14),
+            rgba(255,255,255,.04)
+        );
+
     color:#ffd84d;
 
-    padding:8px 13px;
-    border-radius:10px;
+    padding:9px 15px;
+
+    border-radius:11px;
 
     text-decoration:none;
+
     font-size:11px;
-    font-weight:700;
+    font-weight:800;
+
+    transition:.2s ease;
 }
+
+.top-btn:hover{
+    background:rgba(255,215,0,.18);
+    transform:translateY(-1px);
+}
+
 
 /* =========================
    MAIN CARD
@@ -105,24 +131,29 @@ body{
     overflow:hidden;
 
     width:100%;
+    max-width:680px;
 
-    border-radius:24px;
+    margin:0 auto;
 
-    padding:19px 18px 14px;
+    border-radius:27px;
+
+    padding:27px 25px 22px;
 
     background:
         linear-gradient(
             145deg,
             rgba(255,215,0,.14),
-            rgba(255,255,255,.045) 35%,
+            rgba(255,255,255,.055) 35%,
             rgba(255,255,255,.025)
         );
 
     border:1px solid rgba(255,215,0,.28);
 
     box-shadow:
-        0 20px 55px rgba(0,0,0,.65),
-        inset 0 1px rgba(255,255,255,.08);
+        0 25px 70px rgba(0,0,0,.70),
+        inset 0 1px rgba(255,255,255,.09);
+
+    backdrop-filter:blur(12px);
 }
 
 .account-card:before{
@@ -130,87 +161,78 @@ body{
 
     position:absolute;
 
-    width:220px;
-    height:220px;
+    width:280px;
+    height:280px;
 
     border-radius:50%;
 
-    background:rgba(255,215,0,.08);
+    background:rgba(255,215,0,.075);
 
-    filter:blur(55px);
+    filter:blur(65px);
 
-    top:-140px;
-    right:-80px;
+    top:-170px;
+    right:-100px;
 
     pointer-events:none;
 }
 
+
 /* =========================
    TITLE
 ========================= */
-
-.badge{
-    position:relative;
-
-    display:inline-block;
-
-    padding:5px 11px;
-
-    border-radius:30px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #ffe27a,
-            #c99600
-        );
-
-    color:#211700;
-
-    font-size:9px;
-    font-weight:900;
-    letter-spacing:1px;
-    text-transform:uppercase;
-
-    margin-bottom:9px;
-}
 
 h1{
     position:relative;
 
     text-align:center;
 
-    font-size:25px;
-    line-height:1.05;
+    font-size:29px;
+    line-height:1.15;
 
-    margin-bottom:5px;
+    margin-bottom:7px;
 
     background:
         linear-gradient(
             90deg,
             #fff,
             #ffe27a,
-            #c99716
+            #c99716,
+            #fff
         );
+
+    background-size:220% auto;
 
     -webkit-background-clip:text;
     background-clip:text;
+
     color:transparent;
+
+    animation:titleShine 5s linear infinite;
 }
 
 #userName{
     font-weight:950;
+
     color:#ffb52e;
-    text-shadow:0 0 16px rgba(255,181,46,.42);
+
+    text-shadow:
+        0 0 18px rgba(255,181,46,.42);
 }
 
 .welcome{
     position:relative;
-    color:#bdb7a5;
-    font-size:11px;
-    margin-bottom:13px;
+
+    color:#c5bead;
+
+    font-size:12px;
+
+    margin-bottom:18px;
+
     text-align:center;
+
+    line-height:1.5;
 }
+
 
 /* =========================
    PACKAGE
@@ -219,42 +241,50 @@ h1{
 .package-box{
     position:relative;
 
-    padding:12px 15px;
+    padding:15px 17px;
 
-    border-radius:16px;
+    border-radius:17px;
 
-    background:rgba(0,0,0,.35);
+    background:
+        rgba(0,0,0,.38);
 
     border:1px solid rgba(255,215,0,.18);
 
-    margin-bottom:10px;
+    margin-bottom:12px;
+
+    text-align:center;
 }
 
 .package-title{
     color:#918b7c;
 
-    font-size:9px;
+    font-size:10px;
 
     text-transform:uppercase;
-    letter-spacing:1.3px;
 
-    margin-bottom:3px;
+    letter-spacing:1.5px;
+
+    margin-bottom:5px;
 }
 
 .package-name{
-    font-size:19px;
+    font-size:21px;
+
     font-weight:900;
 
     color:#ffe06b;
+
+    letter-spacing:.5px;
 }
 
 .status{
-    margin-top:3px;
+    margin-top:5px;
 
-    font-size:10px;
+    font-size:11px;
 
     color:#aaa;
 }
+
 
 /* =========================
    EXPIRY
@@ -263,9 +293,9 @@ h1{
 .expiry-box{
     position:relative;
 
-    padding:12px 15px;
+    padding:15px 17px;
 
-    border-radius:16px;
+    border-radius:17px;
 
     background:
         linear-gradient(
@@ -274,37 +304,41 @@ h1{
             rgba(255,255,255,.035)
         );
 
-    border:1px solid rgba(255,215,0,.2);
+    border:1px solid rgba(255,215,0,.20);
 
-    margin-bottom:11px;
+    margin-bottom:14px;
+
+    text-align:center;
 }
 
 .expiry-label{
     color:#9e9888;
 
-    font-size:9px;
+    font-size:10px;
 
     text-transform:uppercase;
-    letter-spacing:1.2px;
 
-    margin-bottom:5px;
+    letter-spacing:1.3px;
+
+    margin-bottom:6px;
 }
 
 .expiry-date{
     color:#fff;
 
-    font-size:11px;
+    font-size:12px;
 
-    margin-bottom:6px;
+    margin-bottom:7px;
 }
 
 .countdown{
-    font-size:12px;
+    font-size:13px;
+
     font-weight:700;
 
     color:#ffd84d;
 
-    line-height:1.2;
+    line-height:1.3;
 
     text-transform:lowercase;
 }
@@ -315,12 +349,16 @@ h1{
 
 .countdown.urgent{
     color:#ff3b30;
+
     font-weight:900;
-    text-shadow:0 0 10px rgba(255,59,48,.45);
+
+    text-shadow:
+        0 0 10px rgba(255,59,48,.45);
 }
 
+
 /* =========================
-   BIG BUTTONS
+   BIG WATCH BUTTONS
 ========================= */
 
 .big-actions{
@@ -330,15 +368,15 @@ h1{
 
     grid-template-columns:1fr 1fr;
 
-    gap:9px;
+    gap:11px;
 
-    margin-bottom:9px;
+    margin-bottom:13px;
 }
 
 .big-btn{
-    min-height:60px;
+    min-height:72px;
 
-    border-radius:15px;
+    border-radius:17px;
 
     display:flex;
 
@@ -347,11 +385,12 @@ h1{
 
     flex-direction:column;
 
-    gap:3px;
+    gap:5px;
 
     text-decoration:none;
 
-    font-size:11px;
+    font-size:12px;
+
     font-weight:900;
 
     color:#1b1400;
@@ -365,73 +404,244 @@ h1{
         );
 
     box-shadow:
-        0 7px 20px rgba(0,0,0,.35),
-        inset 0 1px rgba(255,255,255,.7);
+        0 9px 24px rgba(0,0,0,.38),
+        inset 0 1px rgba(255,255,255,.75);
 
     transition:
-        transform .15s ease;
+        transform .18s ease,
+        box-shadow .18s ease;
 }
 
 .big-btn:hover{
     transform:translateY(-2px);
+
+    box-shadow:
+        0 13px 30px rgba(0,0,0,.45),
+        inset 0 1px rgba(255,255,255,.8);
 }
 
 .big-btn span{
-    font-size:21px;
+    font-size:25px;
 }
+
 
 /* =========================
-   SMALL BUTTONS
+   FREE USER LOCK
 ========================= */
 
-.small-actions{
+.locked{
+    background:
+        linear-gradient(
+            135deg,
+            #3a3528,
+            #242119
+        ) !important;
+
+    color:#8f8878 !important;
+
+    box-shadow:none !important;
+
+    border-color:
+        rgba(255,215,0,.10) !important;
+
+    cursor:pointer;
+
     position:relative;
 
-    display:grid;
-
-    grid-template-columns:1fr 1fr;
-
-    gap:8px;
-
-    margin-bottom:9px;
+    opacity:.82;
 }
 
-.small-btn{
-    min-height:42px;
+.locked::after{
+    content:"🔒 PREMIUM ONLY";
 
-    border-radius:12px;
+    display:block;
 
-    display:flex;
+    font-size:8px;
+
+    margin-top:3px;
+
+    color:#ffd84d;
+}
+
+
+/* =========================
+   PAY TO WATCH
+========================= */
+
+.pay-btn{
+    position:relative;
+
+    display:none;
+
+    width:100%;
+
+    min-height:56px;
+
+    margin:0 0 12px;
+
+    border-radius:16px;
 
     align-items:center;
     justify-content:center;
 
-    gap:6px;
+    text-align:center;
 
     text-decoration:none;
 
-    color:#ddd5bd;
+    color:#211700;
 
-    background:rgba(255,255,255,.055);
+    font-size:13px;
 
-    border:1px solid rgba(255,215,0,.15);
+    font-weight:950;
 
-    font-size:10px;
-    font-weight:800;
+    letter-spacing:.3px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff0a3,
+            #ffd43b 45%,
+            #b77d00
+        );
+
+    border:
+        1px solid rgba(255,235,130,.70);
+
+    box-shadow:
+        0 10px 28px rgba(255,196,0,.22),
+        inset 0 1px rgba(255,255,255,.85);
+
+    animation:
+        goldPayPulse 1.8s infinite;
+}
+
+.pay-btn:hover{
+    animation-play-state:paused;
+
+    transform:scale(1.025);
+}
+
+
+/* =========================
+   PREMIUM WATCH BUTTONS
+========================= */
+
+.big-btn.premium-active{
+    min-height:82px;
+
+    font-size:13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff6b0,
+            #ffd21f 45%,
+            #d08a00
+        );
+
+    box-shadow:
+        0 12px 32px rgba(255,196,0,.28),
+        inset 0 1px rgba(255,255,255,.9);
+
+    border:
+        1px solid rgba(255,235,130,.8);
+}
+
+.big-btn.premium-active span{
+    font-size:30px;
+}
+
+
+/* =========================
+   ADMIN UPDATE
+========================= */
+
+.admin-btn{
+    display:none;
+
+    width:100%;
+
+    min-height:45px;
+
+    margin-top:0;
+
+    margin-bottom:11px;
+
+    border-radius:13px;
+
+    align-items:center;
+    justify-content:center;
 
     text-align:center;
 
-    transition:
-        background .15s ease;
+    text-decoration:none;
+
+    color:#211700;
+
+    font-size:11px;
+
+    font-weight:900;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff0a3,
+            #ffd43b 45%,
+            #b77d00
+        );
+
+    border:
+        1px solid rgba(255,215,0,.35);
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,.3),
+        inset 0 1px rgba(255,255,255,.7);
 }
 
-.small-btn:hover{
-    background:rgba(255,215,0,.11);
+.admin-btn:hover{
+    transform:translateY(-1px);
 }
+
 
 /* =========================
-   HOME
+   LOGOUT
 ========================= */
+
+.logout-btn{
+    display:block;
+
+    width:100%;
+
+    min-height:40px;
+
+    margin-top:0;
+
+    border:
+        1px solid rgba(255,215,0,.12);
+
+    border-radius:11px;
+
+    background:
+        rgba(255,255,255,.035);
+
+    color:#8f8878;
+
+    font-size:10px;
+
+    font-weight:800;
+
+    cursor:pointer;
+
+    transition:.2s ease;
+}
+
+.logout-btn:hover{
+    color:#ffd84d;
+
+    background:
+        rgba(255,215,0,.08);
+}
+
 
 /* =========================
    LOADING
@@ -457,6 +667,7 @@ h1{
     display:none!important;
 }
 
+
 /* =========================
    ERROR
 ========================= */
@@ -464,26 +675,29 @@ h1{
 .error{
     text-align:center;
 
-    padding:30px 18px;
+    padding:40px 20px;
 
     display:flex;
+
     flex-direction:column;
+
     align-items:center;
+
     justify-content:center;
 }
 
 .error h2{
     color:#ffd84d;
 
-    margin-bottom:8px;
+    margin-bottom:10px;
 
-    font-size:20px;
+    font-size:22px;
 }
 
 .error p{
     color:#aaa;
 
-    font-size:11px;
+    font-size:12px;
 
     line-height:1.6;
 }
@@ -491,7 +705,7 @@ h1{
 .error a{
     display:inline-block;
 
-    margin-top:15px;
+    margin-top:17px;
 
     color:#ffd84d;
 
@@ -500,177 +714,145 @@ h1{
     font-size:12px;
 }
 
+
 /* =========================
-   SMALL DEVICES
+   ANIMATIONS
 ========================= */
 
-@media(max-width:480px){
+@keyframes goldPayPulse{
+
+    0%,100%{
+        transform:scale(1);
+
+        box-shadow:
+            0 10px 28px rgba(255,196,0,.20),
+            inset 0 1px rgba(255,255,255,.8);
+    }
+
+    50%{
+        transform:scale(1.025);
+
+        box-shadow:
+            0 14px 35px rgba(255,196,0,.36),
+            0 0 20px rgba(255,215,0,.15),
+            inset 0 1px rgba(255,255,255,.9);
+    }
+}
+
+@keyframes titleShine{
+
+    to{
+        background-position:220% center;
+    }
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:600px){
 
     body{
-        padding:7px;
-    }
-
-    .topbar{
-        height:45px;
-        margin-bottom:5px;
-    }
-
-    .logo{
-        width:42px;
-        height:42px;
-    }
-
-    .account-card{
-        padding:16px 13px 10px;
-        border-radius:20px;
+        padding:6px;
     }
 
     .page{
-        min-height:calc(100dvh - 14px);
+        min-height:calc(100dvh - 12px);
+    }
+
+    .topbar{
+        height:48px;
+
+        margin-bottom:7px;
+    }
+
+    .logo{
+        width:43px;
+        height:43px;
+    }
+
+    .top-btn{
+        padding:8px 12px;
+        font-size:10px;
+    }
+
+    .account-card{
+        padding:20px 15px 15px;
+
+        border-radius:22px;
     }
 
     h1{
-        font-size:22px;
+        font-size:23px;
     }
 
     .welcome{
         font-size:10px;
-        margin-bottom:10px;
+        margin-bottom:13px;
     }
 
     .package-box,
     .expiry-box{
-        padding:10px 12px;
-        margin-bottom:8px;
+        padding:12px 11px;
+        margin-bottom:9px;
     }
 
     .package-name{
-        font-size:17px;
-    }
-
-    .big-btn{
-        min-height:55px;
-    }
-
-    .big-btn span{
-        font-size:19px;
-    }
-
-    .small-btn{
-        min-height:38px;
-        font-size:9px;
-    }
-.home-btn{
-        padding:4px;
-    }
-
-    /* Keep the complete account interface inside one mobile viewport. */
-    html,body{
-        height:100dvh;
-        overflow:hidden;
-    }
-
-    body{
-        padding:5px;
-    }
-
-    .page{
-        height:calc(100dvh - 10px);
-        min-height:0;
-    }
-
-    .account-card{
-        min-height:0;
-        overflow:hidden;
-        padding:11px 10px 7px;
-    }
-
-    h1{
-        font-size:20px;
-        margin-bottom:2px;
-    }
-
-    .welcome{
-        font-size:9px;
-        margin-bottom:6px;
-    }
-
-    .package-box,
-    .expiry-box{
-        padding:7px 9px;
-        margin-bottom:5px;
-    }
-
-    .package-name{
-        font-size:15px;
+        font-size:18px;
     }
 
     .status,
     .expiry-date{
-        font-size:8px;
+        font-size:9px;
     }
 
     .countdown{
-        font-size:9px;
+        font-size:10px;
     }
 
     .big-actions{
-        gap:6px;
-        margin-bottom:5px;
+        gap:7px;
+        margin-bottom:9px;
     }
 
     .big-btn{
-        min-height:49px;
-        font-size:9px;
-        border-radius:12px;
+        min-height:62px;
+        font-size:10px;
+        border-radius:14px;
     }
 
     .big-btn span{
-        font-size:17px;
+        font-size:21px;
     }
 
     .big-btn.premium-active{
-        min-height:66px;
+        min-height:70px;
         font-size:11px;
     }
 
     .big-btn.premium-active span{
-        font-size:23px;
-    }
-
-    .small-actions{
-        gap:5px;
-        margin-bottom:5px;
-    }
-
-    .small-btn{
-        min-height:34px;
-        font-size:8px;
-        border-radius:10px;
+        font-size:25px;
     }
 
     .pay-btn{
-        min-height:38px;
-        margin-bottom:5px;
-        font-size:9px;
+        min-height:47px;
+        margin-bottom:9px;
+        font-size:10px;
     }
-.admin-btn{
-        min-height:34px;
-        margin-top:5px;
+
+    .admin-btn{
+        min-height:39px;
+        margin-bottom:8px;
         font-size:9px;
     }
 
     .logout-btn{
-        min-height:28px;
-        margin-top:5px;
-        font-size:8px;
-    }
-
-    .home-btn{
-        font-size:8px;
-        padding:2px;
+        min-height:34px;
+        font-size:9px;
     }
 }
+
 
 /* =========================
    VERY SHORT SCREENS
@@ -682,9 +864,13 @@ h1{
         padding:5px;
     }
 
+    .page{
+        min-height:calc(100dvh - 10px);
+    }
+
     .topbar{
-        height:39px;
-        margin-bottom:3px;
+        height:40px;
+        margin-bottom:4px;
     }
 
     .logo{
@@ -694,39 +880,33 @@ h1{
 
     .top-btn{
         padding:6px 10px;
-        font-size:10px;
+        font-size:9px;
     }
 
     .account-card{
-        padding:12px 12px 8px;
-        border-radius:18px;
-    }
-
-    .badge{
-        padding:4px 9px;
-        margin-bottom:6px;
-        font-size:8px;
+        padding:14px 11px 9px;
+        border-radius:19px;
     }
 
     h1{
         font-size:20px;
-        margin-bottom:3px;
+        margin-bottom:2px;
     }
 
     .welcome{
+        font-size:8px;
         margin-bottom:7px;
-        font-size:9px;
     }
 
     .package-box,
     .expiry-box{
-        padding:8px 10px;
+        padding:8px 9px;
         margin-bottom:6px;
     }
 
     .package-title,
     .expiry-label{
-        font-size:8px;
+        font-size:7px;
     }
 
     .package-name{
@@ -735,11 +915,11 @@ h1{
 
     .status,
     .expiry-date{
-        font-size:9px;
+        font-size:8px;
     }
 
     .countdown{
-        font-size:10px;
+        font-size:9px;
     }
 
     .big-actions{
@@ -748,181 +928,39 @@ h1{
     }
 
     .big-btn{
-        min-height:47px;
-        font-size:9px;
+        min-height:48px;
+        font-size:8px;
+        border-radius:11px;
     }
 
     .big-btn span{
         font-size:16px;
     }
 
-    .small-actions{
-        gap:6px;
-        margin-bottom:6px;
-    }
-
-    .small-btn{
-        min-height:34px;
-        font-size:8px;
-    }
-.home-btn{
+    .big-btn.premium-active{
+        min-height:56px;
         font-size:9px;
-        padding:3px;
-    }
-}
-
-
-/* =========================
-   COPIED ACCOUNT ACTIONS
-   GOLDEN THEME PRESERVED
-========================= */
-
-.locked{
-    background:
-        linear-gradient(
-            135deg,
-            #3a3528,
-            #242119
-        ) !important;
-    color:#8f8878 !important;
-    box-shadow:none !important;
-    border-color:rgba(255,215,0,.10) !important;
-    cursor:not-allowed;
-    position:relative;
-    opacity:.8;
-}
-
-.locked::after{
-    content:" 🔒 PREMIUM ONLY";
-    display:block;
-    font-size:8px;
-    margin-top:3px;
-    color:#ffd84d;
-}
-
-.pay-btn{
-    position:relative;
-    display:none;
-    width:100%;
-    min-height:48px;
-    margin:0 0 9px;
-    border-radius:14px;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    text-decoration:none;
-    color:#211700;
-    font-size:11px;
-    font-weight:900;
-    background:
-        linear-gradient(
-            135deg,
-            #fff0a3,
-            #ffd43b 45%,
-            #b77d00
-        );
-    border:1px solid rgba(255,235,130,.65);
-    box-shadow:
-        0 8px 22px rgba(255,196,0,.20),
-        inset 0 1px rgba(255,255,255,.8);
-    animation:goldPayPulse 1.8s infinite;
-}
-
-@keyframes goldPayPulse{
-    0%,100%{transform:scale(1);}
-    50%{transform:scale(1.02);}
-}
-
-/* Premium users get larger, more prominent watch buttons. */
-.big-btn.premium-active{
-    min-height:78px;
-    font-size:13px;
-    background:
-        linear-gradient(135deg,#fff6b0,#ffd21f 45%,#d08a00);
-    box-shadow:
-        0 10px 28px rgba(255,196,0,.28),
-        inset 0 1px rgba(255,255,255,.9);
-    border:1px solid rgba(255,235,130,.8);
-}
-
-.big-btn.premium-active span{
-    font-size:28px;
-}
-
-.admin-btn{
-    display:none;
-    width:100%;
-    min-height:40px;
-    margin-top:8px;
-    border-radius:12px;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    text-decoration:none;
-    color:#211700;
-    font-size:10px;
-    font-weight:900;
-    background:
-        linear-gradient(
-            135deg,
-            #fff0a3,
-            #ffd43b 45%,
-            #b77d00
-        );
-    border:1px solid rgba(255,215,0,.35);
-    box-shadow:
-        0 7px 18px rgba(0,0,0,.3),
-        inset 0 1px rgba(255,255,255,.7);
-}
-
-.logout-btn{
-    display:block;
-    width:100%;
-    min-height:34px;
-    margin-top:7px;
-    border:1px solid rgba(255,215,0,.12);
-    border-radius:10px;
-    background:rgba(255,255,255,.035);
-    color:#8f8878;
-    font-size:9px;
-    font-weight:800;
-    cursor:pointer;
-}
-
-.logout-btn:hover{
-    color:#ffd84d;
-    background:rgba(255,215,0,.08);
-}
-
-@media(max-width:480px){
-    .pay-btn{
-        min-height:43px;
-        font-size:10px;
     }
 
-    .admin-btn{
-        min-height:37px;
+    .big-btn.premium-active span{
+        font-size:20px;
     }
 
-    .logout-btn{
-        min-height:31px;
-    }
-}
-
-@media(max-height:650px){
     .pay-btn{
         min-height:38px;
+        margin-bottom:5px;
         font-size:9px;
-        margin-bottom:6px;
     }
 
     .admin-btn{
         min-height:33px;
+        margin-bottom:5px;
+        font-size:8px;
     }
 
     .logout-btn{
         min-height:28px;
-        margin-top:5px;
+        font-size:8px;
     }
 }
 
@@ -930,7 +968,9 @@ h1{
 
 </head>
 
+
 <body>
+
 
 <div id="loading" class="loading">
     Loading your BUSANSO account...
@@ -938,6 +978,7 @@ h1{
 
 
 <div id="page" class="page hidden">
+
 
     <div class="topbar">
 
@@ -960,6 +1001,7 @@ h1{
 
 
     <main class="account-card">
+
 
         <h1>
             Welcome,
@@ -1022,7 +1064,7 @@ h1{
         </section>
 
 
-        <!-- BIG ACTION BUTTONS -->
+        <!-- WATCH BUTTONS -->
 
         <div class="big-actions">
 
@@ -1052,38 +1094,21 @@ h1{
         </div>
 
 
-        <!-- SMALL ACTION BUTTONS -->
+        <!-- FREE USERS ONLY -->
 
-        <div class="small-actions">
-
-            <a
-                href="happy-birthday.html"
-                class="small-btn">
-
-                🎂 HAPPY BIRTHDAY WISHES
-
-            </a>
-
-
-            <a
-                href="donate.html"
-                class="small-btn">
-
-                ❤️ DONATE
-
-            </a>
-
-        </div>
-
-
-        <!-- PAYMENT -->
         <a
             href="packages.html"
             id="payBtn"
             class="pay-btn">
+
             🔓 PAY TO WATCH
+
         </a>
-<a
+
+
+        <!-- ADMIN ONLY -->
+
+        <a
             href="adm-page.html"
             id="adminBtn"
             class="admin-btn">
@@ -1093,6 +1118,8 @@ h1{
         </a>
 
 
+        <!-- LOGOUT -->
+
         <button
             type="button"
             class="logout-btn"
@@ -1101,6 +1128,7 @@ h1{
             🚪 LOGOUT
 
         </button>
+
 
     </main>
 
@@ -1114,10 +1142,6 @@ h1{
     class="page hidden">
 
     <main class="account-card error">
-
-        <div class="badge">
-            BUSANSO
-        </div>
 
         <h2>
             Account Not Found
@@ -1144,191 +1168,288 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRoa2ZoaHliemN4ZGVvYWxjZnF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1MzQxNTEsImV4cCI6MjA4ODExMDE1MX0.jZ4NDNPJmO0Ji05TxDqCnzgLIIzKf9uCx3WrSgk2DaY";
 
+
 const supabaseClient =
     window.supabase.createClient(
         SUPABASE_URL,
         SUPABASE_KEY,
         {
-            auth: {
-                persistSession: true,
-                autoRefreshToken: true,
-                detectSessionInUrl: true,
-                flowType: "pkce",
-                storageKey: "busanso-auth"
+            auth:{
+                persistSession:true,
+                autoRefreshToken:true,
+                detectSessionInUrl:true,
+                flowType:"pkce",
+                storageKey:"busanso-auth"
             }
         }
     );
 
+
 /*
  * Legacy compatibility client.
- * Some older BUSANSO sessions may still be stored under
- * Supabase's default storage key. We read it without changing
- * or signing out the user's real session.
  */
 const legacySupabaseClient =
     window.supabase.createClient(
         SUPABASE_URL,
         SUPABASE_KEY,
         {
-            auth: {
-                persistSession: false,
-                autoRefreshToken: false,
-                detectSessionInUrl: false,
-                flowType: "pkce"
+            auth:{
+                persistSession:false,
+                autoRefreshToken:false,
+                detectSessionInUrl:false,
+                flowType:"pkce"
             }
         }
     );
+
 
 let countdownTimer = null;
 
 
 /* =========================================
-   ACCOUNT (2) LOGIN/PROFILE LOGIC
-   IMPORTANT: use the existing user_id session
-   exactly like account (2).html.
+   LOAD ACCOUNT
 ========================================= */
 
 async function loadAccount(){
 
-    const loading = document.getElementById("loading");
-    const page = document.getElementById("page");
-    const errorPage = document.getElementById("errorPage");
-    const errorMessage = document.getElementById("errorMessage");
+    const loading =
+        document.getElementById("loading");
+
+    const page =
+        document.getElementById("page");
+
+    const errorPage =
+        document.getElementById("errorPage");
+
+    const errorMessage =
+        document.getElementById("errorMessage");
+
 
     let authUser = null;
+
     let sessionSource = "none";
 
-    /*
-     * 1. First try the current BUSANSO auth session.
-     */
+
+    /* CURRENT AUTH SESSION */
+
     try{
-        const { data } = await supabaseClient.auth.getSession();
-        authUser = data?.session?.user || null;
-        if(authUser) sessionSource = "busanso-auth";
+
+        const {data} =
+            await supabaseClient.auth.getSession();
+
+        authUser =
+            data?.session?.user || null;
+
+        if(authUser){
+            sessionSource = "busanso-auth";
+        }
+
     }catch(error){
-        console.warn("Current Supabase session check:", error);
+
+        console.warn(
+            "Current Supabase session check:",
+            error
+        );
     }
 
-    /*
-     * 2. If that storage is empty, also check the older/default
-     * Supabase storage. This prevents old valid users being sent
-     * back to auth.html after the storageKey was changed.
-     */
+
+    /* LEGACY AUTH SESSION */
+
     if(!authUser){
+
         try{
-            const { data } = await legacySupabaseClient.auth.getSession();
-            authUser = data?.session?.user || null;
-            if(authUser) sessionSource = "legacy-auth";
+
+            const {data} =
+                await legacySupabaseClient
+                    .auth
+                    .getSession();
+
+            authUser =
+                data?.session?.user || null;
+
+            if(authUser){
+                sessionSource = "legacy-auth";
+            }
+
         }catch(error){
-            console.warn("Legacy Supabase session check:", error);
+
+            console.warn(
+                "Legacy Supabase session check:",
+                error
+            );
         }
     }
+
 
     let data = null;
 
-    /*
-     * 3. Match the authenticated user to the existing profile.
-     */
+
+    /* AUTH USER -> PROFILE */
+
     if(authUser){
 
         try{
-            const result = await supabaseClient
-                .from("profiles")
-                .select("*")
-                .eq("auth_user_id", authUser.id)
-                .maybeSingle();
 
-            data = result.data || null;
-        }catch(error){
-            console.warn("auth_user_id profile lookup:", error);
-        }
-
-        /*
-         * Older profile: match by email.
-         */
-        if(!data && authUser.email){
-            try{
-                const result = await supabaseClient
+            const result =
+                await supabaseClient
                     .from("profiles")
                     .select("*")
-                    .ilike("email", authUser.email)
+                    .eq(
+                        "auth_user_id",
+                        authUser.id
+                    )
                     .maybeSingle();
 
-                data = result.data || null;
+            data =
+                result.data || null;
+
+        }catch(error){
+
+            console.warn(
+                "auth_user_id profile lookup:",
+                error
+            );
+        }
+
+
+        /* OLDER EMAIL MATCH */
+
+        if(!data && authUser.email){
+
+            try{
+
+                const result =
+                    await supabaseClient
+                        .from("profiles")
+                        .select("*")
+                        .ilike(
+                            "email",
+                            authUser.email
+                        )
+                        .maybeSingle();
+
+                data =
+                    result.data || null;
+
             }catch(error){
-                console.warn("email profile lookup:", error);
+
+                console.warn(
+                    "email profile lookup:",
+                    error
+                );
             }
         }
     }
 
-    /*
-     * 4. Legacy BUSANSO profile session.
-     */
+
+    /* LEGACY USER ID */
+
     if(!data){
-        const userID = localStorage.getItem("user_id");
+
+        const userID =
+            localStorage.getItem("user_id");
 
         if(userID){
-            try{
-                const result = await supabaseClient
-                    .from("profiles")
-                    .select("*")
-                    .eq("id", Number(userID))
-                    .maybeSingle();
 
-                data = result.data || null;
+            try{
+
+                const result =
+                    await supabaseClient
+                        .from("profiles")
+                        .select("*")
+                        .eq(
+                            "id",
+                            Number(userID)
+                        )
+                        .maybeSingle();
+
+                data =
+                    result.data || null;
+
             }catch(error){
-                console.warn("legacy user_id profile lookup:", error);
+
+                console.warn(
+                    "legacy user_id profile lookup:",
+                    error
+                );
             }
         }
     }
 
-    /*
-     * 5. Last local fallback: if the browser still has the profile
-     * cache, do not send a valid-looking account to auth.html.
-     * We still verify the profile from Supabase before displaying it.
-     */
+
+    /* FINAL LOCAL ID VERIFICATION */
+
     if(!data){
-        const cachedID = localStorage.getItem("user_id");
+
+        const cachedID =
+            localStorage.getItem("user_id");
 
         if(cachedID){
-            try{
-                const result = await supabaseClient
-                    .from("profiles")
-                    .select("*")
-                    .eq("id", Number(cachedID))
-                    .single();
 
-                data = result.data || null;
+            try{
+
+                const result =
+                    await supabaseClient
+                        .from("profiles")
+                        .select("*")
+                        .eq(
+                            "id",
+                            Number(cachedID)
+                        )
+                        .single();
+
+                data =
+                    result.data || null;
+
             }catch(error){
-                console.warn("Final profile verification:", error);
+
+                console.warn(
+                    "Final profile verification:",
+                    error
+                );
             }
         }
     }
 
-    /*
-     * IMPORTANT:
-     * Never redirect to auth.html from this page because a lookup
-     * temporarily failed. Show the account page's own error instead.
-     * Only the explicit LOGOUT button signs the user out.
-     */
+
+    /* NO PROFILE */
+
     if(!data){
 
-        console.error("BUSANSO: no matching profile found.", {
-            sessionSource,
-            authUserId: authUser?.id || null,
-            email: authUser?.email || null,
-            localUserId: localStorage.getItem("user_id")
-        });
+        console.error(
+            "BUSANSO: no matching profile found.",
+            {
+                sessionSource,
+                authUserId:
+                    authUser?.id || null,
+                email:
+                    authUser?.email || null,
+                localUserId:
+                    localStorage.getItem("user_id")
+            }
+        );
 
-        if(loading) loading.classList.add("hidden");
-        if(page) page.classList.add("hidden");
+
+        if(loading){
+            loading.classList.add("hidden");
+        }
+
+        if(page){
+            page.classList.add("hidden");
+        }
+
 
         if(errorPage){
+
             errorPage.classList.remove("hidden");
+
             if(errorMessage){
+
                 errorMessage.textContent =
                     authUser
+
                         ? "Your BUSANSO profile could not be matched yet. Your login session has NOT been signed out."
+
                         : "Your BUSANSO login session could not be read. Please refresh this page.";
             }
         }
@@ -1336,75 +1457,175 @@ async function loadAccount(){
         return false;
     }
 
-    /*
-     * Synchronize the old BUSANSO profile identifiers.
-     */
-    localStorage.setItem("user_id", String(data.id));
+
+    /* SYNCHRONIZE USER */
+
+    localStorage.setItem(
+        "user_id",
+        String(data.id)
+    );
+
 
     if(authUser){
-        localStorage.setItem("auth_user_id", authUser.id);
-        localStorage.setItem("supabase_auth_user_id", authUser.id);
+
+        localStorage.setItem(
+            "auth_user_id",
+            authUser.id
+        );
+
+        localStorage.setItem(
+            "supabase_auth_user_id",
+            authUser.id
+        );
+
 
         if(authUser.email){
-            localStorage.setItem("email", authUser.email);
+
+            localStorage.setItem(
+                "email",
+                authUser.email
+            );
         }
     }
 
-    /*
-     * Existing account-status rule.
-     */
-    if((data.account_status || "").toLowerCase() !== "active"){
-        location.href = "blocked.html";
+
+    /* ACCOUNT STATUS */
+
+    if(
+        (data.account_status || "")
+            .toLowerCase() !== "active"
+    ){
+
+        location.href =
+            "blocked.html";
+
         return false;
     }
 
-    const membership =
-        (data.membership || "free").toLowerCase();
 
-    document.getElementById("userName").textContent =
+    const membership =
+        (data.membership || "free")
+            .toLowerCase();
+
+
+    document.getElementById(
+        "userName"
+    ).textContent =
         data.name || "Member";
 
-    document.getElementById("packageName").textContent =
-        (data.package_type || "free").toUpperCase();
+
+    document.getElementById(
+        "packageName"
+    ).textContent =
+        (
+            data.package_type ||
+            "free"
+        ).toUpperCase();
+
 
     const status =
-        document.getElementById("membershipStatus");
+        document.getElementById(
+            "membershipStatus"
+        );
+
 
     const expiryBox =
-        document.getElementById("expiryBox");
+        document.getElementById(
+            "expiryBox"
+        );
+
 
     const moviesBtn =
-        document.getElementById("moviesBtn");
+        document.getElementById(
+            "moviesBtn"
+        );
+
 
     const seriesBtn =
-        document.getElementById("seriesBtn");
+        document.getElementById(
+            "seriesBtn"
+        );
+
+
+    const payBtn =
+        document.getElementById(
+            "payBtn"
+        );
+
+
+    /*
+     * PREMIUM IS ACTIVE ONLY WHEN:
+     * membership = premium
+     * AND expires_at is still in future.
+     */
 
     const premiumActive =
         membership === "premium" &&
         data.expires_at &&
         new Date(data.expires_at) > new Date();
 
-    const payBtn = document.getElementById("payBtn");
+
+    /*
+     * PAY TO WATCH:
+     * ONLY FREE USERS SEE THIS.
+     */
 
     if(payBtn){
+
         payBtn.style.display =
-            membership === "free" ? "flex" : "none";
+            membership === "free"
+                ? "flex"
+                : "none";
     }
+
+
+    /* PREMIUM */
 
     if(premiumActive){
 
-        status.textContent = "Active";
+        status.textContent =
+            "Active";
 
-        moviesBtn.classList.remove("locked");
-        seriesBtn.classList.remove("locked");
-        moviesBtn.classList.add("premium-active");
-        seriesBtn.classList.add("premium-active");
 
-        moviesBtn.href = "movies.html";
-        seriesBtn.href = "series.html";
+        moviesBtn.classList.remove(
+            "locked"
+        );
 
-        expiryBox.style.display = "block";
-        startExpiryCountdown(data.expires_at);
+        seriesBtn.classList.remove(
+            "locked"
+        );
+
+
+        moviesBtn.classList.add(
+            "premium-active"
+        );
+
+        seriesBtn.classList.add(
+            "premium-active"
+        );
+
+
+        moviesBtn.href =
+            "movies.html";
+
+        seriesBtn.href =
+            "series.html";
+
+
+        moviesBtn.onclick =
+            null;
+
+        seriesBtn.onclick =
+            null;
+
+
+        expiryBox.style.display =
+            "block";
+
+
+        startExpiryCountdown(
+            data.expires_at
+        );
 
     }else{
 
@@ -1413,66 +1634,156 @@ async function loadAccount(){
                 ? "Expired"
                 : "Free package";
 
+
         if(data.expires_at){
-            expiryBox.style.display = "block";
-            startExpiryCountdown(data.expires_at);
+
+            expiryBox.style.display =
+                "block";
+
+            startExpiryCountdown(
+                data.expires_at
+            );
+
         }else{
-            expiryBox.style.display = "none";
+
+            expiryBox.style.display =
+                "none";
         }
 
-        moviesBtn.classList.add("locked");
-        seriesBtn.classList.add("locked");
-        moviesBtn.classList.remove("premium-active");
-        seriesBtn.classList.remove("premium-active");
 
-        moviesBtn.href = "javascript:void(0)";
-        seriesBtn.href = "javascript:void(0)";
+        /*
+         * LOCK WATCH BUTTONS FOR FREE
+         * AND EXPIRED PREMIUM USERS.
+         */
 
-        moviesBtn.onclick = function(){
-            location.href = "packages.html";
-        };
+        moviesBtn.classList.add(
+            "locked"
+        );
 
-        seriesBtn.onclick = function(){
-            location.href = "packages.html";
-        };
+        seriesBtn.classList.add(
+            "locked"
+        );
+
+
+        moviesBtn.classList.remove(
+            "premium-active"
+        );
+
+        seriesBtn.classList.remove(
+            "premium-active"
+        );
+
+
+        moviesBtn.href =
+            "javascript:void(0)";
+
+        seriesBtn.href =
+            "javascript:void(0)";
+
+
+        moviesBtn.onclick =
+            function(){
+
+                location.href =
+                    "packages.html";
+            };
+
+
+        seriesBtn.onclick =
+            function(){
+
+                location.href =
+                    "packages.html";
+            };
     }
 
-    localStorage.setItem("name", data.name || "");
-    localStorage.setItem("whatsapp_number", data.whatsapp_number || "");
-    localStorage.setItem("membership", data.membership || "free");
-    localStorage.setItem("package_type", data.package_type || "");
-    localStorage.setItem("expires_at", data.expires_at || "");
+
+    /* LOCAL CACHE */
+
+    localStorage.setItem(
+        "name",
+        data.name || ""
+    );
+
+    localStorage.setItem(
+        "whatsapp_number",
+        data.whatsapp_number || ""
+    );
+
+    localStorage.setItem(
+        "membership",
+        data.membership || "free"
+    );
+
+    localStorage.setItem(
+        "package_type",
+        data.package_type || ""
+    );
+
+    localStorage.setItem(
+        "expires_at",
+        data.expires_at || ""
+    );
+
 
     if(data.account_status){
-        localStorage.setItem("account_status", data.account_status);
+
+        localStorage.setItem(
+            "account_status",
+            data.account_status
+        );
     }
+
 
     if(data.role){
-        localStorage.setItem("role", data.role);
+
+        localStorage.setItem(
+            "role",
+            data.role
+        );
     }
 
-    loading.classList.add("hidden");
+
+    loading.classList.add(
+        "hidden"
+    );
+
 
     if(errorPage){
-        errorPage.classList.add("hidden");
+
+        errorPage.classList.add(
+            "hidden"
+        );
     }
 
-    page.classList.remove("hidden");
+
+    page.classList.remove(
+        "hidden"
+    );
+
 
     return true;
 }
+
 
 /* =========================================
    EXPIRY COUNTDOWN
 ========================================= */
 
-function startExpiryCountdown(expiryDate){
+function startExpiryCountdown(
+    expiryDate
+){
 
     const expiryDateEl =
-        document.getElementById("expiryDate");
+        document.getElementById(
+            "expiryDate"
+        );
 
     const countdown =
-        document.getElementById("countdown");
+        document.getElementById(
+            "countdown"
+        );
+
 
     function update(){
 
@@ -1484,24 +1795,38 @@ function startExpiryCountdown(expiryDate){
         if(diff <= 0){
 
             expiryDateEl.textContent =
-                new Date(expiryDate).toLocaleString();
+                new Date(
+                    expiryDate
+                ).toLocaleString();
+
 
             countdown.textContent =
                 "access expired";
 
-            countdown.classList.remove("urgent");
-            countdown.classList.add("expired");
+
+            countdown.classList.remove(
+                "urgent"
+            );
+
+            countdown.classList.add(
+                "expired"
+            );
+
 
             document.getElementById(
                 "membershipStatus"
-            ).textContent = "Expired";
+            ).textContent =
+                "Expired";
+
 
             return;
         }
 
 
         expiryDateEl.textContent =
-            new Date(expiryDate).toLocaleString(
+            new Date(
+                expiryDate
+            ).toLocaleString(
                 undefined,
                 {
                     dateStyle:"medium",
@@ -1511,37 +1836,62 @@ function startExpiryCountdown(expiryDate){
 
 
         const days =
-            Math.floor(diff / 86400000);
+            Math.floor(
+                diff / 86400000
+            );
+
 
         const hours =
             Math.floor(
-                (diff % 86400000) / 3600000
+                (diff % 86400000) /
+                3600000
             );
+
 
         const minutes =
             Math.floor(
-                (diff % 3600000) / 60000
+                (diff % 3600000) /
+                60000
             );
+
 
         const seconds =
             Math.floor(
-                (diff % 60000) / 1000
+                (diff % 60000) /
+                1000
             );
 
-        // Highlight the countdown in red once fewer than 5 days remain.
+
         if(days < 5){
-            countdown.classList.add("urgent");
+
+            countdown.classList.add(
+                "urgent"
+            );
+
         }else{
-            countdown.classList.remove("urgent");
+
+            countdown.classList.remove(
+                "urgent"
+            );
         }
+
 
         countdown.textContent =
             days + " days " +
-            String(hours).padStart(2,"0") +
+
+            String(hours)
+                .padStart(2,"0") +
+
             " hours " +
-            String(minutes).padStart(2,"0") +
+
+            String(minutes)
+                .padStart(2,"0") +
+
             " minutes " +
-            String(seconds).padStart(2,"0") +
+
+            String(seconds)
+                .padStart(2,"0") +
+
             " seconds";
     }
 
@@ -1550,11 +1900,18 @@ function startExpiryCountdown(expiryDate){
 
 
     if(countdownTimer){
-        clearInterval(countdownTimer);
+
+        clearInterval(
+            countdownTimer
+        );
     }
 
+
     countdownTimer =
-        setInterval(update,1000);
+        setInterval(
+            update,
+            1000
+        );
 }
 
 
@@ -1566,52 +1923,118 @@ async function checkAdminAccess(){
 
     let data = null;
 
+
+    /*
+     * FIRST:
+     * Check the currently authenticated user.
+     */
+
     try{
-        const { data: sessionData } =
-            await supabaseClient.auth.getSession();
+
+        const {data:sessionData} =
+            await supabaseClient
+                .auth
+                .getSession();
+
 
         const authUser =
-            sessionData?.session?.user || null;
+            sessionData?.session?.user ||
+            null;
+
 
         if(authUser){
-            const result = await supabaseClient
-                .from("profiles")
-                .select("role")
-                .eq("auth_user_id", authUser.id)
-                .maybeSingle();
 
-            data = result.data || null;
+            const result =
+                await supabaseClient
+                    .from("profiles")
+                    .select("role")
+                    .eq(
+                        "auth_user_id",
+                        authUser.id
+                    )
+                    .maybeSingle();
+
+
+            data =
+                result.data || null;
         }
+
     }catch(error){
-        console.warn("Admin session check:", error);
+
+        console.warn(
+            "Admin session check:",
+            error
+        );
     }
 
-    /* Legacy fallback. */
+
+    /*
+     * LEGACY FALLBACK
+     */
+
     if(!data){
-        const userID = localStorage.getItem("user_id");
+
+        const userID =
+            localStorage.getItem(
+                "user_id"
+            );
+
 
         if(userID){
-            const result = await supabaseClient
-                .from("profiles")
-                .select("role")
-                .eq("id", Number(userID))
-                .maybeSingle();
 
-            data = result.data || null;
+            try{
+
+                const result =
+                    await supabaseClient
+                        .from("profiles")
+                        .select("role")
+                        .eq(
+                            "id",
+                            Number(userID)
+                        )
+                        .maybeSingle();
+
+
+                data =
+                    result.data || null;
+
+            }catch(error){
+
+                console.warn(
+                    "Legacy admin check:",
+                    error
+                );
+            }
         }
     }
+
+
+    /*
+     * SHOW UPDATE ONLY TO ADMIN.
+     *
+     * This deliberately checks the DATABASE
+     * role value. It does NOT trust a localStorage
+     * role by itself.
+     */
 
     if(
         data &&
         data.role &&
-        data.role.trim().toLowerCase() === "admin"
+        String(data.role)
+            .trim()
+            .toLowerCase() === "admin"
     ){
 
         const adminBtn =
-            document.getElementById("adminBtn");
+            document.getElementById(
+                "adminBtn"
+            );
+
 
         if(adminBtn){
-            adminBtn.style.display = "block";
+
+            adminBtn.style.display =
+                "flex";
         }
     }
 }
@@ -1624,14 +2047,25 @@ async function checkAdminAccess(){
 async function logout(){
 
     try{
-        await supabaseClient.auth.signOut();
+
+        await supabaseClient
+            .auth
+            .signOut();
+
     }catch(error){
-        console.warn("Supabase signout:",error);
+
+        console.warn(
+            "Supabase signout:",
+            error
+        );
     }
+
 
     localStorage.clear();
 
-    location.href = "auth.html";
+
+    location.href =
+        "auth.html";
 }
 
 
@@ -1646,19 +2080,25 @@ async function startPage(){
         const loaded =
             await loadAccount();
 
+
         if(!loaded){
+
             return;
         }
+
 
         await checkAdminAccess();
 
 
         /*
-         * Keep realtime profile updates from account (2),
-         * without changing the user's login identity.
+         * REALTIME PROFILE UPDATES
          */
+
         const userID =
-            localStorage.getItem("user_id");
+            localStorage.getItem(
+                "user_id"
+            );
+
 
         if(userID){
 
@@ -1678,12 +2118,14 @@ async function startPage(){
                     function(){
 
                         loadAccount();
+
                         checkAdminAccess();
 
                     }
                 )
                 .subscribe();
         }
+
 
     }catch(error){
 
@@ -1692,35 +2134,46 @@ async function startPage(){
             error
         );
 
+
         const loading =
-            document.getElementById("loading");
+            document.getElementById(
+                "loading"
+            );
+
 
         const page =
-            document.getElementById("page");
-
-        const errorPage =
-            document.getElementById("errorPage");
-
-        const errorMessage =
-            document.getElementById("errorMessage");
+            document.getElementById(
+                "page"
+            );
 
 
         if(loading){
-            loading.classList.add("hidden");
+
+            loading.classList.add(
+                "hidden"
+            );
         }
+
 
         if(page){
-            page.classList.add("hidden");
+
+            page.classList.add(
+                "hidden"
+            );
         }
+
+
+        const errorPage =
+            document.getElementById(
+                "errorPage"
+            );
+
 
         if(errorPage){
-            errorPage.classList.remove("hidden");
-        }
 
-        if(errorMessage){
-            errorMessage.textContent =
-                error.message ||
-                "Unable to load your BUSANSO account.";
+            errorPage.classList.remove(
+                "hidden"
+            );
         }
     }
 }
@@ -1730,6 +2183,5 @@ startPage();
 
 </script>
 
-<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1,"spa":2}' crossorigin="anonymous"></script>
 </body>
 </html>
