@@ -1,12 +1,14 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>BUSANSO Premium</title>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>BUSANSO — Sign In</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -14,1719 +16,1237 @@
 
 *{
     box-sizing:border-box;
-    margin:0;
-    padding:0;
 }
 
 html,
 body{
+    margin:0;
+    padding:0;
     width:100%;
     min-height:100%;
-    margin:0;
 }
 
 body{
+
     min-height:100vh;
-    min-height:100dvh;
-    font-family:Poppins,Arial,sans-serif;
-    color:#fff;
-
-    background:
-        radial-gradient(
-            circle at top,
-            #3b2a00 0%,
-            #15110a 35%,
-            #050505 75%,
-            #000 100%
-        );
-
-    padding:clamp(12px,2vw,28px);
-}
-
-.page{
-    width:100%;
-    min-height:calc(100dvh - 2 * clamp(12px,2vw,28px));
-    margin:0 auto;
-    display:flex;
-    flex-direction:column;
-}
-
-.account-card{
-    flex:1;
-    display:flex;
-    flex-direction:column;
-}
-
-.big-actions{
-    align-content:center;
-}
-
-/* =========================
-   HEADER
-========================= */
-
-.topbar{
-    height:54px;
 
     display:flex;
     align-items:center;
-    justify-content:space-between;
+    justify-content:center;
 
-    margin-bottom:8px;
+    padding:20px;
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            #3a321b 0%,
+            #171717 35%,
+            #070707 70%,
+            #000 100%
+        );
+
+    color:#fff;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 }
 
-.logo{
-    width:48px;
-    height:48px;
-    object-fit:contain;
-    border-radius:13px;
-}
-
-
-.top-btn{
-    border:1px solid rgba(255,215,0,.25);
-    background:rgba(255,215,0,.08);
-    color:#ffd84d;
-
-    padding:8px 13px;
-    border-radius:10px;
-
-    text-decoration:none;
-    font-size:11px;
-    font-weight:700;
-}
-
-/* =========================
-   MAIN CARD
-========================= */
-
-.account-card{
-    position:relative;
-    overflow:hidden;
+.auth-card{
 
     width:100%;
+    max-width:390px;
 
-    border-radius:24px;
+    padding:40px 28px 30px;
 
-    padding:19px 18px 14px;
+    text-align:center;
 
     background:
         linear-gradient(
             145deg,
-            rgba(255,215,0,.14),
-            rgba(255,255,255,.045) 35%,
+            rgba(255,255,255,.075),
             rgba(255,255,255,.025)
         );
 
-    border:1px solid rgba(255,215,0,.28);
+    border:1px solid
+        rgba(212,175,55,.35);
+
+    border-radius:25px;
 
     box-shadow:
-        0 20px 55px rgba(0,0,0,.65),
-        inset 0 1px rgba(255,255,255,.08);
+        0 25px 80px rgba(0,0,0,.75),
+        0 0 35px rgba(212,175,55,.08);
 }
 
-.account-card:before{
-    content:"";
+.logo{
 
-    position:absolute;
+    width:95px;
+    height:95px;
 
-    width:220px;
-    height:220px;
+    object-fit:contain;
 
-    border-radius:50%;
+    display:block;
 
-    background:rgba(255,215,0,.08);
+    margin:0 auto 20px;
 
-    filter:blur(55px);
-
-    top:-140px;
-    right:-80px;
-
-    pointer-events:none;
+    border-radius:20px;
 }
 
-/* =========================
-   TITLE
-========================= */
+.brand{
 
-.badge{
-    position:relative;
+    margin:0;
 
-    display:inline-block;
+    font-size:27px;
 
-    padding:5px 11px;
-
-    border-radius:30px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #ffe27a,
-            #c99600
-        );
-
-    color:#211700;
-
-    font-size:9px;
     font-weight:900;
-    letter-spacing:1px;
-    text-transform:uppercase;
 
-    margin-bottom:9px;
-}
-
-h1{
-    position:relative;
-
-    text-align:center;
-
-    font-size:25px;
-    line-height:1.05;
-
-    margin-bottom:5px;
+    letter-spacing:1.5px;
 
     background:
         linear-gradient(
             90deg,
-            #fff,
-            #ffe27a,
-            #c99716
+            #fff3a6,
+            #d4af37,
+            #fff3a6
         );
 
     -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
+    -webkit-text-fill-color:transparent;
 }
 
-#userName{
-    font-weight:950;
-    color:#5ee7ff;
-    text-shadow:0 0 10px rgba(94,231,255,.45),0 0 20px rgba(94,231,255,.20);
-}
+.subtitle{
 
-.welcome{
-    position:relative;
-    color:#bdb7a5;
-    font-size:11px;
-    margin-bottom:13px;
-    text-align:center;
-}
-
-/* =========================
-   PACKAGE
-========================= */
-
-.package-box{
-    position:relative;
-
-    padding:12px 15px;
-
-    border-radius:16px;
-
-    background:rgba(0,0,0,.35);
-
-    border:1px solid rgba(255,215,0,.18);
-
-    margin-bottom:10px;
-}
-
-.package-title{
-    color:#918b7c;
-
-    font-size:9px;
-
-    text-transform:uppercase;
-    letter-spacing:1.3px;
-
-    margin-bottom:3px;
-}
-
-.package-name{
-    font-size:19px;
-    font-weight:900;
-
-    color:#ffe06b;
-}
-
-.status{
-    margin-top:3px;
-
-    font-size:10px;
+    margin-top:9px;
 
     color:#aaa;
-}
 
-/* =========================
-   EXPIRY
-========================= */
-
-.expiry-box{
-    position:relative;
-
-    padding:12px 15px;
-
-    border-radius:16px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255,215,0,.12),
-            rgba(255,255,255,.035)
-        );
-
-    border:1px solid rgba(255,215,0,.2);
-
-    margin-bottom:11px;
-}
-
-.expiry-label{
-    color:#9e9888;
-
-    font-size:9px;
-
-    text-transform:uppercase;
-    letter-spacing:1.2px;
-
-    margin-bottom:5px;
-}
-
-.expiry-date{
-    color:#fff;
-
-    font-size:11px;
-
-    margin-bottom:6px;
-}
-
-.countdown{
     font-size:12px;
-    font-weight:700;
-
-    color:#ffd84d;
-
-    line-height:1.2;
-
-    text-transform:lowercase;
-}
-
-.countdown.expired{
-    color:#ff6b6b;
-}
-
-/* =========================
-   BIG BUTTONS
-========================= */
-
-.big-actions{
-    position:relative;
-
-    display:grid;
-
-    grid-template-columns:1fr 1fr;
-
-    gap:9px;
-
-    margin-bottom:9px;
-}
-
-.big-btn{
-    min-height:60px;
-
-    border-radius:15px;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    flex-direction:column;
-
-    gap:3px;
-
-    text-decoration:none;
-
-    font-size:11px;
-    font-weight:900;
-
-    color:#1b1400;
-
-    background:
-        linear-gradient(
-            135deg,
-            #fff0a3,
-            #ffd43b 45%,
-            #b77d00
-        );
-
-    box-shadow:
-        0 7px 20px rgba(0,0,0,.35),
-        inset 0 1px rgba(255,255,255,.7);
-
-    transition:
-        transform .15s ease;
-}
-
-.big-btn:hover{
-    transform:translateY(-2px);
-}
-
-.big-btn span{
-    font-size:21px;
-}
-
-/* =========================
-   SMALL BUTTONS
-========================= */
-
-.small-actions{
-    position:relative;
-
-    display:grid;
-
-    grid-template-columns:1fr 1fr;
-
-    gap:8px;
-
-    margin-bottom:9px;
-}
-
-.small-btn{
-    min-height:42px;
-
-    border-radius:12px;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    gap:6px;
-
-    text-decoration:none;
-
-    color:#ddd5bd;
-
-    background:rgba(255,255,255,.055);
-
-    border:1px solid rgba(255,215,0,.15);
-
-    font-size:10px;
-    font-weight:800;
-
-    text-align:center;
-
-    transition:
-        background .15s ease;
-}
-
-.small-btn:hover{
-    background:rgba(255,215,0,.11);
-}
-
-/* =========================
-   HOME
-========================= */
-
-/* =========================
-   LOADING
-========================= */
-
-.loading{
-    width:100%;
-    height:100vh;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    color:#d0c8b5;
-
-    font-size:13px;
-
-    text-align:center;
-}
-
-.hidden{
-    display:none!important;
-}
-
-/* =========================
-   ERROR
-========================= */
-
-.error{
-    text-align:center;
-
-    padding:30px 18px;
-
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-}
-
-.error h2{
-    color:#ffd84d;
-
-    margin-bottom:8px;
-
-    font-size:20px;
-}
-
-.error p{
-    color:#aaa;
-
-    font-size:11px;
 
     line-height:1.6;
 }
 
-.error a{
-    display:inline-block;
+.google-button{
 
-    margin-top:15px;
+    width:100%;
 
-    color:#ffd84d;
+    height:56px;
 
-    text-decoration:none;
+    margin-top:30px;
+
+    border:0;
+
+    border-radius:14px;
+
+    background:#fff;
+
+    color:#111;
+
+    font-size:15px;
+
+    font-weight:800;
+
+    cursor:pointer;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:12px;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.35);
+
+    transition:
+        transform .15s ease,
+        box-shadow .15s ease;
+}
+
+.google-button:hover{
+
+    transform:translateY(-1px);
+
+    box-shadow:
+        0 14px 35px rgba(0,0,0,.45);
+}
+
+.google-button:active{
+
+    transform:translateY(0);
+}
+
+.google-button:disabled{
+
+    opacity:.55;
+
+    cursor:wait;
+
+    transform:none;
+}
+
+.google-icon{
+
+    width:21px;
+    height:21px;
+}
+
+.status{
+
+    min-height:22px;
+
+    margin-top:17px;
+
+    color:#aaa;
 
     font-size:12px;
-}
 
-/* =========================
-   SMALL DEVICES
-========================= */
-
-
-/* =========================
-   COMPACT PREMIUM ACCOUNT
-   ========================= */
-
-.account-card{
-    justify-content:flex-start;
-}
-
-.big-actions{
-    margin-top:2px;
-    margin-bottom:7px;
-}
-
-.big-btn{
-    min-height:72px;
-    animation:watchButtonFloat 2.8s ease-in-out infinite;
-}
-
-.big-btn:nth-child(2){
-    animation-delay:.35s;
-}
-
-.big-btn:hover{
-    transform:translateY(-3px) scale(1.015);
-}
-
-@keyframes watchButtonFloat{
-    0%,100%{transform:translateY(0);}
-    50%{transform:translateY(-3px);}
-}
-
-.countdown.urgent{
-    color:#ff3030 !important;
-    text-shadow:0 0 12px rgba(255,48,48,.45);
-    font-weight:900;
-    animation:urgentExpiry 1s ease-in-out infinite;
-}
-
-@keyframes urgentExpiry{
-    0%,100%{opacity:1;}
-    50%{opacity:.72;}
-}
-
-@media(max-width:480px){
-
-    body{
-        padding:7px;
-    }
-
-    .topbar{
-        height:45px;
-        margin-bottom:5px;
-    }
-
-    .logo{
-        width:42px;
-        height:42px;
-    }
-
-    .account-card{
-        padding:16px 13px 10px;
-        border-radius:20px;
-    }
-
-    .page{
-        min-height:calc(100dvh - 14px);
-    }
-
-    h1{
-        font-size:22px;
-    }
-
-    .welcome{
-        font-size:10px;
-        margin-bottom:10px;
-    }
-
-    .package-box,
-    .expiry-box{
-        padding:10px 12px;
-        margin-bottom:8px;
-    }
-
-    .package-name{
-        font-size:17px;
-    }
-
-    .big-btn{
-        min-height:55px;
-    }
-
-    .big-btn span{
-        font-size:19px;
-    }
-
-    .small-btn{
-        min-height:38px;
-        font-size:9px;
-    }
-.home-btn{
-        padding:4px;
-    }
-
-    /* Keep the complete account interface inside one mobile viewport. */
-    html,body{
-        height:100dvh;
-        overflow:hidden;
-    }
-
-    body{
-        padding:5px;
-    }
-
-    .page{
-        height:calc(100dvh - 10px);
-        min-height:0;
-    }
-
-    .account-card{
-        min-height:0;
-        flex:none;
-        overflow:hidden;
-        padding:11px 10px 7px;
-    }
-
-    h1{
-        font-size:20px;
-        margin-bottom:2px;
-    }
-
-    .welcome{
-        font-size:9px;
-        margin-bottom:6px;
-    }
-
-    .package-box,
-    .expiry-box{
-        padding:7px 9px;
-        margin-bottom:5px;
-    }
-
-    .package-name{
-        font-size:15px;
-    }
-
-    .status,
-    .expiry-date{
-        font-size:8px;
-    }
-
-    .countdown{
-        font-size:9px;
-    }
-
-    .big-actions{
-        gap:6px;
-        margin-bottom:5px;
-    }
-
-    .big-btn{
-        min-height:58px;
-        font-size:9px;
-        border-radius:12px;
-    }
-
-    .big-btn span{
-        font-size:17px;
-    }
-
-    .big-btn.premium-active{
-        min-height:66px;
-        font-size:11px;
-    }
-
-    .big-btn.premium-active span{
-        font-size:23px;
-    }
-
-    .small-actions{
-        gap:5px;
-        margin-bottom:5px;
-    }
-
-    .small-btn{
-        min-height:34px;
-        font-size:8px;
-        border-radius:10px;
-    }
-
-    .pay-btn{
-        min-height:38px;
-        margin-bottom:5px;
-        font-size:9px;
-    }
-.admin-btn{
-        min-height:34px;
-        margin-top:5px;
-        font-size:9px;
-    }
-
-    .logout-btn{
-        min-height:28px;
-        margin-top:5px;
-        font-size:8px;
-    }
-
-    .home-btn{
-        font-size:8px;
-        padding:2px;
-    }
-}
-
-/* =========================
-   VERY SHORT SCREENS
-========================= */
-
-@media(max-height:650px){
-
-    body{
-        padding:5px;
-    }
-
-    .topbar{
-        height:39px;
-        margin-bottom:3px;
-    }
-
-    .logo{
-        width:36px;
-        height:36px;
-    }
-
-    .top-btn{
-        padding:6px 10px;
-        font-size:10px;
-    }
-
-    .account-card{
-        padding:12px 12px 8px;
-        border-radius:18px;
-    }
-
-    .badge{
-        padding:4px 9px;
-        margin-bottom:6px;
-        font-size:8px;
-    }
-
-    h1{
-        font-size:20px;
-        margin-bottom:3px;
-    }
-
-    .welcome{
-        margin-bottom:7px;
-        font-size:9px;
-    }
-
-    .package-box,
-    .expiry-box{
-        padding:8px 10px;
-        margin-bottom:6px;
-    }
-
-    .package-title,
-    .expiry-label{
-        font-size:8px;
-    }
-
-    .package-name{
-        font-size:15px;
-    }
-
-    .status,
-    .expiry-date{
-        font-size:9px;
-    }
-
-    .countdown{
-        font-size:10px;
-    }
-
-    .big-actions{
-        gap:6px;
-        margin-bottom:6px;
-    }
-
-    .big-btn{
-        min-height:47px;
-        font-size:9px;
-    }
-
-    .big-btn span{
-        font-size:16px;
-    }
-
-    .small-actions{
-        gap:6px;
-        margin-bottom:6px;
-    }
-
-    .small-btn{
-        min-height:34px;
-        font-size:8px;
-    }
-.home-btn{
-        font-size:9px;
-        padding:3px;
-    }
+    line-height:1.5;
 }
 
 
-/* =========================
-   COPIED ACCOUNT ACTIONS
-   GOLDEN THEME PRESERVED
-========================= */
+.footer{
 
-.locked{
-    background:
-        linear-gradient(
-            135deg,
-            #3a3528,
-            #242119
-        ) !important;
-    color:#8f8878 !important;
-    box-shadow:none !important;
-    border-color:rgba(255,215,0,.10) !important;
-    cursor:not-allowed;
-    position:relative;
-    opacity:.8;
-}
+    margin-top:27px;
 
-.locked::after{
-    content:" 🔒 PREMIUM ONLY";
-    display:block;
-    font-size:8px;
-    margin-top:3px;
-    color:#ffd84d;
-}
+    color:#555;
 
-.pay-btn{
-    position:relative;
-    display:none;
-    width:100%;
-    min-height:48px;
-    margin:0 0 9px;
-    border-radius:14px;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    text-decoration:none;
-    color:#211700;
-    font-size:11px;
-    font-weight:900;
-    background:
-        linear-gradient(
-            135deg,
-            #fff0a3,
-            #ffd43b 45%,
-            #b77d00
-        );
-    border:1px solid rgba(255,235,130,.65);
-    box-shadow:
-        0 8px 22px rgba(255,196,0,.20),
-        inset 0 1px rgba(255,255,255,.8);
-    animation:goldPayPulse 1.8s infinite;
-}
-
-@keyframes goldPayPulse{
-    0%,100%{transform:scale(1);}
-    50%{transform:scale(1.02);}
-}
-
-/* Premium users get larger, more prominent watch buttons. */
-.big-btn.premium-active{
-    min-height:78px;
-    font-size:13px;
-    background:
-        linear-gradient(135deg,#fff6b0,#ffd21f 45%,#d08a00);
-    box-shadow:
-        0 10px 28px rgba(255,196,0,.28),
-        inset 0 1px rgba(255,255,255,.9);
-    border:1px solid rgba(255,235,130,.8);
-}
-
-.big-btn.premium-active span{
-    font-size:28px;
-}
-
-.admin-btn{
-    display:none;
-    width:100%;
-    min-height:40px;
-    margin-top:8px;
-    border-radius:12px;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    text-decoration:none;
-    color:#211700;
     font-size:10px;
-    font-weight:900;
+
+    letter-spacing:.5px;
+}
+
+.gold-line{
+
+    height:1px;
+
+    margin:25px 0 0;
+
     background:
         linear-gradient(
-            135deg,
-            #fff0a3,
-            #ffd43b 45%,
-            #b77d00
+            90deg,
+            transparent,
+            #d4af37,
+            transparent
         );
-    border:1px solid rgba(255,215,0,.35);
-    box-shadow:
-        0 7px 18px rgba(0,0,0,.3),
-        inset 0 1px rgba(255,255,255,.7);
-}
-
-.logout-btn{
-    display:block;
-    width:100%;
-    min-height:34px;
-    margin-top:7px;
-    border:1px solid rgba(255,215,0,.12);
-    border-radius:10px;
-    background:rgba(255,255,255,.035);
-    color:#8f8878;
-    font-size:9px;
-    font-weight:800;
-    cursor:pointer;
-}
-
-.logout-btn:hover{
-    color:#ffd84d;
-    background:rgba(255,215,0,.08);
-}
-
-@media(max-width:480px){
-    .pay-btn{
-        min-height:43px;
-        font-size:10px;
-    }
-
-    .admin-btn{
-        min-height:37px;
-    }
-
-    .logout-btn{
-        min-height:31px;
-    }
-}
-
-@media(max-height:650px){
-    .pay-btn{
-        min-height:38px;
-        font-size:9px;
-        margin-bottom:6px;
-    }
-
-    .admin-btn{
-        min-height:33px;
-    }
-
-    .logout-btn{
-        min-height:28px;
-        margin-top:5px;
-    }
 }
 
 </style>
 
 </head>
 
+
 <body>
 
-<div id="loading" class="loading">
-    Loading your BUSANSO account...
-</div>
+<main class="auth-card">
 
+    <img
+        class="logo"
+        src="https://i.ibb.co/hxgrLF35/BUSANSO-New.png"
+        alt="BUSANSO">
 
-<div id="page" class="page hidden">
+    <h1 class="brand">
+        BUSANSO NATION
+    </h1>
 
-    <div class="topbar">
-
-        <img
-            class="logo"
-            src="https://i.ibb.co/qL8vn3jS/busanso-logo-source.png"
-            alt="BUSANSO">
-
-        <div class="top-actions">
-
-            <a
-                class="top-btn"
-                href="home.html">
-                HOME
-            </a>
-
-        </div>
-
+    <div class="subtitle">
+        Sign in securely with your Google account
     </div>
 
+    <button
+        id="googleButton"
+        class="google-button">
 
-    <main class="account-card">
+        <svg
+            class="google-icon"
+            viewBox="0 0 24 24"
+            aria-hidden="true">
 
-        <h1>
-            Welcome,
-            <span id="userName">
-                User
-            </span>
-        </h1>
+            <path
+                fill="#4285F4"
+                d="M21.35 12.23c0-.79-.07-1.55-.2-2.27H12v4.3h5.23a4.47 4.47 0 0 1-1.94 2.93v2.44h3.14c1.84-1.69 2.92-4.18 2.92-7.4z"/>
 
+            <path
+                fill="#34A853"
+                d="M12 21.5c2.63 0 4.84-.87 6.45-2.37l-3.14-2.44c-.87.58-1.98.92-3.31.92-2.54 0-4.69-1.72-5.46-4.03H3.3v2.52A9.74 9.74 0 0 0 12 21.5z"/>
 
-        <div class="welcome">
-            Your BUSANSO package is active.
-        </div>
+            <path
+                fill="#FBBC05"
+                d="M6.54 13.58A5.86 5.86 0 0 1 6.23 12c0-.55.1-1.08.31-1.58V7.9H3.3A9.5 9.5 0 0 0 2.25 12c0 1.48.35 2.88 1.05 4.1l3.24-2.52z"/>
 
+            <path
+                fill="#EA4335"
+                d="M12 6.39c1.43 0 2.71.49 3.72 1.45l2.79-2.79C16.84 3.47 14.63 2.5 12 2.5a9.74 9.74 0 0 0-8.7 5.4l3.24 2.52C7.31 8.11 9.46 6.39 12 6.39z"/>
 
-        <!-- PACKAGE -->
+        </svg>
 
-        <section class="package-box">
+        Continue with Google
 
-            <div class="package-title">
-                Package
-            </div>
+    </button>
 
-            <div
-                id="packageName"
-                class="package-name">
-                Loading...
-            </div>
+    <div
+        id="status"
+        class="status">
+    </div>
+    <div class="gold-line"></div>
 
-            <div
-                id="membershipStatus"
-                class="status">
-                Loading...
-            </div>
+    <div class="footer">
+        SECURE SIGN-IN • BUSANSO NATION
+    </div>
 
-        </section>
-
-
-        <!-- EXPIRY -->
-
-        <section
-            id="expiryBox"
-            class="expiry-box">
-
-            <div class="expiry-label">
-                Access expires
-            </div>
-
-            <div
-                id="expiryDate"
-                class="expiry-date">
-                Loading...
-            </div>
-
-            <div
-                id="countdown"
-                class="countdown">
-                Loading countdown...
-            </div>
-
-        </section>
-
-
-        <!-- BIG ACTION BUTTONS -->
-
-        <div class="big-actions">
-
-            <a
-                href="movies.html"
-                id="moviesBtn"
-                class="big-btn">
-
-                <span>🎬</span>
-
-                WATCH MOVIES
-
-            </a>
-
-
-            <a
-                href="series.html"
-                id="seriesBtn"
-                class="big-btn">
-
-                <span>📺</span>
-
-                WATCH SERIES
-
-            </a>
-
-        </div>
-
-<!-- PAYMENT -->
-        <a
-            href="packages.html"
-            id="payBtn"
-            class="pay-btn">
-            🔓 PAY TO WATCH
-        </a>
-<a
-            href="adm-page.html"
-            id="adminBtn"
-            class="admin-btn">
-
-            🔄 UPDATE
-
-        </a>
-
-
-        <button
-            type="button"
-            class="logout-btn"
-            onclick="logout()">
-
-            🚪 LOGOUT
-
-        </button>
-
-    </main>
-
-</div>
-
-
-<!-- ERROR -->
-
-<div
-    id="errorPage"
-    class="page hidden">
-
-    <main class="account-card error">
-
-        <div class="badge">
-            BUSANSO
-        </div>
-
-        <h2>
-            Account Not Found
-        </h2>
-
-        <p id="errorMessage">
-            We could not identify this account.
-        </p>
-
-        <a href="auth.html">
-            Sign in with Google
-        </a>
-
-    </main>
-
-</div>
+</main>
 
 
 <script>
+
+(function(){
+
+"use strict";
+
+
+/*
+============================================================
+BUSANSO SUPABASE CONFIGURATION
+============================================================
+*/
 
 const SUPABASE_URL =
     "https://dhkfhhybzcxdeoalcfqx.supabase.co";
 
 const SUPABASE_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRoa2ZoaHliemN4ZGVvYWxjZnF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1MzQxNTEsImV4cCI6MjA4ODExMDE1MX0.jZ4NDNPJmO0Ji05TxDqCnzgLIIzKf9uCx3WrSgk2DaY";
+    "sb_publishable_Rjm3T44VKTeuOF2yJS5rMw_xDfwPjuG";
 
-const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
+
+/*
+============================================================
+APP / WEB MODE
+============================================================
+*/
+
+const params =
+    new URLSearchParams(
+        window.location.search
     );
 
-let countdownTimer = null;
+const isAppMode =
+    params.get("app") === "1";
 
 
-/* =========================================
-   ACCOUNT (2) LOGIN/PROFILE LOGIC
-   IMPORTANT: use the existing user_id session
-   exactly like account (2).html.
-========================================= */
+/*
+============================================================
+REDIRECT URLS
+============================================================
+*/
 
-async function loadAccount(){
+const WEB_REDIRECT_URL =
+    "https://busansoanimations-cloud.github.io/testbusanso/auth.html";
 
-    const loading = document.getElementById("loading");
-    const page = document.getElementById("page");
-    const errorPage = document.getElementById("errorPage");
-    const errorMessage = document.getElementById("errorMessage");
+const APP_REDIRECT_URL =
+    "busanso://auth/callback";
 
-    /*
-     * FIRST: use the real Supabase Auth session.
-     * This is important for Google users, because they may have
-     * a valid Auth session even when the old user_id localStorage
-     * value is missing.
-     */
-    let authUser = null;
+const REDIRECT_URL =
+    isAppMode
+        ? APP_REDIRECT_URL
+        : WEB_REDIRECT_URL;
+
+
+/*
+============================================================
+SUPABASE CLIENT
+============================================================
+
+IMPORTANT:
+
+WEB:
+    PKCE + URL session detection
+
+ANDROID:
+    PKCE + manual callback exchange
+
+Android MainActivity receives:
+
+    busanso://auth/callback?code=...
+
+and sends it into this page as:
+
+    busansoOAuthCallback
+*/
+
+const supabase =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY,
+        {
+            auth: {
+
+                persistSession:true,
+
+                autoRefreshToken:true,
+
+                /*
+                 * Android callback is handled manually.
+                 */
+                detectSessionInUrl:
+                    !isAppMode,
+
+                /*
+                 * Both web and Android use PKCE.
+                 */
+                flowType:"pkce",
+
+                storageKey:
+                    "busanso-auth"
+            }
+        }
+    );
+
+
+/*
+============================================================
+ELEMENTS
+============================================================
+*/
+
+const button =
+    document.getElementById(
+        "googleButton"
+    );
+
+const status =
+    document.getElementById(
+        "status"
+    );
+
+
+/*
+============================================================
+STATUS
+============================================================
+*/
+
+function setStatus(message){
+
+    if(status){
+
+        status.textContent =
+            message || "";
+    }
+}
+
+
+/*
+============================================================
+SAVE AUTH USER
+============================================================
+*/
+
+function saveAuthUser(user){
+
+    if(!user){
+        return;
+    }
 
     try{
-        const { data: sessionData, error: sessionError } =
-            await supabaseClient.auth.getSession();
 
-        if(sessionError){
-            console.warn("Supabase session check:", sessionError);
+        localStorage.setItem(
+            "auth_user_id",
+            user.id
+        );
+
+        localStorage.setItem(
+            "supabase_auth_user_id",
+            user.id
+        );
+
+        localStorage.setItem(
+            "email",
+            user.email || ""
+        );
+
+        // Remember the last Google account used on this device.
+        if(user.email){
+            localStorage.setItem(
+                "last_google_email",
+                user.email
+            );
         }
 
-        authUser = sessionData?.session?.user || null;
+
+        const metadata =
+            user.user_metadata || {};
+
+
+        const name =
+            metadata.full_name ||
+            metadata.name ||
+            (
+                user.email
+                    ? user.email.split("@")[0]
+                    : ""
+            );
+
+
+        if(name){
+
+            localStorage.setItem(
+                "name",
+                name
+            );
+
+            localStorage.setItem(
+                "username",
+                name
+            );
+        }
+
+
+        localStorage.setItem(
+            "loggedIn",
+            "true"
+        );
+
+        localStorage.setItem(
+            "isLoggedIn",
+            "true"
+        );
+
+
     }catch(error){
-        console.warn("Supabase getSession failed:", error);
+
+        console.warn(
+            "Local auth save failed:",
+            error
+        );
+    }
+}
+
+
+/*
+============================================================
+LOAD EXISTING BUSANSO PROFILE
+============================================================
+*/
+
+async function loadProfile(user){
+
+    if(!user){
+        return null;
     }
 
-    let data = null;
-    let error = null;
+    try{
 
-    /* 1. Match the authenticated Google/Supabase user to the profile. */
-    if(authUser){
-        const result = await supabaseClient
-            .from("profiles")
-            .select("*")
-            .eq("auth_user_id", authUser.id)
-            .maybeSingle();
-
-        data = result.data;
-        error = result.error;
-
-        /*
-         * Some older accounts may have the correct email but not yet
-         * have auth_user_id attached. Use email only as a fallback.
-         */
-        if(!data && authUser.email){
-            const emailResult = await supabaseClient
+        const result =
+            await supabase
                 .from("profiles")
                 .select("*")
-                .ilike("email", authUser.email)
+                .eq(
+                    "auth_user_id",
+                    user.id
+                )
                 .maybeSingle();
 
-            if(emailResult.data){
-                data = emailResult.data;
-                error = null;
+
+        if(result.error){
+
+            console.warn(
+                "Profile lookup:",
+                result.error
+            );
+
+            return null;
+        }
+
+
+        const profile =
+            result.data;
+
+
+        if(profile){
+
+            try{
+
+                localStorage.setItem(
+                    "profile",
+                    JSON.stringify(profile)
+                );
+
+                localStorage.setItem(
+                    "busanso_profile",
+                    JSON.stringify(profile)
+                );
+
+
+                if(profile.id != null){
+
+                    localStorage.setItem(
+                        "profile_id",
+                        String(profile.id)
+                    );
+
+                    localStorage.setItem(
+                        "user_id",
+                        String(profile.id)
+                    );
+                }
+
+
+                if(profile.name){
+
+                    localStorage.setItem(
+                        "name",
+                        profile.name
+                    );
+
+                    localStorage.setItem(
+                        "username",
+                        profile.name
+                    );
+                }
+
+
+                localStorage.setItem(
+                    "membership",
+                    profile.membership || "free"
+                );
+
+                localStorage.setItem(
+                    "package_type",
+                    profile.package_type || ""
+                );
+
+                localStorage.setItem(
+                    "expires_at",
+                    profile.expires_at || ""
+                );
+
+                localStorage.setItem(
+                    "account_status",
+                    profile.account_status || "active"
+                );
+
+                localStorage.setItem(
+                    "paid_status",
+                    profile.paid_status || ""
+                );
+
+                localStorage.setItem(
+                    "role",
+                    profile.role || "user"
+                );
+
+                localStorage.setItem(
+                    "loggedIn",
+                    "true"
+                );
+
+                localStorage.setItem(
+                    "isLoggedIn",
+                    "true"
+                );
+
+
+            }catch(error){
+
+                console.warn(
+                    "Profile local save failed:",
+                    error
+                );
             }
         }
-    }
 
-    /* 2. Preserve compatibility with older non-Google accounts. */
-    if(!data){
-        const userID = localStorage.getItem("user_id");
 
-        if(userID){
-            const result = await supabaseClient
-                .from("profiles")
-                .select("*")
-                .eq("id", Number(userID))
-                .maybeSingle();
+        return profile;
 
-            if(result.data){
-                data = result.data;
-                error = null;
-            }else if(result.error){
-                error = result.error;
-            }
-        }
-    }
 
-    if(error || !data){
+    }catch(error){
 
-        console.error(
-            "BUSANSO profile error:",
+        console.warn(
+            "Profile lookup failed:",
             error
         );
 
-        if(errorPage){
-            loading.classList.add("hidden");
-            page.classList.add("hidden");
-            errorPage.classList.remove("hidden");
-            errorMessage.textContent =
-                "Your login session was not found. Please sign in again.";
-        }else{
-            location.href = "auth.html";
-        }
-
-        return false;
+        return null;
     }
+}
 
-    /*
-     * If this profile was found through Supabase Auth, synchronize
-     * the legacy localStorage values so older BUSANSO pages continue
-     * to recognize the same logged-in user.
-     */
-    localStorage.setItem(
-        "user_id",
-        String(data.id)
-    );
 
-    if(authUser){
-        localStorage.setItem(
-            "auth_user_id",
-            authUser.id
+/*
+============================================================
+GO HOME
+============================================================
+*/
+
+function goHome(){
+
+    if(isAppMode){
+
+        window.location.replace(
+            "home.html?app=1"
         );
-        localStorage.setItem(
-            "supabase_auth_user_id",
-            authUser.id
-        );
-
-        if(authUser.email){
-            localStorage.setItem(
-                "email",
-                authUser.email
-            );
-        }
-    }
-
-    /*
-     * Keep the same account-status rule.
-     * Do not clear the Supabase Auth session here.
-     */
-    if(
-        (data.account_status || "").toLowerCase() !==
-        "active"
-    ){
-
-        location.href = "blocked.html";
-        return false;
-    }
-
-    const membership =
-        (data.membership || "free").toLowerCase();
-
-    /* =========================================
-       GOLDEN PAGE DISPLAY
-    ========================================= */
-
-    document.getElementById("userName").textContent =
-        data.name || "Member";
-
-    document.getElementById("packageName").textContent =
-        (data.package_type || "free").toUpperCase();
-
-    const status =
-        document.getElementById("membershipStatus");
-
-    const expiryBox =
-        document.getElementById("expiryBox");
-
-    const moviesBtn =
-        document.getElementById("moviesBtn");
-
-    const seriesBtn =
-        document.getElementById("seriesBtn");
-
-    /*
-     * PREMIUM / FREE BUTTON LOGIC
-     */
-    const premiumActive =
-        membership === "premium" &&
-        data.expires_at &&
-        new Date(data.expires_at) > new Date();
-
-    const payBtn = document.getElementById("payBtn");
-    if(payBtn){
-        payBtn.style.display =
-            membership === "free" ? "flex" : "none";
-    }
-
-    if(premiumActive){
-
-        status.textContent = "Active";
-
-        moviesBtn.classList.remove("locked");
-        seriesBtn.classList.remove("locked");
-        moviesBtn.classList.add("premium-active");
-        seriesBtn.classList.add("premium-active");
-
-        moviesBtn.href = "movies.html";
-        seriesBtn.href = "series.html";
-
-        expiryBox.style.display = "block";
-
-        startExpiryCountdown(data.expires_at);
 
     }else{
 
-        if(membership === "premium"){
-            status.textContent = "Expired";
-        }else{
-            status.textContent = "Free package";
-        }
-
-        if(data.expires_at){
-            expiryBox.style.display = "block";
-            startExpiryCountdown(data.expires_at);
-        }else{
-            expiryBox.style.display = "none";
-        }
-
-        moviesBtn.classList.add("locked");
-        seriesBtn.classList.add("locked");
-        moviesBtn.classList.remove("premium-active");
-        seriesBtn.classList.remove("premium-active");
-
-        moviesBtn.href = "javascript:void(0)";
-        seriesBtn.href = "javascript:void(0)";
-
-        moviesBtn.onclick = function(){
-            location.href = "packages.html";
-        };
-
-        seriesBtn.onclick = function(){
-            location.href = "packages.html";
-        };
+        window.location.replace(
+            "home.html"
+        );
     }
+}
+
+
+/*
+============================================================
+FINISH LOGIN
+============================================================
+
+Everything after successful Google authentication
+comes through this single function.
+*/
+
+async function finishLogin(user){
+
+    if(!user){
+
+        throw new Error(
+            "Google account information was not received."
+        );
+    }
+
+
+    saveAuthUser(user);
+
 
     /*
-     * Preserve the existing localStorage contract.
+     * Load the existing BUSANSO profile.
+     *
+     * This preserves membership/package information
+     * for profiles already connected to the Google account.
      */
-    localStorage.setItem(
-        "name",
-        data.name || ""
+
+    await loadProfile(user);
+
+
+    setStatus(
+        "Signed in. Opening BUSANSO..."
     );
 
-    localStorage.setItem(
-        "whatsapp_number",
-        data.whatsapp_number || ""
+
+    setTimeout(
+        goHome,
+        300
     );
-
-    localStorage.setItem(
-        "membership",
-        data.membership || "free"
-    );
-
-    localStorage.setItem(
-        "package_type",
-        data.package_type || ""
-    );
-
-    localStorage.setItem(
-        "expires_at",
-        data.expires_at || ""
-    );
-
-    if(data.account_status){
-        localStorage.setItem(
-            "account_status",
-            data.account_status
-        );
-    }
-
-    if(data.role){
-        localStorage.setItem(
-            "role",
-            data.role
-        );
-    }
-
-    /* =========================================
-       REVEAL PAGE
-    ========================================= */
-
-    loading.classList.add("hidden");
-
-    if(errorPage){
-        errorPage.classList.add("hidden");
-    }
-
-    page.classList.remove("hidden");
-
-    return true;
 }
 
 
-/* =========================================
-   EXPIRY COUNTDOWN
-========================================= */
+/*
+============================================================
+PROCESS NATIVE GOOGLE CALLBACK
+============================================================
 
-function startExpiryCountdown(expiryDate){
+Android sends:
 
-    const expiryDateEl =
-        document.getElementById("expiryDate");
+busanso://auth/callback?code=XXXX
 
-    const countdown =
-        document.getElementById("countdown");
+MainActivity does NOT load this URI into the WebView.
 
-    function update(){
+Instead it fires:
 
-        const diff =
-            new Date(expiryDate).getTime() -
-            new Date().getTime();
+busansoOAuthCallback
 
+This function receives the URL and exchanges
+the PKCE authorization code for a Supabase session.
+*/
 
-        if(diff <= 0){
+async function processOAuthCallback(callbackUrl){
 
-            expiryDateEl.textContent =
-                new Date(expiryDate).toLocaleString();
+    console.log(
+        "BUSANSO OAuth callback:",
+        callbackUrl
+    );
 
-            countdown.textContent =
-                "access expired";
-
-            countdown.classList.remove("urgent");
-            countdown.classList.add("expired");
-
-            document.getElementById(
-                "membershipStatus"
-            ).textContent = "Expired";
-
-            return;
-        }
-
-
-        expiryDateEl.textContent =
-            new Date(expiryDate).toLocaleString(
-                undefined,
-                {
-                    dateStyle:"medium",
-                    timeStyle:"short"
-                }
-            );
-
-
-        const days =
-            Math.floor(diff / 86400000);
-
-        const hours =
-            Math.floor(
-                (diff % 86400000) / 3600000
-            );
-
-        const minutes =
-            Math.floor(
-                (diff % 3600000) / 60000
-            );
-
-        const seconds =
-            Math.floor(
-                (diff % 60000) / 1000
-            );
-
-        // Highlight the countdown in red once fewer than 12 hours remain.
-        if(diff < 12 * 60 * 60 * 1000){
-            countdown.classList.add("urgent");
-        }else{
-            countdown.classList.remove("urgent");
-        }
-
-        countdown.textContent =
-            days + " days " +
-            String(hours).padStart(2,"0") +
-            " hours " +
-            String(minutes).padStart(2,"0") +
-            " minutes " +
-            String(seconds).padStart(2,"0") +
-            " seconds";
-    }
-
-
-    update();
-
-
-    if(countdownTimer){
-        clearInterval(countdownTimer);
-    }
-
-    countdownTimer =
-        setInterval(update,1000);
-}
-
-
-/* =========================================
-   ADMIN BUTTON
-========================================= */
-
-async function checkAdminAccess(){
-
-    let data = null;
-
-    try{
-        const { data: sessionData } =
-            await supabaseClient.auth.getSession();
-
-        const authUser =
-            sessionData?.session?.user || null;
-
-        if(authUser){
-            const result = await supabaseClient
-                .from("profiles")
-                .select("role")
-                .eq("auth_user_id", authUser.id)
-                .maybeSingle();
-
-            data = result.data || null;
-        }
-    }catch(error){
-        console.warn("Admin session check:", error);
-    }
-
-    /* Legacy fallback. */
-    if(!data){
-        const userID = localStorage.getItem("user_id");
-
-        if(userID){
-            const result = await supabaseClient
-                .from("profiles")
-                .select("role")
-                .eq("id", Number(userID))
-                .maybeSingle();
-
-            data = result.data || null;
-        }
-    }
-
-    if(
-        data &&
-        data.role &&
-        data.role.trim().toLowerCase() === "admin"
-    ){
-
-        const adminBtn =
-            document.getElementById("adminBtn");
-
-        if(adminBtn){
-            adminBtn.style.display = "block";
-        }
-    }
-}
-
-
-/* =========================================
-   LOGOUT
-========================================= */
-
-async function logout(){
-
-    try{
-        await supabaseClient.auth.signOut();
-    }catch(error){
-        console.warn("Supabase signout:",error);
-    }
-
-    localStorage.clear();
-
-    location.href = "auth.html";
-}
-
-
-/* =========================================
-   START
-========================================= */
-
-async function startPage(){
 
     try{
 
-        const loaded =
-            await loadAccount();
+        if(!callbackUrl){
 
-        if(!loaded){
-            return;
+            throw new Error(
+                "Empty Google callback."
+            );
         }
 
-        await checkAdminAccess();
+
+        const url =
+            new URL(callbackUrl);
 
 
         /*
-         * Keep realtime profile updates from account (2),
-         * without changing the user's login identity.
+         * Check for OAuth errors.
          */
-        const userID =
-            localStorage.getItem("user_id");
 
-        if(userID){
+        const error =
+            url.searchParams.get(
+                "error"
+            );
 
-            supabaseClient
-                .channel(
-                    "profile-" + userID
-                )
-                .on(
-                    "postgres_changes",
-                    {
-                        event:"*",
-                        schema:"public",
-                        table:"profiles",
-                        filter:
-                            `id=eq.${userID}`
-                    },
-                    function(){
+        const errorDescription =
+            url.searchParams.get(
+                "error_description"
+            );
 
-                        loadAccount();
-                        checkAdminAccess();
 
-                    }
-                )
-                .subscribe();
+        if(error){
+
+            throw new Error(
+                errorDescription ||
+                error
+            );
         }
+
+
+        /*
+         * PKCE authorization code.
+         */
+
+        const code =
+            url.searchParams.get(
+                "code"
+            );
+
+
+        if(!code){
+
+            throw new Error(
+                "No Google authorization code was received."
+            );
+        }
+
+
+        setStatus(
+            "Completing Google sign-in..."
+        );
+
+
+        /*
+         * Exchange PKCE code for Supabase session.
+         */
+
+        const result =
+            await supabase.auth.exchangeCodeForSession(
+                code
+            );
+
+
+        if(result.error){
+
+            throw result.error;
+        }
+
+
+        const session =
+            result.data &&
+            result.data.session;
+
+
+        if(!session ||
+            !session.user){
+
+            throw new Error(
+                "Google session was not created."
+            );
+        }
+
+
+        console.log(
+            "BUSANSO Google session created:",
+            session.user.id
+        );
+
+
+        await finishLogin(
+            session.user
+        );
+
 
     }catch(error){
 
         console.error(
-            "BUSANSO account error:",
+            "BUSANSO OAuth callback error:",
             error
         );
 
-        const loading =
-            document.getElementById("loading");
 
-        const page =
-            document.getElementById("page");
+        if(button){
 
-        const errorPage =
-            document.getElementById("errorPage");
-
-        const errorMessage =
-            document.getElementById("errorMessage");
-
-
-        if(loading){
-            loading.classList.add("hidden");
+            button.disabled =
+                false;
         }
 
-        if(page){
-            page.classList.add("hidden");
-        }
 
-        if(errorPage){
-            errorPage.classList.remove("hidden");
-        }
-
-        if(errorMessage){
-            errorMessage.textContent =
-                error.message ||
-                "Unable to load your BUSANSO account.";
-        }
+        setStatus(
+            error.message ||
+            "Google sign-in failed."
+        );
     }
 }
 
 
-startPage();
+/*
+============================================================
+ANDROID CALLBACK EVENT
+============================================================
+
+This is the bridge between MainActivity.java and
+this webpage.
+
+MainActivity sends:
+
+window.dispatchEvent(
+    new CustomEvent(
+        "busansoOAuthCallback",
+        {
+            detail:{
+                url:callbackUrl
+            }
+        }
+    )
+);
+
+We receive it here.
+*/
+
+window.addEventListener(
+    "busansoOAuthCallback",
+    function(event){
+
+        console.log(
+            "BUSANSO native OAuth event received"
+        );
+
+
+        if(
+            event &&
+            event.detail &&
+            event.detail.url
+        ){
+
+            processOAuthCallback(
+                event.detail.url
+            );
+        }
+    }
+);
+
+
+/*
+============================================================
+CHECK EXISTING SESSION
+============================================================
+*/
+
+async function checkSession(){
+
+    try{
+
+        const result =
+            await supabase.auth.getSession();
+
+
+        if(result.error){
+
+            console.error(
+                "Session error:",
+                result.error
+            );
+
+            return false;
+        }
+
+
+        const session =
+            result.data &&
+            result.data.session;
+
+
+        if(
+            !session ||
+            !session.user
+        ){
+
+            return false;
+        }
+
+
+        console.log(
+            "Existing BUSANSO session found"
+        );
+
+
+        await finishLogin(
+            session.user
+        );
+
+
+        return true;
+
+
+    }catch(error){
+
+        console.error(
+            "Session check failed:",
+            error
+        );
+
+        return false;
+    }
+}
+
+
+/*
+============================================================
+GOOGLE SIGN-IN
+============================================================
+*/
+
+button.addEventListener(
+    "click",
+    async function(){
+
+        button.disabled =
+            true;
+
+
+        setStatus(
+            "Connecting to Google..."
+        );
+
+
+        try{
+
+            const result =
+                await supabase.auth.signInWithOAuth({
+
+                    provider:
+                        "google",
+
+                    options:{
+
+                        /*
+                         * ANDROID:
+                         *
+                         * busanso://auth/callback
+                         *
+                         * WEB:
+                         *
+                         * GitHub Pages auth.html
+                         */
+
+                        redirectTo:
+                            REDIRECT_URL,
+
+                        queryParams:(function(){
+
+                            const lastGoogleEmail =
+                                localStorage.getItem("last_google_email") ||
+                                localStorage.getItem("email") ||
+                                "";
+
+                            const params = {};
+
+                            // Do NOT force Google's account chooser.
+                            // If we know the last successful account,
+                            // ask Google to use that account.
+                            if(lastGoogleEmail){
+                                params.login_hint = lastGoogleEmail;
+                            }
+
+                            return params;
+
+                        })(),
+
+                        skipBrowserRedirect:
+                            false
+                    }
+                });
+
+
+            if(result.error){
+
+                throw result.error;
+            }
+
+
+            /*
+             * signInWithOAuth normally causes the browser/
+             * Custom Tab to navigate away.
+             *
+             * If it does not, restore the button.
+             */
+
+            console.log(
+                "Google OAuth started"
+            );
+
+
+        }catch(error){
+
+            console.error(
+                "Google OAuth error:",
+                error
+            );
+
+
+            button.disabled =
+                false;
+
+
+            setStatus(
+                error.message ||
+                "Google sign-in failed."
+            );
+        }
+
+    }
+);
+
+
+/*
+============================================================
+AUTH STATE CHANGE
+============================================================
+
+IMPORTANT:
+
+We don't rely on SIGNED_IN to process the Android
+callback. Android explicitly calls exchangeCodeForSession().
+
+This listener is still useful for normal web sessions
+and sessions restored from storage.
+*/
+
+supabase.auth.onAuthStateChange(
+    function(event, session){
+
+        console.log(
+            "BUSANSO AUTH:",
+            event
+        );
+
+
+        if(
+            session &&
+            (
+                event === "SIGNED_IN" ||
+                event === "INITIAL_SESSION"
+            )
+        ){
+
+            /*
+             * Don't interfere with an Android callback
+             * that is currently being exchanged.
+             */
+
+            if(
+                window.__busansoOAuthProcessing
+            ){
+
+                return;
+            }
+
+
+            saveAuthUser(
+                session.user
+            );
+
+
+            setStatus(
+                "Signed in. Opening BUSANSO..."
+            );
+
+
+            setTimeout(
+                function(){
+
+                    goHome();
+
+                },
+                300
+            );
+        }
+    }
+);
+
+
+/*
+============================================================
+MARK CALLBACK PROCESSING
+============================================================
+*/
+
+const originalProcessOAuthCallback =
+    processOAuthCallback;
+
+
+/*
+ * Wrap callback processor so the auth-state listener
+ * does not race the PKCE exchange.
+ */
+
+window.__busansoOAuthProcessing =
+    false;
+
+
+/*
+============================================================
+STARTUP
+============================================================
+*/
+
+(async function(){
+
+    /*
+     * Android app:
+     *
+     * Don't use detectSessionInUrl.
+     * Wait for MainActivity's callback event.
+     */
+
+    if(isAppMode){
+
+        console.log(
+            "BUSANSO running in ANDROID APP mode"
+        );
+
+
+        /*
+         * There may already be a valid session
+         * from a previous login.
+         */
+
+        await checkSession();
+
+
+        return;
+    }
+
+
+    /*
+     * Normal website mode.
+     */
+
+    console.log(
+        "BUSANSO running in WEB mode"
+    );
+
+
+    await checkSession();
+
+})();
+
+
+})();
 
 </script>
 
-<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1,"spa":2}' crossorigin="anonymous"></script>
 </body>
+
 </html>
