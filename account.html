@@ -1181,135 +1181,195 @@ async function loadAccount(){
     const errorMessage = document.getElementById("errorMessage");
 
     /*
-     * FIRST: use the real Supabase Auth session.
-     * This is important for Google users, because they may have
-     * a valid Auth session even when the old user_id localStorage
-     * value is missing.
+     * IMPORTANT:
+     * A valid Supabase Auth session must NEVER be sent back to
+     * auth.html just because one profile lookup failed.
+     * That was causing the Google -> account -> auth -> account loop.
      */
+
     let authUser = null;
+    let data = null;
+    let lastError = null;
 
     try{
         const { data: sessionData, error: sessionError } =
             await supabaseClient.auth.getSession();
 
         if(sessionError){
+            lastError = sessionError;
             console.warn("Supabase session check:", sessionError);
         }
 
         authUser = sessionData?.session?.user || null;
     }catch(error){
+        lastError = error;
         console.warn("Supabase getSession failed:", error);
     }
 
-    let data = null;
-    let error = null;
+    /* Safely try a profile lookup without stopping the other fallbacks. */
+    async function findProfile(query, label){
+        try{
+            const result = await query;
 
-    /* 1. Match the authenticated Google/Supabase user to the profile. */
-    if(authUser){
-        const result = await supabaseClient
-            .from("profiles")
-            .select("*")
-            .eq("auth_user_id", authUser.id)
-            .maybeSingle();
-
-        data = result.data;
-        error = result.error;
-
-        /*
-         * Some older accounts may have the correct email but not yet
-         * have auth_user_id attached. Use email only as a fallback.
-         */
-        if(!data && authUser.email){
-            const emailResult = await supabaseClient
-                .from("profiles")
-                .select("*")
-                .ilike("email", authUser.email)
-                .maybeSingle();
-
-            if(emailResult.data){
-                data = emailResult.data;
-                error = null;
+            if(result?.data){
+                console.log("BUSANSO profile matched by:", label);
+                return result.data;
             }
-        }
-    }
 
-    /* 2. Preserve compatibility with older non-Google accounts. */
-    if(!data){
-        const userID = localStorage.getItem("user_id");
-
-        if(userID){
-            const result = await supabaseClient
-                .from("profiles")
-                .select("*")
-                .eq("id", Number(userID))
-                .maybeSingle();
-
-            if(result.data){
-                data = result.data;
-                error = null;
-            }else if(result.error){
-                error = result.error;
+            if(result?.error){
+                lastError = result.error;
+                console.warn("Profile lookup failed (" + label + "):", result.error);
             }
-        }
-    }
-
-    if(error || !data){
-
-        console.error(
-            "BUSANSO profile error:",
-            error
-        );
-
-        if(errorPage){
-            loading.classList.add("hidden");
-            page.classList.add("hidden");
-            errorPage.classList.remove("hidden");
-            errorMessage.textContent =
-                "Your login session was not found. Please sign in again.";
-        }else{
-            location.href = "auth.html";
+        }catch(error){
+            lastError = error;
+            console.warn("Profile lookup exception (" + label + "):", error);
         }
 
-        return false;
+        return null;
     }
 
     /*
-     * If this profile was found through Supabase Auth, synchronize
-     * the legacy localStorage values so older BUSANSO pages continue
-     * to recognize the same logged-in user.
+     * 1. FIRST: use the existing BUSANSO user_id.
+     * This protects older/premium accounts whose Auth mapping may be
+     * incomplete but whose profile ID is already known locally.
      */
-    localStorage.setItem(
-        "user_id",
-        String(data.id)
-    );
+    const storedUserID = localStorage.getItem("user_id");
 
-    if(authUser){
-        localStorage.setItem(
-            "auth_user_id",
-            authUser.id
-        );
-        localStorage.setItem(
-            "supabase_auth_user_id",
-            authUser.id
-        );
+    if(storedUserID){
+        const numericID = Number(storedUserID);
 
-        if(authUser.email){
-            localStorage.setItem(
-                "email",
-                authUser.email
+        if(Number.isFinite(numericID)){
+            data = await findProfile(
+                supabaseClient
+                    .from("profiles")
+                    .select("*")
+                    .eq("id", numericID)
+                    .maybeSingle(),
+                "legacy user_id"
+            );
+        }else{
+            data = await findProfile(
+                supabaseClient
+                    .from("profiles")
+                    .select("*")
+                    .eq("id", storedUserID)
+                    .maybeSingle(),
+                "stored profile id"
             );
         }
     }
 
     /*
-     * Keep the same account-status rule.
-     * Do not clear the Supabase Auth session here.
+     * 2. Current Supabase Auth user -> auth_user_id.
      */
-    if(
-        (data.account_status || "").toLowerCase() !==
-        "active"
-    ){
+    if(!data && authUser){
+        data = await findProfile(
+            supabaseClient
+                .from("profiles")
+                .select("*")
+                .eq("auth_user_id", authUser.id)
+                .maybeSingle(),
+            "auth_user_id"
+        );
+    }
 
+    /*
+     * 3. Older Google accounts -> email fallback.
+     * This never creates a profile.
+     */
+    if(!data && authUser?.email){
+        data = await findProfile(
+            supabaseClient
+                .from("profiles")
+                .select("*")
+                .ilike("email", authUser.email)
+                .maybeSingle(),
+            "email"
+        );
+    }
+
+    /*
+     * 4. Give the browser one short chance to finish restoring a
+     * Google/Supabase session, then retry the two Auth mappings.
+     */
+    if(!data){
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        try{
+            const { data: retrySession } =
+                await supabaseClient.auth.getSession();
+            authUser = retrySession?.session?.user || authUser;
+        }catch(error){
+            console.warn("Session retry failed:", error);
+        }
+
+        if(authUser){
+            data = await findProfile(
+                supabaseClient
+                    .from("profiles")
+                    .select("*")
+                    .eq("auth_user_id", authUser.id)
+                    .maybeSingle(),
+                "auth_user_id retry"
+            );
+
+            if(!data && authUser.email){
+                data = await findProfile(
+                    supabaseClient
+                        .from("profiles")
+                        .select("*")
+                        .ilike("email", authUser.email)
+                        .maybeSingle(),
+                    "email retry"
+                );
+            }
+        }
+    }
+
+    /*
+     * CRITICAL CHANGE:
+     * Never redirect an authenticated user to auth.html here.
+     * That redirect created the infinite loop.
+     */
+    if(!data){
+        console.error("BUSANSO profile could not be matched:", lastError);
+
+        loading.classList.add("hidden");
+        page.classList.add("hidden");
+
+        if(errorPage){
+            errorPage.classList.remove("hidden");
+        }
+
+        if(errorMessage){
+            if(authUser){
+                errorMessage.textContent =
+                    "Your BUSANSO login is active, but the existing profile could not be matched. You have NOT been signed out. Please contact BUSANSO support.";
+            }else{
+                errorMessage.textContent =
+                    "No active BUSANSO login session was found. Please sign in with Google.";
+            }
+        }
+
+        return false;
+    }
+
+    /* Synchronize the existing profile into the legacy BUSANSO cache. */
+    if(data.id !== undefined && data.id !== null){
+        localStorage.setItem("user_id", String(data.id));
+    }
+
+    if(authUser){
+        localStorage.setItem("auth_user_id", authUser.id);
+        localStorage.setItem("supabase_auth_user_id", authUser.id);
+
+        if(authUser.email){
+            localStorage.setItem("email", authUser.email);
+        }
+    }
+
+    /* Existing account-status rule preserved. */
+    if((data.account_status || "").toLowerCase() !== "active"){
         location.href = "blocked.html";
         return false;
     }
@@ -1317,44 +1377,30 @@ async function loadAccount(){
     const membership =
         (data.membership || "free").toLowerCase();
 
-    /* =========================================
-       GOLDEN PAGE DISPLAY
-    ========================================= */
-
     document.getElementById("userName").textContent =
         data.name || "Member";
 
     document.getElementById("packageName").textContent =
         (data.package_type || "free").toUpperCase();
 
-    const status =
-        document.getElementById("membershipStatus");
+    const status = document.getElementById("membershipStatus");
+    const expiryBox = document.getElementById("expiryBox");
+    const moviesBtn = document.getElementById("moviesBtn");
+    const seriesBtn = document.getElementById("seriesBtn");
 
-    const expiryBox =
-        document.getElementById("expiryBox");
-
-    const moviesBtn =
-        document.getElementById("moviesBtn");
-
-    const seriesBtn =
-        document.getElementById("seriesBtn");
-
-    /*
-     * PREMIUM / FREE BUTTON LOGIC
-     */
     const premiumActive =
         membership === "premium" &&
         data.expires_at &&
         new Date(data.expires_at) > new Date();
 
     const payBtn = document.getElementById("payBtn");
+
     if(payBtn){
         payBtn.style.display =
             membership === "free" ? "flex" : "none";
     }
 
     if(premiumActive){
-
         status.textContent = "Active";
 
         moviesBtn.classList.remove("locked");
@@ -1366,16 +1412,10 @@ async function loadAccount(){
         seriesBtn.href = "series.html";
 
         expiryBox.style.display = "block";
-
         startExpiryCountdown(data.expires_at);
-
     }else{
-
-        if(membership === "premium"){
-            status.textContent = "Expired";
-        }else{
-            status.textContent = "Free package";
-        }
+        status.textContent =
+            membership === "premium" ? "Expired" : "Free package";
 
         if(data.expires_at){
             expiryBox.style.display = "block";
@@ -1392,60 +1432,24 @@ async function loadAccount(){
         moviesBtn.href = "javascript:void(0)";
         seriesBtn.href = "javascript:void(0)";
 
-        moviesBtn.onclick = function(){
-            location.href = "packages.html";
-        };
-
-        seriesBtn.onclick = function(){
-            location.href = "packages.html";
-        };
+        moviesBtn.onclick = function(){ location.href = "packages.html"; };
+        seriesBtn.onclick = function(){ location.href = "packages.html"; };
     }
 
-    /*
-     * Preserve the existing localStorage contract.
-     */
-    localStorage.setItem(
-        "name",
-        data.name || ""
-    );
-
-    localStorage.setItem(
-        "whatsapp_number",
-        data.whatsapp_number || ""
-    );
-
-    localStorage.setItem(
-        "membership",
-        data.membership || "free"
-    );
-
-    localStorage.setItem(
-        "package_type",
-        data.package_type || ""
-    );
-
-    localStorage.setItem(
-        "expires_at",
-        data.expires_at || ""
-    );
+    /* Preserve the existing localStorage contract. */
+    localStorage.setItem("name", data.name || "");
+    localStorage.setItem("whatsapp_number", data.whatsapp_number || "");
+    localStorage.setItem("membership", data.membership || "free");
+    localStorage.setItem("package_type", data.package_type || "");
+    localStorage.setItem("expires_at", data.expires_at || "");
 
     if(data.account_status){
-        localStorage.setItem(
-            "account_status",
-            data.account_status
-        );
+        localStorage.setItem("account_status", data.account_status);
     }
 
     if(data.role){
-        localStorage.setItem(
-            "role",
-            data.role
-        );
+        localStorage.setItem("role", data.role);
     }
-
-    /* =========================================
-       REVEAL PAGE
-    ========================================= */
 
     loading.classList.add("hidden");
 
@@ -1457,7 +1461,6 @@ async function loadAccount(){
 
     return true;
 }
-
 
 /* =========================================
    EXPIRY COUNTDOWN
