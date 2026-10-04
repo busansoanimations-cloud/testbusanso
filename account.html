@@ -1,4 +1,4 @@
-﻿
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,7 +58,6 @@ body{
 }
 
 .big-actions{
-    flex:1;
     align-content:center;
 }
 
@@ -201,18 +200,16 @@ h1{
 
 #userName{
     font-weight:950;
-    color:#ffe04d;
-    text-shadow:0 0 14px rgba(255,215,0,.28);
+    color:#ffb52e;
+    text-shadow:0 0 16px rgba(255,181,46,.42);
 }
 
 .welcome{
     position:relative;
-
     color:#bdb7a5;
-
     font-size:11px;
-
     margin-bottom:13px;
+    text-align:center;
 }
 
 /* =========================
@@ -462,6 +459,11 @@ h1{
     text-align:center;
 
     padding:30px 18px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
 }
 
 .error h2{
@@ -1119,7 +1121,7 @@ h1{
             We could not identify this account.
         </p>
 
-        <a href="auth.html">
+        <a href="auth.html" onclick="window.location.href='auth.html'; return false;">
             Sign in with Google
         </a>
 
@@ -1158,43 +1160,111 @@ async function loadAccount(){
     const errorPage = document.getElementById("errorPage");
     const errorMessage = document.getElementById("errorMessage");
 
-    const userID =
-        localStorage.getItem("user_id");
-
     /*
-     * Do NOT require a new Supabase Auth session here.
-     * account (2).html identifies the logged-in user
-     * through localStorage user_id.
+     * IMPORTANT:
+     * Do not rely only on the old localStorage user_id.
+     * Google/Supabase Auth sessions are the primary login identity.
+     * The legacy user_id is kept as a fallback for older accounts.
      */
-    if(!userID){
 
-        if(errorPage){
-            loading.classList.add("hidden");
-            page.classList.add("hidden");
-            errorPage.classList.remove("hidden");
-            errorMessage.textContent =
-                "Your login session was not found. Please sign in again.";
-        }else{
-            location.href = "auth.html";
+    let authUser = null;
+    let profile = null;
+    let profileError = null;
+
+    try{
+        const sessionResult =
+            await supabaseClient.auth.getSession();
+
+        if(sessionResult.error){
+            console.warn(
+                "Supabase session check:",
+                sessionResult.error
+            );
         }
 
-        return false;
+        const session =
+            sessionResult.data &&
+            sessionResult.data.session;
+
+        if(session && session.user){
+            authUser = session.user;
+        }
+    }catch(error){
+        console.warn(
+            "Supabase session unavailable:",
+            error
+        );
     }
 
+    /*
+     * 1. Best match: Supabase Auth user -> profiles.auth_user_id
+     */
+    if(authUser){
+        const result =
+            await supabaseClient
+                .from("profiles")
+                .select("*")
+                .eq("auth_user_id",authUser.id)
+                .maybeSingle();
 
-    const {data,error} =
-        await supabaseClient
-            .from("profiles")
-            .select("*")
-            .eq("id",Number(userID))
-            .single();
+        if(result.data){
+            profile = result.data;
+        }else if(result.error){
+            profileError = result.error;
+        }
+    }
 
+    /*
+     * 2. Fallback: match the authenticated email.
+     * This helps older Google accounts whose auth_user_id
+     * has not yet been attached to their existing profile.
+     */
+    if(!profile && authUser && authUser.email){
+        const result =
+            await supabaseClient
+                .from("profiles")
+                .select("*")
+                .eq("email",authUser.email)
+                .maybeSingle();
 
-    if(error || !data){
+        if(result.data){
+            profile = result.data;
+        }else if(result.error){
+            profileError = result.error;
+        }
+    }
+
+    /*
+     * 3. Legacy fallback for older BUSANSO sessions.
+     */
+    const legacyUserID =
+        localStorage.getItem("user_id");
+
+    if(!profile && legacyUserID){
+        const result =
+            await supabaseClient
+                .from("profiles")
+                .select("*")
+                .eq("id",Number(legacyUserID))
+                .maybeSingle();
+
+        if(result.data){
+            profile = result.data;
+        }else if(result.error){
+            profileError = result.error;
+        }
+    }
+
+    /*
+     * A valid Supabase session/profile must never be treated
+     * as "not logged in" just because the old localStorage
+     * value is missing.
+     */
+    if(!profile){
 
         console.error(
-            "BUSANSO profile error:",
-            error
+            "BUSANSO profile could not be matched:",
+            profileError
         );
 
         if(errorPage){
@@ -1202,8 +1272,9 @@ async function loadAccount(){
             page.classList.add("hidden");
             errorPage.classList.remove("hidden");
             errorMessage.textContent =
-                error?.message ||
-                "Unable to load your account.";
+                authUser
+                    ? "Your BUSANSO profile could not be found. Please contact support instead of creating a new account."
+                    : "Your login session was not found. Please sign in again.";
         }else{
             location.href = "auth.html";
         }
@@ -1211,13 +1282,37 @@ async function loadAccount(){
         return false;
     }
 
+    /*
+     * Keep the legacy user_id synchronized for the rest of
+     * the existing BUSANSO pages.
+     */
+    if(profile.id !== undefined && profile.id !== null){
+        localStorage.setItem(
+            "user_id",
+            String(profile.id)
+        );
+    }
+
+    if(authUser){
+        localStorage.setItem(
+            "auth_user_id",
+            authUser.id
+        );
+
+        if(authUser.email){
+            localStorage.setItem(
+                "user_email",
+                authUser.email
+            );
+        }
+    }
 
     /*
-     * Keep the same account-status rule used by
-     * account (2).html.
+     * Keep the existing account-status rule.
+     * Do not sign out a valid premium user here.
      */
     if(
-        (data.account_status || "").toLowerCase() !==
+        (profile.account_status || "").toLowerCase() !==
         "active"
     ){
 
@@ -1227,6 +1322,7 @@ async function loadAccount(){
         return false;
     }
 
+    const data = profile;
 
     const membership =
         (data.membership || "free").toLowerCase();
@@ -1256,103 +1352,132 @@ async function loadAccount(){
     const seriesBtn =
         document.getElementById("seriesBtn");
 
+    const payBtn =
+        document.getElementById("payBtn");
 
-    /*
-     * PREMIUM / FREE BUTTON LOGIC COPIED FROM
-     * account (2).html.
-     */
-    const premiumActive =
-        membership === "premium" &&
-        data.expires_at &&
-        new Date(data.expires_at) > new Date();
+    const expiryDate =
+        document.getElementById("expiryDate");
 
-    /* Show PAY TO WATCH only for users whose membership is actually FREE. */
-    const payBtn = document.getElementById("payBtn");
-    if(payBtn){
-        payBtn.style.display = membership === "free" ? "flex" : "none";
-    }
+    const countdown =
+        document.getElementById("countdown");
 
 
-    if(premiumActive){
+    if(
+        membership === "premium" ||
+        membership === "kibanda"
+    ){
 
-        status.textContent = "Active";
+        status.textContent =
+            "Premium access active";
 
-        moviesBtn.classList.remove("locked");
-        seriesBtn.classList.remove("locked");
-        moviesBtn.classList.add("premium-active");
-        seriesBtn.classList.add("premium-active");
+        status.style.color =
+            "#66ff99";
 
-        moviesBtn.href = "movies.html";
-        seriesBtn.href = "series.html";
+        moviesBtn.classList.add(
+            "premium-active"
+        );
 
-        expiryBox.style.display = "block";
+        seriesBtn.classList.add(
+            "premium-active"
+        );
 
-        startExpiryCountdown(data.expires_at);
+        moviesBtn.classList.remove(
+            "locked"
+        );
+
+        seriesBtn.classList.remove(
+            "locked"
+        );
+
+        const expiry =
+            new Date(
+                data.expires_at
+            ).getTime();
+
+        if(
+            data.expires_at &&
+            !isNaN(expiry)
+        ){
+
+            expiryDate.textContent =
+                new Date(
+                    data.expires_at
+                ).toLocaleString();
+
+            startCountdown(
+                expiry
+            );
+
+        }else{
+
+            expiryDate.textContent =
+                "No expiry date";
+
+            countdown.textContent =
+                "expiry not set";
+
+        }
+
+        if(payBtn){
+            payBtn.style.display =
+                "none";
+        }
 
     }else{
 
-        if(membership === "premium"){
-            status.textContent = "Expired";
-        }else{
-            status.textContent = "Free package";
+        status.textContent =
+            "Free account";
+
+        status.style.color =
+            "#aaa";
+
+        moviesBtn.classList.add(
+            "locked"
+        );
+
+        seriesBtn.classList.add(
+            "locked"
+        );
+
+        moviesBtn.classList.remove(
+            "premium-active"
+        );
+
+        seriesBtn.classList.remove(
+            "premium-active"
+        );
+
+        moviesBtn.href =
+            "packages.html";
+
+        seriesBtn.href =
+            "packages.html";
+
+        if(payBtn){
+            payBtn.style.display =
+                "flex";
         }
 
-        /*
-         * Keep the golden page's expiry area,
-         * but show the real status.
-         */
-        if(data.expires_at){
-            expiryBox.style.display = "block";
-            startExpiryCountdown(data.expires_at);
-        }else{
-            expiryBox.style.display = "none";
-        }
+        expiryDate.textContent =
+            data.expires_at
+                ? new Date(
+                    data.expires_at
+                  ).toLocaleString()
+                : "No expiry date";
 
-        moviesBtn.classList.add("locked");
-        seriesBtn.classList.add("locked");
-        moviesBtn.classList.remove("premium-active");
-        seriesBtn.classList.remove("premium-active");
+        countdown.textContent =
+            "premium access required";
 
-        moviesBtn.href = "javascript:void(0)";
-        seriesBtn.href = "javascript:void(0)";
-
-        moviesBtn.onclick = function(){
-            location.href = "packages.html";
-        };
-
-        seriesBtn.onclick = function(){
-            location.href = "packages.html";
-        };
     }
 
 
-    /*
-     * Preserve the existing localStorage contract.
-     * Do NOT clear or replace the logged-in user's ID.
-     */
-    localStorage.setItem(
-        "user_id",
-        String(data.id)
-    );
-
-    localStorage.setItem(
-        "name",
-        data.name || ""
-    );
-
-    localStorage.setItem(
-        "whatsapp_number",
-        data.whatsapp_number || ""
-    );
+    /* =========================================
+       STORE ACCOUNT CACHE
+    ========================================= */
 
     localStorage.setItem(
         "membership",
-        data.membership || "free"
-    );
-
-    localStorage.setItem(
-        "package_type",
-        data.package_type || ""
+        membership
     );
 
     localStorage.setItem(
@@ -1360,158 +1485,25 @@ async function loadAccount(){
         data.expires_at || ""
     );
 
+    localStorage.setItem(
+        "account_status",
+        data.account_status || ""
+    );
 
-    /* =========================================
-       REVEAL PAGE
-    ========================================= */
 
-    loading.classList.add("hidden");
+    loading.classList.add(
+        "hidden"
+    );
 
-    if(errorPage){
-        errorPage.classList.add("hidden");
-    }
+    errorPage.classList.add(
+        "hidden"
+    );
 
-    page.classList.remove("hidden");
+    page.classList.remove(
+        "hidden"
+    );
 
     return true;
-}
-
-
-/* =========================================
-   EXPIRY COUNTDOWN
-========================================= */
-
-function startExpiryCountdown(expiryDate){
-
-    const expiryDateEl =
-        document.getElementById("expiryDate");
-
-    const countdown =
-        document.getElementById("countdown");
-
-    function update(){
-
-        const diff =
-            new Date(expiryDate).getTime() -
-            new Date().getTime();
-
-
-        if(diff <= 0){
-
-            expiryDateEl.textContent =
-                new Date(expiryDate).toLocaleString();
-
-            countdown.textContent =
-                "access expired";
-
-            countdown.classList.remove("urgent");
-            countdown.classList.add("expired");
-
-            document.getElementById(
-                "membershipStatus"
-            ).textContent = "Expired";
-
-            return;
-        }
-
-
-        expiryDateEl.textContent =
-            new Date(expiryDate).toLocaleString(
-                undefined,
-                {
-                    dateStyle:"medium",
-                    timeStyle:"short"
-                }
-            );
-
-
-        const days =
-            Math.floor(diff / 86400000);
-
-        const hours =
-            Math.floor(
-                (diff % 86400000) / 3600000
-            );
-
-        const minutes =
-            Math.floor(
-                (diff % 3600000) / 60000
-            );
-
-        const seconds =
-            Math.floor(
-                (diff % 60000) / 1000
-            );
-
-        // Highlight the countdown in red once fewer than 5 days remain.
-        if(days < 5){
-            countdown.classList.add("urgent");
-        }else{
-            countdown.classList.remove("urgent");
-        }
-
-        countdown.textContent =
-            days + " days " +
-            String(hours).padStart(2,"0") +
-            " hours " +
-            String(minutes).padStart(2,"0") +
-            " minutes " +
-            String(seconds).padStart(2,"0") +
-            " seconds";
-    }
-
-
-    update();
-
-
-    if(countdownTimer){
-        clearInterval(countdownTimer);
-    }
-
-    countdownTimer =
-        setInterval(update,1000);
-}
-
-
-/* =========================================
-   ADMIN BUTTON
-========================================= */
-
-async function checkAdminAccess(){
-
-    const userID =
-        localStorage.getItem("user_id");
-
-    if(!userID){
-        return;
-    }
-
-
-    const {data,error} =
-        await supabaseClient
-            .from("profiles")
-            .select("role")
-            .eq("id",Number(userID))
-            .single();
-
-
-    if(error || !data){
-        return;
-    }
-
-
-    if(
-        data.role &&
-        data.role.trim().toLowerCase() === "admin"
-    ){
-
-        const adminBtn =
-            document.getElementById("adminBtn");
-
-        if(adminBtn){
-            adminBtn.style.display = "block";
-        }
-    }
 }
 
 
