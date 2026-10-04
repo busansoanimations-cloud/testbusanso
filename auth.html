@@ -1,408 +1,865 @@
-
-
-
-
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>BUSANSO NATION</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="monetag" content="6d418a15bef62e99f15abae082c777e0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-<!-- PWA REQUIRED -->
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#000000">
-<link rel="apple-touch-icon" href="icons/icon-192.png">
-<!-- END PWA -->
-
-<style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Segoe UI',Arial,sans-serif;
-}
-
-body{
-  min-height:100vh;
-  background:
-    radial-gradient(circle at 50% 0%,rgba(34,197,94,.22),transparent 35%),
-    radial-gradient(circle at 0% 100%,rgba(16,185,129,.14),transparent 40%),
-    linear-gradient(145deg,#020604,#07130d 55%,#020604);
-  color:#fff;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  overflow:hidden;
-}
-
-
-.onboarding{
-  width:min(92%,430px);
-  position:relative;
-  z-index:5;
-  opacity:1;
-  transform:none;
-}
-
-.step{
-  display:none;
-  background:rgba(255,255,255,.055);
-  border:1px solid rgba(134,239,172,.16);
-  backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);
-  border-radius:28px;
-  padding:34px 28px 28px;
-  box-shadow:0 25px 70px rgba(0,0,0,.45);
-}
-
-.step.active{
-  display:block;
-  animation:stepIn .35s ease;
-}
-
-.step-number{
-  color:#4ade80;
-  font-size:.78rem;
-  font-weight:800;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  margin-bottom:14px;
-}
-
-h1{
-  font-size:clamp(1.7rem,7vw,2.25rem);
-  line-height:1.1;
-  margin-bottom:10px;
-}
-
-.prompt{
-  color:#a7b5ad;
-  line-height:1.5;
-  margin-bottom:24px;
-}
-
-input{
-  width:100%;
-  padding:17px 18px;
-  border-radius:15px;
-  border:1px solid rgba(255,255,255,.14);
-  outline:none;
-  background:rgba(0,0,0,.35);
-  color:#fff;
-  font-size:17px;
-  transition:.2s;
-}
-
-input:focus{
-  border-color:#4ade80;
-  box-shadow:0 0 0 4px rgba(34,197,94,.10);
-}
-
-input::placeholder{
-  color:#718078;
-}
-
-.next-btn{
-  width:100%;
-  padding:16px;
-  margin-top:16px;
-  border:0;
-  border-radius:15px;
-  background:linear-gradient(135deg,#22c55e,#16a34a);
-  color:#031008;
-  font-size:17px;
-  font-weight:800;
-  cursor:pointer;
-  transition:.2s;
-}
-
-.next-btn:hover{
-  transform:translateY(-1px);
-  filter:brightness(1.08);
-}
-
-.next-btn:disabled{
-  opacity:.55;
-  cursor:not-allowed;
-  transform:none;
-}
-
-.back-btn{
-  width:100%;
-  margin-top:10px;
-  padding:11px;
-  border:0;
-  background:transparent;
-  color:#86efac;
-  cursor:pointer;
-  font-size:14px;
-}
-
-.error{
-  min-height:20px;
-  margin-top:10px;
-  color:#fca5a5;
-  font-size:14px;
-}
-
-.success{
-  min-height:20px;
-  margin-top:10px;
-  color:#86efac;
-  font-size:14px;
-}
-
-</style>
-</head>
-
-<body>
-<main class="onboarding">
-
-  <section class="step active" id="nameStep">
-    <div class="step-number">Step 1 of 2</div>
-    <h1>What's your name?</h1>
-    <p class="prompt">Tell us what you'd like us to call you on Busanso Nation.</p>
-    <input id="userName" type="text" maxlength="80"
-           placeholder="Enter your name" autocomplete="name">
-    <div id="nameError" class="error"></div>
-    <button class="next-btn" id="nameNext">NEXT</button>
-  </section>
-
-  <section class="step" id="phoneStep">
-    <div class="step-number">Step 2 of 2</div>
-    <h1>What's your number?</h1>
-    <p class="prompt">Enter your 10-digit WhatsApp number starting with 0.</p>
-    <input id="userPhone" type="tel" inputmode="numeric" maxlength="10"
-           placeholder="0700000000" autocomplete="tel">
-    <div id="phoneError" class="error"></div>
-    <div id="saveMessage" class="success"></div>
-    <button class="next-btn" id="finishBtn">CONTINUE</button>
-    <button class="back-btn" id="backBtn">← Back</button>
-  </section>
-
-</main>
+<title>BUSANSO — Sign In</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<style>
+*{box-sizing:border-box}
+
+html,body{
+    margin:0;
+    min-height:100%;
+    background:
+        radial-gradient(circle at top,#3b2a08 0%,#171005 45%,#070707 100%);
+    color:white;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:22px;
+}
+
+.card{
+    width:100%;
+    max-width:430px;
+    padding:35px 25px 30px;
+    text-align:center;
+    border-radius:22px;
+    background:linear-gradient(145deg,#2a200c,#0d0d0d);
+    border:1px solid rgba(212,175,55,.45);
+    box-shadow:0 0 40px rgba(212,175,55,.14);
+}
+
+.logo{
+    width:180px;
+    max-width:75%;
+    margin:0 auto 22px;
+    display:block;
+}
+
+h1{
+    margin:0;
+    color:#f4d77a;
+    font-size:29px;
+}
+
+.subtitle{
+    margin:10px 0 28px;
+    color:#bbb;
+    font-size:15px;
+    line-height:1.5;
+}
+
+#googleBtn{
+    width:100%;
+    min-height:58px;
+    border:0;
+    border-radius:14px;
+    background:linear-gradient(135deg,#f8df83,#c89b28);
+    color:#111;
+    font-size:17px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+#googleBtn:disabled{
+    opacity:.55;
+    cursor:wait;
+}
+
+#status{
+    min-height:25px;
+    margin-top:20px;
+    color:#ccc;
+    font-size:14px;
+    line-height:1.5;
+}
+
+.error{
+    color:#ff8585!important;
+}
+
+.success{
+    color:#9be58c!important;
+}
+
+.small{
+    margin-top:22px;
+    color:#666;
+    font-size:12px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<img
+ class="logo"
+ src="https://busansoanimations-cloud.github.io/testbusanso/images/busanso-logo-source.png"
+ alt="BUSANSO">
+
+<h1>Welcome to BUSANSO</h1>
+
+<div class="subtitle">
+Sign in with Google to continue watching.
+</div>
+
+<button
+ id="googleBtn"
+ type="button"> <span style="font-size:21px;margin-right:8px;">G</span>
+Continue with Google </button>
+
+<div id="status"></div>
+
+<div class="small">
+Secure sign-in powered by Google
+</div>
+
+</div>
+
 <script>
-const SUPABASE_URL = "https://dhkfhhybzcxdeoalcfqx.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRoa2ZoaHliemN4ZGVvYWxjZnF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1MzQxNTEsImV4cCI6MjA4ODExMDE1MX0.jZ4NDNPJmO0Ji05TxDqCnzgLIIzKf9uCx3WrSgk2DaY";
 
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+"use strict";
 
-const nameStep = document.getElementById("nameStep");
-const phoneStep = document.getElementById("phoneStep");
-const userName = document.getElementById("userName");
-const userPhone = document.getElementById("userPhone");
-const nameError = document.getElementById("nameError");
-const phoneError = document.getElementById("phoneError");
-const saveMessage = document.getElementById("saveMessage");
-const nameNext = document.getElementById("nameNext");
-const finishBtn = document.getElementById("finishBtn");
-const backBtn = document.getElementById("backBtn");
 
-function getDeviceID(){
-  let id = localStorage.getItem("device_id");
+/* ============================================================
+   CONFIG
+   ============================================================ */
 
-  if(!id){
-    id = (crypto.randomUUID
-      ? crypto.randomUUID()
-      : "device-" + Date.now() + "-" + Math.random().toString(36).slice(2));
+const SUPABASE_URL =
+    "https://dhkfhhybzcxdeoalcfqx.supabase.co";
 
-    localStorage.setItem("device_id", id);
-  }
+const SUPABASE_KEY =
+    "sb_publishable_Rjm3T44VKTeuOF2yJS5rMw_xDfwPjuG";
 
-  return id;
+
+/* ============================================================
+   MODE
+   ============================================================ */
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+const isAppMode =
+    params.get("app") === "1";
+
+
+/* ============================================================
+   REDIRECTS
+   ============================================================ */
+
+const WEB_REDIRECT_URL =
+    "https://busansoanimations-cloud.github.io/testbusanso/auth.html";
+
+const APP_REDIRECT_URL =
+    "busanso://auth/callback";
+
+const REDIRECT_URL =
+    isAppMode
+        ? APP_REDIRECT_URL
+        : WEB_REDIRECT_URL;
+
+
+/* ============================================================
+   ELEMENTS
+   ============================================================ */
+
+const googleBtn =
+    document.getElementById("googleBtn");
+
+const statusBox =
+    document.getElementById("status");
+
+
+function showStatus(message,type){
+
+    statusBox.textContent =
+        message || "";
+
+    statusBox.className =
+        type || "";
 }
 
-function saveLocalProfile(profile){
-  localStorage.setItem("user_id", profile.id || "");
-  localStorage.setItem("name", profile.name || "");
-  localStorage.setItem("whatsapp_number", profile.whatsapp_number || "");
-  localStorage.setItem("device_id", profile.device_id || getDeviceID());
-  localStorage.setItem("account_status", profile.account_status || "active");
-  localStorage.setItem("isLoggedIn", "true");
-  localStorage.setItem("loggedIn", "true");
-  localStorage.setItem("profile", JSON.stringify(profile));
 
-  if(profile.plan) localStorage.setItem("plan", profile.plan);
-  if(profile.membership) localStorage.setItem("membership", profile.membership);
+/* ============================================================
+   SUPABASE
+   ============================================================ */
+
+if(
+    !window.supabase ||
+    !window.supabase.createClient
+){
+
+    showStatus(
+        "Sign-in service could not load.",
+        "error"
+    );
+
+    throw new Error(
+        "Supabase library unavailable."
+    );
 }
 
-function goHome(){
-  location.replace("home.html");
+
+const client =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY,
+        {
+            auth:{
+                persistSession:true,
+                autoRefreshToken:true,
+
+                /*
+                 * IMPORTANT:
+                 * We process the OAuth code ourselves.
+                 */
+                detectSessionInUrl:false,
+
+                flowType:"pkce",
+
+                storageKey:"busanso-auth"
+            }
+        }
+    );
+
+
+/* ============================================================
+   SAVE USER
+   ============================================================ */
+
+function saveUser(user){
+
+    try{
+
+        localStorage.setItem(
+            "busanso_user",
+            JSON.stringify(user)
+        );
+
+    }catch(e){}
 }
 
-async function checkExistingProfile(){
-  const deviceId = getDeviceID();
 
-  const { data, error } = await supabaseClient
-    .from("profiles")
-    .select("*")
-    .eq("device_id", deviceId)
-    .eq("account_status", "active")
-    .maybeSingle();
+/* ============================================================
+   SAVE PROFILE
+   ============================================================ */
 
-  if(!error && data){
-    saveLocalProfile(data);
-    goHome();
-    return true;
-  }
+function saveProfile(profile){
 
-  return false;
+    try{
+
+        localStorage.setItem(
+            "busanso_profile",
+            JSON.stringify(profile)
+        );
+
+    }catch(e){}
 }
 
-async function checkNameAvailable(name){
-  const { data, error } = await supabaseClient
-    .from("profiles")
-    .select("id")
-    .ilike("name", name)
-    .limit(1);
 
-  if(error) throw error;
-  return !data || data.length === 0;
-}
+/* ============================================================
+   LOAD PROFILE
+   ============================================================ */
 
-nameNext.addEventListener("click", async () => {
-  const name = userName.value.trim();
+async function loadProfile(user){
 
-  nameError.textContent = "";
-
-  if(name.length < 2){
-    nameError.textContent = "Please enter at least 2 characters.";
-    userName.focus();
-    return;
-  }
-
-  nameNext.disabled = true;
-  nameNext.textContent = "CHECKING...";
-
-  try{
-    const available = await checkNameAvailable(name);
-
-    if(!available){
-      nameError.textContent = "That name is already used. Please choose another name.";
-      userName.focus();
-      return;
+    if(!user || !user.id){
+        return null;
     }
 
-    nameStep.classList.remove("active");
-    phoneStep.classList.add("active");
-    userPhone.focus();
+    const result =
+        await client
+            .from("profiles")
+            .select("*")
+            .eq(
+                "auth_user_id",
+                user.id
+            )
+            .maybeSingle();
 
-  }catch(error){
-    console.error(error);
-    nameError.textContent = "We couldn't check the name. Please try again.";
-  }finally{
-    nameNext.disabled = false;
-    nameNext.textContent = "NEXT";
-  }
-});
+    if(result.error){
 
-userPhone.addEventListener("input", () => {
-  userPhone.value = userPhone.value.replace(/\D/g,"").slice(0,10);
-  phoneError.textContent = "";
-});
+        console.error(
+            "Profile load error:",
+            result.error
+        );
 
-backBtn.addEventListener("click", () => {
-  phoneStep.classList.remove("active");
-  nameStep.classList.add("active");
-  userName.focus();
-});
-
-finishBtn.addEventListener("click", async () => {
-  const name = userName.value.trim();
-  const phone = userPhone.value.trim();
-  const deviceId = getDeviceID();
-
-  phoneError.textContent = "";
-  saveMessage.textContent = "";
-
-  if(!/^0\d{9}$/.test(phone)){
-    phoneError.textContent = "Enter exactly 10 digits and make sure the number starts with 0.";
-    userPhone.focus();
-    return;
-  }
-
-  finishBtn.disabled = true;
-  finishBtn.textContent = "CREATING PROFILE...";
-
-  try{
-    // Re-check the name immediately before inserting, preventing a
-    // duplicate if another user claimed it after Step 1.
-    const available = await checkNameAvailable(name);
-
-    if(!available){
-      phoneError.textContent = "That name was just taken. Please go back and choose another.";
-      finishBtn.disabled = false;
-      finishBtn.textContent = "CONTINUE";
-      return;
+        return null;
     }
 
-    const { data, error } = await supabaseClient
-      .from("profiles")
-      .insert({
-        name: name,
-        whatsapp_number: phone,
-        device_id: deviceId,
-        account_status: "active"
-      })
-      .select("*")
-      .single();
+    if(result.data){
+
+        saveProfile(
+            result.data
+        );
+    }
+
+    return result.data || null;
+}
+
+
+/* ============================================================
+   CREATE PROFILE
+   ============================================================ */
+
+async function createProfile(user){
+
+    const metadata =
+        user.user_metadata || {};
+
+    const name =
+        metadata.full_name ||
+        metadata.name ||
+        (
+            user.email
+                ? user.email.split("@")[0]
+                : "BUSANSO USER"
+        );
+
+    const avatar =
+        metadata.avatar_url ||
+        metadata.picture ||
+        null;
+
+
+    const result =
+        await client
+            .from("profiles")
+            .insert({
+
+                auth_user_id:user.id,
+
+                email:
+                    user.email || null,
+
+                name:name,
+
+                avatar_url:avatar
+
+            })
+            .select("*")
+            .single();
+
+
+    if(
+        !result.error &&
+        result.data
+    ){
+
+        saveProfile(
+            result.data
+        );
+
+        return result.data;
+    }
+
+
+    /*
+     * The database trigger may have created
+     * the profile already.
+     */
+
+    return await loadProfile(
+        user
+    );
+}
+
+
+/* ============================================================
+   FINISH LOGIN
+   ============================================================ */
+
+let finishingLogin =
+    false;
+
+
+async function finishLogin(user){
+
+    if(!user){
+
+        throw new Error(
+            "No Google user was returned."
+        );
+    }
+
+
+    if(finishingLogin){
+        return;
+    }
+
+
+    finishingLogin = true;
+
+
+    try{
+
+        saveUser(
+            user
+        );
+
+
+        showStatus(
+            "Checking your BUSANSO profile..."
+        );
+
+
+        let profile =
+            await loadProfile(
+                user
+            );
+
+
+        if(!profile){
+
+            showStatus(
+                "Creating your BUSANSO profile..."
+            );
+
+
+            profile =
+                await createProfile(
+                    user
+                );
+        }
+
+
+        if(!profile){
+
+            throw new Error(
+                "Google sign-in succeeded, but your BUSANSO profile could not be loaded."
+            );
+        }
+
+
+        saveProfile(
+            profile
+        );
+
+
+        showStatus(
+            "Login successful. Opening BUSANSO...",
+            "success"
+        );
+
+
+        setTimeout(
+            function(){
+
+                if(isAppMode){
+
+                    window.location.href =
+                        "home.html?app=1";
+
+                }else{
+
+                    window.location.href =
+                        "home.html";
+                }
+
+            },
+            400
+        );
+
+
+    }catch(error){
+
+        finishingLogin =
+            false;
+
+        throw error;
+    }
+}
+
+
+/* ============================================================
+   PROCESS OAUTH CODE
+   ============================================================ */
+
+let callbackProcessed =
+    false;
+
+
+async function processOAuthCode(code){
+
+    if(callbackProcessed){
+        return;
+    }
+
+    callbackProcessed =
+        true;
+
+
+    googleBtn.disabled =
+        true;
+
+
+    showStatus(
+        "Completing Google sign-in..."
+    );
+
+
+    try{
+
+        console.log(
+            "BUSANSO exchanging OAuth code"
+        );
+
+
+        const result =
+            await client.auth.exchangeCodeForSession(
+                code
+            );
+
+
+        console.log(
+            "OAuth exchange result:",
+            result
+        );
+
+
+        if(result.error){
+
+            throw result.error;
+        }
+
+
+        if(
+            !result.data ||
+            !result.data.session ||
+            !result.data.user
+        ){
+
+            throw new Error(
+                "Google session could not be created."
+            );
+        }
+
+
+        /*
+         * Remove ?code=... from the visible
+         * browser URL after successful exchange.
+         */
+
+        try{
+
+            window.history.replaceState(
+                {},
+                document.title,
+                isAppMode
+                    ? "auth.html?app=1"
+                    : "auth.html"
+            );
+
+        }catch(e){}
+
+
+        await finishLogin(
+            result.data.user
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "OAuth exchange error:",
+            error
+        );
+
+
+        callbackProcessed =
+            false;
+
+        finishingLogin =
+            false;
+
+        googleBtn.disabled =
+            false;
+
+
+        showStatus(
+            error.message ||
+            "Google sign-in could not be completed.",
+            "error"
+        );
+    }
+}
+
+
+/* ============================================================
+   PROCESS CURRENT WEB CALLBACK
+   ============================================================ */
+
+async function processWebCallback(){
+
+    const code =
+        new URLSearchParams(
+            window.location.search
+        ).get("code");
+
+
+    const error =
+        new URLSearchParams(
+            window.location.search
+        ).get("error");
+
+
+    const errorDescription =
+        new URLSearchParams(
+            window.location.search
+        ).get("error_description");
+
 
     if(error){
-      console.error(error);
 
-      if(
-        error.message &&
-        (error.message.toLowerCase().includes("duplicate") ||
-         error.message.toLowerCase().includes("unique"))
-      ){
-        phoneError.textContent = "That name is already in use. Please go back and choose another.";
-      }else{
-        phoneError.textContent = "We couldn't create your profile. Please try again.";
-      }
+        showStatus(
+            errorDescription ||
+            error,
+            "error"
+        );
 
-      return;
+        return;
     }
 
-    saveLocalProfile(data);
-    saveMessage.textContent = "Profile created. Welcome to Busanso Nation!";
-    finishBtn.textContent = "DONE";
 
-    setTimeout(goHome, 500);
+    if(code){
 
-  }catch(error){
-    console.error(error);
-    phoneError.textContent = "Something went wrong. Please try again.";
-  }finally{
-    if(finishBtn.textContent !== "DONE"){
-      finishBtn.disabled = false;
-      finishBtn.textContent = "CONTINUE";
+        await processOAuthCode(
+            code
+        );
+
+        return true;
     }
-  }
-});
 
-window.addEventListener("load", async () => {
-  // Existing device-bound profiles go straight to the site.
-  await checkExistingProfile();
-});
-</script>
 
-<script>
-/* Register service worker */
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("service-worker.js");
+    return false;
 }
+
+
+/* ============================================================
+   ANDROID CALLBACK FROM MAINACTIVITY
+   ============================================================ */
+
+window.addEventListener(
+    "busansoOAuthCallback",
+    function(event){
+
+        console.log(
+            "BUSANSO Android callback received"
+        );
+
+
+        if(
+            event &&
+            event.detail &&
+            event.detail.url
+        ){
+
+            try{
+
+                const callback =
+                    new URL(
+                        event.detail.url
+                    );
+
+
+                const error =
+                    callback.searchParams.get(
+                        "error"
+                    );
+
+
+                const errorDescription =
+                    callback.searchParams.get(
+                        "error_description"
+                    );
+
+
+                if(error){
+
+                    showStatus(
+                        errorDescription ||
+                        error,
+                        "error"
+                    );
+
+                    return;
+                }
+
+
+                const code =
+                    callback.searchParams.get(
+                        "code"
+                    );
+
+
+                if(!code){
+
+                    showStatus(
+                        "Google did not return an authorization code.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+
+                processOAuthCode(
+                    code
+                );
+
+            }catch(error){
+
+                console.error(
+                    "Android callback error:",
+                    error
+                );
+
+                showStatus(
+                    error.message ||
+                    "Google sign-in could not be completed.",
+                    "error"
+                );
+            }
+        }
+    }
+);
+
+
+/* ============================================================
+   GOOGLE BUTTON
+   ============================================================ */
+
+googleBtn.addEventListener(
+    "click",
+    async function(){
+
+        googleBtn.disabled =
+            true;
+
+
+        showStatus(
+            "Connecting to Google..."
+        );
+
+
+        try{
+
+            console.log(
+                "Starting Google OAuth"
+            );
+
+
+            const result =
+                await client.auth.signInWithOAuth({
+
+                    provider:"google",
+
+                    options:{
+
+                        redirectTo:
+                            REDIRECT_URL,
+
+                        queryParams:{
+                            prompt:"select_account"
+                        }
+
+                    }
+
+                });
+
+
+            console.log(
+                "Google OAuth started:",
+                result
+            );
+
+
+            if(result.error){
+
+                throw result.error;
+            }
+
+
+        }catch(error){
+
+            console.error(
+                "Google OAuth start error:",
+                error
+            );
+
+
+            googleBtn.disabled =
+                false;
+
+
+            showStatus(
+                error.message ||
+                "Google sign-in could not start.",
+                "error"
+            );
+        }
+
+    }
+);
+
+
+/* ============================================================
+   STARTUP
+   ============================================================ */
+
+console.log(
+    "BUSANSO AUTH READY"
+);
+
+console.log(
+    "App mode:",
+    isAppMode
+);
+
+console.log(
+    "Redirect:",
+    REDIRECT_URL
+);
+
+
+/*
+ * In Chrome, Google returns to:
+ *
+ * auth.html?code=...
+ *
+ * We manually exchange that code.
+ *
+ * In Android, MainActivity receives:
+ *
+ * busanso://auth/callback?code=...
+ *
+ * and sends it to the same processOAuthCode()
+ * function through busansoOAuthCallback.
+ */
+
+if(!isAppMode){
+
+    processWebCallback();
+
+}
+
 </script>
 
-<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1}' crossorigin="anonymous"></script>
-<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1}' crossorigin="anonymous"></script>
-<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1,"spa":2}' crossorigin="anonymous"></script>
-<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1,"spa":2}' crossorigin="anonymous"></script>
 </body>
 </html>
-
-
