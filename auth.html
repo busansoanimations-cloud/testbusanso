@@ -255,6 +255,7 @@ body{
     </div>
 
     <button
+        type="button"
         id="googleButton"
         class="google-button">
 
@@ -464,14 +465,6 @@ function saveAuthUser(user){
             user.email || ""
         );
 
-        // Remember the last Google account used on this device.
-        if(user.email){
-            localStorage.setItem(
-                "last_google_email",
-                user.email
-            );
-        }
-
 
         const metadata =
             user.user_metadata || {};
@@ -534,142 +527,97 @@ async function loadProfile(user){
         return null;
     }
 
+    /* 1. Exact Supabase Auth ID match. */
     try{
+        const result = await supabase
+            .from("profiles")
+            .select("*")
+            .eq("auth_user_id", user.id)
+            .maybeSingle();
 
-        const result =
-            await supabase
+        if(!result.error && result.data){
+            saveProfileLocally(result.data, user);
+            return result.data;
+        }
+    }catch(error){
+        console.warn("auth_user_id profile lookup:", error);
+    }
+
+    /* 2. Existing account matched by Google email. */
+    if(user.email){
+        try{
+            const result = await supabase
                 .from("profiles")
                 .select("*")
-                .eq(
-                    "auth_user_id",
-                    user.id
-                )
+                .ilike("email", user.email)
                 .maybeSingle();
 
-
-        if(result.error){
-
-            console.warn(
-                "Profile lookup:",
-                result.error
-            );
-
-            return null;
-        }
-
-
-        const profile =
-            result.data;
-
-
-        if(profile){
-
-            try{
-
-                localStorage.setItem(
-                    "profile",
-                    JSON.stringify(profile)
-                );
-
-                localStorage.setItem(
-                    "busanso_profile",
-                    JSON.stringify(profile)
-                );
-
-
-                if(profile.id != null){
-
-                    localStorage.setItem(
-                        "profile_id",
-                        String(profile.id)
-                    );
-
-                    localStorage.setItem(
-                        "user_id",
-                        String(profile.id)
-                    );
-                }
-
-
-                if(profile.name){
-
-                    localStorage.setItem(
-                        "name",
-                        profile.name
-                    );
-
-                    localStorage.setItem(
-                        "username",
-                        profile.name
-                    );
-                }
-
-
-                localStorage.setItem(
-                    "membership",
-                    profile.membership || "free"
-                );
-
-                localStorage.setItem(
-                    "package_type",
-                    profile.package_type || ""
-                );
-
-                localStorage.setItem(
-                    "expires_at",
-                    profile.expires_at || ""
-                );
-
-                localStorage.setItem(
-                    "account_status",
-                    profile.account_status || "active"
-                );
-
-                localStorage.setItem(
-                    "paid_status",
-                    profile.paid_status || ""
-                );
-
-                localStorage.setItem(
-                    "role",
-                    profile.role || "user"
-                );
-
-                localStorage.setItem(
-                    "loggedIn",
-                    "true"
-                );
-
-                localStorage.setItem(
-                    "isLoggedIn",
-                    "true"
-                );
-
-
-            }catch(error){
-
-                console.warn(
-                    "Profile local save failed:",
-                    error
-                );
+            if(!result.error && result.data){
+                saveProfileLocally(result.data, user);
+                return result.data;
             }
+        }catch(error){
+            console.warn("email profile lookup:", error);
         }
-
-
-        return profile;
-
-
-    }catch(error){
-
-        console.warn(
-            "Profile lookup failed:",
-            error
-        );
-
-        return null;
     }
+
+    /* 3. Existing legacy BUSANSO user_id. */
+    const legacyID = localStorage.getItem("user_id");
+
+    if(legacyID){
+        try{
+            const result = await supabase
+                .from("profiles")
+                .select("*")
+                .eq("id", Number(legacyID))
+                .maybeSingle();
+
+            if(!result.error && result.data){
+                saveProfileLocally(result.data, user);
+                return result.data;
+            }
+        }catch(error){
+            console.warn("legacy user_id profile lookup:", error);
+        }
+    }
+
+    return null;
 }
 
+function saveProfileLocally(profile, user){
+
+    try{
+        localStorage.setItem("profile", JSON.stringify(profile));
+        localStorage.setItem("busanso_profile", JSON.stringify(profile));
+
+        if(profile.id != null){
+            localStorage.setItem("profile_id", String(profile.id));
+            localStorage.setItem("user_id", String(profile.id));
+        }
+
+        if(profile.name){
+            localStorage.setItem("name", profile.name);
+            localStorage.setItem("username", profile.name);
+        }
+
+        localStorage.setItem("membership", profile.membership || "free");
+        localStorage.setItem("package_type", profile.package_type || "");
+        localStorage.setItem("expires_at", profile.expires_at || "");
+        localStorage.setItem("account_status", profile.account_status || "active");
+        localStorage.setItem("paid_status", profile.paid_status || "");
+        localStorage.setItem("role", profile.role || "user");
+        localStorage.setItem("loggedIn", "true");
+        localStorage.setItem("isLoggedIn", "true");
+
+        if(user){
+            localStorage.setItem("auth_user_id", user.id || "");
+            localStorage.setItem("supabase_auth_user_id", user.id || "");
+            localStorage.setItem("email", user.email || "");
+        }
+    }catch(error){
+        console.warn("Profile local save failed:", error);
+    }
+}
 
 /*
 ============================================================
@@ -677,19 +625,12 @@ GO HOME
 ============================================================
 */
 
-function goHome(){
+function goAccount(){
 
     if(isAppMode){
-
-        window.location.replace(
-            "home.html?app=1"
-        );
-
+        window.location.replace("account.html?app=1");
     }else{
-
-        window.location.replace(
-            "home.html"
-        );
+        window.location.replace("account.html");
     }
 }
 
@@ -706,37 +647,78 @@ comes through this single function.
 async function finishLogin(user){
 
     if(!user){
-
         throw new Error(
             "Google account information was not received."
         );
     }
 
+    /* Prevent duplicate redirects from OAuth events firing twice. */
+    if(window.__busansoLoginHandling){
+        return;
+    }
 
-    saveAuthUser(user);
+    window.__busansoLoginHandling = true;
 
+    try{
 
-    /*
-     * Load the existing BUSANSO profile.
-     *
-     * This preserves membership/package information
-     * for profiles already connected to the Google account.
-     */
+        setStatus("Checking your BUSANSO account...");
 
-    await loadProfile(user);
+        const profile = await loadProfile(user);
 
+        /*
+         * CRITICAL:
+         * Do NOT redirect merely because a session exists.
+         * A profile must be found first.
+         */
+        if(!profile){
 
-    setStatus(
-        "Signed in. Opening BUSANSO..."
-    );
+            window.__busansoLoginHandling = false;
 
+            if(button){
+                button.disabled = false;
+            }
 
-    setTimeout(
-        goHome,
-        300
-    );
+            setStatus(
+                "This Google account is not linked to a BUSANSO profile."
+            );
+
+            return false;
+        }
+
+        setStatus(
+            "Account found. Opening your BUSANSO account..."
+        );
+
+        /*
+         * Give the browser one moment to finish writing the
+         * Supabase session/local profile before navigation.
+         */
+        setTimeout(function(){
+
+            goAccount();
+
+        }, 250);
+
+        return true;
+
+    }catch(error){
+
+        window.__busansoLoginHandling = false;
+
+        if(button){
+            button.disabled = false;
+        }
+
+        console.error("BUSANSO login handling error:", error);
+
+        setStatus(
+            error.message ||
+            "Unable to open your BUSANSO account."
+        );
+
+        return false;
+    }
 }
-
 
 /*
 ============================================================
@@ -758,6 +740,8 @@ the PKCE authorization code for a Supabase session.
 */
 
 async function processOAuthCallback(callbackUrl){
+
+    window.__busansoOAuthProcessing = true;
 
     console.log(
         "BUSANSO OAuth callback:",
@@ -866,8 +850,13 @@ async function processOAuthCallback(callbackUrl){
             session.user
         );
 
+        window.__busansoOAuthProcessing = false;
+
 
     }catch(error){
+
+        window.__busansoOAuthProcessing = false;
+        window.__busansoLoginHandling = false;
 
         console.error(
             "BUSANSO OAuth callback error:",
@@ -1043,25 +1032,11 @@ button.addEventListener(
                         redirectTo:
                             REDIRECT_URL,
 
-                        queryParams:(function(){
+                        queryParams:{
 
-                            const lastGoogleEmail =
-                                localStorage.getItem("last_google_email") ||
-                                localStorage.getItem("email") ||
-                                "";
-
-                            const params = {};
-
-                            // Do NOT force Google's account chooser.
-                            // If we know the last successful account,
-                            // ask Google to use that account.
-                            if(lastGoogleEmail){
-                                params.login_hint = lastGoogleEmail;
-                            }
-
-                            return params;
-
-                        })(),
+                            prompt:
+                                "select_account"
+                        },
 
                         skipBrowserRedirect:
                             false
@@ -1250,3 +1225,4 @@ STARTUP
 </body>
 
 </html>
+<script>window.__busansoOAuthProcessing=false;window.__busansoLoginHandling=false;</script>
