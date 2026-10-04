@@ -1,3 +1,8 @@
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -44,11 +49,14 @@ Download Luganda movies
 
 <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 
+
 <style>
+
 
 /* ==============================
 GLOBAL RESET
 ============================== */
+
 
 *{
 margin:0;
@@ -56,18 +64,20 @@ padding:0;
 box-sizing:border-box;
 }
 
+
 html{
 scroll-behavior:smooth;
 }
+
 
 body{
 
 font-family:'Poppins',sans-serif;
 
 background:
-radial-gradient(circle at 15% 0%,rgba(212,175,55,.16),transparent 32%),
-radial-gradient(circle at 90% 35%,rgba(246,211,101,.08),transparent 30%),
-linear-gradient(180deg,#090806 0%,#030303 48%,#000 100%);
+radial-gradient(circle at top left,#2563eb33,transparent 35%),
+radial-gradient(circle at bottom right,#22c55e33,transparent 40%),
+linear-gradient(180deg,#020617,#000);
 
 color:white;
 
@@ -77,24 +87,34 @@ padding-top:95px;
 
 }
 
+
+
 /* ==============================
 SCROLLBAR
 ============================== */
 
+
 ::-webkit-scrollbar{
+
 width:5px;
 height:5px;
+
 }
 
+
 ::-webkit-scrollbar-thumb{
-background:#6b571f;
+
+background:#334155;
+
 border-radius:20px;
+
 }
+
+
 
 /* ==============================
 HEADER
 ============================== */
-
 .sticky-header{
 position:fixed;
 top:0;
@@ -121,6 +141,7 @@ padding:10px 12px;
 
 }
 
+
 .header img{
 
 height:42px;
@@ -128,6 +149,7 @@ height:42px;
 width:auto;
 
 }
+
 
 .search-box{
 flex:0 1 230px;
@@ -150,7 +172,6 @@ box-shadow:0 0 0 2px rgba(212,175,55,.12),0 0 18px rgba(212,175,55,.18);
 }
 
 @media(max-width:600px){
-
 .search-box{
 flex:1 1 auto;
 width:auto;
@@ -159,12 +180,16 @@ height:32px;
 font-size:11px;
 padding:0 10px;
 }
-
 }
+
 
 .search-box::placeholder{
+
 color:#94a3b8;
+
 }
+
+
 
 .login-main{
 width:82px;
@@ -187,14 +212,29 @@ transform:translateY(-1px);
 box-shadow:0 0 22px rgba(212,175,55,.35);
 }
 
-@media(max-width:600px){
-
-.login-main{
-width:70px;
-font-size:9px;
-padding:8px 3px;
+.birthday-main{
+width:82px;
+padding:8px 5px;
+border-radius:20px;
+background:linear-gradient(135deg,#4c1d95,#9333ea,#f59e0b);
+color:#fff;
+text-decoration:none;
+font-size:10px;
+font-weight:800;
+text-align:center;
+border:1px solid rgba(255,255,255,.25);
+box-shadow:0 0 14px rgba(147,51,234,.25);
+white-space:nowrap;
+transition:.2s ease;
 }
 
+.birthday-main:hover{
+transform:translateY(-1px);
+box-shadow:0 0 22px rgba(147,51,234,.4);
+}
+
+@media(max-width:600px){
+.login-main,.birthday-main{width:70px;font-size:9px;padding:8px 3px;}
 }
 
 .top-action{
@@ -206,17 +246,24 @@ margin-top:5px;
 padding-bottom:12px;
 }
 
+
 .pay-btn{
+
 right:12px;
+
 }
 
+
 .agent-btn{
+
 left:12px;
+
 }
 
 /* ==============================
 WELCOME USER
 ============================== */
+
 
 #welcomeUser{
 
@@ -230,9 +277,12 @@ padding-bottom:8px;
 
 }
 
+
+
 /* ==============================
 HERO SLIDER
 ============================== */
+
 
 .hero-slider{
 
@@ -241,6 +291,8 @@ width:100%;
 overflow:hidden;
 
 }
+
+
 
 .hero-track{
 
@@ -256,9 +308,15 @@ scroll-behavior:smooth;
 
 }
 
+
+
 .hero-track::-webkit-scrollbar{
+
 display:none;
+
 }
+
+
 
 .hero-poster{
 
@@ -276,6 +334,8 @@ cursor:pointer;
 
 }
 
+
+
 .hero-poster img{
 
 width:100%;
@@ -285,6 +345,8 @@ height:100%;
 object-fit:cover;
 
 }
+
+
 
 .hero-overlay{
 
@@ -307,6 +369,8 @@ transparent
 
 }
 
+
+
 .hero-title{
 
 font-size:28px;
@@ -318,6 +382,8 @@ text-shadow:
 
 }
 
+
+
 .hero-description{
 
 margin-top:8px;
@@ -328,7 +394,10 @@ font-size:14px;
 
 }
 
+
+
 /* HERO DOTS */
+
 
 .hero-dots{
 
@@ -342,13 +411,15 @@ padding:15px;
 
 }
 
+
+
 .hero-dot{
 
 height:8px;
 
 width:8px;
 
-background:#5b4a1c;
+background:#475569;
 
 border-radius:20px;
 
@@ -356,23 +427,30 @@ transition:.3s;
 
 }
 
+
+
 .hero-dot.active{
 
 width:25px;
 
-background:#f6d365;
+background:#38bdf8;
 
 }
+
+
 
 /* ==============================
 MAIN CONTENT
 ============================== */
+
 
 .main-content{
 
 padding-bottom:100px;
 
 }
+
+
 
 .section{
 
@@ -381,18 +459,16 @@ margin:20px 12px;
 padding:18px;
 
 background:
-linear-gradient(180deg,rgba(255,255,255,.045),rgba(212,175,55,.025));
+rgba(255,255,255,.03);
 
 border:
-1px solid rgba(212,175,55,.18);
-
-box-shadow:
-0 12px 35px rgba(0,0,0,.38),
-inset 0 1px rgba(255,240,180,.05);
+1px solid rgba(255,255,255,.05);
 
 border-radius:24px;
 
 }
+
+
 
 .section h3{
 
@@ -411,9 +487,11 @@ linear-gradient(90deg,#22c55e,#38bdf8);
 
 }
 
+
 /* ==============================
 CONTENT GRID
 ============================== */
+
 
 .slider{
 
@@ -426,6 +504,7 @@ gap:14px;
 
 }
 
+
 .card{
 
 width:100%;
@@ -434,17 +513,23 @@ animation:fadeUp .4s ease;
 
 }
 
+
+
 .card:hover{
 
 transform:translateY(-5px);
 
 }
 
+
+
 .poster{
 
 position:relative;
 
 }
+
+
 
 .poster img{
 
@@ -457,12 +542,17 @@ object-fit:cover;
 border-radius:18px;
 
 box-shadow:
-0 10px 25px rgba(0,0,0,.6),
-0 0 0 1px rgba(212,175,55,.08);
+0 10px 25px rgba(0,0,0,.5);
 
 }
 
+
+
 /* BADGES REMOVED */
+
+
+/* CARD TITLE */
+
 
 .card-title{
 
@@ -477,10 +567,10 @@ line-height:1.4;
 min-height:38px;
 
 }
-
 /* ==============================
 SKELETON
 ============================== */
+
 
 .skeleton-card{
 
@@ -504,10 +594,11 @@ animation:skeleton 1.3s infinite;
 
 }
 
+
+
 .hero-skeleton{
 
 flex:0 0 100%;
-
 height:260px;
 
 background:
@@ -527,6 +618,7 @@ animation:skeleton 1.3s infinite;
 /* ==============================
 WHATSAPP FLOAT BUTTON
 ============================== */
+
 
 .whatsapp-float{
 
@@ -557,6 +649,8 @@ box-shadow:
 
 }
 
+
+
 .whatsapp-float img{
 
 width:32px;
@@ -565,9 +659,17 @@ height:32px;
 
 }
 
+
+
+
+
+
+
+
 /* ==============================
 NOTIFICATION MODAL
 ============================== */
+
 
 .notification-modal{
 
@@ -588,11 +690,13 @@ z-index:999999;
 
 }
 
+
+
 .notification-box{
 
 width:min(92%,420px);
 
-background:linear-gradient(180deg,#17130a,#0a0906);
+background:#0f172a;
 
 padding:25px;
 
@@ -602,6 +706,8 @@ box-shadow:
 0 20px 60px rgba(0,0,0,.7);
 
 }
+
+
 
 .notification-title{
 
@@ -613,6 +719,8 @@ margin-bottom:10px;
 
 }
 
+
+
 .notification-message{
 
 color:#cbd5e1;
@@ -622,6 +730,8 @@ line-height:1.7;
 margin-bottom:20px;
 
 }
+
+
 
 .notification-close{
 
@@ -634,7 +744,7 @@ border:none;
 border-radius:16px;
 
 background:
-linear-gradient(135deg,#9f7200,#d4af37,#f6d365,#b8860b);
+linear-gradient(135deg,#2563eb,#38bdf8);
 
 color:white;
 
@@ -644,276 +754,213 @@ cursor:pointer;
 
 }
 
+
+
 /* ==============================
 ANIMATIONS
 ============================== */
 
+
 @keyframes skeleton{
 
+
 0%{
+
 background-position:200% 0;
+
 }
+
 
 100%{
+
 background-position:-200% 0;
-}
 
 }
+
+
+}
+
+
 
 @keyframes fadeUp{
 
+
 from{
+
 opacity:0;
+
 transform:translateY(20px);
+
 }
+
 
 to{
+
 opacity:1;
+
 transform:none;
-}
 
 }
+
+
+}
+
+
 
 /* ==============================
 RESPONSIVE
 ============================== */
 
+
 @media(max-width:700px){
 
+
 .header img{
+
 height:38px;
+
 }
+
 
 .hero-poster{
+
 height:220px;
+
 }
+
+
 
 .hero-title{
+
 font-size:22px;
+
 }
+
+
 
 .section{
+
 margin:15px 8px;
+
 padding:15px;
+
 }
 
+
+
 .slider{
+
 grid-template-columns:
 repeat(3,1fr);
 
 gap:10px;
+
 }
+
+
 
 .card-title{
+
 font-size:12px;
-}
 
 }
+}
+
+
 
 @media(max-width:360px){
 
+
 .slider{
+
 grid-template-columns:
 repeat(2,1fr);
+
 }
+
+
 
 .hero-poster{
+
 height:200px;
-}
 
 }
+
+
+
+}
+
+
+
 
 /* ==============================
 ADAPTIVE PREMIUM LOCK
 ============================== */
 
+
 .locked{
+
 opacity:.8;
+
 }
+
+
 
 .locked
 .premium-gold-line{
-
 height:2px;
-
 width:92%;
-
 max-width:900px;
-
 margin:0 auto;
-
-background:
-linear-gradient(
-90deg,
-transparent,
-#d4af37,
-#f6d365,
-#d4af37,
-transparent
-);
-
-box-shadow:
-0 0 12px rgba(212,175,55,.28);
-
+background:linear-gradient(90deg,transparent,#d4af37,#f6d365,#d4af37,transparent);
+box-shadow:0 0 12px rgba(212,175,55,.28);
 }
 
 /* ==============================
 END STYLE
 ============================== */
 
-.poster{
-cursor:pointer;
-}
 
-/* ==============================
-BUSANSO GOLD PREMIUM OVERRIDES
-============================== */
-
-body{
-color:#fff8df;
-}
-
-.sticky-header{
-
-background:
-linear-gradient(
-180deg,
-rgba(10,9,6,.99),
-rgba(2,2,2,.96)
-);
-
-border-bottom:
-1px solid rgba(212,175,55,.42);
-
-box-shadow:
-0 8px 30px rgba(0,0,0,.55),
-0 0 25px rgba(212,175,55,.10);
-
-}
-
-.header img{
-
-filter:
-drop-shadow(
-0 0 8px
-rgba(246,211,101,.18)
-);
-
-}
-
-.search-box{
-
-border-color:
-rgba(212,175,55,.55);
-
-background:
-rgba(10,9,6,.94);
-
-}
-
-.login-main{
-
-background:
-linear-gradient(
-135deg,
-#9f7200,
-#d4af37,
-#f6d365,
-#b8860b
-);
-
-box-shadow:
-0 0 18px rgba(212,175,55,.28),
-inset 0 1px rgba(255,255,255,.65);
-
-}
-
-#welcomeUser{
-
-color:#e7c75f;
-
-text-shadow:
-0 0 12px rgba(212,175,55,.16);
-
-}
-
-#welcomeUser b{
-color:#fff0a6;
-}
-
-.section h3{
-
-text-shadow:
-0 0 14px rgba(212,175,55,.12);
-
-}
-
-.hero-overlay{
-
-background:
-linear-gradient(
-to top,
-rgba(0,0,0,.94),
-rgba(0,0,0,.08),
-transparent
-);
-
-}
-
-.hero-title{
-color:#fff4c4;
-}
-
-.card-title{
-color:#f4e5ad;
-}
-
-.hero-dot.active{
-
-background:#f6d365;
-
-box-shadow:
-0 0 10px rgba(246,211,101,.45);
-
-}
-
-</style>
+.poster{cursor:pointer;}\n</style>
 
 </head>
-
 <body>
+
 
 <!-- ==============================
 STICKY HEADER
 ============================== -->
-
 <div class="sticky-header">
 
 <div class="header">
 
-<!-- UPDATED BUSANSO LOGO -->
-<img
-src="https://i.ibb.co/qL8vn3jS/busanso-logo-source.png"
-alt="BUSANSO"
->
 
-<input
+<img src="https://i.ibb.co/hxgrLF35/BUSANSO-New.png">
+
+
+<input 
 id="searchBox"
 class="search-box"
 placeholder="🔍 Search movies & series..."
 >
 
-<a
-href="auth.html"
+
+<a href="auth.html"
 id="loginButton"
-class="login-main"
->
+class="login-main">
 📝 CREATE ACCOUNT
 </a>
 
+<a href="donate.html" class="birthday-main">
+🎂 FOR KIDS
+</a>
+
+
 </div>
 
+
 <div id="welcomeUser"></div>
+
 
 </div>
 
@@ -921,12 +968,13 @@ class="login-main"
 HERO SLIDER
 ============================== -->
 
+
 <div class="hero-slider">
 
-<div
-class="hero-track"
-id="heroSlider"
->
+
+<div class="hero-track"
+id="heroSlider">
+
 
 <div class="hero-skeleton"></div>
 
@@ -934,36 +982,53 @@ id="heroSlider"
 
 <div class="hero-skeleton"></div>
 
-</div>
-
-<div
-class="hero-dots"
-id="heroDots"
->
-</div>
 
 </div>
+
+
+
+<div class="hero-dots"
+id="heroDots">
+
+
+</div>
+
+
+</div>
+
+
+
+
 
 <!-- ==============================
 MAIN CONTENT
 ============================== -->
 
+
 <div class="main-content">
+
+
+
+
 
 <!-- ==============================
 TRENDING
 ============================== -->
 
+
 <div class="section">
 
+
 <h3>
+
 🔥 Hottest Right Now
+
 </h3>
 
-<div
-class="slider"
-id="trendingBox"
->
+
+<div class="slider"
+id="trendingBox">
+
 
 <div class="skeleton-card"></div>
 
@@ -974,76 +1039,110 @@ id="trendingBox"
 <div class="skeleton-card"></div>
 
 <div class="skeleton-card"></div>
+
 
 </div>
 
+
 </div>
+
+
+
+
+
+
 
 <!-- ==============================
 MOVIES
 ============================== -->
 
+
 <div class="section">
 
+
 <h3>
+
 🎬 Fresh Movies
+
 </h3>
 
-<div
-class="slider"
-id="moviesBox"
->
+
+
+<div class="slider"
+id="moviesBox">
+
 
 <div class="skeleton-card"></div>
 
 <div class="skeleton-card"></div>
 
 <div class="skeleton-card"></div>
+
 
 </div>
 
+
 </div>
+
+
+
+
+
+
 
 <!-- ==============================
 SERIES
 ============================== -->
 
+
 <div class="section">
 
+
 <h3>
+
 📺 Fresh Series
+
 </h3>
 
-<div
-class="slider"
-id="seriesBox"
->
+
+
+<div class="slider"
+id="seriesBox">
+
 
 <div class="skeleton-card"></div>
 
 <div class="skeleton-card"></div>
 
 <div class="skeleton-card"></div>
+
 
 </div>
 
+
 </div>
+
+
+
+
 
 <!-- ==============================
 ADVERTISEMENT
 ============================== -->
 
-<div
-class="ad-banner"
+
+<div class="ad-banner"
 style="
 text-align:center;
 margin:30px 0;
-"
->
+">
+
 
 <script>
 
+
 function loadBannerAd(){
+
 
 atOptions={
 
@@ -1059,20 +1158,29 @@ atOptions={
 
 };
 
+
+
 const s=document.createElement("script");
+
 
 s.src=
 "https://www.highperformanceformat.com/1c9ccdb756a82c4d663014a338917bd7/invoke.js";
 
+
 s.async=true;
+
 
 document.body.appendChild(s);
 
+
 }
+
+
 
 document.addEventListener(
 "DOMContentLoaded",
 ()=>{
+
 
 if(
 !/Mobi|Android/i.test(navigator.userAgent)
@@ -1080,9 +1188,12 @@ if(
 
 loadBannerAd();
 
+
 });
 
+
 </script>
+
 
 </div>
 
@@ -1090,41 +1201,59 @@ loadBannerAd();
 FREE MOVIES
 ============================== -->
 
+
 <div class="section">
 
+
 <h3>
+
 🎁 Free Movies
+
 </h3>
 
-<div
-class="slider"
-id="freeMoviesBox"
->
+
+
+<div class="slider"
+id="freeMoviesBox">
+
 
 <div class="skeleton-card"></div>
 
 <div class="skeleton-card"></div>
 
 <div class="skeleton-card"></div>
+
 
 </div>
 
+
 </div>
+
+
+
+
+
+
 
 <!-- ==============================
 FREE SERIES
 ============================== -->
 
+
 <div class="section">
 
+
 <h3>
+
 🎁 Free Series
+
 </h3>
 
-<div
-class="slider"
-id="freeSeriesBox"
->
+
+
+<div class="slider"
+id="freeSeriesBox">
+
 
 <div class="skeleton-card"></div>
 
@@ -1132,1096 +1261,581 @@ id="freeSeriesBox"
 
 <div class="skeleton-card"></div>
 
-</div>
 
 </div>
 
+
 </div>
 
+
+
+
+
+</div>
 <!-- END MAIN CONTENT -->
+
+
+
+
 
 <!-- ==============================
 WHATSAPP FLOATING BUTTON
 ============================== -->
 
-<a
-href="https://wa.me/256703888884"
-class="whatsapp-float"
-target="_blank"
->
 
-<img
-src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
-alt="WhatsApp"
->
+<a href="https://wa.me/256703888884"
+class="whatsapp-float"
+target="_blank">
+
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
+
 
 </a>
+
+
+
+
+
+
 
 <!-- ==============================
 SCRIPTS START HERE
 ============================== -->
-
 <script type="module">
 
-import {
-createClient
-}
-from
-"https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+import { createClient } 
+from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+
 
 // ==============================
 // SUPABASE CONNECTION
 // ==============================
 
+
 const supabaseUrl =
 "https://dhkfhhybzcxdeoalcfqx.supabase.co";
 
+
 const supabaseKey =
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzIiwicmVmIjoiZGhrZmhoeWJ6Y3hkZW9hbGNmcXgiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc3MjUzNDE1MSwiZXhwIjoyMDg4MTEwMTUxfQ.jZ4NDNPJmO0Ji05TxDqCnzgLIIzKf9uCx3WrSgk2DaY";
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRoa2ZoaHliemN4ZGVvYWxjZnF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1MzQxNTEsImV4cCI6MjA4ODExMDE1MX0.jZ4NDNPJmO0Ji05TxDqCnzgLIIzKf9uCx3WrSgk2DaY";
 
-/*
-IMPORTANT:
-
-auth.html uses:
-
-storageKey: "busanso-auth"
-
-Home must use the SAME Supabase storage key.
-Otherwise auth.html can successfully sign in with Google,
-but home.html will think there is no session and send the
-user back to auth.html.
-*/
 
 const supabase =
 createClient(
 supabaseUrl,
-supabaseKey,
-{
-auth:{
-persistSession:true,
-autoRefreshToken:true,
-detectSessionInUrl:false,
-storageKey:"busanso-auth"
-}
-}
+supabaseKey
 );
+
 
 // ==============================
 // MEMBERSHIP / REDIRECT HELPERS
 // ==============================
 
 function getLocalMembership(){
-
-return (
-localStorage.getItem("membership")
-||
-"free"
-)
-.trim()
-.toLowerCase();
-
+    return (localStorage.getItem("membership") || "free").trim().toLowerCase();
 }
 
 function getLocalExpiry(){
-
-return localStorage.getItem("expires_at") || "";
-
+    return localStorage.getItem("expires_at") || "";
 }
 
-function membershipIsExpired(
-membership,
-expires
-){
-
-if(membership === "free")
-return false;
-
-if(!expires)
-return true;
-
-const date =
-new Date(expires);
-
-return (
-Number.isNaN(date.getTime())
-||
-date <= new Date()
-);
-
+function membershipIsExpired(membership, expires){
+    if(membership === "free") return false;
+    if(!expires) return true;
+    const date = new Date(expires);
+    return Number.isNaN(date.getTime()) || date <= new Date();
 }
 
 function normalizeLocalMembership(){
+    let membership = getLocalMembership();
+    const expires = getLocalExpiry();
 
-let membership =
-getLocalMembership();
+    if(membership !== "free" && membershipIsExpired(membership, expires)){
+        localStorage.setItem("membership","free");
+        localStorage.setItem("package_type","");
+        localStorage.setItem("expires_at","");
+        membership = "free";
+    }
 
-const expires =
-getLocalExpiry();
-
-if(
-membership !== "free"
-&&
-membershipIsExpired(
-membership,
-expires
-)
-){
-
-localStorage.setItem(
-"membership",
-"free"
-);
-
-localStorage.setItem(
-"package_type",
-""
-);
-
-localStorage.setItem(
-"expires_at",
-""
-);
-
-membership="free";
-
-}
-
-return membership;
-
+    return membership;
 }
 
 function routeByMembership(){
+    const membership = normalizeLocalMembership();
 
-const membership =
-normalizeLocalMembership();
+    if(membership === "kibanda"){
+        location.replace("kibwatch.html");
+        return true;
+    }
 
-if(
-membership === "kibanda"
-){
+    if(membership === "premium"){
+        location.replace("account.html");
+        return true;
+    }
 
-location.replace(
-"kibwatch.html"
-);
-
-return true;
-
+    // FREE stays on home.html
+    return false;
 }
 
-if(
-membership === "premium"
-){
-
-location.replace(
-"account.html"
-);
-
-return true;
-
-}
-
-// FREE stays on home.html
-
-return false;
-
-}
-
-// ==============================
-// REFRESH MEMBERSHIP
-// ==============================
-
+// Refresh membership before an action when possible.
+// A network failure NEVER logs the user out and NEVER sends them to auth.html.
+// The already-stored local membership/expiry remains the fallback.
 async function refreshMembershipForAction(){
+    const localBefore = normalizeLocalMembership();
 
-const localBefore =
-normalizeLocalMembership();
+    if(!currentUser){
+        return localBefore;
+    }
 
-if(!currentUser){
-return localBefore;
+    const logged = localStorage.getItem("loggedIn");
+    const name = localStorage.getItem("name");
+
+    if(!logged || !name){
+        return normalizeLocalMembership();
+    }
+
+    try{
+        let data = null;
+        let error = null;
+
+        const authId = localStorage.getItem("auth_user_id") || "";
+
+        if(authId){
+            const result = await supabase
+                .from("profiles")
+                .select("membership,package_type,expires_at,name,auth_user_id")
+                .eq("auth_user_id",authId)
+                .maybeSingle();
+            data = result.data;
+            error = result.error;
+        }
+
+        // Keep old accounts working if they have no auth_user_id yet.
+        if(!data && name){
+            const result = await supabase
+                .from("profiles")
+                .select("membership,package_type,expires_at,name,auth_user_id")
+                .eq("name",name)
+                .maybeSingle();
+            data = result.data;
+            error = result.error;
+        }
+
+        if(!error && data){
+            localStorage.setItem("membership", String(data.membership || "free").toLowerCase());
+            localStorage.setItem("package_type", data.package_type || "");
+            localStorage.setItem("expires_at", data.expires_at || "");
+
+            currentUser = {
+                ...currentUser,
+                ...data,
+                membership: String(data.membership || "free").toLowerCase()
+            };
+        }
+    }catch(error){
+        console.warn("Membership refresh failed; using local membership.", error);
+    }
+
+    return normalizeLocalMembership();
 }
 
-const logged =
-localStorage.getItem("loggedIn");
-
-const name =
-localStorage.getItem("name");
-
-if(!logged || !name){
-return normalizeLocalMembership();
-}
-
-try{
-
-let data=null;
-let error=null;
-
-const authId =
-localStorage.getItem(
-"auth_user_id"
-) || "";
-
-if(authId){
-
-const result =
-await supabase
-.from("profiles")
-.select(
-"membership,package_type,expires_at,name,auth_user_id"
-)
-.eq(
-"auth_user_id",
-authId
-)
-.maybeSingle();
-
-data=result.data;
-error=result.error;
-
-}
-
-// Keep old accounts working if they have no auth_user_id yet.
-
-if(!data && name){
-
-const result =
-await supabase
-.from("profiles")
-.select(
-"membership,package_type,expires_at,name,auth_user_id"
-)
-.eq(
-"name",
-name
-)
-.maybeSingle();
-
-data=result.data;
-error=result.error;
-
-}
-
-if(!error && data){
-
-localStorage.setItem(
-"membership",
-String(
-data.membership || "free"
-).toLowerCase()
-);
-
-localStorage.setItem(
-"package_type",
-data.package_type || ""
-);
-
-localStorage.setItem(
-"expires_at",
-data.expires_at || ""
-);
-
-currentUser={
-...currentUser,
-...data,
-membership:String(
-data.membership || "free"
-).toLowerCase()
-};
-
-}
-
-}catch(error){
-
-console.warn(
-"Membership refresh failed; using local membership.",
-error
-);
-
-}
-
-return normalizeLocalMembership();
-
-}
-
-// ==============================
-// PAGE LOAD ROUTING
-// ==============================
-
+// Page-load routing only.
+// FREE stays here. PREMIUM -> account.html. KIBANDA -> kibwatch.html.
 function checkPremiumRedirect(){
-
-return routeByMembership();
-
+    return routeByMembership();
 }
 
 // ==============================
 // ELEMENTS
 // ==============================
 
+
 const loginButton =
-document.getElementById(
-"loginButton"
-);
+document.getElementById("loginButton");
+
 
 const welcomeUser =
-document.getElementById(
-"welcomeUser"
-);
+document.getElementById("welcomeUser");
 
-// ==============================
-// ACCOUNT BUTTON
-// ==============================
+// Account/create-account button: always check the latest membership before navigation.
+loginButton.addEventListener("click", async (event)=>{
+    event.preventDefault();
 
-loginButton.addEventListener(
-"click",
-async(event)=>{
+    const membership = await refreshMembershipForAction();
 
-event.preventDefault();
+    if(membership === "kibanda"){
+        location.replace("kibwatch.html");
+        return;
+    }
 
-const membership =
-await refreshMembershipForAction();
+    if(membership === "premium"){
+        location.replace("account.html");
+        return;
+    }
 
-if(
-membership === "kibanda"
-){
+    // FREE/guest follows the original button destination.
+    location.href = loginButton.href || "auth.html";
+});
 
-location.replace(
-"kibwatch.html"
-);
 
-return;
 
-}
 
-if(
-membership === "premium"
-){
 
-location.replace(
-"account.html"
-);
 
-return;
-
-}
-
-// FREE / guest follows original destination.
-
-location.href =
-loginButton.href ||
-"auth.html";
-
-}
-);
 
 // ==============================
 // USER DATA
 // ==============================
 
-let currentUser=null;
 
+let currentUser = null;
 // ==============================
 // VERIFY ACCOUNT
 // ==============================
 
+
 async function verifyUser(){
 
-let session=null;
+    // NEW AUTH: read the real Supabase Auth session first.
+    // This is what Google Sign-In creates; the old page only checked localStorage.
+    let session = null;
+    try{
+        const { data, error } = await supabase.auth.getSession();
+        if(error) console.warn("Supabase session check:", error);
+        session = data?.session || null;
+    }catch(error){
+        console.warn("Unable to read Supabase session:", error);
+    }
 
-try{
+    const authUser = session?.user || null;
+    const authId = authUser?.id || localStorage.getItem("auth_user_id") || "";
+    const authEmail = authUser?.email || localStorage.getItem("email") || "";
+    const metadata = authUser?.user_metadata || {};
+    const metadataName =
+        metadata.full_name ||
+        metadata.name ||
+        metadata.display_name ||
+        (authEmail ? authEmail.split("@")[0] : "");
 
-const {
-data,
-error
-} =
-await supabase.auth.getSession();
+    // Existing users still have the old localStorage identity.
+    const localName = localStorage.getItem("name") || "";
 
-if(error){
+    // If Google/Supabase is signed in, persist enough identity locally so the
+    // older Busanso page logic can continue working without forcing a logout.
+    if(authUser){
+        localStorage.setItem("loggedIn","true");
+        localStorage.setItem("auth_user_id",authUser.id);
+        if(authEmail) localStorage.setItem("email",authEmail);
+        if(!localName && metadataName){
+            localStorage.setItem("name",metadataName);
+        }
+    }
 
-console.warn(
-"Supabase session check:",
-error
-);
+    const name = localStorage.getItem("name") || metadataName;
 
+    // 1. Preferred path: match a Google Auth user to profiles.auth_user_id.
+    if(authId){
+        try{
+            const {data,error}=await supabase
+                .from("profiles")
+                .select("*")
+                .eq("auth_user_id",authId)
+                .maybeSingle();
+
+            if(!error && data){
+                localStorage.setItem("name", data.name || name || metadataName || "User");
+                localStorage.setItem("loggedIn","true");
+                localStorage.setItem("auth_user_id",authId);
+                localStorage.setItem("membership",String(data.membership || "free").toLowerCase());
+                localStorage.setItem("package_type",data.package_type || "");
+                localStorage.setItem("expires_at",data.expires_at || "");
+                currentUser={...data, auth_user_id:authId, email:authEmail};
+                showLoggedUser(currentUser);
+                return currentUser;
+            }
+        }catch(error){
+            console.warn("auth_user_id profile lookup failed:",error);
+        }
+    }
+
+    // 2. Legacy path: existing localStorage users are still supported.
+    if(name){
+        try{
+            const {data,error}=await supabase
+                .from("profiles")
+                .select("*")
+                .eq("name",name)
+                .maybeSingle();
+
+            if(!error && data){
+                localStorage.setItem("name",data.name || name);
+                localStorage.setItem("loggedIn","true");
+                localStorage.setItem("membership",String(data.membership || "free").toLowerCase());
+                localStorage.setItem("package_type",data.package_type || "");
+                localStorage.setItem("expires_at",data.expires_at || "");
+                if(authId) localStorage.setItem("auth_user_id",authId);
+                currentUser={...data, auth_user_id:authId || data.auth_user_id || "", email:authEmail};
+                showLoggedUser(currentUser);
+                return currentUser;
+            }
+        }catch(error){
+            console.warn("Legacy profile lookup failed:",error);
+        }
+    }
+
+    // 3. A brand-new Google user may not have a profiles row yet.
+    // They are still a real authenticated user; treat them as FREE until a
+    // profile/membership is linked. Do not falsely grant premium access.
+    if(authUser){
+        const guestName = name || "BUSANSO USER";
+        localStorage.setItem("name",guestName);
+        localStorage.setItem("loggedIn","true");
+        localStorage.setItem("membership","free");
+        localStorage.setItem("package_type","");
+        localStorage.setItem("expires_at","");
+        currentUser={
+            id:authUser.id,
+            auth_user_id:authUser.id,
+            email:authEmail,
+            name:guestName,
+            membership:"free",
+            package_type:"",
+            expires_at:""
+        };
+        showLoggedUser(currentUser);
+        return currentUser;
+    }
+
+    // 4. No Auth session and no legacy identity = guest.
+    if(!name){
+        showGuest();
+        return null;
+    }
+
+    currentUser={
+        name,
+        membership:normalizeLocalMembership(),
+        package_type:localStorage.getItem("package_type") || "",
+        expires_at:localStorage.getItem("expires_at") || ""
+    };
+    showLoggedUser(currentUser);
+    return currentUser;
 }
 
-session =
-data?.session ||
-null;
+// Keep the page synchronized if Google/Supabase changes the session.
+supabase.auth.onAuthStateChange((event, session)=>{
+    if(event === "SIGNED_IN" && session?.user){
+        setTimeout(()=>verifyUser(),0);
+    }
+    if(event === "SIGNED_OUT"){
+        currentUser=null;
+        localStorage.removeItem("loggedIn");
+        localStorage.removeItem("auth_user_id");
+        localStorage.removeItem("email");
+        showGuest();
+    }
+});
 
-}catch(error){
-
-console.warn(
-"Unable to read Supabase session:",
-error
-);
-
-}
-
-const authUser =
-session?.user ||
-null;
-
-const authId =
-authUser?.id ||
-localStorage.getItem(
-"auth_user_id"
-) ||
-"";
-
-const authEmail =
-authUser?.email ||
-localStorage.getItem(
-"email"
-) ||
-"";
-
-const metadata =
-authUser?.user_metadata ||
-{};
-
-const metadataName =
-metadata.full_name ||
-metadata.name ||
-metadata.display_name ||
-(
-authEmail
-?
-authEmail.split("@")[0]
-:
-""
-);
-
-// Existing users still have old localStorage identity.
-
-const localName =
-localStorage.getItem("name") ||
-"";
-
-// If Google/Supabase is signed in,
-// persist identity locally.
-
-if(authUser){
-
-localStorage.setItem(
-"loggedIn",
-"true"
-);
-
-localStorage.setItem(
-"auth_user_id",
-authUser.id
-);
-
-if(authEmail){
-
-localStorage.setItem(
-"email",
-authEmail
-);
-
-}
-
-if(
-!localName &&
-metadataName
-){
-
-localStorage.setItem(
-"name",
-metadataName
-);
-
-}
-
-}
-
-const name =
-localStorage.getItem("name") ||
-metadataName;
-
-// ==============================
-// 1. AUTH USER ID PROFILE
-// ==============================
-
-if(authId){
-
-try{
-
-const {
-data,
-error
-} =
-await supabase
-.from("profiles")
-.select("*")
-.eq(
-"auth_user_id",
-authId
-)
-.maybeSingle();
-
-if(
-!error &&
-data
-){
-
-localStorage.setItem(
-"name",
-data.name ||
-name ||
-metadataName ||
-"User"
-);
-
-localStorage.setItem(
-"loggedIn",
-"true"
-);
-
-localStorage.setItem(
-"auth_user_id",
-authId
-);
-
-localStorage.setItem(
-"membership",
-String(
-data.membership ||
-"free"
-).toLowerCase()
-);
-
-localStorage.setItem(
-"package_type",
-data.package_type ||
-""
-);
-
-localStorage.setItem(
-"expires_at",
-data.expires_at ||
-""
-);
-
-currentUser={
-...data,
-auth_user_id:authId,
-email:authEmail
-};
-
-showLoggedUser(
-currentUser
-);
-
-return currentUser;
-
-}
-
-}catch(error){
-
-console.warn(
-"auth_user_id profile lookup failed:",
-error
-);
-
-}
-
-}
-
-// ==============================
-// 2. LEGACY NAME LOOKUP
-// ==============================
-
-if(name){
-
-try{
-
-const {
-data,
-error
-} =
-await supabase
-.from("profiles")
-.select("*")
-.eq(
-"name",
-name
-)
-.maybeSingle();
-
-if(
-!error &&
-data
-){
-
-localStorage.setItem(
-"name",
-data.name ||
-name
-);
-
-localStorage.setItem(
-"loggedIn",
-"true"
-);
-
-localStorage.setItem(
-"membership",
-String(
-data.membership ||
-"free"
-).toLowerCase()
-);
-
-localStorage.setItem(
-"package_type",
-data.package_type ||
-""
-);
-
-localStorage.setItem(
-"expires_at",
-data.expires_at ||
-""
-);
-
-if(authId){
-
-localStorage.setItem(
-"auth_user_id",
-authId
-);
-
-}
-
-currentUser={
-...data,
-auth_user_id:
-authId ||
-data.auth_user_id ||
-"",
-email:authEmail
-};
-
-showLoggedUser(
-currentUser
-);
-
-return currentUser;
-
-}
-
-}catch(error){
-
-console.warn(
-"Legacy profile lookup failed:",
-error
-);
-
-}
-
-}
-
-// ==============================
-// 3. BRAND NEW GOOGLE USER
-// ==============================
-
-if(authUser){
-
-const guestName =
-name ||
-"BUSANSO USER";
-
-localStorage.setItem(
-"name",
-guestName
-);
-
-localStorage.setItem(
-"loggedIn",
-"true"
-);
-
-localStorage.setItem(
-"membership",
-"free"
-);
-
-localStorage.setItem(
-"package_type",
-""
-);
-
-localStorage.setItem(
-"expires_at",
-""
-);
-
-currentUser={
-
-id:authUser.id,
-
-auth_user_id:authUser.id,
-
-email:authEmail,
-
-name:guestName,
-
-membership:"free",
-
-package_type:"",
-
-expires_at:""
-
-};
-
-showLoggedUser(
-currentUser
-);
-
-return currentUser;
-
-}
-
-// ==============================
-// 4. NO SUPABASE SESSION
-// ==============================
-
-/*
-IMPORTANT FIX:
-
-Do NOT erase auth_user_id, email, or loggedIn
-before redirecting.
-
-A temporary session-read problem should not destroy
-the user's saved identity.
-
-The shared "busanso-auth" storage key above is what
-keeps auth.html and home.html synchronized.
-*/
-
-if(!authUser){
-
-console.warn(
-"BUSANSO: No active Supabase session found."
-);
-
-showGuest();
-
-setTimeout(
-()=>{
-
-location.replace(
-"auth.html"
-);
-
-},
-150
-);
-
-return null;
-
-}
-
-currentUser={
-
-name:
-name ||
-metadataName ||
-"BUSANSO USER",
-
-membership:
-normalizeLocalMembership(),
-
-package_type:
-localStorage.getItem(
-"package_type"
-) || "",
-
-expires_at:
-localStorage.getItem(
-"expires_at"
-) || "",
-
-auth_user_id:
-authUser.id,
-
-email:
-authEmail
-
-};
-
-showLoggedUser(
-currentUser
-);
-
-return currentUser;
-
-}
-
-// ==============================
-// AUTH STATE LISTENER
-// ==============================
-
-supabase.auth.onAuthStateChange(
-(event,session)=>{
-
-if(
-event === "SIGNED_IN" &&
-session?.user
-){
-
-setTimeout(
-()=>verifyUser(),
-0
-);
-
-}
-
-if(
-event === "SIGNED_OUT"
-){
-
-currentUser=null;
-
-localStorage.removeItem(
-"loggedIn"
-);
-
-localStorage.removeItem(
-"auth_user_id"
-);
-
-localStorage.removeItem(
-"email"
-);
-
-showGuest();
-
-}
-
-}
-);
 
 // ==============================
 // GUEST VIEW
 // ==============================
 
+
 function showGuest(){
+
 
 loginButton.innerHTML =
 "📝 CREATE ACCOUNT";
 
+
 loginButton.href =
 "auth.html";
+
 
 welcomeUser.innerHTML =
 "";
 
+
 }
+
+
+
+
+
 
 // ==============================
 // LOGGED IN VIEW
 // ==============================
 
-function showLoggedUser(
-user
-){
+
+function showLoggedUser(user){
 
 loginButton.innerHTML =
 "👤 ACCOUNT";
 
+
 loginButton.href =
 "account.html";
+
 
 welcomeUser.innerHTML =
 
 `
-Welcome back
-<b>${(
-user.name ||
-"BUSANSO USER"
-).toUpperCase()}</b>
+Welcome back 
+<b>${user.name.toUpperCase()}</b>
 `;
 
 }
+
+
+
+
+
+
+
+
 
 // ==============================
 // PREMIUM CHECK
 // ==============================
 
+
 function hasAccess(user){
+    if(!user) return false;
 
-if(!user)
-return false;
+    const membership = String(user.membership || "free").toLowerCase();
+    const expires = user.expires_at || "";
 
-const membership =
-String(
-user.membership ||
-"free"
-).toLowerCase();
+    if(membership === "free") return true;
 
-const expires =
-user.expires_at ||
-"";
+    if(
+        (membership === "premium" || membership === "kibanda") &&
+        expires &&
+        !membershipIsExpired(membership, expires)
+    ){
+        return true;
+    }
 
-if(
-membership === "free"
-)
-return true;
-
-if(
-(
-membership === "premium" ||
-membership === "kibanda"
-)
-&&
-expires
-&&
-!membershipIsExpired(
-membership,
-expires
-)
-){
-
-return true;
-
-}
-
-return false;
-
+    return false;
 }
 
 // ==============================
 // CONTENT ACCESS CONTROL
 // ==============================
 
-async function openContent(
-item,
-page
-){
 
-const premium =
-item.type === "premium" ||
-item.type === true;
+async function openContent(item,page){
 
-if(!premium){
+    // FREE cards are open to ANY visitor/user.
+    // Do not force free-card clicks through auth or membership redirects.
+    const premium =
+        item.type==="premium" ||
+        item.type===true;
 
-location.href =
-page === "movie"
-?
-`movie.html?id=${item.id}`
-:
-`serie.html?id=${item.id}`;
+    if(!premium){
+        location.href =
+            page==="movie"
+            ? `movie.html?id=${item.id}`
+            : `serie.html?id=${item.id}`;
+        return;
+    }
 
-return;
+    // Premium-card click: refresh membership first so a recent upgrade/expiry
+    // is recognized before deciding what to do.
+    const membership = await refreshMembershipForAction();
 
-}
+    // KIBANDA users are routed to their own area.
+    if(membership === "kibanda"){
+        location.replace("kibwatch.html");
+        return;
+    }
 
-const membership =
-await refreshMembershipForAction();
+    // PREMIUM user clicking premium content goes to ACCOUNT.
+    if(membership === "premium"){
+        location.replace("account.html");
+        return;
+    }
 
-if(
-membership === "kibanda"
-){
-
-location.replace(
-"kibwatch.html"
-);
-
-return;
-
-}
-
-if(
-membership === "premium"
-){
-
-location.replace(
-"account.html"
-);
-
-return;
-
-}
-
-location.href =
-"packages.html";
-
+    // Expired premium/kibanda is normalized to FREE above.
+    // FREE users need a package to access premium content.
+    location.href="packages.html";
 }
 
 // ==============================
 // CONTENT ELEMENTS
 // ==============================
 
+
 const heroSlider =
-document.getElementById(
-"heroSlider"
-);
+document.getElementById("heroSlider");
+
 
 const heroDots =
-document.getElementById(
-"heroDots"
-);
+document.getElementById("heroDots");
+
 
 const trendingBox =
-document.getElementById(
-"trendingBox"
-);
+document.getElementById("trendingBox");
+
 
 const moviesBox =
-document.getElementById(
-"moviesBox"
-);
+document.getElementById("moviesBox");
+
 
 const seriesBox =
-document.getElementById(
-"seriesBox"
-);
+document.getElementById("seriesBox");
+
 
 const freeMoviesBox =
-document.getElementById(
-"freeMoviesBox"
-);
+document.getElementById("freeMoviesBox");
+
 
 const freeSeriesBox =
-document.getElementById(
-"freeSeriesBox"
-);
+document.getElementById("freeSeriesBox");
+
 
 const searchBox =
-document.getElementById(
-"searchBox"
-);
+document.getElementById("searchBox");
+
 
 let allContent=[];
 
 let currentFilter="all";
 
+
+
+
 // ==============================
 // CREATE CONTENT CARD
 // ==============================
 
-function createCard(
-item,
-page
-){
+
+function createCard(item,page){
+
+
 
 const card =
-document.createElement(
-"div"
-);
+document.createElement("div");
+
 
 card.className =
 "card";
+
+
 
 card.innerHTML = `
 
 <div class="poster">
 
-<img
-src="${item.poster || ''}"
-loading="lazy"
->
+<img src="${item.poster || ''}"
+loading="lazy">
 
 </div>
+
 
 <div class="card-title">
 
@@ -2230,48 +1844,45 @@ ${item.title}
 </div>
 
 `;
-
-card.querySelector(
-".poster"
-).onclick=()=>{
-
-openContent(
-item,
-page
-);
-
+card.querySelector(".poster").onclick=()=>{
+openContent(item,page);
 };
+
+
 
 return card;
 
+
 }
+
+
+
+
+
+
+
+
 
 // ==============================
 // CREATE HERO
 // ==============================
 
-function createHero(
-item,
-page
-){
+
+function createHero(item,page){
+
 
 const hero =
-document.createElement(
-"div"
-);
+document.createElement("div");
 
-hero.className =
-"hero-poster";
 
-hero.innerHTML = `
+hero.className="hero-poster";
 
-<img
-src="${
-item.horizontal_poster ||
-item.poster
-}"
-loading="lazy"
->
+
+hero.innerHTML=`
+
+<img src="${item.horizontal_poster || item.poster}"
+loading="lazy">
+
 
 <div class="hero-overlay">
 
@@ -2283,11 +1894,14 @@ ${item.title}
 
 </div>
 
+
 </div>
 
 </div>
 
 `;
+
+
 
 hero.onclick=()=>{
 
@@ -2298,19 +1912,28 @@ page
 
 };
 
+
 return hero;
 
+
 }
+
+
+
 
 // ==============================
 // FETCH CONTENT
 // ==============================
 
+
 async function fetchContent(){
+
+
 
 heroSlider.innerHTML="";
 
 heroDots.innerHTML="";
+
 
 trendingBox.innerHTML="";
 
@@ -2322,47 +1945,50 @@ freeMoviesBox.innerHTML="";
 
 freeSeriesBox.innerHTML="";
 
+
+
+
+
 let trendingItems=[];
 
 allContent=[];
+
+
+
+
 
 // ==============================
 // MOVIES
 // ==============================
 
-const {
 
-data:movies,
-
-error:movieError
-
-} =
-
-await supabase
-
-.from("movies")
-
-.select("*")
-
-.order(
-"created_at",
-{
-ascending:false
+let movies = [];
+let movieError = null;
+try {
+    const result = await supabase
+        .from("movies")
+        .select("*")
+        .order("created_at", {ascending:false});
+    movies = result.data || [];
+    movieError = result.error || null;
+} catch (err) {
+    movieError = err;
 }
-);
 
 if(movieError){
-
-console.log(
-movieError
-);
-
+    console.error("Movies fetch failed:", movieError);
 }
 
-if(movies){
 
-movies.forEach(
-movie=>{
+
+
+
+if(movies && movies.length){
+
+
+movies.forEach(movie=>{
+
+
 
 moviesBox.appendChild(
 
@@ -2373,6 +1999,8 @@ movie,
 
 );
 
+
+
 trendingItems.push({
 
 ...movie,
@@ -2380,6 +2008,7 @@ trendingItems.push({
 kind:"movie"
 
 });
+
 
 allContent.push({
 
@@ -2389,9 +2018,11 @@ kind:"movie"
 
 });
 
+
 if(
 movie.type !== "premium"
 ){
+
 
 freeMoviesBox.appendChild(
 
@@ -2402,50 +2033,56 @@ movie,
 
 );
 
-}
 
 }
-);
+
+
+
+});
+
 
 }
+
+
+
+
+
+
+
+
 
 // ==============================
 // SERIES
 // ==============================
 
-const {
 
-data:series,
-
-error:seriesError
-
-} =
-
-await supabase
-
-.from("series")
-
-.select("*")
-
-.order(
-"created_at",
-{
-ascending:false
+let series = [];
+let seriesError = null;
+try {
+    const result = await supabase
+        .from("series")
+        .select("*")
+        .order("created_at", {ascending:false});
+    series = result.data || [];
+    seriesError = result.error || null;
+} catch (err) {
+    seriesError = err;
 }
-);
 
 if(seriesError){
-
-console.log(
-seriesError
-);
-
+    console.error("Series fetch failed:", seriesError);
 }
 
-if(series){
 
-series.forEach(
-show=>{
+
+
+
+if(series && series.length){
+
+
+series.forEach(show=>{
+
+
 
 seriesBox.appendChild(
 
@@ -2456,6 +2093,8 @@ show,
 
 );
 
+
+
 trendingItems.push({
 
 ...show,
@@ -2463,6 +2102,7 @@ trendingItems.push({
 kind:"series"
 
 });
+
 
 allContent.push({
 
@@ -2472,9 +2112,11 @@ kind:"series"
 
 });
 
+
 if(
 show.type !== "premium"
 ){
+
 
 freeSeriesBox.appendChild(
 
@@ -2485,16 +2127,28 @@ show,
 
 );
 
-}
 
 }
-);
+
+
+
+});
+
 
 }
+
+
+
+
+
+
+
+
 
 // ==============================
 // HERO CONTENT
 // ==============================
+
 
 let heroItems =
 
@@ -2504,25 +2158,25 @@ let heroItems =
 
 (a,b)=>
 
-new Date(
-b.created_at
-)
+new Date(b.created_at)
 
 -
 
-new Date(
-a.created_at
-)
+new Date(a.created_at)
 
 )
 
-.slice(
-0,
-8
-);
+.slice(0,8);
+
+
+
+
+
+
 
 heroItems.forEach(
 (item,index)=>{
+
 
 heroSlider.appendChild(
 
@@ -2533,32 +2187,47 @@ item.kind
 
 );
 
+
+
+
 const dot =
-document.createElement(
-"div"
-);
+document.createElement("div");
+
 
 dot.className =
 "hero-dot";
 
-if(index===0){
+
+
+if(index===0)
 
 dot.classList.add(
 "active"
 );
 
+
+
+heroDots.appendChild(dot);
+
+
+
 }
 
-heroDots.appendChild(
-dot
 );
 
-}
-);
+
+
+
+
+
+
+
+
 
 // ==============================
 // TRENDING TOP 10
 // ==============================
+
 
 trendingItems
 
@@ -2574,13 +2243,11 @@ trendingItems
 
 )
 
-.slice(
-0,
-10
-)
 
-.forEach(
-item=>{
+.slice(0,10)
+
+.forEach(item=>{
+
 
 trendingBox.appendChild(
 
@@ -2591,20 +2258,25 @@ item.kind
 
 );
 
-}
-);
+
+});
+
+
+
+
 
 }
 
-// ==============================
-// FILTER
-// ==============================
 
-function applyFilter(
-type
-){
+
+
+
+function applyFilter(type){
+
 
 currentFilter=type;
+
+
 
 const sections=[
 
@@ -2620,62 +2292,74 @@ freeSeriesBox
 
 ];
 
-sections.forEach(
-section=>{
+
+sections.forEach(section=>{
 
 section.innerHTML="";
 
-}
-);
+});
 
-allContent.forEach(
-item=>{
+
+
+
+allContent.forEach(item=>{
+
 
 if(
-type !== "all" &&
-item.kind !== type
+type!=="all" &&
+item.kind!==type
 )
+
 return;
 
-const card =
-createCard(
+
+
+const card=createCard(
 item,
 item.kind
 );
 
-if(
-item.kind === "movie"
-){
+
+
+if(item.kind==="movie"){
+
 
 moviesBox.appendChild(
 card.cloneNode(true)
 );
 
+
+
 }
 
-if(
-item.kind === "series"
-){
+
+
+if(item.kind==="series"){
+
 
 seriesBox.appendChild(
 card.cloneNode(true)
 );
 
-}
 
 }
-);
+
+
+
+});
+
+
+
 
 // rebuild trending
 
 allContent
 
-.filter(
-item=>
+.filter(item=>
 
-type === "all" ||
+type==="all" ||
 
-item.kind === type
+item.kind===type
 
 )
 
@@ -2683,19 +2367,14 @@ item.kind === type
 
 (a,b)=>
 
-(b.views || 0) -
-
-(a.views || 0)
+(b.views||0)-(a.views||0)
 
 )
 
-.slice(
-0,
-10
-)
+.slice(0,10)
 
-.forEach(
-item=>{
+.forEach(item=>{
+
 
 trendingBox.appendChild(
 
@@ -2706,67 +2385,54 @@ item.kind
 
 );
 
-}
-);
+
+});
+
+
+
 
 }
 
-// ==============================
-// PAGE STARTUP
-// ==============================
 
 (async()=>{
 
-/*
-Use the local membership first.
+    // Use local membership immediately, then refresh from Supabase if available.
+    // Network failure does not send the user to auth.html.
+    const redirected = checkPremiumRedirect();
 
-Then verify the REAL Supabase Auth session.
+    if(!redirected){
+        await verifyUser();
 
-Because home.html now uses the same
-"busanso-auth" storage key as auth.html,
-an already-authenticated user should remain signed in.
-*/
+        // verifyUser may have refreshed membership from Supabase.
+        // Re-check after the refresh so an upgraded/expired account is routed.
+        const redirectedAfterVerify = checkPremiumRedirect();
 
-const redirected =
-checkPremiumRedirect();
-
-if(!redirected){
-
-await verifyUser();
-
-const redirectedAfterVerify =
-checkPremiumRedirect();
-
-if(!redirectedAfterVerify){
-
-fetchContent();
-
-}
-
-}
+        if(!redirectedAfterVerify){
+            fetchContent().catch(err=>{
+                console.error("Content loading failed:", err);
+                [trendingBox,moviesBox,seriesBox,freeMoviesBox,freeSeriesBox].forEach(box=>{
+                    if(box && !box.children.length){
+                        box.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:20px;color:#94a3b8;font-size:13px;">Content could not be loaded right now. Please refresh.</div>';
+                    }
+                });
+            });
+        }
+    }
 
 })();
 
-// ==============================
-// SEARCH
-// ==============================
+searchBox.onclick=async()=>{
+    await refreshMembershipForAction();
 
-searchBox.onclick =
-async()=>{
-
-await refreshMembershipForAction();
-
-if(!currentUser){
-
-location.href =
-"auth.html";
-
-}
-
+    if(!currentUser){
+        // Preserve the existing search/auth behavior for guests.
+        location.href="auth.html";
+    }
 };
 
-searchBox.oninput =
-async function(){
+
+
+searchBox.oninput=async function(){
 
 await refreshMembershipForAction();
 
@@ -2774,24 +2440,28 @@ if(!currentUser){
 
 this.value="";
 
-location.href =
-"auth.html";
+location.href="auth.html";
 
 return;
 
 }
 
+
+
 const value =
 this.value.toLowerCase();
+
+
 
 moviesBox.innerHTML="";
 
 seriesBox.innerHTML="";
 
+
+
 allContent
 
-.filter(
-item=>
+.filter(item=>
 
 item.title
 .toLowerCase()
@@ -2799,12 +2469,11 @@ item.title
 
 )
 
-.forEach(
-item=>{
+.forEach(item=>{
 
-if(
-item.kind === "movie"
-){
+
+if(item.kind==="movie"){
+
 
 moviesBox.appendChild(
 
@@ -2815,11 +2484,13 @@ item,
 
 );
 
+
 }
 
-if(
-item.kind === "series"
-){
+
+
+if(item.kind==="series"){
+
 
 seriesBox.appendChild(
 
@@ -2830,112 +2501,123 @@ item,
 
 );
 
-}
 
 }
-);
+
+
+
+});
+
+
 
 };
 
+
+
+
 // ==============================
-// HERO AUTO SLIDER
+// HERO AUTO SLIDER (NO PAGE SCROLL)
 // ==============================
 
-let currentHero=0;
+let currentHero = 0;
 
-setInterval(
-()=>{
+
+setInterval(()=>{
+
 
 const heroes =
-document.querySelectorAll(
-".hero-poster"
-);
+document.querySelectorAll(".hero-poster");
+
 
 const dots =
-document.querySelectorAll(
-".hero-dot"
-);
+document.querySelectorAll(".hero-dot");
 
-if(!heroes.length)
-return;
+
+if(!heroes.length) return;
+
+
 
 currentHero++;
 
-if(
-currentHero >= heroes.length
-){
 
-currentHero=0;
-
+if(currentHero >= heroes.length){
+currentHero = 0;
 }
 
+
+
+// ONLY MOVE HERO CONTAINER
 heroSlider.scrollTo({
 
 left:
-heroSlider.clientWidth *
-currentHero,
+heroSlider.clientWidth * currentHero,
 
 behavior:"smooth"
 
 });
 
-dots.forEach(
-dot=>{
 
-dot.classList.remove(
-"active"
-);
 
-}
-);
+dots.forEach(dot=>{
+dot.classList.remove("active");
+});
 
-if(
-dots[currentHero]
-){
 
-dots[currentHero]
-.classList.add(
-"active"
-);
-
+if(dots[currentHero]){
+dots[currentHero].classList.add("active");
 }
 
-},
-6000
-);
+
+
+},6000);
+
+
+
+
+
+
+
+
 
 // ==============================
 // HERO DOT CLICK
 // ==============================
 
-heroDots.onclick =
-(e)=>{
+
+heroDots.onclick=(e)=>{
+
 
 if(
 !e.target.classList.contains(
 "hero-dot"
 )
+
 )
+
 return;
 
-const dots=[
 
-...document.querySelectorAll(
-".hero-dot"
-)
 
+
+
+const dots =
+[
+...document.querySelectorAll(".hero-dot")
 ];
+
+
 
 currentHero =
 dots.indexOf(
 e.target
 );
 
+
+
 document
-.querySelectorAll(
-".hero-poster"
-)
+.querySelectorAll(".hero-poster")
 [currentHero]
+
 .scrollIntoView({
 
 behavior:"smooth",
@@ -2946,109 +2628,108 @@ block:"nearest"
 
 });
 
-dots.forEach(
-dot=>{
+
+
+
+dots.forEach(dot=>{
 
 dot.classList.remove(
 "active"
 );
 
-}
-);
+});
+
+
 
 e.target.classList.add(
 "active"
 );
 
+
+
 };
 
+
 </script>
+
+
+
+
+
+
 
 <!-- ==============================
 ONESIGNAL
 ============================== -->
 
+
 <script>
+
 
 window.OneSignalDeferred =
 window.OneSignalDeferred || [];
 
+
+
 OneSignalDeferred.push(
 async function(OneSignal){
+
 
 await OneSignal.init({
 
 appId:
 "cc8dfd2b-74bf-43a9-8cd0-2915cf1bc629",
 
+
 notifyButton:{
+
 enable:true
+
 }
 
-});
 
 });
+
+
+});
+
 
 // ==============================
 // CUSTOM MESSAGE POPUP
 // ==============================
 
-window.showMessage =
-function(
-title,
-text
-){
+window.showMessage = function(title,text){
 
-document.getElementById(
-"messageTitle"
-).innerHTML =
-title;
+document.getElementById("messageTitle").innerHTML = title;
 
-document.getElementById(
-"messageText"
-).innerHTML =
-text;
+document.getElementById("messageText").innerHTML = text;
 
-document.getElementById(
-"messageModal"
-).style.display =
-"flex";
+document.getElementById("messageModal").style.display="flex";
 
 };
 
-window.closeMessage =
-function(){
 
-document.getElementById(
-"messageModal"
-).style.display =
-"none";
+
+window.closeMessage=function(){
+
+document.getElementById("messageModal").style.display="none";
 
 };
-
 </script>
 
-<div
-id="messageModal"
-class="notification-modal"
->
+
+
+<div id="messageModal" class="notification-modal">
 
 <div class="notification-box">
 
-<div
-id="messageTitle"
-class="notification-title"
-></div>
+<div id="messageTitle" class="notification-title"></div>
 
-<div
-id="messageText"
-class="notification-message"
-></div>
+<div id="messageText" class="notification-message"></div>
 
-<button
+<button 
 onclick="closeMessage()"
-class="notification-close"
->
+class="notification-close">
 OK
 </button>
 
