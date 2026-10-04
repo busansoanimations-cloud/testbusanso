@@ -152,8 +152,7 @@ const supabaseClient =
             auth: {
                 persistSession: true,
                 autoRefreshToken: true,
-                detectSessionInUrl: true,
-                flowType: "pkce",
+                detectSessionInUrl: !isAppMode,                flowType: "pkce",
                 storageKey: "busanso-auth"
             }
         }
@@ -653,4 +652,3 @@ checkExistingSession();
 
 </body>
 </html>
-```
