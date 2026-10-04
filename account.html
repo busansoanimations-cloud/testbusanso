@@ -200,8 +200,8 @@ h1{
 
 #userName{
     font-weight:950;
-    color:#5ee7ff;
-    text-shadow:0 0 10px rgba(94,231,255,.45),0 0 20px rgba(94,231,255,.20);
+    color:#ffb52e;
+    text-shadow:0 0 16px rgba(255,181,46,.42);
 }
 
 .welcome{
@@ -498,50 +498,6 @@ h1{
    SMALL DEVICES
 ========================= */
 
-
-/* =========================
-   COMPACT PREMIUM ACCOUNT
-   ========================= */
-
-.account-card{
-    justify-content:flex-start;
-}
-
-.big-actions{
-    margin-top:2px;
-    margin-bottom:7px;
-}
-
-.big-btn{
-    min-height:72px;
-    animation:watchButtonFloat 2.8s ease-in-out infinite;
-}
-
-.big-btn:nth-child(2){
-    animation-delay:.35s;
-}
-
-.big-btn:hover{
-    transform:translateY(-3px) scale(1.015);
-}
-
-@keyframes watchButtonFloat{
-    0%,100%{transform:translateY(0);}
-    50%{transform:translateY(-3px);}
-}
-
-.countdown.urgent{
-    color:#ff3030 !important;
-    text-shadow:0 0 12px rgba(255,48,48,.45);
-    font-weight:900;
-    animation:urgentExpiry 1s ease-in-out infinite;
-}
-
-@keyframes urgentExpiry{
-    0%,100%{opacity:1;}
-    50%{opacity:.72;}
-}
-
 @media(max-width:480px){
 
     body{
@@ -619,7 +575,6 @@ h1{
 
     .account-card{
         min-height:0;
-        flex:none;
         overflow:hidden;
         padding:11px 10px 7px;
     }
@@ -659,7 +614,7 @@ h1{
     }
 
     .big-btn{
-        min-height:58px;
+        min-height:49px;
         font-size:9px;
         border-radius:12px;
     }
@@ -1090,7 +1045,32 @@ h1{
 
         </div>
 
-<!-- PAYMENT -->
+
+        <!-- SMALL ACTION BUTTONS -->
+
+        <div class="small-actions">
+
+            <a
+                href="happy-birthday.html"
+                class="small-btn">
+
+                🎂 HAPPY BIRTHDAY WISHES
+
+            </a>
+
+
+            <a
+                href="donate.html"
+                class="small-btn">
+
+                ❤️ DONATE
+
+            </a>
+
+        </div>
+
+
+        <!-- PAYMENT -->
         <a
             href="packages.html"
             id="payBtn"
@@ -1161,7 +1141,20 @@ const SUPABASE_KEY =
 const supabaseClient =
     window.supabase.createClient(
         SUPABASE_URL,
-        SUPABASE_KEY
+        SUPABASE_KEY,
+        {
+            auth: {
+                persistSession: true,
+                autoRefreshToken: true,
+                detectSessionInUrl: true,
+                flowType: "pkce",
+                /*
+                 * MUST match auth.html exactly.
+                 * auth.html stores the user's Supabase session here.
+                 */
+                storageKey: "busanso-auth"
+            }
+        }
     );
 
 let countdownTimer = null;
@@ -1181,195 +1174,135 @@ async function loadAccount(){
     const errorMessage = document.getElementById("errorMessage");
 
     /*
-     * IMPORTANT:
-     * A valid Supabase Auth session must NEVER be sent back to
-     * auth.html just because one profile lookup failed.
-     * That was causing the Google -> account -> auth -> account loop.
+     * FIRST: use the real Supabase Auth session.
+     * This is important for Google users, because they may have
+     * a valid Auth session even when the old user_id localStorage
+     * value is missing.
      */
-
     let authUser = null;
-    let data = null;
-    let lastError = null;
 
     try{
         const { data: sessionData, error: sessionError } =
             await supabaseClient.auth.getSession();
 
         if(sessionError){
-            lastError = sessionError;
             console.warn("Supabase session check:", sessionError);
         }
 
         authUser = sessionData?.session?.user || null;
     }catch(error){
-        lastError = error;
         console.warn("Supabase getSession failed:", error);
     }
 
-    /* Safely try a profile lookup without stopping the other fallbacks. */
-    async function findProfile(query, label){
-        try{
-            const result = await query;
+    let data = null;
+    let error = null;
 
-            if(result?.data){
-                console.log("BUSANSO profile matched by:", label);
-                return result.data;
-            }
+    /* 1. Match the authenticated Google/Supabase user to the profile. */
+    if(authUser){
+        const result = await supabaseClient
+            .from("profiles")
+            .select("*")
+            .eq("auth_user_id", authUser.id)
+            .maybeSingle();
 
-            if(result?.error){
-                lastError = result.error;
-                console.warn("Profile lookup failed (" + label + "):", result.error);
-            }
-        }catch(error){
-            lastError = error;
-            console.warn("Profile lookup exception (" + label + "):", error);
-        }
+        data = result.data;
+        error = result.error;
 
-        return null;
-    }
-
-    /*
-     * 1. FIRST: use the existing BUSANSO user_id.
-     * This protects older/premium accounts whose Auth mapping may be
-     * incomplete but whose profile ID is already known locally.
-     */
-    const storedUserID = localStorage.getItem("user_id");
-
-    if(storedUserID){
-        const numericID = Number(storedUserID);
-
-        if(Number.isFinite(numericID)){
-            data = await findProfile(
-                supabaseClient
-                    .from("profiles")
-                    .select("*")
-                    .eq("id", numericID)
-                    .maybeSingle(),
-                "legacy user_id"
-            );
-        }else{
-            data = await findProfile(
-                supabaseClient
-                    .from("profiles")
-                    .select("*")
-                    .eq("id", storedUserID)
-                    .maybeSingle(),
-                "stored profile id"
-            );
-        }
-    }
-
-    /*
-     * 2. Current Supabase Auth user -> auth_user_id.
-     */
-    if(!data && authUser){
-        data = await findProfile(
-            supabaseClient
-                .from("profiles")
-                .select("*")
-                .eq("auth_user_id", authUser.id)
-                .maybeSingle(),
-            "auth_user_id"
-        );
-    }
-
-    /*
-     * 3. Older Google accounts -> email fallback.
-     * This never creates a profile.
-     */
-    if(!data && authUser?.email){
-        data = await findProfile(
-            supabaseClient
+        /*
+         * Some older accounts may have the correct email but not yet
+         * have auth_user_id attached. Use email only as a fallback.
+         */
+        if(!data && authUser.email){
+            const emailResult = await supabaseClient
                 .from("profiles")
                 .select("*")
                 .ilike("email", authUser.email)
-                .maybeSingle(),
-            "email"
-        );
-    }
+                .maybeSingle();
 
-    /*
-     * 4. Give the browser one short chance to finish restoring a
-     * Google/Supabase session, then retry the two Auth mappings.
-     */
-    if(!data){
-        await new Promise(resolve => setTimeout(resolve, 500));
-
-        try{
-            const { data: retrySession } =
-                await supabaseClient.auth.getSession();
-            authUser = retrySession?.session?.user || authUser;
-        }catch(error){
-            console.warn("Session retry failed:", error);
-        }
-
-        if(authUser){
-            data = await findProfile(
-                supabaseClient
-                    .from("profiles")
-                    .select("*")
-                    .eq("auth_user_id", authUser.id)
-                    .maybeSingle(),
-                "auth_user_id retry"
-            );
-
-            if(!data && authUser.email){
-                data = await findProfile(
-                    supabaseClient
-                        .from("profiles")
-                        .select("*")
-                        .ilike("email", authUser.email)
-                        .maybeSingle(),
-                    "email retry"
-                );
+            if(emailResult.data){
+                data = emailResult.data;
+                error = null;
             }
         }
     }
 
-    /*
-     * CRITICAL CHANGE:
-     * Never redirect an authenticated user to auth.html here.
-     * That redirect created the infinite loop.
-     */
+    /* 2. Preserve compatibility with older non-Google accounts. */
     if(!data){
-        console.error("BUSANSO profile could not be matched:", lastError);
+        const userID = localStorage.getItem("user_id");
 
-        loading.classList.add("hidden");
-        page.classList.add("hidden");
+        if(userID){
+            const result = await supabaseClient
+                .from("profiles")
+                .select("*")
+                .eq("id", Number(userID))
+                .maybeSingle();
+
+            if(result.data){
+                data = result.data;
+                error = null;
+            }else if(result.error){
+                error = result.error;
+            }
+        }
+    }
+
+    if(error || !data){
+
+        console.error(
+            "BUSANSO profile error:",
+            error
+        );
 
         if(errorPage){
+            loading.classList.add("hidden");
+            page.classList.add("hidden");
             errorPage.classList.remove("hidden");
-        }
-
-        if(errorMessage){
-            if(authUser){
-                errorMessage.textContent =
-                    "Your BUSANSO login is active, but the existing profile could not be matched. You have NOT been signed out. Please contact BUSANSO support.";
-            }else{
-                errorMessage.textContent =
-                    "No active BUSANSO login session was found. Please sign in with Google.";
-            }
+            errorMessage.textContent =
+                "Your login session was not found. Please sign in again.";
+        }else{
+            location.href = "auth.html";
         }
 
         return false;
     }
 
-    /* Synchronize the existing profile into the legacy BUSANSO cache. */
-    if(data.id !== undefined && data.id !== null){
-        localStorage.setItem("user_id", String(data.id));
-    }
+    /*
+     * If this profile was found through Supabase Auth, synchronize
+     * the legacy localStorage values so older BUSANSO pages continue
+     * to recognize the same logged-in user.
+     */
+    localStorage.setItem(
+        "user_id",
+        String(data.id)
+    );
 
     if(authUser){
-        localStorage.setItem("auth_user_id", authUser.id);
-        localStorage.setItem("supabase_auth_user_id", authUser.id);
+        localStorage.setItem(
+            "auth_user_id",
+            authUser.id
+        );
+        localStorage.setItem(
+            "supabase_auth_user_id",
+            authUser.id
+        );
 
         if(authUser.email){
-            localStorage.setItem("email", authUser.email);
+            localStorage.setItem(
+                "email",
+                authUser.email
+            );
         }
     }
 
-    /* Existing account-status rule preserved. */
-    if((data.account_status || "").toLowerCase() !== "active"){
+    /*
+     * Keep the same account-status rule.
+     * Do not clear the Supabase Auth session here.
+     */
+    if(
+        (data.account_status || "").toLowerCase() !==
+        "active"
+    ){
+
         location.href = "blocked.html";
         return false;
     }
@@ -1377,30 +1310,44 @@ async function loadAccount(){
     const membership =
         (data.membership || "free").toLowerCase();
 
+    /* =========================================
+       GOLDEN PAGE DISPLAY
+    ========================================= */
+
     document.getElementById("userName").textContent =
         data.name || "Member";
 
     document.getElementById("packageName").textContent =
         (data.package_type || "free").toUpperCase();
 
-    const status = document.getElementById("membershipStatus");
-    const expiryBox = document.getElementById("expiryBox");
-    const moviesBtn = document.getElementById("moviesBtn");
-    const seriesBtn = document.getElementById("seriesBtn");
+    const status =
+        document.getElementById("membershipStatus");
 
+    const expiryBox =
+        document.getElementById("expiryBox");
+
+    const moviesBtn =
+        document.getElementById("moviesBtn");
+
+    const seriesBtn =
+        document.getElementById("seriesBtn");
+
+    /*
+     * PREMIUM / FREE BUTTON LOGIC
+     */
     const premiumActive =
         membership === "premium" &&
         data.expires_at &&
         new Date(data.expires_at) > new Date();
 
     const payBtn = document.getElementById("payBtn");
-
     if(payBtn){
         payBtn.style.display =
             membership === "free" ? "flex" : "none";
     }
 
     if(premiumActive){
+
         status.textContent = "Active";
 
         moviesBtn.classList.remove("locked");
@@ -1412,10 +1359,16 @@ async function loadAccount(){
         seriesBtn.href = "series.html";
 
         expiryBox.style.display = "block";
+
         startExpiryCountdown(data.expires_at);
+
     }else{
-        status.textContent =
-            membership === "premium" ? "Expired" : "Free package";
+
+        if(membership === "premium"){
+            status.textContent = "Expired";
+        }else{
+            status.textContent = "Free package";
+        }
 
         if(data.expires_at){
             expiryBox.style.display = "block";
@@ -1432,24 +1385,60 @@ async function loadAccount(){
         moviesBtn.href = "javascript:void(0)";
         seriesBtn.href = "javascript:void(0)";
 
-        moviesBtn.onclick = function(){ location.href = "packages.html"; };
-        seriesBtn.onclick = function(){ location.href = "packages.html"; };
+        moviesBtn.onclick = function(){
+            location.href = "packages.html";
+        };
+
+        seriesBtn.onclick = function(){
+            location.href = "packages.html";
+        };
     }
 
-    /* Preserve the existing localStorage contract. */
-    localStorage.setItem("name", data.name || "");
-    localStorage.setItem("whatsapp_number", data.whatsapp_number || "");
-    localStorage.setItem("membership", data.membership || "free");
-    localStorage.setItem("package_type", data.package_type || "");
-    localStorage.setItem("expires_at", data.expires_at || "");
+    /*
+     * Preserve the existing localStorage contract.
+     */
+    localStorage.setItem(
+        "name",
+        data.name || ""
+    );
+
+    localStorage.setItem(
+        "whatsapp_number",
+        data.whatsapp_number || ""
+    );
+
+    localStorage.setItem(
+        "membership",
+        data.membership || "free"
+    );
+
+    localStorage.setItem(
+        "package_type",
+        data.package_type || ""
+    );
+
+    localStorage.setItem(
+        "expires_at",
+        data.expires_at || ""
+    );
 
     if(data.account_status){
-        localStorage.setItem("account_status", data.account_status);
+        localStorage.setItem(
+            "account_status",
+            data.account_status
+        );
     }
 
     if(data.role){
-        localStorage.setItem("role", data.role);
+        localStorage.setItem(
+            "role",
+            data.role
+        );
     }
+
+    /* =========================================
+       REVEAL PAGE
+    ========================================= */
 
     loading.classList.add("hidden");
 
@@ -1461,6 +1450,7 @@ async function loadAccount(){
 
     return true;
 }
+
 
 /* =========================================
    EXPIRY COUNTDOWN
@@ -1528,8 +1518,8 @@ function startExpiryCountdown(expiryDate){
                 (diff % 60000) / 1000
             );
 
-        // Highlight the countdown in red once fewer than 12 hours remain.
-        if(diff < 12 * 60 * 60 * 1000){
+        // Highlight the countdown in red once fewer than 5 days remain.
+        if(days < 5){
             countdown.classList.add("urgent");
         }else{
             countdown.classList.remove("urgent");
