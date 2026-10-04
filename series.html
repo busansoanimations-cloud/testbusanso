@@ -1,4 +1,4 @@
-﻿
+
 
 
 
@@ -24,21 +24,21 @@ if(
 </script>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:linear-gradient(180deg,#0b1c24,#0a0f1a);color:#eaf6ff;font-family:Arial,sans-serif;}
-.logo{display:flex;justify-content:center;padding:18px 10px 10px;background:#07141c;}
+body{margin:0;background:radial-gradient(circle at top,#241b08 0%,#0b0b0b 45%,#050505 100%);color:#fff4d0;font-family:Arial,sans-serif;}
+.logo{display:flex;justify-content:center;padding:18px 10px 10px;background:linear-gradient(180deg,#120e05,#080808);border-bottom:1px solid rgba(255,193,7,.28);}
 .logo img{height:66px;}
-.nav{display:flex;gap:12px;padding:14px;background:#07141c;position:sticky;top:0;z-index:10;}
-.nav button{flex:1;padding:8px;border:none;border-radius:38px;background:linear-gradient(135deg,#1f6cff,#29ffd8);color:#001018;font-weight:bold;font-size:14px;cursor:pointer;transition:.25s;}
+.nav{display:flex;gap:12px;padding:14px;background:rgba(8,8,8,.96);position:sticky;top:0;z-index:10;border-bottom:1px solid rgba(255,193,7,.25);}
+.nav button{flex:1;padding:10px;border:1px solid #d6a62a;border-radius:38px;background:linear-gradient(135deg,#6f4d08,#d4af37,#fff0a6,#b8860b);color:#171105;font-weight:900;font-size:14px;cursor:pointer;transition:.25s;box-shadow:0 4px 16px rgba(212,175,55,.18),inset 0 1px 0 rgba(255,255,255,.45);}
 .nav button:hover{transform:translateY(-2px) scale(1.02);filter:brightness(1.1);}
-.search{padding:16px;background:#07141c;}
-.search input{width:100%;padding:16px;border-radius:20px;border:none;background:#102a38;color:#eaf6ff;font-size:15px;}
-.search input::placeholder{color:#9fc6d9;}
+.search{padding:16px;background:rgba(9,9,9,.9);}
+.search input{width:100%;padding:16px;border-radius:20px;border:1px solid rgba(212,175,55,.45);background:linear-gradient(180deg,#1b160a,#0f0f0f);color:#fff4d0;font-size:15px;box-shadow:0 4px 18px rgba(0,0,0,.35);}
+.search input::placeholder{color:#c9b978;}
 .filters{display:flex;gap:12px;margin:12px 0;}
-.filters select{flex:1;padding:12px;border-radius:16px;border:none;background:#102a38;color:#eaf6ff;font-size:14px;}
+.filters select{flex:1;padding:12px;border-radius:16px;border:1px solid rgba(212,175,55,.35);background:#151208;color:#fff4d0;font-size:14px;}
 .series{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:16px;margin-bottom:80px;}
 @media(min-width:768px){.series{grid-template-columns:repeat(4,1fr);gap:16px;}}
 @media(min-width:1200px){.series{grid-template-columns:repeat(5,1fr);gap:18px;}}
-.card{background:linear-gradient(180deg,#102a38,#0b1c24);border-radius:22px;overflow:hidden;box-shadow:0 14px 35px rgba(0,0,0,.5);opacity:0;transform:translateY(20px);animation:fade .4s forwards;transition:.25s;}
+.card{background:linear-gradient(180deg,#1c170b,#0b0b0b);border:1px solid rgba(212,175,55,.32);border-radius:22px;overflow:hidden;box-shadow:0 14px 35px rgba(0,0,0,.65),0 0 18px rgba(212,175,55,.06);opacity:0;transform:translateY(20px);animation:fade .4s forwards;transition:.25s;}
 .card:hover{transform:translateY(-6px);}
 @keyframes fade{to{opacity:1;transform:none}}
 .card img{width:100%;aspect-ratio:2/3;object-fit:cover;}
@@ -79,17 +79,17 @@ body{margin:0;background:linear-gradient(180deg,#0b1c24,#0a0f1a);color:#eaf6ff;f
   background:rgba(239,68,68,.92);
 }
 .info{padding:12px}
-.title{font-weight:bold;font-size:14px;}
+.title{font-weight:900;font-size:14px;color:#f5d76e;text-shadow:0 1px 8px rgba(212,175,55,.18);}
 .meta{
 
-    color:#9ca3af;
+    color:#cdbd82;
 
     font-size:12px;
 
     line-height:1.5;
 
 }
-.watch{width:100%;padding:12px;border:none;border-radius:20px;background:linear-gradient(135deg,#29ffd8,#1f6cff);color:#001018;font-weight:bold;font-size:13px;cursor:pointer;transition:.25s;}
+.watch{width:100%;padding:12px;border:1px solid #d6a62a;border-radius:20px;background:linear-gradient(135deg,#8a650d,#d4af37,#fff0a6,#b8860b);color:#171105;font-weight:900;font-size:13px;cursor:pointer;transition:.25s;box-shadow:0 5px 16px rgba(212,175,55,.18);}
 .watch:hover{transform:scale(1.03);filter:brightness(1.1);}
  
 </style>
@@ -104,9 +104,8 @@ body{margin:0;background:linear-gradient(180deg,#0b1c24,#0a0f1a);color:#eaf6ff;f
 
 <!-- NAV -->
 <div class="nav">
-  <button onclick="location.href='account.html'">👤 My Account</button>
+  <button onclick="location.href='account.html'">👤 <span id="accountName">My Account</span></button>
   <button onclick="location.href='movies.html'">🎬 Movies</button>
-  <button onclick="location.href='happy-birthday.html'">❤️ Happy Birthday</button>
 </div>
 
 <!-- SEARCH & FILTERS -->
@@ -155,7 +154,7 @@ async function checkPremiumAccess(){
 
     const {data,error} = await supabase
     .from("profiles")
-    .select("membership,expires_at")
+    .select("name,membership,expires_at")
     .eq("id",userId)
     .single();
 
@@ -164,6 +163,11 @@ async function checkPremiumAccess(){
     if(error || !data){
         location.href="expired.html";
         return false;
+    }
+
+    const accountName = document.getElementById("accountName");
+    if(accountName && data.name){
+        accountName.textContent = data.name;
     }
 
 
