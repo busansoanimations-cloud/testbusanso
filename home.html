@@ -1,4 +1,4 @@
-﻿
+
 
 
 
@@ -75,9 +75,9 @@ body{
 font-family:'Poppins',sans-serif;
 
 background:
-radial-gradient(circle at top left,#2563eb33,transparent 35%),
-radial-gradient(circle at bottom right,#22c55e33,transparent 40%),
-linear-gradient(180deg,#020617,#000);
+radial-gradient(circle at 15% 0%,rgba(212,175,55,.16),transparent 32%),
+radial-gradient(circle at 90% 35%,rgba(246,211,101,.08),transparent 30%),
+linear-gradient(180deg,#090806 0%,#030303 48%,#000 100%);
 
 color:white;
 
@@ -104,7 +104,7 @@ height:5px;
 
 ::-webkit-scrollbar-thumb{
 
-background:#334155;
+background:#6b571f;
 
 border-radius:20px;
 
@@ -419,7 +419,7 @@ height:8px;
 
 width:8px;
 
-background:#475569;
+background:#5b4a1c;
 
 border-radius:20px;
 
@@ -433,7 +433,7 @@ transition:.3s;
 
 width:25px;
 
-background:#38bdf8;
+background:#f6d365;
 
 }
 
@@ -459,10 +459,11 @@ margin:20px 12px;
 padding:18px;
 
 background:
-rgba(255,255,255,.03);
+linear-gradient(180deg,rgba(255,255,255,.045),rgba(212,175,55,.025));
 
 border:
-1px solid rgba(255,255,255,.05);
+1px solid rgba(212,175,55,.18);
+box-shadow:0 12px 35px rgba(0,0,0,.38),inset 0 1px rgba(255,240,180,.05);
 
 border-radius:24px;
 
@@ -541,8 +542,7 @@ object-fit:cover;
 
 border-radius:18px;
 
-box-shadow:
-0 10px 25px rgba(0,0,0,.5);
+box-shadow:0 10px 25px rgba(0,0,0,.6),0 0 0 1px rgba(212,175,55,.08);
 
 }
 
@@ -696,7 +696,7 @@ z-index:999999;
 
 width:min(92%,420px);
 
-background:#0f172a;
+background:linear-gradient(180deg,#17130a,#0a0906);
 
 padding:25px;
 
@@ -744,7 +744,7 @@ border:none;
 border-radius:16px;
 
 background:
-linear-gradient(135deg,#2563eb,#38bdf8);
+linear-gradient(135deg,#9f7200,#d4af37,#f6d365,#b8860b);
 
 color:white;
 
@@ -921,7 +921,59 @@ END STYLE
 ============================== */
 
 
-.poster{cursor:pointer;}\n</style>
+.poster{cursor:pointer;}\n
+/* ==============================
+   BUSANSO GOLD PREMIUM OVERRIDES
+   ============================== */
+body{
+  color:#fff8df;
+}
+.sticky-header{
+  background:linear-gradient(180deg,rgba(10,9,6,.99),rgba(2,2,2,.96));
+  border-bottom:1px solid rgba(212,175,55,.42);
+  box-shadow:0 8px 30px rgba(0,0,0,.55),0 0 25px rgba(212,175,55,.10);
+}
+.header img{
+  filter:drop-shadow(0 0 8px rgba(246,211,101,.18));
+}
+.search-box{
+  border-color:rgba(212,175,55,.55);
+  background:rgba(10,9,6,.94);
+}
+.login-main{
+  background:linear-gradient(135deg,#9f7200,#d4af37,#f6d365,#b8860b);
+  box-shadow:0 0 18px rgba(212,175,55,.28),inset 0 1px rgba(255,255,255,.65);
+}
+.birthday-main{
+  background:linear-gradient(135deg,#7a5600,#d4af37,#8f6a16);
+  border-color:rgba(255,235,160,.5);
+  box-shadow:0 0 18px rgba(212,175,55,.20);
+}
+#welcomeUser{
+  color:#e7c75f;
+  text-shadow:0 0 12px rgba(212,175,55,.16);
+}
+#welcomeUser b{
+  color:#fff0a6;
+}
+.section h3{
+  text-shadow:0 0 14px rgba(212,175,55,.12);
+}
+.hero-overlay{
+  background:linear-gradient(to top,rgba(0,0,0,.94),rgba(0,0,0,.08),transparent);
+}
+.hero-title{
+  color:#fff4c4;
+}
+.card-title{
+  color:#f4e5ad;
+}
+.hero-dot.active{
+  background:#f6d365;
+  box-shadow:0 0 10px rgba(246,211,101,.45);
+}
+
+</style>
 
 </head>
 <body>
@@ -1609,17 +1661,26 @@ async function verifyUser(){
         return currentUser;
     }
 
-    // 4. No Auth session and no legacy identity = guest.
-    if(!name){
+    // 4. No real Supabase Auth session = not signed in.
+    // All users must sign in before using the Home page.
+    if(!authUser){
+        localStorage.removeItem("loggedIn");
+        localStorage.removeItem("auth_user_id");
+        localStorage.removeItem("email");
         showGuest();
+        setTimeout(()=>{
+            location.replace("auth.html");
+        }, 150);
         return null;
     }
 
     currentUser={
-        name,
+        name:name || metadataName || "BUSANSO USER",
         membership:normalizeLocalMembership(),
         package_type:localStorage.getItem("package_type") || "",
-        expires_at:localStorage.getItem("expires_at") || ""
+        expires_at:localStorage.getItem("expires_at") || "",
+        auth_user_id:authUser.id,
+        email:authEmail
     };
     showLoggedUser(currentUser);
     return currentUser;
