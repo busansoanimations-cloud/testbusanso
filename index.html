@@ -39,7 +39,6 @@ body{
     pointer-events:none;
 }
 
-/* Deep cinematic gradients */
 .background::before{
     content:"";
     position:absolute;
@@ -70,7 +69,6 @@ body{
         );
 }
 
-/* Soft cinematic light */
 .light{
     position:absolute;
     width:520px;
@@ -94,7 +92,6 @@ body{
     animation-delay:-4s;
 }
 
-/* Large soft spotlight */
 .spotlight{
     position:absolute;
     left:50%;
@@ -134,7 +131,6 @@ body{
     animation-delay:var(--delay);
 }
 
-/* A few larger golden particles */
 .gold-particle{
     position:absolute;
     width:3px;
@@ -589,8 +585,6 @@ const particles =
     document.getElementById("particles");
 
 
-/* White cinematic particles */
-
 for(let i = 0; i < 32; i++){
 
     const particle =
@@ -614,8 +608,6 @@ for(let i = 0; i < 32; i++){
     particles.appendChild(particle);
 }
 
-
-/* Gold particles */
 
 for(let i = 0; i < 10; i++){
 
@@ -642,16 +634,35 @@ for(let i = 0; i < 10; i++){
 
 
 /* =========================================================
-   SMART BUSANSO ENTRY
-   ---------------------------------------------------------
-   1. Load the existing Supabase client used by BUSANSO.
-   2. Silently check for an existing authenticated session.
-   3. Confirm that the authenticated user has a BUSANSO profile.
-   4. Existing users -> home.html
-   5. New/unregistered users -> auth.html
-   --------------------------------------------------------- */
+   BUSANSO SMART STARTUP
+   =========================================================
+   
+   IMPORTANT:
+   
+   Existing authenticated user:
+       index.html
+          ↓
+       valid Supabase session
+          ↓
+       home.html
+   
+   New / logged-out user:
+       index.html
+          ↓
+       no Supabase session
+          ↓
+       auth.html
+   
+   We deliberately do NOT require a profile lookup here.
+   The Supabase session is the authentication proof.
+   
+   This prevents an existing user from being thrown back
+   to the login page merely because a profiles query is
+   temporarily unavailable or RLS blocks the lookup.
+   ========================================================= */
 
-const splash = document.getElementById("splash");
+const splash =
+    document.getElementById("splash");
 
 let destination = "auth.html";
 let authCheckDone = false;
@@ -659,28 +670,85 @@ let redirectStarted = false;
 
 const MIN_SPLASH_TIME = 1400;
 const MAX_SPLASH_TIME = 3300;
+
 const startedAt = Date.now();
 
 
+/* =========================================================
+   REDIRECT
+   ========================================================= */
+
 function goToDestination(){
-    if(redirectStarted) return;
+
+    if(redirectStarted){
+        return;
+    }
 
     redirectStarted = true;
 
     splash.classList.add("fadeOut");
 
     setTimeout(() => {
-        window.location.replace(destination);
+
+        /*
+         * Keep ?app=1 when running inside the Android app.
+         * Normal web visitors stay on the normal pages.
+         */
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+        const isAppMode =
+            params.get("app") === "1";
+
+        let finalDestination =
+            destination;
+
+        if(isAppMode){
+
+            if(destination === "home.html"){
+                finalDestination =
+                    "home.html?app=1";
+            }
+
+            if(destination === "auth.html"){
+                finalDestination =
+                    "auth.html?app=1";
+            }
+        }
+
+        window.location.href =
+            finalDestination;
+
     }, 650);
 }
 
 
-function finishAuthCheck(nextPage){
-    destination = nextPage;
-    authCheckDone = true;
+/* =========================================================
+   FINISH AUTH CHECK
+   ========================================================= */
 
-    const elapsed = Date.now() - startedAt;
-    const remaining = Math.max(0, MIN_SPLASH_TIME - elapsed);
+function finishAuthCheck(nextPage){
+
+    if(authCheckDone){
+        return;
+    }
+
+    destination =
+        nextPage;
+
+    authCheckDone =
+        true;
+
+    const elapsed =
+        Date.now() - startedAt;
+
+    const remaining =
+        Math.max(
+            0,
+            MIN_SPLASH_TIME - elapsed
+        );
 
     setTimeout(() => {
         goToDestination();
@@ -688,58 +756,92 @@ function finishAuthCheck(nextPage){
 }
 
 
+/* =========================================================
+   LOAD SHARED SUPABASE CLIENT
+   ========================================================= */
+
 function loadBusansoSupabaseClient(){
 
     return new Promise((resolve) => {
 
-        /* If the shared BUSANSO client is already available, use it. */
+        /*
+         * If another script has already initialized
+         * the shared BUSANSO client, use it immediately.
+         */
         if(window.busansoSupabase){
-            resolve(window.busansoSupabase);
+
+            resolve(
+                window.busansoSupabase
+            );
+
             return;
         }
 
-        /*
-         * Load the same shared Supabase configuration used by
-         * the rest of the BUSANSO website.
-         *
-         * js/supabase.js is expected to create:
-         * window.busansoSupabase
-         */
-        const sharedConfig = document.createElement("script");
 
-        sharedConfig.src = "js/supabase.js";
+        /*
+         * Load the same Supabase client used by
+         * the rest of the BUSANSO website.
+         */
+        const sharedConfig =
+            document.createElement("script");
+
+        sharedConfig.src =
+            "js/supabase.js";
+
+
         sharedConfig.onload = () => {
 
-            /*
-             * Give the shared file a moment to initialize its
-             * global client before falling back to auth.html.
-             */
             let attempts = 0;
 
-            const waitForClient = setInterval(() => {
+            const waitForClient =
+                setInterval(() => {
 
-                attempts++;
+                    attempts++;
 
-                if(window.busansoSupabase){
-                    clearInterval(waitForClient);
-                    resolve(window.busansoSupabase);
-                    return;
-                }
+                    if(window.busansoSupabase){
 
-                if(attempts >= 20){
-                    clearInterval(waitForClient);
-                    resolve(null);
-                }
+                        clearInterval(
+                            waitForClient
+                        );
 
-            }, 50);
+                        resolve(
+                            window.busansoSupabase
+                        );
+
+                        return;
+                    }
+
+
+                    if(attempts >= 30){
+
+                        clearInterval(
+                            waitForClient
+                        );
+
+                        resolve(null);
+                    }
+
+                }, 50);
         };
 
-        sharedConfig.onerror = () => resolve(null);
 
-        document.head.appendChild(sharedConfig);
+        sharedConfig.onerror = () => {
+
+            resolve(null);
+
+        };
+
+
+        document.head.appendChild(
+            sharedConfig
+        );
     });
 }
 
+
+/* =========================================================
+   CHECK EXISTING SUPABASE SESSION
+   ========================================================= */
 
 async function checkExistingBusansoUser(){
 
@@ -748,166 +850,183 @@ async function checkExistingBusansoUser(){
         const supabaseClient =
             await loadBusansoSupabaseClient();
 
+
         /*
-         * If the shared client cannot be loaded, fail safely.
-         * The user will simply be taken to auth.html.
+         * If the shared Supabase client cannot load,
+         * the safest destination is the authentication page.
          */
         if(!supabaseClient){
-            finishAuthCheck("auth.html");
+
+            finishAuthCheck(
+                "auth.html"
+            );
+
             return;
         }
 
 
-        /* Get the persistent Supabase session silently. */
+        /*
+         * THIS IS THE IMPORTANT PART.
+         *
+         * Supabase persists the user's session.
+         * If a valid session already exists, we do NOT
+         * send the user through Google login again.
+         */
         const {
             data: sessionData,
             error: sessionError
-        } = await supabaseClient.auth.getSession();
-
-
-        if(sessionError || !sessionData || !sessionData.session){
-            finishAuthCheck("auth.html");
-            return;
-        }
-
-
-        const session = sessionData.session;
-        const user = session.user;
-
-
-        if(!user || !user.id){
-            finishAuthCheck("auth.html");
-            return;
-        }
+        } =
+            await supabaseClient.auth.getSession();
 
 
         /*
-         * First look for the profile by the Supabase Auth UUID.
-         * This is the preferred/current BUSANSO relationship.
-         */
-        let profileResult =
-            await supabaseClient
-                .from("profiles")
-                .select("id,auth_user_id,email,account_status")
-                .eq("auth_user_id", user.id)
-                .limit(1)
-                .maybeSingle();
-
-
-        /*
-         * Some existing accounts may have a profile linked by email
-         * but not yet have auth_user_id populated. Check email as a
-         * second safe fallback.
+         * No valid session.
+         *
+         * This is a new/logged-out user.
          */
         if(
-            profileResult.error ||
-            !profileResult.data
+            sessionError ||
+            !sessionData ||
+            !sessionData.session
         ){
 
-            const email =
-                (user.email || "").trim().toLowerCase();
+            finishAuthCheck(
+                "auth.html"
+            );
 
-            if(email){
-
-                profileResult =
-                    await supabaseClient
-                        .from("profiles")
-                        .select("id,auth_user_id,email,account_status")
-                        .ilike("email", email)
-                        .limit(1)
-                        .maybeSingle();
-            }
-        }
-
-
-        /*
-         * A valid Supabase session alone is not enough for BUSANSO.
-         * We also require an existing profile row before bypassing
-         * the login page.
-         */
-        if(profileResult && profileResult.data){
-
-            /*
-             * Keep the identifiers available to existing BUSANSO
-             * pages. This does not replace the Supabase session.
-             */
-            try{
-                localStorage.setItem(
-                    "auth_user_id",
-                    user.id
-                );
-
-                localStorage.setItem(
-                    "supabase_auth_user_id",
-                    user.id
-                );
-
-                localStorage.setItem(
-                    "user_id",
-                    String(profileResult.data.id)
-                );
-            }catch(storageError){
-                console.warn(
-                    "BUSANSO localStorage update skipped:",
-                    storageError
-                );
-            }
-
-            finishAuthCheck("account.html");
             return;
         }
 
 
+        const session =
+            sessionData.session;
+
+        const user =
+            session.user;
+
+
         /*
-         * Authenticated but no BUSANSO profile:
-         * send the user to auth so the existing registration/profile
-         * logic can handle the account instead of showing a blank home.
+         * Make sure the session actually contains
+         * a valid authenticated user.
          */
-        finishAuthCheck("auth.html");
+        if(
+            !user ||
+            !user.id
+        ){
+
+            finishAuthCheck(
+                "auth.html"
+            );
+
+            return;
+        }
+
+
+        /* =================================================
+           EXISTING AUTHENTICATED USER
+           =================================================
+           
+           DO NOT query profiles here.
+           
+           DO NOT send them to account.html.
+           
+           DO NOT send them back to auth.html.
+           
+           A valid Supabase session means the user is already
+           authenticated. Let home.html load the profile,
+           membership and other BUSANSO data normally.
+           ================================================= */
+
+        try{
+
+            localStorage.setItem(
+                "auth_user_id",
+                user.id
+            );
+
+            localStorage.setItem(
+                "supabase_auth_user_id",
+                user.id
+            );
+
+            if(user.email){
+
+                localStorage.setItem(
+                    "supabase_user_email",
+                    user.email
+                );
+            }
+
+        }catch(storageError){
+
+            console.warn(
+                "BUSANSO localStorage update skipped:",
+                storageError
+            );
+        }
+
+
+        /*
+         * EXISTING USER → HOME
+         */
+        finishAuthCheck(
+            "home.html"
+        );
 
     }catch(error){
 
         console.warn(
-            "BUSANSO silent login check failed:",
+            "BUSANSO silent session check failed:",
             error
         );
 
-        /* Never block the user on the splash screen. */
-        finishAuthCheck("auth.html");
+
+        /*
+         * If something unexpected happens, do not leave
+         * the user permanently stuck on the splash screen.
+         */
+        finishAuthCheck(
+            "auth.html"
+        );
     }
 }
 
 
-/*
- * Start the silent check immediately while the cinematic splash
- * is already visible. The user never sees the login form flash
- * before this decision is made.
- */
+/* =========================================================
+   START SILENT SESSION CHECK
+   ========================================================= */
+
 checkExistingBusansoUser();
 
 
-/*
- * Safety timeout.
- *
- * If Supabase or the network takes too long, continue to auth
- * rather than leaving the user permanently stuck on the splash.
- */
+/* =========================================================
+   SAFETY TIMEOUT
+   =========================================================
+   
+   If the network/Supabase takes too long, send the user
+   to authentication instead of leaving them stuck.
+   ========================================================= */
+
 setTimeout(() => {
 
     if(!authCheckDone){
-        finishAuthCheck("auth.html");
+
+        finishAuthCheck(
+            "auth.html"
+        );
     }
 
 }, MAX_SPLASH_TIME);
 
 
-/*
- * Prevent the splash from ever becoming stuck if an unexpected
- * browser/runtime issue occurs.
- */
+/* =========================================================
+   FINAL SAFETY NET
+   ========================================================= */
+
 setTimeout(() => {
 
     if(!redirectStarted){
+
         goToDestination();
     }
 
