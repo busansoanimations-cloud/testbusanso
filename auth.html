@@ -464,6 +464,14 @@ function saveAuthUser(user){
             user.email || ""
         );
 
+        // Remember the last Google account used on this device.
+        if(user.email){
+            localStorage.setItem(
+                "last_google_email",
+                user.email
+            );
+        }
+
 
         const metadata =
             user.user_metadata || {};
@@ -1035,11 +1043,25 @@ button.addEventListener(
                         redirectTo:
                             REDIRECT_URL,
 
-                        queryParams:{
+                        queryParams:(function(){
 
-                            prompt:
-                                "select_account"
-                        },
+                            const lastGoogleEmail =
+                                localStorage.getItem("last_google_email") ||
+                                localStorage.getItem("email") ||
+                                "";
+
+                            const params = {};
+
+                            // Do NOT force Google's account chooser.
+                            // If we know the last successful account,
+                            // ask Google to use that account.
+                            if(lastGoogleEmail){
+                                params.login_hint = lastGoogleEmail;
+                            }
+
+                            return params;
+
+                        })(),
 
                         skipBrowserRedirect:
                             false
