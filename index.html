@@ -642,26 +642,276 @@ for(let i = 0; i < 10; i++){
 
 
 /* =========================================================
-   OPEN BUSANSO
-   ========================================================= */
+   SMART BUSANSO ENTRY
+   ---------------------------------------------------------
+   1. Load the existing Supabase client used by BUSANSO.
+   2. Silently check for an existing authenticated session.
+   3. Confirm that the authenticated user has a BUSANSO profile.
+   4. Existing users -> home.html
+   5. New/unregistered users -> auth.html
+   --------------------------------------------------------- */
 
-const splash =
-    document.getElementById("splash");
+const splash = document.getElementById("splash");
+
+let destination = "auth.html";
+let authCheckDone = false;
+let redirectStarted = false;
+
+const MIN_SPLASH_TIME = 1400;
+const MAX_SPLASH_TIME = 3300;
+const startedAt = Date.now();
 
 
-setTimeout(() => {
+function goToDestination(){
+    if(redirectStarted) return;
+
+    redirectStarted = true;
 
     splash.classList.add("fadeOut");
 
+    setTimeout(() => {
+        window.location.replace(destination);
+    }, 650);
+}
+
+
+function finishAuthCheck(nextPage){
+    destination = nextPage;
+    authCheckDone = true;
+
+    const elapsed = Date.now() - startedAt;
+    const remaining = Math.max(0, MIN_SPLASH_TIME - elapsed);
 
     setTimeout(() => {
+        goToDestination();
+    }, remaining);
+}
 
-        window.location.href =
-            "home.html";
 
-    }, 650);
+function loadBusansoSupabaseClient(){
 
-}, 3300);
+    return new Promise((resolve) => {
+
+        /* If the shared BUSANSO client is already available, use it. */
+        if(window.busansoSupabase){
+            resolve(window.busansoSupabase);
+            return;
+        }
+
+        /*
+         * Load the same shared Supabase configuration used by
+         * the rest of the BUSANSO website.
+         *
+         * js/supabase.js is expected to create:
+         * window.busansoSupabase
+         */
+        const sharedConfig = document.createElement("script");
+
+        sharedConfig.src = "js/supabase.js";
+        sharedConfig.onload = () => {
+
+            /*
+             * Give the shared file a moment to initialize its
+             * global client before falling back to auth.html.
+             */
+            let attempts = 0;
+
+            const waitForClient = setInterval(() => {
+
+                attempts++;
+
+                if(window.busansoSupabase){
+                    clearInterval(waitForClient);
+                    resolve(window.busansoSupabase);
+                    return;
+                }
+
+                if(attempts >= 20){
+                    clearInterval(waitForClient);
+                    resolve(null);
+                }
+
+            }, 50);
+        };
+
+        sharedConfig.onerror = () => resolve(null);
+
+        document.head.appendChild(sharedConfig);
+    });
+}
+
+
+async function checkExistingBusansoUser(){
+
+    try{
+
+        const supabaseClient =
+            await loadBusansoSupabaseClient();
+
+        /*
+         * If the shared client cannot be loaded, fail safely.
+         * The user will simply be taken to auth.html.
+         */
+        if(!supabaseClient){
+            finishAuthCheck("auth.html");
+            return;
+        }
+
+
+        /* Get the persistent Supabase session silently. */
+        const {
+            data: sessionData,
+            error: sessionError
+        } = await supabaseClient.auth.getSession();
+
+
+        if(sessionError || !sessionData || !sessionData.session){
+            finishAuthCheck("auth.html");
+            return;
+        }
+
+
+        const session = sessionData.session;
+        const user = session.user;
+
+
+        if(!user || !user.id){
+            finishAuthCheck("auth.html");
+            return;
+        }
+
+
+        /*
+         * First look for the profile by the Supabase Auth UUID.
+         * This is the preferred/current BUSANSO relationship.
+         */
+        let profileResult =
+            await supabaseClient
+                .from("profiles")
+                .select("id,auth_user_id,email,account_status")
+                .eq("auth_user_id", user.id)
+                .limit(1)
+                .maybeSingle();
+
+
+        /*
+         * Some existing accounts may have a profile linked by email
+         * but not yet have auth_user_id populated. Check email as a
+         * second safe fallback.
+         */
+        if(
+            profileResult.error ||
+            !profileResult.data
+        ){
+
+            const email =
+                (user.email || "").trim().toLowerCase();
+
+            if(email){
+
+                profileResult =
+                    await supabaseClient
+                        .from("profiles")
+                        .select("id,auth_user_id,email,account_status")
+                        .ilike("email", email)
+                        .limit(1)
+                        .maybeSingle();
+            }
+        }
+
+
+        /*
+         * A valid Supabase session alone is not enough for BUSANSO.
+         * We also require an existing profile row before bypassing
+         * the login page.
+         */
+        if(profileResult && profileResult.data){
+
+            /*
+             * Keep the identifiers available to existing BUSANSO
+             * pages. This does not replace the Supabase session.
+             */
+            try{
+                localStorage.setItem(
+                    "auth_user_id",
+                    user.id
+                );
+
+                localStorage.setItem(
+                    "supabase_auth_user_id",
+                    user.id
+                );
+
+                localStorage.setItem(
+                    "user_id",
+                    String(profileResult.data.id)
+                );
+            }catch(storageError){
+                console.warn(
+                    "BUSANSO localStorage update skipped:",
+                    storageError
+                );
+            }
+
+            finishAuthCheck("account.html");
+            return;
+        }
+
+
+        /*
+         * Authenticated but no BUSANSO profile:
+         * send the user to auth so the existing registration/profile
+         * logic can handle the account instead of showing a blank home.
+         */
+        finishAuthCheck("auth.html");
+
+    }catch(error){
+
+        console.warn(
+            "BUSANSO silent login check failed:",
+            error
+        );
+
+        /* Never block the user on the splash screen. */
+        finishAuthCheck("auth.html");
+    }
+}
+
+
+/*
+ * Start the silent check immediately while the cinematic splash
+ * is already visible. The user never sees the login form flash
+ * before this decision is made.
+ */
+checkExistingBusansoUser();
+
+
+/*
+ * Safety timeout.
+ *
+ * If Supabase or the network takes too long, continue to auth
+ * rather than leaving the user permanently stuck on the splash.
+ */
+setTimeout(() => {
+
+    if(!authCheckDone){
+        finishAuthCheck("auth.html");
+    }
+
+}, MAX_SPLASH_TIME);
+
+
+/*
+ * Prevent the splash from ever becoming stuck if an unexpected
+ * browser/runtime issue occurs.
+ */
+setTimeout(() => {
+
+    if(!redirectStarted){
+        goToDestination();
+    }
+
+}, MAX_SPLASH_TIME + 1000);
 
 </script>
 
