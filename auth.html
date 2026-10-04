@@ -1,216 +1,142 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
 <title>BUSANSO — Sign In</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-
 * {
     box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
     margin: 0;
-    padding: 0;
     min-height: 100%;
     background:
-        radial-gradient(
-            circle at top,
-            #3b2a08 0%,
-            #171005 42%,
-            #070707 100%
-        );
-    color: #fff;
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+        radial-gradient(circle at top, #3b2a08 0%, #171005 45%, #070707 100%);
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
     min-height: 100vh;
     display: flex;
-    justify-content: center;
     align-items: center;
-    padding: 24px;
-}
-
-.container {
-    width: 100%;
-    max-width: 430px;
+    justify-content: center;
+    padding: 22px;
 }
 
 .card {
     width: 100%;
-    padding: 36px 26px 30px;
-    border-radius: 22px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(42, 32, 12, 0.98),
-            rgba(13, 13, 13, 0.98)
-        );
-
-    border: 1px solid rgba(212, 175, 55, 0.45);
-
-    box-shadow:
-        0 0 40px rgba(212, 175, 55, 0.13),
-        inset 0 1px 0 rgba(255,255,255,0.05);
-
+    max-width: 430px;
+    padding: 35px 25px 30px;
     text-align: center;
+    border-radius: 22px;
+    background: linear-gradient(145deg, #2a200c, #0d0d0d);
+    border: 1px solid rgba(212,175,55,.45);
+    box-shadow: 0 0 40px rgba(212,175,55,.14);
 }
 
 .logo {
     width: 180px;
     max-width: 75%;
-    height: auto;
+    margin: 0 auto 22px;
     display: block;
-    margin: 0 auto 24px;
 }
 
-.title {
+h1 {
     margin: 0;
-    font-size: 29px;
-    font-weight: 800;
-    letter-spacing: 1px;
     color: #f4d77a;
+    font-size: 29px;
 }
 
 .subtitle {
     margin: 10px 0 28px;
-    color: #bdbdbd;
+    color: #bbb;
     font-size: 15px;
     line-height: 1.5;
 }
 
-.google-btn {
+#googleBtn {
     width: 100%;
     min-height: 58px;
-    border: none;
+    border: 0;
     border-radius: 14px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #f8df83,
-            #c89b28
-        );
-
+    background: linear-gradient(135deg, #f8df83, #c89b28);
     color: #111;
-
     font-size: 17px;
     font-weight: 800;
-
     cursor: pointer;
-
-    box-shadow:
-        0 8px 25px rgba(212, 175, 55, 0.22);
-
-    transition:
-        transform 0.15s ease,
-        opacity 0.15s ease;
 }
 
-.google-btn:active {
-    transform: scale(0.98);
-}
-
-.google-btn:disabled {
-    opacity: 0.55;
+#googleBtn:disabled {
+    opacity: .55;
     cursor: wait;
 }
 
-.google-icon {
-    width: 21px;
-    height: 21px;
-    vertical-align: middle;
-    margin-right: 9px;
-}
-
-.status {
-    min-height: 24px;
-    margin-top: 22px;
-    color: #d7d7d7;
+#status {
+    min-height: 25px;
+    margin-top: 20px;
+    color: #ccc;
     font-size: 14px;
     line-height: 1.5;
 }
 
-.status.error {
-    color: #ff8585;
+.error {
+    color: #ff8585 !important;
 }
 
-.status.success {
-    color: #9be58c;
+.success {
+    color: #9be58c !important;
 }
 
 .small {
-    margin-top: 25px;
-    color: #777;
+    margin-top: 22px;
+    color: #666;
     font-size: 12px;
 }
-
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="card">
 
-    <div class="card">
+    <img
+        class="logo"
+        src="https://busansoanimations-cloud.github.io/testbusanso/images/busanso-logo-source.png"
+        alt="BUSANSO"
+    >
 
-        <img
-            class="logo"
-            src="https://busansoanimations-cloud.github.io/testbusanso/images/busanso-logo-source.png"
-            alt="BUSANSO"
-            onerror="this.style.display='none';"
-        >
+    <h1>Welcome to BUSANSO</h1>
 
-        <h1 class="title">
-            Welcome to BUSANSO
-        </h1>
+    <div class="subtitle">
+        Sign in with Google to continue watching.
+    </div>
 
-        <p class="subtitle">
-            Sign in with Google to continue watching.
-        </p>
+    <button
+        id="googleBtn"
+        type="button"
+        onclick="startGoogleLogin()"
+    >
+        <span style="font-size:21px;margin-right:8px;">G</span>
+        Continue with Google
+    </button>
 
-        <button
-            id="googleBtn"
-            class="google-btn"
-            type="button"
-        >
-            <span class="google-icon">G</span>
-            Continue with Google
-        </button>
+    <div id="status"></div>
 
-        <div
-            id="status"
-            class="status"
-        ></div>
-
-        <div class="small">
-            Secure sign-in powered by Google
-        </div>
-
+    <div class="small">
+        Secure sign-in powered by Google
     </div>
 
 </div>
 
 <script>
-
-/* ============================================================
-   BUSANSO SUPABASE CONFIGURATION
-   ============================================================ */
 
 const SUPABASE_URL =
     "https://dhkfhhybzcxdeoalcfqx.supabase.co";
@@ -218,27 +144,36 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
     "sb_publishable_Rjm3T44VKTeuOF2yJS5rMw_xDfwPjuG";
 
-/*
- * Android app mode is ?app=1
- */
-const params =
-    new URLSearchParams(
-        window.location.search
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY,
+        {
+            auth: {
+                persistSession: true,
+                autoRefreshToken: true,
+                detectSessionInUrl: true,
+                flowType: "pkce",
+                storageKey: "busanso-auth"
+            }
+        }
     );
+
+const googleBtn =
+    document.getElementById("googleBtn");
+
+const statusBox =
+    document.getElementById("status");
+
+const params =
+    new URLSearchParams(window.location.search);
 
 const isAppMode =
     params.get("app") === "1";
 
-/*
- * Web authentication returns to auth.html.
- */
 const WEB_REDIRECT_URL =
     "https://busansoanimations-cloud.github.io/testbusanso/auth.html";
 
-/*
- * Android authentication returns through the
- * BUSANSO deep link.
- */
 const APP_REDIRECT_URL =
     "busanso://auth/callback";
 
@@ -249,139 +184,113 @@ const REDIRECT_URL =
 
 
 /* ============================================================
-   SUPABASE CLIENT
-   ============================================================ */
-
-const supabase =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY,
-        {
-            auth: {
-                persistSession: true,
-                autoRefreshToken: true,
-
-                /*
-                 * Android callback is manually processed by
-                 * MainActivity, so Supabase must not attempt
-                 * to process the busanso:// URL itself.
-                 */
-                detectSessionInUrl: !isAppMode,
-
-                flowType: "pkce",
-
-                storageKey: "busanso-auth"
-            }
-        }
-    );
-
-
-/* ============================================================
-   ELEMENTS
-   ============================================================ */
-
-const googleBtn =
-    document.getElementById("googleBtn");
-
-const statusBox =
-    document.getElementById("status");
-
-
-/* ============================================================
-   STATE
-   ============================================================ */
-
-let loginInProgress = false;
-let oauthCallbackProcessing = false;
-
-
-/* ============================================================
    STATUS
    ============================================================ */
 
-function setStatus(
-    message,
-    type = ""
-) {
+function status(message, type) {
 
     statusBox.textContent =
         message || "";
 
     statusBox.className =
-        "status " + type;
+        type || "";
 }
 
 
 /* ============================================================
-   LOCAL STORAGE
+   GOOGLE LOGIN
    ============================================================ */
 
-function saveAuthUser(user) {
+async function startGoogleLogin() {
+
+    console.log("BUSANSO Google button clicked");
+
+    googleBtn.disabled = true;
+
+    status(
+        "Connecting to Google..."
+    );
 
     try {
 
+        if (!window.supabase) {
+            throw new Error(
+                "Supabase library did not load."
+            );
+        }
+
+        const result =
+            await supabaseClient.auth.signInWithOAuth({
+
+                provider: "google",
+
+                options: {
+
+                    redirectTo:
+                        REDIRECT_URL,
+
+                    queryParams: {
+                        prompt: "select_account"
+                    },
+
+                    skipBrowserRedirect: false
+                }
+            });
+
+        console.log(
+            "OAuth result:",
+            result
+        );
+
+        if (result.error) {
+            throw result.error;
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Google login error:",
+            error
+        );
+
+        status(
+            error.message ||
+            "Google sign-in could not start.",
+            "error"
+        );
+
+        googleBtn.disabled = false;
+    }
+}
+
+
+/* ============================================================
+   SAVE USER
+   ============================================================ */
+
+function saveUser(user) {
+
+    try {
         localStorage.setItem(
             "busanso_user",
             JSON.stringify(user)
         );
-
-    } catch (e) {
-    }
+    } catch (e) {}
 }
 
-function saveProfileLocally(profile) {
+
+/* ============================================================
+   SAVE PROFILE
+   ============================================================ */
+
+function saveProfile(profile) {
 
     try {
-
         localStorage.setItem(
             "busanso_profile",
             JSON.stringify(profile)
         );
-
-    } catch (e) {
-    }
-}
-
-
-/* ============================================================
-   GO HOME
-   ============================================================ */
-
-function goHome() {
-
-    if (isAppMode) {
-
-        window.location.replace(
-            "home.html?app=1"
-        );
-
-    } else {
-
-        window.location.replace(
-            "home.html"
-        );
-    }
-}
-
-
-/* ============================================================
-   ACCOUNT
-   ============================================================ */
-
-function goAccount() {
-
-    if (isAppMode) {
-
-        window.location.replace(
-            "account.html?app=1"
-        );
-
-    } else {
-
-        window.location.replace(
-            "account.html"
-        );
-    }
+    } catch (e) {}
 }
 
 
@@ -395,46 +304,28 @@ async function loadProfile(user) {
         return null;
     }
 
-    try {
+    const result =
+        await supabaseClient
+            .from("profiles")
+            .select("*")
+            .eq("auth_user_id", user.id)
+            .maybeSingle();
 
-        const result =
-            await supabase
-                .from("profiles")
-                .select("*")
-                .eq(
-                    "auth_user_id",
-                    user.id
-                )
-                .maybeSingle();
-
-        if (result.error) {
-
-            console.error(
-                "Profile lookup error:",
-                result.error
-            );
-
-            return null;
-        }
-
-        if (result.data) {
-
-            saveProfileLocally(
-                result.data
-            );
-
-            return result.data;
-        }
-
-    } catch (error) {
+    if (result.error) {
 
         console.error(
-            "Profile lookup exception:",
-            error
+            "Profile error:",
+            result.error
         );
+
+        return null;
     }
 
-    return null;
+    if (result.data) {
+        saveProfile(result.data);
+    }
+
+    return result.data || null;
 }
 
 
@@ -444,121 +335,72 @@ async function loadProfile(user) {
 
 async function createProfile(user) {
 
-    if (!user || !user.id) {
-        return null;
-    }
-
     const metadata =
         user.user_metadata || {};
 
     const name =
-        metadata.full_name
-        || metadata.name
-        || (
-            user.email
-                ? user.email.split("@")[0]
-                : "BUSANSO USER"
-        );
+        metadata.full_name ||
+        metadata.name ||
+        (user.email
+            ? user.email.split("@")[0]
+            : "BUSANSO USER");
 
     const avatar =
-        metadata.avatar_url
-        || metadata.picture
-        || null;
+        metadata.avatar_url ||
+        metadata.picture ||
+        null;
 
-    try {
+    const result =
+        await supabaseClient
+            .from("profiles")
+            .insert({
+                auth_user_id: user.id,
+                email: user.email || null,
+                name: name,
+                avatar_url: avatar
+            })
+            .select("*")
+            .single();
 
-        const result =
-            await supabase
-                .from("profiles")
-                .insert({
+    if (!result.error && result.data) {
 
-                    auth_user_id:
-                        user.id,
+        saveProfile(result.data);
 
-                    email:
-                        user.email || null,
-
-                    name:
-                        name,
-
-                    avatar_url:
-                        avatar
-                })
-                .select("*")
-                .single();
-
-        if (result.error) {
-
-            /*
-             * A trigger/policy may have created the profile,
-             * or another request may have created it.
-             * Try reading it again.
-             */
-            console.log(
-                "Profile insert returned:",
-                result.error
-            );
-
-            return await loadProfile(
-                user
-            );
-        }
-
-        if (result.data) {
-
-            saveProfileLocally(
-                result.data
-            );
-
-            return result.data;
-        }
-
-    } catch (error) {
-
-        console.error(
-            "Profile creation exception:",
-            error
-        );
+        return result.data;
     }
 
+    /*
+     * If another process/trigger already created the
+     * profile, simply retrieve it.
+     */
     return await loadProfile(user);
 }
 
 
 /* ============================================================
-   FINISH LOGIN
+   COMPLETE LOGIN
    ============================================================ */
 
 async function finishLogin(user) {
 
     if (!user) {
-
-        setStatus(
-            "Google sign-in did not return a user.",
-            "error"
+        throw new Error(
+            "No Google user was returned."
         );
-
-        return;
     }
 
-    saveAuthUser(user);
+    saveUser(user);
 
-    setStatus(
+    status(
         "Checking your BUSANSO profile..."
     );
 
-    /*
-     * First try to find an existing profile.
-     */
     let profile =
         await loadProfile(user);
 
-    /*
-     * New Google users may not have a profile yet.
-     */
     if (!profile) {
 
-        setStatus(
+        status(
             "Creating your BUSANSO profile..."
         );
 
@@ -566,75 +408,66 @@ async function finishLogin(user) {
             await createProfile(user);
     }
 
-    /*
-     * If profile still cannot be found/created,
-     * do not silently pretend login succeeded.
-     */
     if (!profile) {
 
-        setStatus(
-            "Google sign-in succeeded, but your BUSANSO profile could not be loaded. Please try again.",
-            "error"
+        throw new Error(
+            "Your Google account was authenticated, but the BUSANSO profile could not be loaded."
         );
-
-        return;
     }
 
-    saveProfileLocally(profile);
+    saveProfile(profile);
 
-    setStatus(
-        "Signed in successfully. Opening BUSANSO...",
+    status(
+        "Login successful. Opening BUSANSO...",
         "success"
     );
 
-    /*
-     * Give localStorage/session persistence a moment
-     * before changing pages.
-     */
-    setTimeout(
-        () => {
-            goHome();
-        },
-        350
-    );
+    setTimeout(function() {
+
+        if (isAppMode) {
+            window.location.href =
+                "home.html?app=1";
+        } else {
+            window.location.href =
+                "home.html";
+        }
+
+    }, 400);
 }
 
 
 /* ============================================================
-   CHECK EXISTING SESSION
+   EXISTING SESSION
    ============================================================ */
 
-async function checkSession() {
+async function checkExistingSession() {
 
     try {
 
         const result =
-            await supabase.auth.getSession();
+            await supabaseClient.auth.getSession();
 
         if (result.error) {
-
             console.error(
-                "Session error:",
                 result.error
             );
-
             return;
         }
 
-        const session =
-            result.data.session;
-
-        if (session && session.user) {
+        if (
+            result.data.session &&
+            result.data.session.user
+        ) {
 
             await finishLogin(
-                session.user
+                result.data.session.user
             );
         }
 
     } catch (error) {
 
         console.error(
-            "Session check failed:",
+            "Session check:",
             error
         );
     }
@@ -642,103 +475,29 @@ async function checkSession() {
 
 
 /* ============================================================
-   GOOGLE LOGIN
+   ANDROID CALLBACK
    ============================================================ */
 
-async function signInWithGoogle() {
+let callbackHandled = false;
 
-    if (loginInProgress) {
+async function processAndroidCallback(url) {
+
+    if (callbackHandled) {
         return;
     }
 
-    loginInProgress = true;
+    callbackHandled = true;
 
-    googleBtn.disabled = true;
-
-    setStatus(
-        "Connecting to Google..."
-    );
-
-    try {
-
-        const result =
-            await supabase.auth.signInWithOAuth({
-
-                provider: "google",
-
-                options: {
-
-                    redirectTo:
-                        REDIRECT_URL,
-
-                    queryParams: {
-                        prompt:
-                            "select_account"
-                    },
-
-                    skipBrowserRedirect:
-                        false
-                }
-            });
-
-        if (result.error) {
-
-            throw result.error;
-        }
-
-    } catch (error) {
-
-        console.error(
-            "Google sign-in error:",
-            error
-        );
-
-        setStatus(
-            error.message
-                || "Unable to connect to Google. Please try again.",
-            "error"
-        );
-
-        googleBtn.disabled = false;
-
-        loginInProgress = false;
-    }
-}
-
-
-/* ============================================================
-   ANDROID OAUTH CALLBACK
-   ============================================================ */
-
-async function processOAuthCallback(
-    callbackUrl
-) {
-
-    if (oauthCallbackProcessing) {
-        return;
-    }
-
-    oauthCallbackProcessing = true;
-
-    setStatus(
+    status(
         "Completing Google sign-in..."
     );
 
     try {
 
-        if (!callbackUrl) {
-            throw new Error(
-                "Empty OAuth callback."
-            );
-        }
-
         const callback =
-            new URL(callbackUrl);
+            new URL(url);
 
-        /*
-         * Google/Supabase may return an OAuth error.
-         */
-        const errorCode =
+        const error =
             callback.searchParams.get(
                 "error"
             );
@@ -748,18 +507,13 @@ async function processOAuthCallback(
                 "error_description"
             );
 
-        if (errorCode) {
+        if (error) {
 
             throw new Error(
-                errorDescription
-                    || errorCode
-                    || "Google authentication failed."
+                errorDescription || error
             );
         }
 
-        /*
-         * PKCE authorization code.
-         */
         const code =
             callback.searchParams.get(
                 "code"
@@ -767,13 +521,13 @@ async function processOAuthCallback(
 
         if (!code) {
 
-            /*
-             * Some session may already have been restored.
-             */
             const existing =
-                await supabase.auth.getSession();
+                await supabaseClient.auth.getSession();
 
-            if (existing.data.session) {
+            if (
+                existing.data.session &&
+                existing.data.session.user
+            ) {
 
                 await finishLogin(
                     existing.data.session.user
@@ -783,46 +537,27 @@ async function processOAuthCallback(
             }
 
             throw new Error(
-                "Google returned without an authorization code."
+                "Google did not return an authorization code."
             );
         }
 
-        /*
-         * Exchange the PKCE authorization code
-         * for the Supabase session.
-         */
         const result =
-            await supabase.auth.exchangeCodeForSession(
+            await supabaseClient.auth.exchangeCodeForSession(
                 code
             );
 
         if (result.error) {
-
             throw result.error;
         }
 
-        if (!result.data.session
-                || !result.data.user) {
+        if (
+            !result.data ||
+            !result.data.user
+        ) {
 
-            /*
-             * Give Supabase a moment to restore
-             * the newly created session.
-             */
-            const sessionResult =
-                await supabase.auth.getSession();
-
-            if (!sessionResult.data.session) {
-
-                throw new Error(
-                    "Google sign-in completed, but BUSANSO could not establish the session."
-                );
-            }
-
-            await finishLogin(
-                sessionResult.data.session.user
+            throw new Error(
+                "The Google session could not be created."
             );
-
-            return;
         }
 
         await finishLogin(
@@ -832,65 +567,42 @@ async function processOAuthCallback(
     } catch (error) {
 
         console.error(
-            "OAuth callback error:",
+            "Android OAuth error:",
             error
         );
 
-        setStatus(
-            error.message
-                || "Unable to complete Google sign-in.",
+        status(
+            error.message ||
+            "Google sign-in could not be completed.",
             "error"
         );
 
+        callbackHandled = false;
         googleBtn.disabled = false;
-
-        loginInProgress = false;
-
-        oauthCallbackProcessing = false;
     }
 }
 
 
 /* ============================================================
-   ANDROID EVENT
+   ANDROID → JAVASCRIPT EVENT
    ============================================================ */
 
 window.addEventListener(
     "busansoOAuthCallback",
     function(event) {
 
-        try {
+        console.log(
+            "BUSANSO Android OAuth callback received"
+        );
 
-            const callbackUrl =
-                event
-                    && event.detail
-                    ? event.detail.url
-                    : null;
+        if (
+            event &&
+            event.detail &&
+            event.detail.url
+        ) {
 
-            if (!callbackUrl) {
-
-                setStatus(
-                    "Android returned an empty Google callback.",
-                    "error"
-                );
-
-                return;
-            }
-
-            processOAuthCallback(
-                callbackUrl
-            );
-
-        } catch (error) {
-
-            console.error(
-                "OAuth event error:",
-                error
-            );
-
-            setStatus(
-                "Unable to process Google sign-in.",
-                "error"
+            processAndroidCallback(
+                event.detail.url
             );
         }
     }
@@ -898,81 +610,47 @@ window.addEventListener(
 
 
 /* ============================================================
-   SUPABASE AUTH STATE
+   SUPABASE AUTH EVENTS
    ============================================================ */
 
-supabase.auth.onAuthStateChange(
-    async (
-        event,
-        session
-    ) => {
+supabaseClient.auth.onAuthStateChange(
+    function(event, session) {
 
         console.log(
             "BUSANSO auth event:",
             event
         );
 
-        if (
-            event === "SIGNED_IN"
-            && session
-            && session.user
-            && !oauthCallbackProcessing
-        ) {
-
-            await finishLogin(
-                session.user
-            );
-        }
+        /*
+         * Do not redirect immediately here during the Android
+         * PKCE exchange. processAndroidCallback() handles it.
+         */
     }
 );
 
 
 /* ============================================================
-   GOOGLE BUTTON
+   START
    ============================================================ */
 
-googleBtn.addEventListener(
-    "click",
-    signInWithGoogle
+console.log(
+    "BUSANSO auth page loaded"
 );
 
+console.log(
+    "App mode:",
+    isAppMode
+);
 
-/* ============================================================
-   STARTUP
-   ============================================================ */
+console.log(
+    "Redirect:",
+    REDIRECT_URL
+);
 
-(async function() {
-
-    /*
-     * Android OAuth callback is delivered manually by
-     * MainActivity. Do not automatically redirect while
-     * waiting for that callback.
-     */
-
-    if (isAppMode) {
-
-        setStatus(
-            ""
-        );
-
-        /*
-         * Check for an already-existing Supabase session.
-         * This is important when the user opens BUSANSO again
-         * after previously signing in.
-         */
-        await checkSession();
-
-    } else {
-
-        /*
-         * Normal browser mode.
-         */
-        await checkSession();
-    }
-
-})();
+checkExistingSession();
 
 </script>
 
 </body>
 </html>
+```
