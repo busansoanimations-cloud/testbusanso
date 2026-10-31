@@ -1,5 +1,4 @@
-﻿<!DOCTYPE html>
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -7,8 +6,11 @@
 <title>Movie Name - Luganda Translated Movie | BUSANSO Nation</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <meta name="description" content="Watch and download Luganda translated movies on BUSANSO Nation. Luganda Translated movie by King Vj The Busanso Master.">
+
 <meta name="keywords" content="Luganda translated movies, Luganda movies, King Vj, King VJ The Busanso Master, BUSANSO Nation, Ugandan movies, translated movies">
+
 <meta name="robots" content="index, follow">
 <meta name="author" content="BUSANSO Nation">
 
@@ -32,6 +34,7 @@ body {
 }
 
 /* ===== MOVIE BANNER ===== */
+
 .banner {
   position: relative;
   width: 100%;
@@ -71,6 +74,7 @@ body {
 }
 
 /* ===== BUTTONS ===== */
+
 .banner .buttons {
   position: absolute;
   bottom: 28px;
@@ -113,6 +117,7 @@ button:active {
 }
 
 /* ===== GLOWING DOWNLOAD BUTTON ===== */
+
 #downloadBtn {
   background: linear-gradient(135deg, #2878ff, #1254d8);
   color: #fff;
@@ -149,6 +154,7 @@ button:active {
 }
 
 /* ===== MOVIE DETAILS ===== */
+
 .details {
   position: relative;
   max-width: 900px;
@@ -190,6 +196,7 @@ button:active {
 }
 
 /* ===== PLAYER ===== */
+
 .player {
   margin: 10px auto 35px;
   width: 92%;
@@ -203,6 +210,7 @@ button:active {
 }
 
 /* ===== MOBILE ===== */
+
 @media(max-width:768px) {
 
   .banner {
@@ -269,88 +277,31 @@ button:active {
 
 <body>
 
-<!-- KIBANDA MEMBERSHIP CHECK -->
-
-<script type="module">
-
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-
-
-const supabase = createClient(
-'https://dhkfhhybzcxdeoalcfqx.supabase.co',
-'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRoa2ZoaHliemN4ZGVvYWxjZnF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1MzQxNTEsImV4cCI6MjA4ODExMDE1MX0.jZ4NDNPJmO0Ji05TxDqCnzgLIIzKf9uCx3WrSgk2DaY'
-);
-
-
-(async()=>{
-
-
-const user_id = localStorage.getItem("user_id");
-
-
-if(!user_id){
-    location.href="home.html";
-    return;
-}
-
-
-
-const { data, error } = await supabase
-.from("profiles")
-.select("membership, expires_at")
-.eq("id", user_id)
-.single();
-
-
-
-if(error || !data){
-    location.href="home.html";
-    return;
-}
-
-const now = new Date();
-
-if (
-    data.membership !== "kibanda" ||
-    !data.expires_at ||
-    new Date(data.expires_at) <= now
-) {
-    location.href = "home.html";
-    return;
-}
-
-console.log("MOVIE PLAYER ACCESS:",data.membership);
-
-
-
-if(data.membership !== "kibanda"){
-    location.href="home.html";
-    return;
-}
-
-
-
-})();
-
-</script>
+<!-- ===== MOVIE BANNER ===== -->
 
 <div class="banner">
 
-  <img id="posterImg" src="" alt="Luganda translated movie">
+  <img
+    id="posterImg"
+    src=""
+    alt="Luganda translated movie"
+  >
 
   <div class="buttons">
 
-<button id="watchBtn">
-  ▶ Watch Now
-</button>
+    <button id="watchBtn">
+      ▶ Watch Now
+    </button>
 
-<button id="downloadBtn">
-  ⬇ Download
-</button>
+    <button id="downloadBtn">
+      ⬇ Download
+    </button>
 
   </div>
 
 </div>
+
+<!-- ===== MOVIE DETAILS ===== -->
 
 <div class="details">
 
@@ -366,6 +317,8 @@ if(data.membership !== "kibanda"){
 
 </div>
 
+<!-- ===== VIDEO PLAYER ===== -->
+
 <iframe
   id="player"
   allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
@@ -373,25 +326,20 @@ if(data.membership !== "kibanda"){
   class="player">
 </iframe>
 
+<!-- ===== SUPABASE AND MOVIE SYSTEM ===== -->
+
 <script type="module">
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-
 const supabase = createClient(
-'https://dhkfhhybzcxdeoalcfqx.supabase.co',
-'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRoa2ZoaHliemN4ZGVvYWxjZnF4IiwiaWF0IjoxNzcyNTM0MTUxLCJleHAiOjIwODgxMTAxNTF9.jZ4NDNPJmO0Ji05TxDqCnzgLIIzKf9uCx3WrSgk2DaY'
+  'https://dhkfhhybzcxdeoalcfqx.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRoa2ZoaHliemN4ZGVvYWxjZnF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1MzQxNTEsImV4cCI6MjA4ODExMDE1MX0.jZ4NDNPJmO0Ji05TxDqCnzgLIIzKf9uCx3WrSgk2DaY'
 );
-
 
 const params = new URLSearchParams(location.search);
 
 const id = params.get("id");
-
-if(!id){
-  location.href="kibmovies.html";
-}
-
 
 const player = document.getElementById("player");
 
@@ -401,201 +349,406 @@ const downloadBtn = document.getElementById("downloadBtn");
 
 const posterImg = document.getElementById("posterImg");
 
+const titleElement = document.getElementById("title");
 
-/* ===== FETCH MOVIE ===== */
+const synopsisElement = document.getElementById("synopsis");
 
-const { data: movie } = await supabase
-  .from('movies')
-  .select('*')
-  .eq('id', id)
-  .single();
+const metaElement = document.getElementById("meta");
 
 
-document.getElementById("title").textContent = movie.title;
+/* ===== ERROR HANDLER ===== */
 
-posterImg.src = movie.poster;
+function showError(message) {
 
-posterImg.alt =
-  movie.title + " - Luganda Translated Movie by King Vj The Busanso Master";
+  titleElement.textContent = "Movie Loading Failed";
 
-document.getElementById("synopsis").textContent =
-  movie.synopsis || "";
+  synopsisElement.textContent = message;
 
-document.getElementById("meta").textContent =
-`${movie.year || ""} • ${movie.duration || ""} • ${movie.type || ""}`;
+  metaElement.textContent =
+    "Please refresh the page or try again later.";
 
+  console.error("MOVIE PAGE ERROR:", message);
 
-/* ===== UPDATE SEO USING ACTUAL MOVIE ===== */
-
-document.title =
-  `${movie.title} - Luganda Translated Movie | BUSANSO Nation`;
-
-const description =
-  `Watch and download ${movie.title}, a Luganda translated movie by King Vj The Busanso Master on BUSANSO Nation.`;
-
-let metaDescription =
-  document.querySelector('meta[name="description"]');
-
-if(metaDescription){
-  metaDescription.setAttribute("content", description);
 }
 
 
-/* ===== HIDE DOWNLOAD FOR YOUTUBE ===== */
+/* ===== KIBANDA MEMBERSHIP CHECK ===== */
+/* DETAILS REMAIN PUBLIC.
+   MEMBERSHIP IS CHECKED ONLY WHEN WATCH OR DOWNLOAD IS CLICKED. */
 
-function isYouTube(url){
-  return /youtube\.com|youtu\.be/.test(url);
-}
+async function checkMembership() {
 
-if(isYouTube(movie.video)){
-  downloadBtn.style.display = "none";
-}
+  const user_id = localStorage.getItem("user_id");
 
+  if (!user_id) {
 
-/* ===== VIDEO NORMALIZER ===== */
+    location.href = "home.html";
 
-function getVideoUrl(url){
+    return false;
 
-  if(!url) return "";
-
-  if(url.includes("youtube.com")){
-
-    const ytId =
-      new URL(url).searchParams.get("v");
-
-    return `https://www.youtube.com/embed/${ytId}?autoplay=1&controls=1&rel=0`;
   }
 
+  try {
 
-  if(url.includes("youtu.be")){
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("membership, expires_at")
+      .eq("id", user_id)
+      .single();
 
-    const ytId =
-      url.split("youtu.be/")[1].split("?")[0];
+    if (error || !data) {
 
-    return `https://www.youtube.com/embed/${ytId}?autoplay=1&controls=1&rel=0`;
-  }
+      console.error("MEMBERSHIP CHECK ERROR:", error);
 
+      location.href = "home.html";
 
-  if(url.includes("vimeo.com")){
-
-    const vid =
-      url.split("/").pop();
-
-    return `https://player.vimeo.com/video/${vid}?autoplay=1`;
-  }
-
-
-  // ✅ Robust Google Drive preview
-
-  if(url.includes("drive.google.com")){
-
-    let match =
-      url.match(/\/d\/(.*?)\//);
-
-    let id =
-      match
-      ? match[1]
-      : new URL(url).searchParams.get("id");
-
-
-    if(id){
-
-      return `https://drive.google.com/file/d/${id}/preview`;
+      return false;
 
     }
 
-  }
+    const now = new Date();
 
+    if (
+      data.membership !== "kibanda" ||
+      !data.expires_at ||
+      new Date(data.expires_at) <= now
+    ) {
 
-  return url;
+      location.href = "home.html";
 
-}
-
-
-/* ===== GOOGLE DRIVE DOWNLOAD FIX ===== */
-
-function getDownloadUrl(url){
-
-  if(!url) return "";
-
-
-  if(url.includes("drive.google.com")){
-
-    let match =
-      url.match(/\/d\/(.*?)\//);
-
-    let id =
-      match
-      ? match[1]
-      : new URL(url).searchParams.get("id");
-
-
-    if(id){
-
-      return `https://drive.google.com/uc?export=download&id=${id}`;
+      return false;
 
     }
 
+    console.log("MOVIE ACCESS GRANTED:", data.membership);
+
+    return true;
+
+  } catch (error) {
+
+    console.error("MEMBERSHIP ERROR:", error);
+
+    location.href = "home.html";
+
+    return false;
+
   }
 
-
-  return url;
-
 }
 
 
-/* ===== PLAY ===== */
+/* ===== CHECK MOVIE ID ===== */
 
-function playMovie(){
+if (!id) {
 
-  player.src =
-    getVideoUrl(movie.video);
+  location.href = "kibmovies.html";
 
-  player.style.display =
-    "block";
+} else {
 
-  posterImg.style.display =
-    "none";
+  try {
 
-  watchBtn.style.display =
-    "none";
+    /* ===== FETCH MOVIE DETAILS ===== */
 
-  downloadBtn.style.display =
-    "none";
+    const { data: movie, error } = await supabase
+      .from("movies")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+    if (error) {
+
+      console.error("SUPABASE MOVIE ERROR:", error);
+
+      throw new Error(error.message);
+
+    }
+
+    if (!movie) {
+
+      throw new Error("Movie was not found in the database.");
+
+    }
+
+    console.log("MOVIE SUCCESSFULLY FETCHED:", movie);
+
+
+    /* ===== DISPLAY MOVIE DETAILS PUBLICLY ===== */
+
+    titleElement.textContent =
+      movie.title || "Untitled Movie";
+
+    synopsisElement.textContent =
+      movie.synopsis || "";
+
+    metaElement.textContent =
+      `${movie.year || ""} • ${movie.duration || ""} • ${movie.type || ""}`;
+
+
+    /* ===== DISPLAY POSTER ===== */
+
+    if (movie.poster) {
+
+      posterImg.src = movie.poster;
+
+      posterImg.alt =
+        movie.title +
+        " - Luganda Translated Movie by King Vj The Busanso Master";
+
+      posterImg.style.display = "block";
+
+    } else {
+
+      posterImg.style.display = "none";
+
+    }
+
+
+    /* ===== UPDATE SEO USING ACTUAL MOVIE ===== */
+
+    document.title =
+      `${movie.title || "Movie"} - Luganda Translated Movie | BUSANSO Nation`;
+
+    const description =
+      `Watch and download ${movie.title || "Luganda translated movie"}, a Luganda translated movie by King Vj The Busanso Master on BUSANSO Nation.`;
+
+    let metaDescription =
+      document.querySelector('meta[name="description"]');
+
+    if (metaDescription) {
+
+      metaDescription.setAttribute("content", description);
+
+    }
+
+    /* ===== UPDATE OPEN GRAPH DETAILS ===== */
+
+    const ogTitle =
+      document.querySelector('meta[property="og:title"]');
+
+    const ogDescription =
+      document.querySelector('meta[property="og:description"]');
+
+    if (ogTitle) {
+
+      ogTitle.setAttribute("content", document.title);
+
+    }
+
+    if (ogDescription) {
+
+      ogDescription.setAttribute("content", description);
+
+    }
+
+
+    /* ===== HIDE DOWNLOAD FOR YOUTUBE ===== */
+
+    function isYouTube(url) {
+
+      return /youtube\.com|youtu\.be/i.test(url || "");
+
+    }
+
+    if (isYouTube(movie.video)) {
+
+      downloadBtn.style.display = "none";
+
+    }
+
+
+    /* ===== VIDEO NORMALIZER ===== */
+
+    function getVideoUrl(url) {
+
+      if (!url) return "";
+
+      if (url.includes("youtube.com")) {
+
+        const ytId =
+          new URL(url).searchParams.get("v");
+
+        return ytId
+          ? `https://www.youtube.com/embed/${ytId}?autoplay=1&controls=1&rel=0`
+          : url;
+
+      }
+
+      if (url.includes("youtu.be")) {
+
+        const ytId =
+          url.split("youtu.be/")[1].split("?")[0];
+
+        return `https://www.youtube.com/embed/${ytId}?autoplay=1&controls=1&rel=0`;
+
+      }
+
+      if (url.includes("vimeo.com")) {
+
+        const vid =
+          url.split("/").pop();
+
+        return `https://player.vimeo.com/video/${vid}?autoplay=1`;
+
+      }
+
+      // GOOGLE DRIVE PREVIEW
+
+      if (url.includes("drive.google.com")) {
+
+        let match =
+          url.match(/\/d\/(.*?)\//);
+
+        let driveId =
+          match
+            ? match[1]
+            : new URL(url).searchParams.get("id");
+
+        if (driveId) {
+
+          return `https://drive.google.com/file/d/${driveId}/preview`;
+
+        }
+
+      }
+
+      return url;
+
+    }
+
+
+    /* ===== GOOGLE DRIVE DOWNLOAD FIX ===== */
+
+    function getDownloadUrl(url) {
+
+      if (!url) return "";
+
+      if (url.includes("drive.google.com")) {
+
+        let match =
+          url.match(/\/d\/(.*?)\//);
+
+        let driveId =
+          match
+            ? match[1]
+            : new URL(url).searchParams.get("id");
+
+        if (driveId) {
+
+          return `https://drive.google.com/uc?export=download&id=${driveId}`;
+
+        }
+
+      }
+
+      return url;
+
+    }
+
+
+    /* ===== WATCH MOVIE ===== */
+
+    async function playMovie() {
+
+      // VERIFY KIBANDA MEMBERSHIP BEFORE PLAYING
+
+      const allowed = await checkMembership();
+
+      if (!allowed) return;
+
+      const videoUrl =
+        getVideoUrl(movie.video);
+
+      if (!videoUrl) {
+
+        showError("This movie does not have a valid video link.");
+
+        return;
+
+      }
+
+      player.src = videoUrl;
+
+      player.style.display = "block";
+
+      posterImg.style.display = "none";
+
+      watchBtn.style.display = "none";
+
+      downloadBtn.style.display = "none";
+
+      player.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+
+    }
+
+
+    /* ===== DOWNLOAD MOVIE ===== */
+
+    async function downloadMovie() {
+
+      // VERIFY KIBANDA MEMBERSHIP BEFORE DOWNLOADING
+
+      const allowed = await checkMembership();
+
+      if (!allowed) return;
+
+      const url =
+        getDownloadUrl(movie.video);
+
+      if (!url) {
+
+        showError("Download link is unavailable.");
+
+        return;
+
+      }
+
+      window.open(url, "_blank");
+
+    }
+
+
+    /* ===== BUTTON EVENTS ===== */
+
+    watchBtn.onclick = playMovie;
+
+    posterImg.onclick = playMovie;
+
+    downloadBtn.onclick = downloadMovie;
+
+
+  } catch (error) {
+
+    console.error("MOVIE PAGE ERROR:", error);
+
+    showError(
+      "Unable to load movie details. Error: " + error.message
+    );
+
+  }
 
 }
-
-
-/* ===== DOWNLOAD ===== */
-
-function downloadMovie(){
-
-  const url =
-    getDownloadUrl(movie.video);
-
-  if(!url) return;
-
-  window.open(url, "_blank");
-
-}
-
-
-watchBtn.onclick =
-  playMovie;
-
-posterImg.onclick =
-  playMovie;
-
-downloadBtn.onclick =
-  downloadMovie;
 
 </script>
+
+
+<!-- ===== CLOUDFLARE INSIGHTS ===== -->
 
 <script
 type="module"
 src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496"
 integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ=="
 data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1}'
+crossorigin="anonymous">
+</script>
+
+<script
+type="module"
+src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092"
+integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw=="
+data-cf-beacon='{"version":"2024.11.0","token":"977e102300684d198ad460ca5d7f4479","r":1,"spa":2}'
 crossorigin="anonymous">
 </script>
 
